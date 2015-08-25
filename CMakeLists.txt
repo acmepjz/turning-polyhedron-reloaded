@@ -23,7 +23,8 @@ else()
 endif()
 
 Find_Package (SDL2 REQUIRED)
-Find_Package (Freetype REQUIRED)
+# Find_Package (Freetype REQUIRED)
+Find_Package (OSG REQUIRED)
 Find_Package (OpenGL REQUIRED)
 
 Set (MY_OPENGL_INCLUDE_DIR ${OPENGL_gl_INCLUDE_DIR})
@@ -33,18 +34,21 @@ Include_Directories(
 	${CMAKE_SOURCE_DIR}
 	${MY_OPENGL_INCLUDE_DIR}
 	${SDL2_INCLUDE_DIR}
-	${FREETYPE_INCLUDE_DIRS}
+#	${FREETYPE_INCLUDE_DIRS}
+	${OSG_INCLUDE_DIR}
 )
 
 File (GLOB SOURCES ${PROJECT_SOURCE_DIR}/jni/src/*.cpp)
 
-Add_Executable (turningpolyhedronreloaded ${SOURCES})
+Add_Executable (TurningPolyhedronReloaded ${SOURCES})
 
 Target_Link_Libraries (
-	turningpolyhedronreloaded
+	TurningPolyhedronReloaded
 	${MY_OPENGL_LIBRARY}
 	${SDL2_LIBRARY}
-	${FREETYPE_LIBRARIES}
+#	${FREETYPE_LIBRARIES}
+	${OSG_LIBRARY} ${OSGGA_LIBRARY} ${OSGUTIL_LIBRARY} ${OSGDB_LIBRARY}
+	${OSGTEXT_LIBRARY} ${OSGVIEWER_LIBRARY} ${OPENTHREADS_LIBRARY}
 )
 
 
