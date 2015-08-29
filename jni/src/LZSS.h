@@ -14,7 +14,7 @@
 		CompuServe	74050,1022
 **************************************************************/
 
-class IFile;
+#include <iostream>
 
 class LZSS{
 private:
@@ -32,7 +32,8 @@ private:
 	int	lson[N + 1], rson[N + 257], dad[N + 1];  /* left & right children &
 												 parents -- These constitute binary search trees. */
 public:
-	IFile *infile, *outfile;  /* input & output files */
+	std::istream *infile; /* input file */
+	std::ostream *outfile; /* output file */
 private:
 	void InitTree(void);
 	void InsertNode(int r);
