@@ -5,11 +5,11 @@
 
 #include <stdio.h>
 #include <iostream>
-#include <vector>
 
 /** Obtains the current value of the file position.
 */
 inline std::istream::off_type u8ftellg(std::istream* file){
+	if (file == NULL) return 0;
 	if (file->eof() && file->fail() && !file->bad()) file->clear();
 	return file->tellg();
 }
@@ -17,6 +17,7 @@ inline std::istream::off_type u8ftellg(std::istream* file){
 /** Reposition a stream.
 */
 inline std::istream::off_type u8fseekg(std::istream* file, std::istream::off_type offset, int whence = SEEK_SET){
+	if (file == NULL) return 0;
 	file->seekg(offset, whence);
 	return u8ftellg(file);
 }
@@ -24,6 +25,7 @@ inline std::istream::off_type u8fseekg(std::istream* file, std::istream::off_typ
 /** Obtains the current value of the file position.
 */
 inline std::ostream::off_type u8ftellp(std::ostream* file){
+	if (file == NULL) return 0;
 	if (file->eof() && file->fail() && !file->bad()) file->clear();
 	return file->tellp();
 }
@@ -31,6 +33,7 @@ inline std::ostream::off_type u8ftellp(std::ostream* file){
 /** Reposition a stream.
 */
 inline std::ostream::off_type u8fseekp(std::ostream* file, std::ostream::off_type offset, int whence = SEEK_SET){
+	if (file == NULL) return 0;
 	file->seekp(offset, whence);
 	return u8ftellp(file);
 }
@@ -38,6 +41,7 @@ inline std::ostream::off_type u8fseekp(std::ostream* file, std::ostream::off_typ
 /** Get file size.
 */
 inline std::ostream::off_type u8fsize(std::istream* file){
+	if (file == NULL) return 0;
 	if (file->eof() && file->fail() && !file->bad()) file->clear();
 	std::ostream::pos_type p = file->tellg();
 
@@ -50,14 +54,16 @@ inline std::ostream::off_type u8fsize(std::istream* file){
 
 /** Read file.
 */
-inline size_t u8fread(void* ptr,size_t size,std::istream* file){
+inline std::streamsize u8fread(void* ptr, std::streamsize size, std::istream* file){
+	if (file == NULL) return 0;
 	file->read((char*)ptr, size);
 	return file->gcount();
 }
 
 /** Write file.
 */
-inline size_t u8fwrite(const void* ptr,size_t size,std::ostream* file){
+inline std::streamsize u8fwrite(const void* ptr, std::streamsize size, std::ostream* file){
+	if (file == NULL) return 0;
 	file->write((const char*)ptr, size);
 	return size; //???
 }
@@ -80,8 +86,9 @@ const char* u8fgets(std::string& s,std::istream* file);
 /** Write a UTF-8 string to file.
 \return Number of bytes written.
 */
-inline size_t u8fputs(const std::string& s,std::ostream* file){
-	return u8fwrite(s.c_str(),s.size(),file);
+inline std::streamsize u8fputs(const std::string& s, std::ostream* file){
+	if (file == NULL) return 0;
+	return u8fwrite(s.c_str(), s.size(), file);
 }
 
 /** Read a character from file.
@@ -90,7 +97,7 @@ inline size_t u8fputs(const std::string& s,std::ostream* file){
 */
 inline int u8fgetc(std::istream* file){
 	unsigned char c;
-	if(u8fread(&c,1,file)!=1) return EOF;
+	if (u8fread(&c, 1, file) != 1) return EOF;
 	return c;
 }
 
@@ -100,5 +107,5 @@ inline int u8fgetc(std::istream* file){
 \return The character written or EOF.
 */
 inline int u8fputc(int ch,std::ostream* file){
-	return u8fwrite(&ch,1,file)==1?(int)(unsigned char)ch:EOF;
+	return u8fwrite(&ch, 1, file) == 1 ? (int)(unsigned char)ch : EOF;
 }
