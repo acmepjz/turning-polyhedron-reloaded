@@ -1,10 +1,14 @@
 #include "Interaction.h"
 
-Interaction::Interaction()
-{
+namespace game {
 
-}
+	Interaction::Interaction()
+	{
 
-Interaction::~Interaction(){
+	}
+
+	Interaction::~Interaction(){
+
+	}
 
 }

@@ -2,11 +2,16 @@
 
 #include <osg/Referenced>
 
-class Interaction : public osg::Referenced {
-protected:
-	virtual ~Interaction();
-public:
-	Interaction();
-};
+namespace game {
+
+	class Interaction : public osg::Referenced {
+	protected:
+		virtual ~Interaction();
+	public:
+		Interaction();
+	};
+
+}
+
 
 

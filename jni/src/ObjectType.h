@@ -5,34 +5,39 @@
 #include <string>
 #include <map>
 
-class Interaction;
+namespace game {
 
-/// Represents an object type (a tile or a polyhedron).
+	class Interaction;
 
-class ObjectType : public osg::Referenced {
-protected:
-	virtual ~ObjectType();
-public:
-	ObjectType();
+	/// Represents an object type (a tile or a polyhedron).
 
-	std::string name; //!< the name, same as the id
-	std::string desc; //!< the description
+	class ObjectType : public osg::Referenced {
+	protected:
+		virtual ~ObjectType();
+	public:
+		ObjectType();
 
-	/// the interaction map.
-	/// use the object type of the second object (usually the tile)
-	/// to determine the interaction (the first object is the polyhedron)
-	std::map<ObjectType*,osg::ref_ptr<Interaction> > interactions;
-};
+		std::string name; //!< the name, same as the id
+		std::string desc; //!< the description
 
-/// A map used to look up object type
+		/// the interaction map.
+		/// use the object type of the second object (usually the tile)
+		/// to determine the interaction (the first object is the polyhedron)
+		std::map<ObjectType*, osg::ref_ptr<Interaction> > interactions;
+	};
 
-class ObjectTypeMap : public osg::Referenced {
-protected:
-	virtual ~ObjectTypeMap();
-public:
-	ObjectTypeMap();
+	/// A map used to look up object type
 
-	ObjectType* lookup(const std::string& name);
+	class ObjectTypeMap : public osg::Referenced {
+	protected:
+		virtual ~ObjectTypeMap();
+	public:
+		ObjectTypeMap();
 
-	std::map<std::string, osg::ref_ptr<ObjectType> > map;
-};
+		ObjectType* lookup(const std::string& name);
+
+		std::map<std::string, osg::ref_ptr<ObjectType> > map;
+	};
+
+}
+
