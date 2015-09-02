@@ -1,2 +1,23 @@
-build*/
+# editors
+*~
 *.bak
+
+# build
+build*/
+
+# ms-windows
+Thumbs.db
+Desktop.ini
+Debug/
+Release/
+*.exe
+*.ilk
+*.pdb
+*.sln
+*.suo
+*.vcproj
+*.user
+*.ncb
+*.cmd
+doc/*.txt
+doc/*.chm
