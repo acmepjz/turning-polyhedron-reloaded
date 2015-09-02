@@ -16,6 +16,10 @@
 
 #include <iostream>
 
+/** A version of Lempel-Ziv-Storer-Szymanski
+<https://en.wikipedia.org/wiki/LZSS> modified from source by Haruhiko Okumura.
+*/
+
 class LZSS{
 private:
 	static const int N = 4096; /* size of ring buffer */
@@ -32,13 +36,13 @@ private:
 	int	lson[N + 1], rson[N + 257], dad[N + 1];  /* left & right children &
 												 parents -- These constitute binary search trees. */
 public:
-	std::istream *infile; /* input file */
-	std::ostream *outfile; /* output file */
+	std::istream *infile; /**< input file */
+	std::ostream *outfile; /**< output file */
 private:
 	void InitTree(void);
 	void InsertNode(int r);
 	void DeleteNode(int p);
 public:
-	void Encode(void);
-	void Decode(void);
+	void Encode(void); /**< Encode. \warning no sanity check */
+	void Decode(void); /**< Decode. \warning no sanity check */
 };

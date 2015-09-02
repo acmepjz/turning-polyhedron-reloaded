@@ -1,4 +1,8 @@
-Turning Polyhedron Reloaded {#mainpage}
+Turning Polyhedron Reloaded
 ===========================
 
 Hello turning-polyhedron-reloaded
+
+* [Game Logic Document](gamelogic.md)
+* Blah
+
