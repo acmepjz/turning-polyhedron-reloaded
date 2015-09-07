@@ -54,6 +54,8 @@ namespace game {
 	struct MapPosition {
 		MapData *map;
 		osg::Vec3i pos;
+
+		MapPosition() :map(NULL){}
 	};
 
 }

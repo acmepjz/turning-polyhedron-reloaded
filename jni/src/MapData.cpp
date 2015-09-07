@@ -6,8 +6,10 @@
 namespace game {
 
 	MapData::MapData()
-		: scale(1.0f, 1.0f, 1.0f)
+		: size(1, 1, 1)
+		, scale(1.0f, 1.0f, 1.0f)
 		, step(1.0f, 1.0f, 1.0f)
+		, tiles(1)
 	{
 	}
 
@@ -56,7 +58,6 @@ namespace game {
 
 		lbound = lbound_;
 		size = size_;
-		tiles = tmp;
 	}
 
 	osg::Node* MapData::createInstance() {
