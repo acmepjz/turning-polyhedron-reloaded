@@ -1,6 +1,7 @@
 #pragma once
 
 #include <osg/Object>
+#include "util.h"
 
 namespace game {
 

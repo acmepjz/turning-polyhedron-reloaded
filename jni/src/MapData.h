@@ -7,10 +7,10 @@
 #include <osg/Vec3f>
 #include <string>
 #include <vector>
+#include "util.h"
+#include "TileType.h"
 
 namespace game {
-
-	class TileType;
 
 	/// represents a block of map data in a map.
 
@@ -50,29 +50,35 @@ namespace game {
 		osg::Vec3f step; //!< step, which determines spaces between individual blocks.
 
 		std::vector<osg::ref_ptr<TileType> > tiles; //!< a 3D array of tiles.
+
+		UTIL_ADD_BYREF_GETTER_SETTER(std::string, id);
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3i, lbound);
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3i, size);
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3f, pos);
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3f, rot);
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3f, scale);
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3f, step);
+		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<TileType> >, tiles);
 	};
 
 	/// represents a position in a map.
 
 	struct MapPosition {
 		MapPosition() :
-			map(NULL)
+			_map(NULL)
 		{
 		}
-		MapPosition(MapData* map,const osg::Vec3i& pos) :
-			map(map), pos(pos)
-		{
-		}
-		MapPosition(MapData* map, int x, int y, int z) :
-			map(map), pos(x, y, z)
-		{
-		}
-		MapPosition(const MapPosition& other) :
-			map(other.map), pos(other.pos)
-		{
-		}
-		MapData *map;
+		std::string map;
 		osg::Vec3i pos;
+		MapData *_map;
 	};
+
+#define UTIL_ADD_MapPosition_GETTER_SETTER(VARNAME) \
+	UTIL_ADD_BYREF_GETTER_SETTER2(std::string,VARNAME.map,VARNAME##_map) \
+	UTIL_ADD_BYREF_GETTER_SETTER2(osg::Vec3i,VARNAME.pos,VARNAME##_pos)
+
+#define ADD_MapPosition_SERIALIZER(PROP) \
+	ADD_STRING_SERIALIZER(PROP##_map,""); \
+	ADD_VEC3I_SERIALIZER(PROP##_pos,osg::Vec3i());
 
 }

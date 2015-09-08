@@ -1,4 +1,5 @@
 #include "Interaction.h"
+#include <osgDB/ObjectWrapper>
 
 namespace game {
 
@@ -14,6 +15,11 @@ namespace game {
 	}
 
 	Interaction::~Interaction(){
+
+	}
+
+	REG_OBJ_WRAPPER(game, Interaction, "")
+	{
 
 	}
 

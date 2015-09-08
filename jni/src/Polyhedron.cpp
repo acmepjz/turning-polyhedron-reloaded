@@ -1,5 +1,6 @@
 #include "Polyhedron.h"
 #include "ObjectType.h"
+#include <osgDB/ObjectWrapper>
 
 namespace game {
 
@@ -20,6 +21,15 @@ namespace game {
 
 	Polyhedron::~Polyhedron()
 	{
+	}
+
+	REG_OBJ_WRAPPER(game, Polyhedron, "")
+	{
+		ADD_STRING_SERIALIZER(id, "");
+		ADD_STRING_SERIALIZER(objType, "");
+		ADD_INT_SERIALIZER(flags, 0);
+		ADD_MapPosition_SERIALIZER(pos);
+		ADD_OBJECT_SERIALIZER(appearance, osg::Node, NULL);
 	}
 
 }

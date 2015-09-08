@@ -3,6 +3,7 @@
 #include "util.h"
 #include <osg/Group>
 #include <osg/MatrixTransform>
+#include <osgDB/ObjectWrapper>
 
 namespace game {
 
@@ -108,6 +109,18 @@ namespace game {
 		}
 
 		return group.release();
+	}
+
+	REG_OBJ_WRAPPER(game, MapData, "")
+	{
+		ADD_STRING_SERIALIZER(id, "");
+		ADD_VEC3I_SERIALIZER(lbound, osg::Vec3i());
+		ADD_VEC3I_SERIALIZER(size, osg::Vec3i(1, 1, 1));
+		ADD_VEC3F_SERIALIZER(pos, osg::Vec3f());
+		ADD_VEC3F_SERIALIZER(rot, osg::Vec3f());
+		ADD_VEC3F_SERIALIZER(scale, osg::Vec3f(1.0f, 1.0f, 1.0f));
+		ADD_VEC3F_SERIALIZER(step, osg::Vec3f(1.0f, 1.0f, 1.0f));
+		ADD_VECTOR_SERIALIZER(tiles, std::vector<osg::ref_ptr<TileType> >, osgDB::BaseSerializer::RW_OBJECT, 8);
 	}
 
 }

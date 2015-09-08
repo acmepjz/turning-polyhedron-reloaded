@@ -1,4 +1,5 @@
 #include <osgDB/ReadFile>
+#include <osgDB/WriteFile>
 #include <osgViewer/Viewer>
 #include <osg/Node>
 #include <osg/Group>
@@ -138,8 +139,17 @@ osg::Node* test(){
 		else if (i % 3 != 0) map->tiles[i] = ground.get();
 	}
 
+	//test!!!
+	//osgDB::writeObjectFile(*map, "out.osgt");
+
 	return map->createInstance();
 }
+
+/*osg::Node* test2(){
+	osg::ref_ptr<osg::Object> obj = osgDB::readObjectFile("out.osgt");
+	osg::ref_ptr<game::MapData> map = dynamic_cast<game::MapData*>(obj.get());
+	return map->createInstance();
+}*/
 
 int main(int argc, char** argv){
 	osgViewer::Viewer viewer;

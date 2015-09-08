@@ -5,6 +5,7 @@
 #include <osg/ref_ptr>
 #include <string>
 #include "MapData.h"
+#include "util.h"
 
 namespace game {
 
@@ -29,6 +30,12 @@ namespace game {
 		MapPosition pos; //!< the start position
 
 		osg::ref_ptr<osg::Node> appearance; //!< the appearance
+
+		UTIL_ADD_BYREF_GETTER_SETTER(std::string, id);
+		UTIL_ADD_BYREF_GETTER_SETTER(std::string, objType);
+		UTIL_ADD_BYVAL_GETTER_SETTER(int, flags);
+		UTIL_ADD_MapPosition_GETTER_SETTER(pos);
+		UTIL_ADD_OBJ_GETTER_SETTER(osg::Node, appearance);
 	};
 
 }

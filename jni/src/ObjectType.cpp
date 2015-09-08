@@ -2,6 +2,7 @@
 #include "Interaction.h"
 #include "util.h"
 #include <osg/Notify>
+#include <osgDB/ObjectWrapper>
 
 namespace game {
 
@@ -22,27 +23,11 @@ namespace game {
 
 	}
 
-	ObjectTypeMap::ObjectTypeMap(){
-
-	}
-
-	ObjectTypeMap::ObjectTypeMap(const ObjectTypeMap& other, const osg::CopyOp& copyop)
-		: Object(other, copyop)
+	REG_OBJ_WRAPPER(game, ObjectType, "")
 	{
-		util::copyMap(map, other.map, copyop);
-	}
-
-	ObjectTypeMap::~ObjectTypeMap(){
-
-	}
-
-	ObjectType* ObjectTypeMap::lookup(const std::string& name){
-		std::map<std::string, osg::ref_ptr<ObjectType> >::iterator it = map.find(name);
-		if (it == map.end()) {
-			OSG_NOTICE << "[" __FUNCTION__ "] name '" << name << "' not found" << std::endl;
-			return NULL;
-		}
-		return it->second.get();
+		ADD_STRING_SERIALIZER(name, "");
+		ADD_STRING_SERIALIZER(desc, "");
+		ADD_MAP_SERIALIZER(interactions, ObjectType::InteractionMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);
 	}
 
 }

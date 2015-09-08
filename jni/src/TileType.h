@@ -4,10 +4,10 @@
 #include <osg/Node>
 #include <osg/ref_ptr>
 #include <string>
+#include "ObjectType.h"
+#include "util.h"
 
 namespace game {
-
-	class ObjectType;
 
 	/// Represents a tile type.
 
@@ -31,6 +31,15 @@ namespace game {
 			int lower;
 			int upper;
 		};
+
+#define UTIL_ADD_HitTestArea_GETTER_SETTER(VARNAME) \
+	UTIL_ADD_BYVAL_GETTER_SETTER2(int,VARNAME.lower,VARNAME##_lower) \
+	UTIL_ADD_BYVAL_GETTER_SETTER2(int,VARNAME.upper,VARNAME##_upper)
+
+#define ADD_HitTestArea_SERIALIZER(PROP) \
+	ADD_INT_SERIALIZER(PROP##_lower,-1); \
+	ADD_INT_SERIALIZER(PROP##_upper,0);
+
 	protected:
 		virtual ~TileType();
 	public:
@@ -50,26 +59,14 @@ namespace game {
 		std::string desc; //!< the gettext'ed object description
 
 		osg::ref_ptr<osg::Node> appearance; //!< the appearance
-	};
 
-	/// A map used to look up tile type
-
-	class TileTypeMap : public osg::Object {
-	protected:
-		virtual ~TileTypeMap();
-	public:
-		META_Object(game, TileTypeMap);
-
-		TileTypeMap();
-		TileTypeMap(const TileTypeMap& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
-
-		TileType* lookup(const std::string& idOrIndex);
-
-		//! add a (temporary) index to a tile type with specified id
-		bool addTileMapping(const std::string& id, int index);
-
-		std::map<std::string, osg::ref_ptr<TileType> > idMap;
-		std::map<int, osg::ref_ptr<TileType> > indexMap;
+		UTIL_ADD_BYREF_GETTER_SETTER(std::string, id);
+		UTIL_ADD_BYVAL_GETTER_SETTER(int, index);
+		UTIL_ADD_BYREF_GETTER_SETTER(std::string, objType);
+		UTIL_ADD_HitTestArea_GETTER_SETTER(blockedArea);
+		UTIL_ADD_BYREF_GETTER_SETTER(std::string, name);
+		UTIL_ADD_BYREF_GETTER_SETTER(std::string, desc);
+		UTIL_ADD_OBJ_GETTER_SETTER(osg::Node, appearance);
 	};
 
 }

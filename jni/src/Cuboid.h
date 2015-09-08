@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Polyhedron.h"
+#include "util.h"
 #include <osg/Vec3i>
 #include <vector>
 
@@ -33,6 +34,10 @@ namespace game {
 
 		bool customShapeEnabled;
 		std::vector<char> customShape;
+
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3i, size);
+		UTIL_ADD_BYVAL_GETTER_SETTER(bool, customShapeEnabled);
+		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<char>, customShape);
 	};
 
 }
