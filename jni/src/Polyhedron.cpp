@@ -4,11 +4,19 @@
 namespace game {
 
 	Polyhedron::Polyhedron()
-		: objType(NULL)
-		, flags(0)
+		: flags(0)
 	{
 	}
 
+	Polyhedron::Polyhedron(const Polyhedron& other, const osg::CopyOp& copyop)
+		: Object(other, copyop)
+		, objType(other.objType)
+		, flags(other.flags)
+		, pos(other.pos)
+		, appearance(copyop(other.appearance))
+	{
+
+	}
 
 	Polyhedron::~Polyhedron()
 	{

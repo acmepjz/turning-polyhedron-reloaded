@@ -1,6 +1,6 @@
 #pragma once
 
-#include <osg/Referenced>
+#include <osg/Object>
 #include <osg/Node>
 #include <osg/ref_ptr>
 #include <string>
@@ -11,17 +11,20 @@ namespace game {
 	class ObjectType;
 
 	class Polyhedron :
-		public osg::Referenced
+		public osg::Object
 	{
 	protected:
 		virtual ~Polyhedron();
 	public:
+		META_Object(game, Polyhedron);
+
 		Polyhedron();
+		Polyhedron(const Polyhedron& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
 	public:
 		std::string id; //!< the polyhedron id
 
-		ObjectType* objType; //!< the object type, NULL = default
+		std::string objType; //!< the object type
 		int flags; //!< the polyhedron flags
 		MapPosition pos; //!< the start position
 

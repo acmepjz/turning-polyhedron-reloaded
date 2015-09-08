@@ -1,5 +1,6 @@
 #include "ObjectType.h"
 #include "Interaction.h"
+#include "util.h"
 #include <osg/Notify>
 
 namespace game {
@@ -9,12 +10,26 @@ namespace game {
 
 	}
 
+	ObjectType::ObjectType(const ObjectType& other, const osg::CopyOp& copyop)
+		: Object(other, copyop)
+		, name(other.name)
+		, desc(other.desc)
+	{
+		util::copyMap(interactions, other.interactions, copyop);
+	}
+
 	ObjectType::~ObjectType(){
 
 	}
 
 	ObjectTypeMap::ObjectTypeMap(){
 
+	}
+
+	ObjectTypeMap::ObjectTypeMap(const ObjectTypeMap& other, const osg::CopyOp& copyop)
+		: Object(other, copyop)
+	{
+		util::copyMap(map, other.map, copyop);
 	}
 
 	ObjectTypeMap::~ObjectTypeMap(){

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <osg/Referenced>
+#include <osg/Object>
 #include <osg/Node>
 #include <osg/ref_ptr>
 #include <osg/Vec3i>
@@ -15,12 +15,15 @@ namespace game {
 	/// represents a block of map data in a map.
 
 	class MapData :
-		public osg::Referenced
+		public osg::Object
 	{
 	protected:
 		virtual ~MapData();
 	public:
+		META_Object(game, MapData);
+
 		MapData();
+		MapData(const MapData& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
 		osg::ref_ptr<TileType>& operator()(int x, int y, int z);
 		osg::ref_ptr<TileType>& operator()(const osg::Vec3i& p) {
@@ -52,10 +55,24 @@ namespace game {
 	/// represents a position in a map.
 
 	struct MapPosition {
+		MapPosition() :
+			map(NULL)
+		{
+		}
+		MapPosition(MapData* map,const osg::Vec3i& pos) :
+			map(map), pos(pos)
+		{
+		}
+		MapPosition(MapData* map, int x, int y, int z) :
+			map(map), pos(x, y, z)
+		{
+		}
+		MapPosition(const MapPosition& other) :
+			map(other.map), pos(other.pos)
+		{
+		}
 		MapData *map;
 		osg::Vec3i pos;
-
-		MapPosition() :map(NULL){}
 	};
 
 }

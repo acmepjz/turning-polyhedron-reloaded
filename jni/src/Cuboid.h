@@ -12,7 +12,10 @@ namespace game {
 	protected:
 		virtual ~Cuboid();
 	public:
+		META_Object(game, Cuboid);
+
 		Cuboid();
+		Cuboid(const Cuboid& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
 		char& operator()(int x, int y, int z);
 		char& operator()(const osg::Vec3i& p) {

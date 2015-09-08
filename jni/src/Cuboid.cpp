@@ -9,6 +9,15 @@ namespace game {
 	{
 	}
 
+	Cuboid::Cuboid(const Cuboid& other, const osg::CopyOp& copyop)
+		: Polyhedron(other, copyop)
+		, size(other.size)
+		, customShapeEnabled(other.customShapeEnabled)
+		, customShape(other.customShape)
+	{
+
+	}
+
 
 	Cuboid::~Cuboid()
 	{

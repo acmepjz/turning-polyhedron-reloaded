@@ -7,6 +7,12 @@ namespace game {
 
 	}
 
+	Interaction::Interaction(const Interaction& other, const osg::CopyOp& copyop)
+		: Object(other, copyop)
+	{
+
+	}
+
 	Interaction::~Interaction(){
 
 	}

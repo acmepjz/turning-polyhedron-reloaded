@@ -1,5 +1,6 @@
 #include "MapData.h"
 #include "TileType.h"
+#include "util.h"
 #include <osg/Group>
 #include <osg/MatrixTransform>
 
@@ -13,6 +14,18 @@ namespace game {
 	{
 	}
 
+	MapData::MapData(const MapData& other, const osg::CopyOp& copyop)
+		: Object(other, copyop)
+		, id(other.id)
+		, lbound(other.lbound)
+		, size(other.size)
+		, pos(other.pos)
+		, rot(other.rot)
+		, scale(other.scale)
+		, step(other.step)
+	{
+		util::copyVector(tiles, other.tiles, copyop);
+	}
 
 	MapData::~MapData()
 	{

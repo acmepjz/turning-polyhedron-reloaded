@@ -1,4 +1,5 @@
 #include "TileType.h"
+#include "util.h"
 #include <osg/Node>
 #include <osg/Notify>
 #include <stdlib.h>
@@ -7,7 +8,18 @@ namespace game {
 
 	TileType::TileType()
 		: index(0)
-		, objType(NULL)
+	{
+	}
+
+	TileType::TileType(const TileType& other, const osg::CopyOp& copyop)
+		: Object(other,copyop)
+		, id(other.id)
+		, index(other.index)
+		, objType(other.objType)
+		, blockedArea(other.blockedArea)
+		, name(other.name)
+		, desc(other.desc)
+		, appearance(copyop(other.appearance))
 	{
 	}
 
@@ -18,6 +30,13 @@ namespace game {
 
 	TileTypeMap::TileTypeMap(){
 
+	}
+
+	TileTypeMap::TileTypeMap(const TileTypeMap& other, const osg::CopyOp& copyop)
+		: Object(other, copyop)
+	{
+		util::copyMap(idMap, other.idMap, copyop);
+		util::copyMap(indexMap, other.indexMap, copyop);
 	}
 
 	TileTypeMap::~TileTypeMap(){
@@ -71,7 +90,8 @@ namespace game {
 
 		std::map<int, osg::ref_ptr<TileType> >::iterator it2 = indexMap.find(index);
 		if (it2 != indexMap.end()) {
-			OSG_NOTICE << "[" __FUNCTION__ "] index " << index << " already defined" << std::endl;
+			OSG_NOTICE << "[" __FUNCTION__ "] index " << index << " already defined: '" << it2->second->id
+				<< "', redefine to '" << id << "'" << std::endl;
 			return false;
 		}
 
