@@ -13,6 +13,9 @@
 #include <osgViewer/ViewerEventHandlers>
 #include <osgFX/SpecularHighlights>
 #include <osgFX/Scribe>
+#include <osgShadow/ShadowedScene>
+#include <osgShadow/ShadowMap>
+#include <osgShadow/SoftShadowMap>
 
 #include "TileType.h"
 #include "MapData.h"
@@ -165,7 +168,13 @@ int main(int argc, char** argv){
 	node->getOrCreateStateSet()->setAttributeAndModes(new osg::CullFace());
 	//node->getOrCreateStateSet()->setAttributeAndModes(mat.get());
 
-	viewer.setSceneData(node.get());
+	osg::ref_ptr<osgShadow::ShadowTechnique> tech = new osgShadow::ShadowMap;
+	osg::ref_ptr<osgShadow::ShadowSettings> ss = new osgShadow::ShadowSettings;
+	osg::ref_ptr<osgShadow::ShadowedScene> shadow = new osgShadow::ShadowedScene(tech.get());
+	shadow->setShadowSettings(ss.get());
+	shadow->addChild(node.get());
+
+	viewer.setSceneData(shadow.get());
 	viewer.setLightingMode(osg::View::SKY_LIGHT);
 	viewer.getLight()->setAmbient(osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
 	viewer.getLight()->setDiffuse(osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
