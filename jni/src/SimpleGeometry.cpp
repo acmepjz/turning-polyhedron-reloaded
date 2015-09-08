@@ -60,16 +60,15 @@ namespace geom {
 #undef ADD_CUBE_FACE
 
 		const GLuint i1[] = {
-#define ADD_RECT(I) I,I+1,I+2,I+1,I+3,I+2
-			ADD_RECT(0), ADD_RECT(4), ADD_RECT(8),
-			ADD_RECT(12), ADD_RECT(16), ADD_RECT(20),
-#undef ADD_RECT
-#define ADD_RECT(I,J,K,L) I,J,K,J,L,K,I^4,J^4,K^4,J^4,L^4,K^4
-#define ADD_TRI(I,J,K) I,J,K,I^4,J^4,K^4
+#define ADD_RECT(I,J,K,L) I,K,J,J,K,L,I^4,J^4,K^4,J^4,L^4,K^4
+#define ADD_RECT2(I) ADD_RECT((I),(I+1),(I+2),(I+3))
+#define ADD_TRI(I,J,K) I,K,J,I^4,J^4,K^4
+			ADD_RECT2(0), ADD_RECT2(8), ADD_RECT2(16),
 			ADD_RECT(0, 2, 8, 9), ADD_RECT(8, 10, 16, 17), ADD_RECT(16, 18, 0, 1),
 			ADD_RECT(10, 11, 7, 5), ADD_RECT(18, 19, 15, 13), ADD_RECT(2, 3, 23, 21),
 			ADD_TRI(0, 8, 16), ADD_TRI(2, 23, 9), ADD_TRI(10, 7, 17), ADD_TRI(18, 15, 1),
 #undef ADD_RECT
+#undef ADD_RECT2
 #undef ADD_TRI
 		};
 
