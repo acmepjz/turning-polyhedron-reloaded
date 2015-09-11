@@ -13,9 +13,6 @@
 #include <osgViewer/ViewerEventHandlers>
 #include <osgFX/SpecularHighlights>
 #include <osgFX/Scribe>
-#include <osgShadow/ShadowedScene>
-#include <osgShadow/ShadowMap>
-#include <osgShadow/SoftShadowMap>
 
 #include "TileType.h"
 #include "MapData.h"
@@ -35,7 +32,7 @@ osg::Node* test(){
 			0.05f,
 			osg::Vec3(0.4f, 0.4f, 0.4f)
 			);
-		osg::ref_ptr<osg::Geometry> wireframe = createCube(
+		/*osg::ref_ptr<osg::Geometry> wireframe = createCube(
 			osg::Vec3(0, 0, -0.25f),
 			osg::Vec3(1, 1, 0),
 			true,
@@ -43,9 +40,9 @@ osg::Node* test(){
 			osg::Vec3(0.2f, 0.2f, 0.2f)
 			);
 		wireframe->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-		ground->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonOffset(1.0f, 1.0f));
+		ground->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonOffset(1.0f, 1.0f));*/
 		geode->addDrawable(ground);
-		geode->addDrawable(wireframe);
+		//geode->addDrawable(wireframe);
 	}
 	osg::ref_ptr<osg::LOD> lod = new osg::LOD;
 	lod->addChild(geode, 0.0f, 50.0f);
@@ -58,7 +55,7 @@ osg::Node* test(){
 			0.0f,
 			osg::Vec3(0.4f, 0.4f, 0.4f)
 			);
-		osg::ref_ptr<osg::Geometry> wireframe = createCube(
+		/*osg::ref_ptr<osg::Geometry> wireframe = createCube(
 			osg::Vec3(0, 0, -0.25f),
 			osg::Vec3(1, 1, 0),
 			true,
@@ -66,9 +63,9 @@ osg::Node* test(){
 			osg::Vec3(0.2f, 0.2f, 0.2f)
 			);
 		wireframe->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-		ground->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonOffset(1.0f, 1.0f));
+		ground->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonOffset(1.0f, 1.0f));*/
 		geode->addDrawable(ground);
-		geode->addDrawable(wireframe);
+		//geode->addDrawable(wireframe);
 	}
 	lod->addChild(geode, 50.0f, FLT_MAX);
 	geode = new osg::Geode;
@@ -80,7 +77,7 @@ osg::Node* test(){
 			0.05f,
 			osg::Vec3(0.4f, 0.4f, 0.4f)
 			);
-		osg::ref_ptr<osg::Geometry> wireframe = createCube(
+		/*osg::ref_ptr<osg::Geometry> wireframe = createCube(
 			osg::Vec3(0, 0, 0),
 			osg::Vec3(1, 1, 1),
 			true,
@@ -88,9 +85,9 @@ osg::Node* test(){
 			osg::Vec3(0.2f, 0.2f, 0.2f)
 			);
 		wireframe->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-		ground->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonOffset(1.0f, 1.0f));
+		ground->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonOffset(1.0f, 1.0f));*/
 		geode->addDrawable(ground);
-		geode->addDrawable(wireframe);
+		//geode->addDrawable(wireframe);
 	}
 	osg::ref_ptr<osg::LOD> lod2 = new osg::LOD;
 	lod2->addChild(geode, 0.0f, 50.0f);
@@ -103,7 +100,7 @@ osg::Node* test(){
 			0.0f,
 			osg::Vec3(0.4f, 0.4f, 0.4f)
 			);
-		osg::ref_ptr<osg::Geometry> wireframe = createCube(
+		/*osg::ref_ptr<osg::Geometry> wireframe = createCube(
 			osg::Vec3(0, 0, 0),
 			osg::Vec3(1, 1, 1),
 			true,
@@ -111,9 +108,9 @@ osg::Node* test(){
 			osg::Vec3(0.2f, 0.2f, 0.2f)
 			);
 		wireframe->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-		ground->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonOffset(1.0f, 1.0f));
+		ground->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonOffset(1.0f, 1.0f));*/
 		geode->addDrawable(ground);
-		geode->addDrawable(wireframe);
+		//geode->addDrawable(wireframe);
 	}
 	lod2->addChild(geode, 50.0f, FLT_MAX);
 
@@ -168,13 +165,7 @@ int main(int argc, char** argv){
 	node->getOrCreateStateSet()->setAttributeAndModes(new osg::CullFace());
 	//node->getOrCreateStateSet()->setAttributeAndModes(mat.get());
 
-	osg::ref_ptr<osgShadow::ShadowTechnique> tech = new osgShadow::ShadowMap;
-	osg::ref_ptr<osgShadow::ShadowSettings> ss = new osgShadow::ShadowSettings;
-	osg::ref_ptr<osgShadow::ShadowedScene> shadow = new osgShadow::ShadowedScene(tech.get());
-	shadow->setShadowSettings(ss.get());
-	shadow->addChild(node.get());
-
-	viewer.setSceneData(shadow.get());
+	viewer.setSceneData(node.get());
 	viewer.setLightingMode(osg::View::SKY_LIGHT);
 	viewer.getLight()->setAmbient(osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
 	viewer.getLight()->setDiffuse(osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
