@@ -23,10 +23,12 @@ namespace game {
 		std::string name; //!< the name, same as the id
 		std::string desc; //!< the description
 
-		/// the interaction map.
-		/// use the object type of the second object (usually the tile)
-		/// to determine the interaction (the first object is the polyhedron)
 		typedef std::map<std::string, osg::ref_ptr<Interaction> > InteractionMap;
+
+		/** the interaction map.
+		use the object type of the second object (usually the tile)
+		to determine the interaction (the first object is the polyhedron)
+		*/
 		InteractionMap interactions;
 
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, name);
