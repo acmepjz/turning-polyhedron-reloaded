@@ -34,7 +34,7 @@ namespace game {
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, id);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, objType);
 		UTIL_ADD_BYVAL_GETTER_SETTER(int, flags);
-		UTIL_ADD_MapPosition_GETTER_SETTER(pos);
+		UTIL_ADD_BYREF_GETTER_SETTER(MapPosition, pos);
 		UTIL_ADD_OBJ_GETTER_SETTER(osg::Node, appearance);
 	};
 

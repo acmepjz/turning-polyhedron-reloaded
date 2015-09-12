@@ -10,6 +10,11 @@
 #include "util.h"
 #include "TileType.h"
 
+namespace osgDB {
+	class InputStream;
+	class OutputStream;
+}
+
 namespace game {
 
 	/// represents a block of map data in a map.
@@ -68,17 +73,17 @@ namespace game {
 			_map(NULL)
 		{
 		}
+		bool operator!=(const MapPosition& other) const {
+			return map != other.map || pos != other.pos;
+		}
 		std::string map;
 		osg::Vec3i pos;
+
+		//the following properties don't save to file and is generated at runtime
 		MapData *_map;
 	};
 
-#define UTIL_ADD_MapPosition_GETTER_SETTER(VARNAME) \
-	UTIL_ADD_BYREF_GETTER_SETTER2(std::string,VARNAME.map,VARNAME##_map) \
-	UTIL_ADD_BYREF_GETTER_SETTER2(osg::Vec3i,VARNAME.pos,VARNAME##_pos)
-
-#define ADD_MapPosition_SERIALIZER(PROP) \
-	ADD_STRING_SERIALIZER(PROP##_map,""); \
-	ADD_VEC3I_SERIALIZER(PROP##_pos,osg::Vec3i());
+	osgDB::InputStream& operator>>(osgDB::InputStream& s, MapPosition& obj);
+	osgDB::OutputStream& operator<<(osgDB::OutputStream& s, const MapPosition& obj);
 
 }

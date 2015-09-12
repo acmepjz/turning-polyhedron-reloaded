@@ -28,7 +28,7 @@ namespace game {
 		ADD_STRING_SERIALIZER(id, "");
 		ADD_STRING_SERIALIZER(objType, "");
 		ADD_INT_SERIALIZER(flags, 0);
-		ADD_MapPosition_SERIALIZER(pos);
+		ADD_REF_ANY_SERIALIZER(pos, MapPosition, MapPosition());
 		ADD_OBJECT_SERIALIZER(appearance, osg::Node, NULL);
 	}
 

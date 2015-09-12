@@ -9,6 +9,7 @@ namespace game {
 
 	TileType::TileType()
 		: index(0)
+		, blockedArea(-1, 0)
 	{
 	}
 
@@ -34,7 +35,7 @@ namespace game {
 		ADD_STRING_SERIALIZER(id, "");
 		ADD_INT_SERIALIZER(index, 0);
 		ADD_STRING_SERIALIZER(objType, "");
-		ADD_HitTestArea_SERIALIZER(blockedArea);
+		ADD_VEC2I_SERIALIZER(blockedArea, osg::Vec2i(-1, 0));
 		ADD_STRING_SERIALIZER(name, "");
 		ADD_STRING_SERIALIZER(desc, "");
 		ADD_OBJECT_SERIALIZER(appearance, osg::Node, NULL);

@@ -1,6 +1,4 @@
 #include "MapData.h"
-#include "TileType.h"
-#include "util.h"
 #include <osg/Group>
 #include <osg/MatrixTransform>
 #include <osgDB/ObjectWrapper>
@@ -121,6 +119,18 @@ namespace game {
 		ADD_VEC3F_SERIALIZER(scale, osg::Vec3f(1.0f, 1.0f, 1.0f));
 		ADD_VEC3F_SERIALIZER(step, osg::Vec3f(1.0f, 1.0f, 1.0f));
 		ADD_VECTOR_SERIALIZER(tiles, std::vector<osg::ref_ptr<TileType> >, osgDB::BaseSerializer::RW_OBJECT, 8);
+	}
+
+	osgDB::InputStream& operator>>(osgDB::InputStream& s, MapPosition& obj){
+		s.readWrappedString(obj.map);
+		s >> obj.pos;
+		return s;
+	}
+
+	osgDB::OutputStream& operator<<(osgDB::OutputStream& s, const MapPosition& obj){
+		s.writeWrappedString(obj.map);
+		s << obj.pos;
+		return s;
 	}
 
 }

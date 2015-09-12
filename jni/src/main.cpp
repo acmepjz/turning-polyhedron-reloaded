@@ -140,7 +140,9 @@ osg::Node* test(){
 	}
 
 	//test!!!
-	//osgDB::writeObjectFile(*map, "out.osgt");
+	osgDB::writeObjectFile(*map, "out.osgb");
+	osgDB::writeObjectFile(*map, "out.osgt");
+	osgDB::writeObjectFile(*map, "out.osgx");
 
 	return map->createInstance();
 }

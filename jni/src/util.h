@@ -32,14 +32,21 @@
 #define REG_OBJ_WRAPPER(NAMESPACE,CLASS,ASSOCIATES) \
 	REGISTER_OBJECT_WRAPPER(CLASS,new NAMESPACE::CLASS,NAMESPACE::CLASS,"osg::Object " ASSOCIATES #NAMESPACE "::" #CLASS)
 
+// copied from <osgDB/Serializer>
+// need to overwrite operator<< and operator>> and operator!=
+#define ADD_REF_ANY_SERIALIZER(PROP, TYPE, DEF) \
+    wrapper->addSerializer( new osgDB::PropByRefSerializer< MyClass, TYPE >( \
+        #PROP, DEF, &MyClass::get##PROP, &MyClass::set##PROP), osgDB::BaseSerializer::RW_USER )
+
 namespace util {
 
 	template <class K, class T>
 	inline void copyMap(std::map<K, osg::ref_ptr<T> >& dest,
 		const std::map<K, osg::ref_ptr<T> >& src,
-		const osg::CopyOp& copyop)
+		const osg::CopyOp& copyop,
+		bool force = false)
 	{
-		if (copyop.getCopyFlags() & osg::CopyOp::DEEP_COPY_OBJECTS) {
+		if (force || (copyop.getCopyFlags() & osg::CopyOp::DEEP_COPY_OBJECTS)) {
 			std::map<K, osg::ref_ptr<T> >::const_iterator
 				it = src.begin();
 			for (; it != src.end(); ++it) {
@@ -53,9 +60,10 @@ namespace util {
 	template <class T>
 	inline void copyVector(std::vector<osg::ref_ptr<T> >& dest,
 		const std::vector<osg::ref_ptr<T> >& src,
-		const osg::CopyOp& copyop)
+		const osg::CopyOp& copyop,
+		bool force = false)
 	{
-		if (copyop.getCopyFlags() & osg::CopyOp::DEEP_COPY_OBJECTS) {
+		if (force || (copyop.getCopyFlags() & osg::CopyOp::DEEP_COPY_OBJECTS)) {
 			size_t m = src.size();
 			if (m > 0) {
 				dest.reserve(m);
