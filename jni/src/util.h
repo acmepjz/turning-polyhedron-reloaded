@@ -40,6 +40,12 @@
 
 namespace util {
 
+	template <class T>
+	inline T* copyObj(const T* src, const osg::CopyOp& copyop) {
+		if (src) return static_cast<T*>(src->clone(copyop));
+		return NULL;
+	}
+
 	template <class K, class T>
 	inline void copyMap(std::map<K, osg::ref_ptr<T> >& dest,
 		const std::map<K, osg::ref_ptr<T> >& src,
@@ -50,7 +56,7 @@ namespace util {
 			std::map<K, osg::ref_ptr<T> >::const_iterator
 				it = src.begin();
 			for (; it != src.end(); ++it) {
-				dest[it->first] = new T(*it->second, copyop);
+				dest[it->first] = copyObj(it->second.get(), copyop);
 			}
 		} else {
 			dest = src;
@@ -68,7 +74,7 @@ namespace util {
 			if (m > 0) {
 				dest.reserve(m);
 				for (size_t i = 0; i < m; i++) {
-					dest.push_back(new T(*src[i], copyop));
+					dest.push_back(copyObj(src[i].get(), copyop));
 				}
 			}
 		} else {

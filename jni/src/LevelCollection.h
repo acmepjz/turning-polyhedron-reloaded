@@ -1,0 +1,39 @@
+#pragma once
+
+#include <osg/Object>
+#include <string>
+#include <vector>
+#include "util.h"
+#include "Level.h"
+#include "ObjectTypeMap.h"
+#include "TileTypeMap.h"
+
+namespace game {
+
+	// Represents a level collection.
+
+	class LevelCollection :
+		public osg::Object
+	{
+	protected:
+		virtual ~LevelCollection();
+	public:
+		META_Object(game, LevelCollection);
+
+		LevelCollection();
+		LevelCollection(const LevelCollection& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+
+		std::string name; //!< level pack name
+
+		std::vector<osg::ref_ptr<Level> > levels; //!< levels
+
+		osg::ref_ptr<TileTypeMap> tileTypeMap; //!< tile type map used in this level
+		osg::ref_ptr<ObjectTypeMap> objectTypeMap; //!< object type map used in this level
+
+		UTIL_ADD_BYREF_GETTER_SETTER(std::string, name);
+		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<Level> >, levels);
+		UTIL_ADD_OBJ_GETTER_SETTER(TileTypeMap, tileTypeMap);
+		UTIL_ADD_OBJ_GETTER_SETTER(ObjectTypeMap, objectTypeMap);
+	};
+
+}
