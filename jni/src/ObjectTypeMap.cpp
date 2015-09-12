@@ -20,8 +20,23 @@ namespace game {
 
 	}
 
+	bool ObjectTypeMap::add(ObjectType* obj){
+		if (!obj || obj->name.empty()) {
+			OSG_NOTICE << "[" __FUNCTION__ "] object doesn't have id" << std::endl;
+			return false;
+		}
+
+		IdMap::iterator it = map.find(obj->name);
+		if (it != map.end()) {
+			OSG_NOTICE << "[" __FUNCTION__ "] object name '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
+		}
+
+		map[obj->name] = obj;
+		return true;
+	}
+
 	ObjectType* ObjectTypeMap::lookup(const std::string& name){
-		std::map<std::string, osg::ref_ptr<ObjectType> >::iterator it = map.find(name);
+		IdMap::iterator it = map.find(name);
 		if (it == map.end()) {
 			OSG_NOTICE << "[" __FUNCTION__ "] name '" << name << "' not found" << std::endl;
 			return NULL;

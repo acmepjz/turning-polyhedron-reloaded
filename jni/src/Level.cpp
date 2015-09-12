@@ -1,4 +1,5 @@
 #include "Level.h"
+#include <osg/Group>
 #include <osgDB/ObjectWrapper>
 
 namespace game {
@@ -23,13 +24,51 @@ namespace game {
 	{
 	}
 
+	bool Level::addMapData(MapData* obj){
+		if (!obj || obj->id.empty()) {
+			OSG_NOTICE << "[" __FUNCTION__ "] object doesn't have id" << std::endl;
+			return false;
+		}
+
+		MapDataMap::iterator it = maps.find(obj->id);
+		if (it != maps.end()) {
+			OSG_NOTICE << "[" __FUNCTION__ "] object id '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
+		}
+
+		maps[obj->id] = obj;
+		return true;
+	}
+
+	bool Level::addPolyhedron(Polyhedron* obj){
+		if (!obj || obj->id.empty()) {
+			OSG_NOTICE << "[" __FUNCTION__ "] object doesn't have id" << std::endl;
+			return false;
+		}
+
+		PolyhedronMap::iterator it = polyhedra.find(obj->id);
+		if (it != polyhedra.end()) {
+			OSG_NOTICE << "[" __FUNCTION__ "] object id '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
+		}
+
+		polyhedra[obj->id] = obj;
+		return true;
+	}
+
+	osg::Node* Level::createInstance(){
+		osg::ref_ptr<osg::Group> gp = new osg::Group;
+		for (MapDataMap::iterator it = maps.begin(); it != maps.end(); ++it) {
+			gp->addChild(it->second->createInstance());
+		}
+		return gp.release();
+	}
+
 	REG_OBJ_WRAPPER(game, Level, "")
 	{
 		ADD_STRING_SERIALIZER(name, "");
 		ADD_STRING_SERIALIZER(solution, "");
+		ADD_OBJECT_SERIALIZER(objectTypeMap, ObjectTypeMap, NULL);
+		ADD_OBJECT_SERIALIZER(tileTypeMap, TileTypeMap, NULL);
 		ADD_MAP_SERIALIZER(maps, Level::MapDataMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);
 		ADD_MAP_SERIALIZER(polyhedra, Level::PolyhedronMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);
-		ADD_OBJECT_SERIALIZER(tileTypeMap, TileTypeMap, NULL);
-		ADD_OBJECT_SERIALIZER(objectTypeMap, ObjectTypeMap, NULL);
 	}
 }

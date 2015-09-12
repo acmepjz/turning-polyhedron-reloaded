@@ -19,10 +19,10 @@ namespace game {
 		TileTypeMap();
 		TileTypeMap(const TileTypeMap& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
-		TileType* lookup(const std::string& idOrIndex);
+		bool add(TileType* obj); //!< Add an object to map (which must has a valid id, optional index).
+		TileType* lookup(const std::string& idOrIndex); //!< Find an object.
 
-		//! add a (temporary) index to a tile type with specified id
-		bool addTileMapping(const std::string& id, int index);
+		bool addTileMapping(const std::string& id, int index); //!< Add a (temporary) index to a tile type with specified id
 
 		typedef std::map<std::string, osg::ref_ptr<TileType> > IdMap;
 		IdMap idMap;

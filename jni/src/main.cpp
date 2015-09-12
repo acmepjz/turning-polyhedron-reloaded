@@ -16,6 +16,8 @@
 
 #include "TileType.h"
 #include "MapData.h"
+#include "Cuboid.h"
+#include "LevelCollection.h"
 #include "SimpleGeometry.h"
 
 using namespace game;
@@ -120,44 +122,64 @@ osg::Node* test(){
 
 	//create some tile types
 	osg::ref_ptr<TileType> ground = new TileType;
-	ground->id = "ground";
+	ground->id = "gro und"; //intentional, test osgt writer bug
 	ground->index = 1;
 	ground->name = "Ground";
 	ground->desc = "Normal ground.";
 	ground->appearance = lod;
 	osg::ref_ptr<TileType> wall = new TileType;
-	wall->id = "wall";
+	wall->id = "wa ll";
 	wall->index = 11;
 	wall->name = "Wall";
 	wall->desc = "As an obstacle, your block can't pass through the wall, but...";
 	wall->appearance = gp;
 
-	osg::ref_ptr<game::MapData> map = new game::MapData;
-	map->resize(osg::Vec3i(), osg::Vec3i(10, 10, 1), false);
+	//create a level
+	osg::ref_ptr<game::Level> level = new game::Level;
+	level->name = "Unnamed level";
+	level->getOrCreateTileTypeMap()->add(ground.get());
+	level->getOrCreateTileTypeMap()->add(wall.get());
+
+	//create a map
+	osg::ref_ptr<game::MapData> dat = new game::MapData;
+	dat->id = "m1";
+	dat->resize(osg::Vec3i(), osg::Vec3i(10, 10, 1), false);
 	for (int i = 0; i < 100; i++) {
-		if (i % 7 == 0) map->tiles[i] = wall.get();
-		else if (i % 3 != 0) map->tiles[i] = ground.get();
+		if (i % 7 == 0) dat->tiles[i] = wall.get();
+		else if (i % 3 != 0) dat->tiles[i] = ground.get();
 	}
+	level->addMapData(dat.get());
+
+	//create a polyhedron (test only)
+	osg::ref_ptr<game::Cuboid> poly = new game::Cuboid;
+	poly->id = "p1";
+	poly->pos.map = "m1";
+	level->addPolyhedron(poly.get());
+
+	//create a level collection
+	osg::ref_ptr<game::LevelCollection> lvs = new game::LevelCollection;
+	lvs->name = "Unnamed level pack";
+	lvs->levels.push_back(level);
 
 	//test!!!
-	osgDB::writeObjectFile(*map, "out.osgb");
-	osgDB::writeObjectFile(*map, "out.osgt");
-	osgDB::writeObjectFile(*map, "out.osgx");
+	osgDB::writeObjectFile(*lvs, "out.osgb");
+	osgDB::writeObjectFile(*lvs, "out.osgt");
+	osgDB::writeObjectFile(*lvs, "out.osgx");
 
-	return map->createInstance();
+	return level->createInstance();
 }
 
-/*osg::Node* test2(){
-	osg::ref_ptr<osg::Object> obj = osgDB::readObjectFile("out.osgt");
-	osg::ref_ptr<game::MapData> map = dynamic_cast<game::MapData*>(obj.get());
-	return map->createInstance();
-}*/
+osg::Node* test2(){
+	osg::ref_ptr<osg::Object> obj = osgDB::readObjectFile("out.osgb");
+	osg::ref_ptr<game::LevelCollection> lvs = dynamic_cast<game::LevelCollection*>(obj.get());
+	return lvs->levels[0]->createInstance();
+}
 
 int main(int argc, char** argv){
 	osgViewer::Viewer viewer;
 
 	//test
-	osg::ref_ptr<osg::Node> node = test();
+	osg::ref_ptr<osg::Node> node = test2();
 
 	//osg::ref_ptr<osg::Material> mat = new osg::Material;
 	//mat->setAmbient(osg::Material::FRONT_AND_BACK, osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));

@@ -55,6 +55,32 @@ namespace game {
 		return NULL;
 	}
 
+	bool TileTypeMap::add(TileType* obj){
+		if (!obj || obj->id.empty()) {
+			OSG_NOTICE << "[" __FUNCTION__ "] object doesn't have id" << std::endl;
+			return false;
+		}
+
+		IdMap::iterator it = idMap.find(obj->id);
+		if (it != idMap.end()) {
+			OSG_NOTICE << "[" __FUNCTION__ "] object id '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
+		}
+
+		idMap[obj->id] = obj;
+
+		if (obj->index) {
+			IndexMap::iterator it = indexMap.find(obj->index);
+			if (it != indexMap.end()) {
+				OSG_NOTICE << "[" __FUNCTION__ "] object index " << it->first << " already defined: '" << it->second->id
+					<< "', redefine to '" << obj->id << "'" << std::endl;
+			}
+
+			indexMap[obj->index] = obj;
+		}
+
+		return true;
+	}
+
 	bool TileTypeMap::addTileMapping(const std::string& id, int index){
 		if (index == 0) {
 			OSG_NOTICE << "[" __FUNCTION__ "] index 0 invalid" << std::endl;

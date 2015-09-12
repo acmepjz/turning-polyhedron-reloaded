@@ -24,8 +24,8 @@ namespace game {
 	REG_OBJ_WRAPPER(game, LevelCollection, "")
 	{
 		ADD_STRING_SERIALIZER(name, "");
-		ADD_VECTOR_SERIALIZER(levels, std::vector<osg::ref_ptr<Level> >, osgDB::BaseSerializer::RW_OBJECT, 1);
 		ADD_OBJECT_SERIALIZER(tileTypeMap, TileTypeMap, NULL);
 		ADD_OBJECT_SERIALIZER(objectTypeMap, ObjectTypeMap, NULL);
+		ADD_VECTOR_SERIALIZER(levels, std::vector<osg::ref_ptr<Level> >, osgDB::BaseSerializer::RW_OBJECT, 1);
 	}
 }

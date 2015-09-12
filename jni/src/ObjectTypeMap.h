@@ -20,7 +20,8 @@ namespace game {
 		ObjectTypeMap();
 		ObjectTypeMap(const ObjectTypeMap& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
-		ObjectType* lookup(const std::string& name);
+		bool add(ObjectType* obj); //!< Add an object to map (which must has a valid id).
+		ObjectType* lookup(const std::string& name); //!< Find an object with given name.
 
 		typedef std::map<std::string, osg::ref_ptr<ObjectType> > IdMap;
 		IdMap map;

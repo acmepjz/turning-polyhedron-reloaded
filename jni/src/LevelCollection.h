@@ -23,6 +23,15 @@ namespace game {
 		LevelCollection();
 		LevelCollection(const LevelCollection& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
+		TileTypeMap* getOrCreateTileTypeMap(){
+			if (!tileTypeMap.valid()) tileTypeMap = new TileTypeMap;
+			return tileTypeMap.get();
+		}
+		ObjectTypeMap* getOrCreateObjectTypeMap(){
+			if (!objectTypeMap.valid()) objectTypeMap = new ObjectTypeMap;
+			return objectTypeMap.get();
+		}
+
 		std::string name; //!< level pack name
 
 		std::vector<osg::ref_ptr<Level> > levels; //!< levels
