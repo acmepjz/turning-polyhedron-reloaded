@@ -16,7 +16,6 @@
 
 #include "TileType.h"
 #include "MapData.h"
-#include "Cuboid.h"
 #include "LevelCollection.h"
 #include "SimpleGeometry.h"
 
@@ -151,7 +150,7 @@ osg::Node* test(){
 	level->addMapData(dat.get());
 
 	//create a polyhedron (test only)
-	osg::ref_ptr<game::Cuboid> poly = new game::Cuboid;
+	osg::ref_ptr<game::Polyhedron> poly = new game::Polyhedron;
 	poly->id = "p1";
 	poly->pos.map = "m1";
 	level->addPolyhedron(poly.get());
@@ -179,7 +178,7 @@ int main(int argc, char** argv){
 	osgViewer::Viewer viewer;
 
 	//test
-	osg::ref_ptr<osg::Node> node = test2();
+	osg::ref_ptr<osg::Node> node = test();
 
 	//osg::ref_ptr<osg::Material> mat = new osg::Material;
 	//mat->setAmbient(osg::Material::FRONT_AND_BACK, osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));

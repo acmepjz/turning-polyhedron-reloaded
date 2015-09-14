@@ -17,7 +17,7 @@ namespace game {
 	{
 		//following objects are always deep copy
 		util::copyMap(maps, other.maps, copyop, true);
-		util::copyMap(polyhedra, other.polyhedra, copyop, true);
+		util::copyVector(polyhedra, other.polyhedra, copyop, true);
 	}
 
 	Level::~Level()
@@ -40,17 +40,18 @@ namespace game {
 	}
 
 	bool Level::addPolyhedron(Polyhedron* obj){
-		if (!obj || obj->id.empty()) {
-			OSG_NOTICE << "[" __FUNCTION__ "] object doesn't have id" << std::endl;
-			return false;
+		if (!obj) return false;
+
+		if (!obj->id.empty()) {
+			PolyhedronMap::iterator it = _polyhedra.find(obj->id);
+			if (it != _polyhedra.end()) {
+				OSG_NOTICE << "[" __FUNCTION__ "] object id '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
+			}
+			_polyhedra[obj->id] = obj;
 		}
 
-		PolyhedronMap::iterator it = polyhedra.find(obj->id);
-		if (it != polyhedra.end()) {
-			OSG_NOTICE << "[" __FUNCTION__ "] object id '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
-		}
+		polyhedra.push_back(obj);
 
-		polyhedra[obj->id] = obj;
 		return true;
 	}
 
@@ -69,6 +70,6 @@ namespace game {
 		ADD_OBJECT_SERIALIZER(objectTypeMap, ObjectTypeMap, NULL);
 		ADD_OBJECT_SERIALIZER(tileTypeMap, TileTypeMap, NULL);
 		ADD_MAP_SERIALIZER(maps, Level::MapDataMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);
-		ADD_MAP_SERIALIZER(polyhedra, Level::PolyhedronMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);
+		ADD_VECTOR_SERIALIZER(polyhedra, std::vector<osg::ref_ptr<Polyhedron> >, osgDB::BaseSerializer::RW_OBJECT, 1);
 	}
 }

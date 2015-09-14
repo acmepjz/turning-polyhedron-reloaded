@@ -29,7 +29,7 @@ namespace game {
 		osg::Node* createInstance();
 
 		bool addMapData(MapData* obj); //!< Add a map (which must has a valid id).
-		bool addPolyhedron(Polyhedron* obj); //!< Add a polyhedron (which must has a valid id).
+		bool addPolyhedron(Polyhedron* obj); //!< Add a polyhedron (possibly no id).
 
 		TileTypeMap* getOrCreateTileTypeMap(){
 			if (!tileTypeMap.valid()) tileTypeMap = new TileTypeMap;
@@ -40,14 +40,14 @@ namespace game {
 			return objectTypeMap.get();
 		}
 
+	public:
 		std::string name; //!< level name
 		std::string solution; //!< solution include in level file, for reference only
 
 		typedef std::map<std::string, osg::ref_ptr<MapData> > MapDataMap;
 		MapDataMap maps; //!< map blocks
 
-		typedef std::map<std::string, osg::ref_ptr<Polyhedron> > PolyhedronMap;
-		PolyhedronMap polyhedra; //!< polyhedra
+		std::vector<osg::ref_ptr<Polyhedron> > polyhedra; //!< polyhedra
 
 		osg::ref_ptr<TileTypeMap> tileTypeMap; //!< tile type map used in this level
 		osg::ref_ptr<ObjectTypeMap> objectTypeMap; //!< object type map used in this level
@@ -55,9 +55,14 @@ namespace game {
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, name);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, solution);
 		UTIL_ADD_BYREF_GETTER_SETTER(MapDataMap, maps);
-		UTIL_ADD_BYREF_GETTER_SETTER(PolyhedronMap, polyhedra);
+		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<Polyhedron> >, polyhedra);
 		UTIL_ADD_OBJ_GETTER_SETTER(TileTypeMap, tileTypeMap);
 		UTIL_ADD_OBJ_GETTER_SETTER(ObjectTypeMap, objectTypeMap);
+
+	public:
+		//the following properties don't save to file and is generated at runtime
+		typedef std::map<std::string, Polyhedron* > PolyhedronMap;
+		PolyhedronMap _polyhedra; //!< polyhedra with a valid id
 	};
 
 }

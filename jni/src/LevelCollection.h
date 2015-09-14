@@ -32,6 +32,7 @@ namespace game {
 			return objectTypeMap.get();
 		}
 
+	public:
 		std::string name; //!< level pack name
 
 		std::vector<osg::ref_ptr<Level> > levels; //!< levels
