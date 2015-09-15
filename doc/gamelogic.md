@@ -169,14 +169,14 @@ Attribute |  Default | Remark
 id        | --       | The string identifier of this tile.
 index    |(undefined)| The index of this tile.
 type      | default  | Object type of this tile.
-blocked   | false    | Make the map solid at y+1 to y+(Block height) ??? (deprecated!!!)
-block-height|infinity| Block height ??? (deprecated!!!)
+blocked   | false    | Make the map solid at y+1 to y+(Block height) ??? (deprecated!!! use \ref game::TileType::blockedArea instead)
+block-height|infinity| Block height ??? (deprecated!!! use \ref game::TileType::blockedArea instead)
 tilt-supporter|true  | Determine if block can lean against this tile.
 supporter | true     | Determine if block can be on this tile.
-non-block | false    | Make the map transparent at the position of this tile.
+non-block | false    | Make the map transparent at the position of this tile. (deprecated!!! use \ref game::TileType::blockedArea instead)
 checkpoint| false    | Count this tile as a checkpoint.
-invisibleAtRuntime|false| ??? deprecated ???
-elevator  | false    | ??? unimplemented ???
+invisibleAtRuntime|false| deprecated!!! use node mask instead
+elevator  | false    | deprecated!!! use \ref game::Polyhedron::controller instead
 
 Subnode          |Count  | Remark
 ------------     |-----  |--------

@@ -10,7 +10,7 @@
 
 namespace game {
 
-	// Represents a level collection.
+	/// Represents a level collection.
 
 	class LevelCollection :
 		public osg::Object

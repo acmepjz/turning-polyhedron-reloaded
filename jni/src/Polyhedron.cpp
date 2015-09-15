@@ -5,7 +5,10 @@
 namespace game {
 
 	Polyhedron::Polyhedron()
-		: flags(0)
+		: shape(0)
+		, flags(0)
+		, movement(0)
+		, controller(0)
 		, size(1, 1, 2)
 		, customShapeEnabled(false)
 		, customShape(1, 1)
@@ -15,8 +18,11 @@ namespace game {
 	Polyhedron::Polyhedron(const Polyhedron& other, const osg::CopyOp& copyop)
 		: Object(other, copyop)
 		, id(other.id)
+		, shape(other.shape)
 		, objType(other.objType)
 		, flags(other.flags)
+		, movement(other.movement)
+		, controller(other.controller)
 		, pos(other.pos)
 		, lbound(other.lbound)
 		, size(other.size)
@@ -81,8 +87,11 @@ namespace game {
 	REG_OBJ_WRAPPER(game, Polyhedron, "")
 	{
 		ADD_STRING_SERIALIZER(id, "");
+		ADD_INT_SERIALIZER(shape, 0);
 		ADD_STRING_SERIALIZER(objType, "");
 		ADD_INT_SERIALIZER(flags, 0);
+		ADD_INT_SERIALIZER(movement, 0);
+		ADD_INT_SERIALIZER(controller, 0);
 		ADD_REF_ANY_SERIALIZER(pos, MapPosition, MapPosition());
 		ADD_VEC3I_SERIALIZER(lbound, osg::Vec3i());
 		ADD_VEC3I_SERIALIZER(size, osg::Vec3i(1, 1, 2));

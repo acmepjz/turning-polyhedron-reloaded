@@ -12,7 +12,7 @@
 
 namespace game {
 
-	// Represents a level.
+	/// Represents a level.
 
 	class Level :
 		public osg::Object

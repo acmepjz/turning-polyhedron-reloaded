@@ -22,6 +22,12 @@ namespace game {
 	class MapData :
 		public osg::Object
 	{
+	public:
+		/// the shape of map
+		enum MapShape {
+			RECTANGULAR = 0,
+			TRIANGULAR = 3,
+		};
 	protected:
 		virtual ~MapData();
 	public:
@@ -46,6 +52,7 @@ namespace game {
 
 	public:
 		std::string id; //!< id, used to find this block
+		int shape; //!< map shape. \sa MapShape
 		osg::Vec3i lbound; //!< lower bound of map data
 		osg::Vec3i size; //!< size of map data
 
@@ -57,6 +64,7 @@ namespace game {
 		std::vector<osg::ref_ptr<TileType> > tiles; //!< a 3D array of tiles.
 
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, id);
+		UTIL_ADD_BYVAL_GETTER_SETTER(int, shape);
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3i, lbound);
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3i, size);
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3f, pos);

@@ -6,7 +6,8 @@
 namespace game {
 
 	MapData::MapData()
-		: size(1, 1, 1)
+		: shape(0)
+		, size(1, 1, 1)
 		, scale(1.0f, 1.0f, 1.0f)
 		, step(1.0f, 1.0f, 1.0f)
 		, tiles(1)
@@ -16,6 +17,7 @@ namespace game {
 	MapData::MapData(const MapData& other, const osg::CopyOp& copyop)
 		: Object(other, copyop)
 		, id(other.id)
+		, shape(other.shape)
 		, lbound(other.lbound)
 		, size(other.size)
 		, pos(other.pos)
@@ -40,6 +42,7 @@ namespace game {
 		return tiles[idx];
 	}
 
+	//TODO: consider the shape
 	void MapData::resize(const osg::Vec3i& lbound_, const osg::Vec3i& size_, bool preserved){
 		if (!preserved) {
 			lbound = lbound_;
@@ -112,6 +115,7 @@ namespace game {
 	REG_OBJ_WRAPPER(game, MapData, "")
 	{
 		ADD_STRING_SERIALIZER(id, "");
+		ADD_INT_SERIALIZER(shape, 0);
 		ADD_VEC3I_SERIALIZER(lbound, osg::Vec3i());
 		ADD_VEC3I_SERIALIZER(size, osg::Vec3i(1, 1, 1));
 		ADD_VEC3F_SERIALIZER(pos, osg::Vec3f());
