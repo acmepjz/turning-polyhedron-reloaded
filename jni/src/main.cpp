@@ -232,7 +232,10 @@ int main(int argc, char** argv){
 	node->getOrCreateStateSet()->setAttributeAndModes(new osg::CullFace());
 	//node->getOrCreateStateSet()->setAttributeAndModes(mat.get());
 
-	viewer.setSceneData(node.get());
+	osg::ref_ptr<osg::MatrixTransform> mirror = new osg::MatrixTransform(osg::Matrix::scale(1.0f, -1.0f, 1.0f));
+	mirror->addChild(node);
+
+	viewer.setSceneData(mirror.get());
 	viewer.setLightingMode(osg::View::SKY_LIGHT);
 	viewer.getLight()->setAmbient(osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
 	viewer.getLight()->setDiffuse(osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
