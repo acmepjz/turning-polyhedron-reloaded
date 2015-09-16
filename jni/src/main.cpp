@@ -119,33 +119,76 @@ osg::Node* test(){
 	gp->addChild(lod);
 	gp->addChild(lod2);
 
+	osg::ref_ptr<osg::Group> gp2 = new osg::Group;
+	gp2->addChild(lod);
+	geode = new osg::Geode;
+	{
+		osg::ref_ptr<osg::Geometry> wireframe = createCube(
+			osg::Vec3(0, 0, 0),
+			osg::Vec3(1, 1, 1),
+			true,
+			0.0f,
+			osg::Vec3(1.0f, 1.0f, 0.0f)
+			);
+		wireframe->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+		geode->addDrawable(wireframe);
+	}
+	gp2->addChild(geode);
+
 	//create some tile types
+	const TileType* tt = NULL;
 	osg::ref_ptr<TileType> ground = new TileType;
-	ground->id = "gro und"; //intentional, test osgt writer bug
+	ground->id = "ground";
 	ground->index = 1;
+	ground->flags = tt->SUPPORTER | tt->TILT_SUPPORTER;
 	ground->name = "Ground";
 	ground->desc = "Normal ground.";
 	ground->appearance = lod;
 	osg::ref_ptr<TileType> wall = new TileType;
-	wall->id = "wa ll";
+	wall->id = "wall";
 	wall->index = 11;
+	wall->flags = tt->SUPPORTER | tt->TILT_SUPPORTER;
+	wall->blockedArea.set(-1, 1);
 	wall->name = "Wall";
 	wall->desc = "As an obstacle, your block can't pass through the wall, but...";
 	wall->appearance = gp;
+	osg::ref_ptr<TileType> ex = new TileType;
+	ex->id = "goal";
+	ex->index = 8;
+	ex->flags = tt->SUPPORTER | tt->TILT_SUPPORTER | tt->EXIT;
+	ex->name = "Goal";
+	ex->desc = "You'll win the game if you get your block to fall into this square hole after visiting all checkpoints.";
+	ex->appearance = gp2;
 
 	//create a level
 	osg::ref_ptr<game::Level> level = new game::Level;
 	level->name = "Unnamed level";
 	level->getOrCreateTileTypeMap()->add(ground.get());
 	level->getOrCreateTileTypeMap()->add(wall.get());
+	level->getOrCreateTileTypeMap()->add(ex.get());
 
 	//create a map
 	osg::ref_ptr<game::MapData> dat = new game::MapData;
 	dat->id = "m1";
-	dat->resize(osg::Vec3i(), osg::Vec3i(10, 10, 1), false);
-	for (int i = 0; i < 100; i++) {
-		if (i % 7 == 0) dat->tiles[i] = wall.get();
-		else if (i % 3 != 0) dat->tiles[i] = ground.get();
+	dat->resize(osg::Vec3i(), osg::Vec3i(10, 6, 1), false);
+	{
+		const char s[] =
+			"111       "
+			"111111    "
+			"111111111 "
+			" 111111111"
+			"     11811"
+			"      111 ";
+		for (int i = 0; i < 60; i++) {
+			switch (s[i]) {
+			case '1':
+				dat->tiles[i] = ground;
+				break;
+			case '8':
+				dat->tiles[i] = ex;
+				break;
+			}
+		}
 	}
 	level->addMapData(dat.get());
 
@@ -153,6 +196,7 @@ osg::Node* test(){
 	osg::ref_ptr<game::Polyhedron> poly = new game::Polyhedron;
 	poly->id = "p1";
 	poly->pos.map = "m1";
+	poly->pos.pos.set(1, 1, 0);
 	level->addPolyhedron(poly.get());
 
 	//create a level collection
