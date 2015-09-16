@@ -48,7 +48,7 @@ namespace game {
 		void resize(const osg::Vec3i& lbound_, const osg::Vec3i& size_, bool preserved);
 
 		///test only
-		osg::Node* createInstance();
+		void createInstance();
 
 	public:
 		std::string id; //!< id, used to find this block
@@ -72,6 +72,10 @@ namespace game {
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3f, scale);
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3f, step);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<TileType> >, tiles);
+
+	public:
+		//the following properties don't save to file and is generated at runtime
+		osg::ref_ptr<osg::Node> _appearance; //!< the appearance
 	};
 
 	/// represents a position in a map.

@@ -195,6 +195,9 @@ osg::Node* test(){
 	//create a polyhedron (test only)
 	osg::ref_ptr<game::Polyhedron> poly = new game::Polyhedron;
 	poly->id = "p1";
+	poly->flags = poly->MAIN | poly->FRAGILE | poly->SUPPORTABLE | poly->SUPPORTER | poly->VISIBLE;
+	poly->movement = poly->ROLLING_ALL;
+	poly->controller = poly->PLAYER;
 	poly->pos.map = "m1";
 	poly->pos.pos.set(1, 1, 0);
 	level->addPolyhedron(poly.get());
@@ -209,13 +212,15 @@ osg::Node* test(){
 	osgDB::writeObjectFile(*lvs, "out.osgt");
 	osgDB::writeObjectFile(*lvs, "out.osgx");
 
-	return level->createInstance();
+	level->createInstance();
+	return level->_appearance.release();
 }
 
 osg::Node* test2(){
 	osg::ref_ptr<osg::Object> obj = osgDB::readObjectFile("out.osgb");
 	osg::ref_ptr<game::LevelCollection> lvs = dynamic_cast<game::LevelCollection*>(obj.get());
-	return lvs->levels[0]->createInstance();
+	lvs->levels[0]->createInstance();
+	return lvs->levels[0]->_appearance.release();
 }
 
 int main(int argc, char** argv){

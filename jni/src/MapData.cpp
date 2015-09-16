@@ -75,7 +75,7 @@ namespace game {
 		size = size_;
 	}
 
-	osg::Node* MapData::createInstance() {
+	void MapData::createInstance() {
 		osg::ref_ptr<osg::Group> group = new osg::Group;
 
 #define SX(X) s##X = lbound.X()
@@ -109,7 +109,7 @@ namespace game {
 			}
 		}
 
-		return group.release();
+		_appearance = group;
 	}
 
 	REG_OBJ_WRAPPER(game, MapData, "")

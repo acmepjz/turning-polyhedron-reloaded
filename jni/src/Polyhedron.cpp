@@ -1,5 +1,7 @@
 #include "Polyhedron.h"
 #include "ObjectType.h"
+#include "SimpleGeometry.h"
+#include <osg/Geode>
 #include <osgDB/ObjectWrapper>
 
 namespace game {
@@ -11,7 +13,7 @@ namespace game {
 		, controller(0)
 		, size(1, 1, 2)
 		, customShapeEnabled(false)
-		, customShape(1, 1)
+		, customShape(1, SOLID)
 	{
 	}
 
@@ -53,7 +55,7 @@ namespace game {
 		if (!(preserved && customShape_ && old)) {
 			size = size_;
 
-			unsigned char c = preserved ? customShape[0] : 1;
+			unsigned char c = preserved ? customShape[0] : SOLID;
 			if (c == 0) c = 1;
 			customShape.resize(customShape_ ? size_.x()*size_.y()*size_.z() : 1, c);
 
@@ -82,6 +84,33 @@ namespace game {
 
 		lbound = lbound_;
 		size = size_;
+	}
+
+	void Polyhedron::createInstance(){
+		osg::ref_ptr<osg::Geode> geode = new osg::Geode;
+		
+		switch (shape) {
+		case CUBOID:
+			if (customShapeEnabled) {
+				//TODO: custom shape
+			} else {
+				unsigned char c = SOLID;
+				if (!customShape.empty()) c = customShape[0];
+
+				//TODO: block type
+				//test only
+				geode->addDrawable(geom::createCube(
+					osg::Vec3(lbound.x(), lbound.y(), lbound.z()),
+					osg::Vec3(lbound.x() + size.x(), lbound.y() + size.y(), lbound.z() + size.z()),
+					false,
+					0.05f,
+					osg::Vec3(0.3f, 0.3f, 0.3f)
+					));
+			}
+			break;
+		}
+
+		_appearance = geode;
 	}
 
 	REG_OBJ_WRAPPER(game, Polyhedron, "")

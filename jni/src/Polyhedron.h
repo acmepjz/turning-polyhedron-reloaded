@@ -64,9 +64,15 @@ namespace game {
 		};
 		/// polyhedron controller
 		enum PolyhedronController {
-			NONE, //!< It can only be pushed by player
+			PASSIVE, //!< It can only be pushed by player
 			PLAYER, //!< It can only be controlled by player
 			ELEVATOR, //!< It can only be controlled when player is standing on it
+		};
+		/// used in customShape
+		enum PolyhedronCell {
+			EMPTY, //!< empty
+			SOLID, //!< solid block
+			ANTENNA, //!< antenna
 		};
 	protected:
 		virtual ~Polyhedron();
@@ -87,6 +93,9 @@ namespace game {
 
 		void resize(const osg::Vec3i& lbound_, const osg::Vec3i& size_, bool customShape_, bool preserved);
 
+		///test only
+		void createInstance();
+
 	public:
 		std::string id; //!< the polyhedron id
 		int shape; //!< the polyhedron shape. \sa PolyhedronShape
@@ -100,8 +109,8 @@ namespace game {
 		osg::Vec3i lbound; //!< lower bound of polyhedron data, which in turn determines the center of polyhedron
 		osg::Vec3i size; //!< the size of polyhedron
 
-		bool customShapeEnabled; //!< use custom shape. if it is true then customShape is used, otherwise the polyhedron is a solid cuboid.
-		std::vector<unsigned char> customShape; //!< the custom shape
+		bool customShapeEnabled; //!< use custom shape. if it is true then customShape is used, otherwise the polyhedron is a solid cuboid (only customShape[0] is used).
+		std::vector<unsigned char> customShape; //!< the custom shape. \sa PolyhedronCell
 
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, id);
 		UTIL_ADD_BYVAL_GETTER_SETTER(int, shape);

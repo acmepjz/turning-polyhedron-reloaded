@@ -26,7 +26,7 @@ namespace game {
 		Level(const Level& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
 		///test only
-		osg::Node* createInstance();
+		void createInstance();
 
 		bool addMapData(MapData* obj); //!< Add a map (which must has a valid id).
 		bool addPolyhedron(Polyhedron* obj); //!< Add a polyhedron (possibly no id).
@@ -47,7 +47,8 @@ namespace game {
 		typedef std::map<std::string, osg::ref_ptr<MapData> > MapDataMap;
 		MapDataMap maps; //!< map blocks
 
-		std::vector<osg::ref_ptr<Polyhedron> > polyhedra; //!< polyhedra
+		typedef std::vector<osg::ref_ptr<Polyhedron> > Polyhedra;
+		Polyhedra polyhedra; //!< polyhedra
 
 		osg::ref_ptr<TileTypeMap> tileTypeMap; //!< tile type map used in this level
 		osg::ref_ptr<ObjectTypeMap> objectTypeMap; //!< object type map used in this level
@@ -55,7 +56,7 @@ namespace game {
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, name);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, solution);
 		UTIL_ADD_BYREF_GETTER_SETTER(MapDataMap, maps);
-		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<Polyhedron> >, polyhedra);
+		UTIL_ADD_BYREF_GETTER_SETTER(Polyhedra, polyhedra);
 		UTIL_ADD_OBJ_GETTER_SETTER(TileTypeMap, tileTypeMap);
 		UTIL_ADD_OBJ_GETTER_SETTER(ObjectTypeMap, objectTypeMap);
 
@@ -63,6 +64,8 @@ namespace game {
 		//the following properties don't save to file and is generated at runtime
 		typedef std::map<std::string, Polyhedron* > PolyhedronMap;
 		PolyhedronMap _polyhedra; //!< polyhedra with a valid id
+
+		osg::ref_ptr<osg::Node> _appearance; //!< the appearance
 	};
 
 }

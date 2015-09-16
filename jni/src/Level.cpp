@@ -55,12 +55,18 @@ namespace game {
 		return true;
 	}
 
-	osg::Node* Level::createInstance(){
+	void Level::createInstance(){
 		osg::ref_ptr<osg::Group> gp = new osg::Group;
 		for (MapDataMap::iterator it = maps.begin(); it != maps.end(); ++it) {
-			gp->addChild(it->second->createInstance());
+			it->second->createInstance();
+			gp->addChild(it->second->_appearance);
 		}
-		return gp.release();
+		for (Polyhedra::iterator it = polyhedra.begin(); it != polyhedra.end(); ++it) {
+			(*it)->createInstance();
+			//TODO: transformation matrix
+			gp->addChild((*it)->_appearance);
+		}
+		_appearance = gp;
 	}
 
 	REG_OBJ_WRAPPER(game, Level, "")
@@ -70,6 +76,6 @@ namespace game {
 		ADD_OBJECT_SERIALIZER(objectTypeMap, ObjectTypeMap, NULL);
 		ADD_OBJECT_SERIALIZER(tileTypeMap, TileTypeMap, NULL);
 		ADD_MAP_SERIALIZER(maps, Level::MapDataMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);
-		ADD_VECTOR_SERIALIZER(polyhedra, std::vector<osg::ref_ptr<Polyhedron> >, osgDB::BaseSerializer::RW_OBJECT, 1);
+		ADD_VECTOR_SERIALIZER(polyhedra, Level::Polyhedra, osgDB::BaseSerializer::RW_OBJECT, 1);
 	}
 }
