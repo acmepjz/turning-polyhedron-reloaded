@@ -47,6 +47,11 @@ namespace game {
 
 		void resize(const osg::Vec3i& lbound_, const osg::Vec3i& size_, bool preserved);
 
+		///get the transformation matrix of specified position (integer coordinate).
+		void getTransform(const osg::Vec3i& p, osg::Matrix& ret) const;
+		///get the transformation matrix of specified position (float coordinate).
+		void getTransform(const osg::Vec3& p, osg::Matrix& ret) const;
+
 		///test only
 		void createInstance();
 

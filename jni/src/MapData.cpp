@@ -112,6 +112,20 @@ namespace game {
 		_appearance = group;
 	}
 
+	void MapData::getTransform(const osg::Vec3i& p, osg::Matrix& ret) const {
+		ret.makeTranslate(step.x()*p.x(), step.y()*p.y(), step.z()*p.z());
+		ret.postMultScale(scale);
+		ret.postMultRotate(osg::Quat(rot.x(), osg::X_AXIS, rot.y(), osg::Y_AXIS, rot.z(), osg::Z_AXIS));
+		ret.postMultTranslate(pos);
+	}
+
+	void MapData::getTransform(const osg::Vec3& p, osg::Matrix& ret) const {
+		ret.makeTranslate(step.x()*p.x(), step.y()*p.y(), step.z()*p.z());
+		ret.postMultScale(scale);
+		ret.postMultRotate(osg::Quat(rot.x(), osg::X_AXIS, rot.y(), osg::Y_AXIS, rot.z(), osg::Z_AXIS));
+		ret.postMultTranslate(pos);
+	}
+
 	REG_OBJ_WRAPPER(game, MapData, "")
 	{
 		ADD_STRING_SERIALIZER(id, "");
