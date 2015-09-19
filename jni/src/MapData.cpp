@@ -1,4 +1,5 @@
 #include "MapData.h"
+#include "Level.h"
 #include <osg/Group>
 #include <osg/MatrixTransform>
 #include <osgDB/ObjectWrapper>
@@ -124,6 +125,20 @@ namespace game {
 		ret.postMultScale(scale);
 		ret.postMultRotate(osg::Quat(rot.x(), osg::X_AXIS, rot.y(), osg::Y_AXIS, rot.z(), osg::Z_AXIS));
 		ret.postMultTranslate(pos);
+	}
+
+	void MapData::init(Level* parent){
+		//currently do nothing
+	}
+
+	void MapPosition::init(Level* parent){
+		Level::MapDataMap::iterator it = parent->maps.find(map);
+		if (it != parent->maps.end()) {
+			_map = it->second.get();
+		} else {
+			OSG_NOTICE << "[" __FUNCTION__ "] map id '" << map << " not found" << std::endl;
+			_map = NULL;
+		}
 	}
 
 	REG_OBJ_WRAPPER(game, MapData, "")

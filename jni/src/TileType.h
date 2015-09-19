@@ -10,6 +10,9 @@
 
 namespace game {
 
+	class ObjectTypeMap;
+	class TileTypeMap;
+
 	/// Represents a tile type.
 
 	class TileType :
@@ -32,6 +35,9 @@ namespace game {
 		TileType();
 		TileType(const TileType& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
+		void init(ObjectTypeMap* otm, TileTypeMap* ttm);
+
+	public:
 		std::string id; //!< id, used to find this tile type
 		int index; //!< the (permanent) index (optional), used to find this tile type, 0 = no index
 
@@ -57,6 +63,10 @@ namespace game {
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, name);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, desc);
 		UTIL_ADD_OBJ_GETTER_SETTER(osg::Node, appearance);
+
+	public:
+		//the following properties don't save to file and is generated at runtime
+		ObjectType* _objType;
 	};
 
 }

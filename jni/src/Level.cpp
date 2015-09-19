@@ -68,15 +68,23 @@ namespace game {
 			osg::Matrix mat;
 			mat.makeIdentity();
 
-			//FIXME: ad-hoc get transformation matrix
-			MapDataMap::iterator it2 = maps.find((*it)->pos.map);
-			if (it2 != maps.end()) it2->second->getTransform((*it)->pos.pos, mat);
+			//ad-hoc get transformation matrix
+			if ((*it)->pos._map) (*it)->pos._map->getTransform((*it)->pos.pos, mat);
 
 			osg::ref_ptr<osg::MatrixTransform> trans = new osg::MatrixTransform(mat);
 			trans->addChild((*it)->_appearance);
 			gp->addChild(trans);
 		}
 		_appearance = gp;
+	}
+
+	void Level::initMaps(){
+		for (MapDataMap::iterator it = maps.begin(); it != maps.end(); ++it) {
+			it->second->init(this);
+		}
+		for (Polyhedra::iterator it = polyhedra.begin(); it != polyhedra.end(); ++it) {
+			(*it)->init(this);
+		}
 	}
 
 	REG_OBJ_WRAPPER(game, Level, "")

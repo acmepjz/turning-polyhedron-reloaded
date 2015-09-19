@@ -1,5 +1,6 @@
 #include "Polyhedron.h"
 #include "ObjectType.h"
+#include "Level.h"
 #include "SimpleGeometry.h"
 #include <osg/Geode>
 #include <osgDB/ObjectWrapper>
@@ -14,6 +15,7 @@ namespace game {
 		, size(1, 1, 2)
 		, customShapeEnabled(false)
 		, customShape(1, SOLID)
+		, _objType(NULL)
 	{
 	}
 
@@ -30,6 +32,7 @@ namespace game {
 		, size(other.size)
 		, customShapeEnabled(other.customShapeEnabled)
 		, customShape(other.customShape)
+		, _objType(NULL)
 	{
 
 	}
@@ -111,6 +114,11 @@ namespace game {
 		}
 
 		_appearance = geode;
+	}
+
+	void Polyhedron::init(Level* parent){
+		_objType = parent->objectTypeMap->lookup(objType);
+		pos.init(parent);
 	}
 
 	REG_OBJ_WRAPPER(game, Polyhedron, "")

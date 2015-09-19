@@ -1,4 +1,6 @@
 #include "TileType.h"
+#include "ObjectTypeMap.h"
+#include "TileTypeMap.h"
 #include "util.h"
 #include <osg/Node>
 #include <osg/Notify>
@@ -11,6 +13,7 @@ namespace game {
 		: index(0)
 		, flags(0)
 		, blockedArea(-1, 0)
+		, _objType(NULL)
 	{
 	}
 
@@ -24,6 +27,7 @@ namespace game {
 		, name(other.name)
 		, desc(other.desc)
 		, appearance(copyop(other.appearance))
+		, _objType(NULL)
 	{
 	}
 
@@ -31,6 +35,11 @@ namespace game {
 	TileType::~TileType()
 	{
 	}
+
+	void TileType::init(ObjectTypeMap* otm, TileTypeMap* ttm){
+		_objType = otm->lookup(objType);
+	}
+
 
 	REG_OBJ_WRAPPER(game, TileType, "")
 	{

@@ -40,6 +40,19 @@ namespace game {
 			return objectTypeMap.get();
 		}
 
+		void initObjectTypes(){
+			if (objectTypeMap.valid()) objectTypeMap->init();
+		}
+		void initTileTypes(){
+			if (tileTypeMap.valid()) tileTypeMap->init(objectTypeMap.get());
+		}
+		void initMaps();
+		void init(){
+			initObjectTypes();
+			initTileTypes();
+			initMaps();
+		}
+
 	public:
 		std::string name; //!< level name
 		std::string solution; //!< solution include in level file, for reference only

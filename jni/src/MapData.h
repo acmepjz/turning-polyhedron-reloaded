@@ -17,6 +17,8 @@ namespace osgDB {
 
 namespace game {
 
+	class Level;
+
 	/// represents a block of map data in a map.
 
 	class MapData :
@@ -55,6 +57,8 @@ namespace game {
 		///test only
 		void createInstance();
 
+		void init(Level* parent);
+
 	public:
 		std::string id; //!< id, used to find this block
 		int shape; //!< map shape. \sa MapShape
@@ -86,6 +90,7 @@ namespace game {
 	/// represents a position in a map.
 
 	struct MapPosition {
+	public:
 		MapPosition() :
 			_map(NULL)
 		{
@@ -93,9 +98,12 @@ namespace game {
 		bool operator!=(const MapPosition& other) const {
 			return map != other.map || pos != other.pos;
 		}
+		void init(Level* parent);
+	public:
 		std::string map;
 		osg::Vec3i pos;
 
+	public:
 		//the following properties don't save to file and is generated at runtime
 		MapData *_map;
 	};

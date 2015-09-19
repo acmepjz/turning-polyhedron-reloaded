@@ -36,12 +36,19 @@ namespace game {
 	}
 
 	ObjectType* ObjectTypeMap::lookup(const std::string& name){
+		if (name.empty() || name == "default") return NULL;
 		IdMap::iterator it = map.find(name);
 		if (it == map.end()) {
 			OSG_NOTICE << "[" __FUNCTION__ "] name '" << name << "' not found" << std::endl;
 			return NULL;
 		}
 		return it->second.get();
+	}
+
+	void ObjectTypeMap::init(){
+		for (IdMap::iterator it = map.begin(); it != map.end(); ++it) {
+			it->second->init(this);
+		}
 	}
 
 	REG_OBJ_WRAPPER(game, ObjectTypeMap, "")

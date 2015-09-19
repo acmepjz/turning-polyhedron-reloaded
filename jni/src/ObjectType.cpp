@@ -1,4 +1,5 @@
 #include "ObjectType.h"
+#include "ObjectTypeMap.h"
 #include "Interaction.h"
 #include "util.h"
 #include <osg/Notify>
@@ -21,6 +22,18 @@ namespace game {
 
 	ObjectType::~ObjectType(){
 
+	}
+
+	void ObjectType::init(ObjectTypeMap* otm){
+		_interactions.clear();
+		for (InteractionMap::iterator it = interactions.begin(); it != interactions.end(); ++it) {
+			if (it->first.empty() || it->first == "default") {
+				_interactions[NULL] = it->second;
+			} else {
+				ObjectType* type2 = otm->lookup(it->first);
+				if (type2) _interactions[type2] = it->second;
+			}
+		}
 	}
 
 	REG_OBJ_WRAPPER(game, ObjectType, "")

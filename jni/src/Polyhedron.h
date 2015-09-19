@@ -9,6 +9,7 @@
 
 namespace game {
 
+	class Level;
 	class ObjectType;
 
 	/** Represents a polyhedron.
@@ -96,6 +97,8 @@ namespace game {
 		///test only
 		void createInstance();
 
+		void init(Level* parent);
+
 	public:
 		std::string id; //!< the polyhedron id
 		int shape; //!< the polyhedron shape. \sa PolyhedronShape
@@ -127,6 +130,7 @@ namespace game {
 	public:
 		//the following properties don't save to file and is generated at runtime
 		osg::ref_ptr<osg::Node> _appearance; //!< the appearance
+		ObjectType* _objType;
 	};
 
 }

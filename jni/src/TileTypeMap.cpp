@@ -104,6 +104,12 @@ namespace game {
 		return true;
 	}
 
+	void TileTypeMap::init(ObjectTypeMap* otm){
+		for (IdMap::iterator it = idMap.begin(); it != idMap.end(); ++it) {
+			it->second->init(otm, this);
+		}
+	}
+
 	REG_OBJ_WRAPPER(game, TileTypeMap, "")
 	{
 		ADD_MAP_SERIALIZER(idMap, TileTypeMap::IdMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);

@@ -212,6 +212,7 @@ osg::Node* test(){
 	osgDB::writeObjectFile(*lvs, "out.osgt");
 	osgDB::writeObjectFile(*lvs, "out.osgx");
 
+	level->init();
 	level->createInstance();
 	return level->_appearance.release();
 }
