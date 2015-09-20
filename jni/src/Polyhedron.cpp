@@ -119,6 +119,17 @@ namespace game {
 	void Polyhedron::init(Level* parent){
 		_objType = parent->objectTypeMap->lookup(objType);
 		pos.init(parent);
+
+		//check size
+		{
+			size_t n = customShapeEnabled ? size.x()*size.y()*size.z() : 1;
+			size_t m = customShape.size();
+			if (m < n) {
+				OSG_NOTICE << "[" __FUNCTION__ "] data size mismatch, expected: " << n << ", actual: " << m << std::endl;
+				customShape.reserve(n);
+				for (; m < n; m++) customShape.push_back(SOLID);
+			}
+		}
 	}
 
 	REG_OBJ_WRAPPER(game, Polyhedron, "")

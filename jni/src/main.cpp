@@ -291,7 +291,6 @@ int main(int argc, char** argv){
 	mirror->computeBound();
 	osg::Vec3 c = mirror->getBound().center();
 	c.z() = 0.0f;
-	OSG_NOTICE << mirror->getBound().radius() << std::endl;
 	osg::Vec3 e = c + osg::Vec3(-1, -3, 2)*0.9f* mirror->getBound().radius();
 
 	viewer.getCamera()->setViewMatrixAsLookAt(e, c, osg::Vec3d(0, 0, 1));

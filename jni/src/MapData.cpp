@@ -115,7 +115,18 @@ namespace game {
 	}
 
 	void MapData::init(Level* parent){
-		//currently do nothing
+		computeTransform();
+
+		//check map data size
+		{
+			size_t n = size.x()*size.y()*size.z();
+			size_t m = tiles.size();
+			if (m < n) {
+				OSG_NOTICE << "[" __FUNCTION__ "] data size mismatch, expected: " << n << ", actual: " << m << std::endl;
+				tiles.reserve(n);
+				for (; m < n; m++) tiles.push_back(NULL);
+			}
+		}
 	}
 
 	void MapPosition::init(Level* parent){
