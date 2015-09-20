@@ -288,6 +288,15 @@ int main(int argc, char** argv){
 	viewer.getLight()->setDiffuse(osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
 	viewer.getLight()->setPosition(osg::Vec4(3.0f, 4.0f, 5.0f, 0.0f));
 
+	mirror->computeBound();
+	osg::Vec3 c = mirror->getBound().center();
+	c.z() = 0.0f;
+	OSG_NOTICE << mirror->getBound().radius() << std::endl;
+	osg::Vec3 e = c + osg::Vec3(-1, -3, 2)*0.9f* mirror->getBound().radius();
+
+	viewer.getCamera()->setViewMatrixAsLookAt(e, c, osg::Vec3d(0, 0, 1));
+	viewer.getCamera()->setAllowEventFocus(false);
+
 	viewer.setRunMaxFrameRate(30.0);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 	viewer.addEventHandler(new TestController(level.get()));
