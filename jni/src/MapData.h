@@ -3,6 +3,7 @@
 #include <osg/Object>
 #include <osg/Node>
 #include <osg/ref_ptr>
+#include <osg/Matrix>
 #include <osg/Vec3i>
 #include <osg/Vec3f>
 #include <string>
@@ -49,10 +50,24 @@ namespace game {
 
 		void resize(const osg::Vec3i& lbound_, const osg::Vec3i& size_, bool preserved);
 
+		void computeTransform();
+
+		///apply transform to the specified matrix.
+		void applyTransform(osg::Matrix& ret) const {
+			ret.postMult(_transform);
+		}
+
 		///get the transformation matrix of specified position (integer coordinate).
-		void getTransform(const osg::Vec3i& p, osg::Matrix& ret) const;
+		void getTransform(const osg::Vec3i& p, osg::Matrix& ret) const {
+			ret.makeTranslate(step.x()*p.x(), step.y()*p.y(), step.z()*p.z());
+			applyTransform(ret);
+		}
+
 		///get the transformation matrix of specified position (float coordinate).
-		void getTransform(const osg::Vec3& p, osg::Matrix& ret) const;
+		void getTransform(const osg::Vec3& p, osg::Matrix& ret) const {
+			ret.makeTranslate(step.x()*p.x(), step.y()*p.y(), step.z()*p.z());
+			applyTransform(ret);
+		}
 
 		///test only
 		void createInstance();
@@ -85,6 +100,7 @@ namespace game {
 	public:
 		//the following properties don't save to file and is generated at runtime
 		osg::ref_ptr<osg::Node> _appearance; //!< the appearance
+		osg::Matrix _transform; //!< the transform
 	};
 
 	/// represents a position in a map.

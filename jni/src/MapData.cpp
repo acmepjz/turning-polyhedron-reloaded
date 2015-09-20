@@ -85,11 +85,6 @@ namespace game {
 #undef SX
 #undef EX
 
-		osg::Matrix mat0;
-		mat0.makeScale(scale);
-		mat0.postMultRotate(osg::Quat(rot.x(), osg::X_AXIS, rot.y(), osg::Y_AXIS, rot.z(), osg::Z_AXIS));
-		mat0.postMultTranslate(pos);
-
 		int idx = 0;
 		for (int z = sz; z < ez; z++) {
 			for (int y = sy; y < ey; y++) {
@@ -98,7 +93,7 @@ namespace game {
 					if (tile && tile->appearance) {
 						osg::Matrix mat;
 						mat.makeTranslate(step.x()*x, step.y()*y, step.z()*z);
-						mat.postMult(mat0);
+						applyTransform(mat);
 
 						osg::MatrixTransform *trans = new osg::MatrixTransform;
 						trans->setMatrix(mat);
@@ -113,18 +108,10 @@ namespace game {
 		_appearance = group;
 	}
 
-	void MapData::getTransform(const osg::Vec3i& p, osg::Matrix& ret) const {
-		ret.makeTranslate(step.x()*p.x(), step.y()*p.y(), step.z()*p.z());
-		ret.postMultScale(scale);
-		ret.postMultRotate(osg::Quat(rot.x(), osg::X_AXIS, rot.y(), osg::Y_AXIS, rot.z(), osg::Z_AXIS));
-		ret.postMultTranslate(pos);
-	}
-
-	void MapData::getTransform(const osg::Vec3& p, osg::Matrix& ret) const {
-		ret.makeTranslate(step.x()*p.x(), step.y()*p.y(), step.z()*p.z());
-		ret.postMultScale(scale);
-		ret.postMultRotate(osg::Quat(rot.x(), osg::X_AXIS, rot.y(), osg::Y_AXIS, rot.z(), osg::Z_AXIS));
-		ret.postMultTranslate(pos);
+	void MapData::computeTransform() {
+		_transform.makeScale(scale);
+		_transform.postMultRotate(osg::Quat(rot.x(), osg::X_AXIS, rot.y(), osg::Y_AXIS, rot.z(), osg::Z_AXIS));
+		_transform.postMultTranslate(pos);
 	}
 
 	void MapData::init(Level* parent){
