@@ -10,6 +10,7 @@
 #include <osg/PolygonOffset>
 #include <osg/LOD>
 #include <osg/CullFace>
+#include <osgGA/GUIEventHandler>
 #include <osgViewer/ViewerEventHandlers>
 #include <osgFX/SpecularHighlights>
 #include <osgFX/Scribe>
@@ -22,7 +23,7 @@
 using namespace game;
 using namespace geom;
 
-osg::Node* test(){
+game::Level* test(){
 	//create geometry
 	osg::ref_ptr<osg::Geode> geode = new osg::Geode;
 	{
@@ -212,23 +213,63 @@ osg::Node* test(){
 	osgDB::writeObjectFile(*lvs, "out.osgt");
 	osgDB::writeObjectFile(*lvs, "out.osgx");
 
-	level->init();
-	level->createInstance();
-	return level->_appearance.release();
+	lvs = NULL;
+	return level.release();
 }
 
-osg::Node* test2(){
+game::Level* test2(){
 	osg::ref_ptr<osg::Object> obj = osgDB::readObjectFile("out.osgb");
 	osg::ref_ptr<game::LevelCollection> lvs = dynamic_cast<game::LevelCollection*>(obj.get());
-	lvs->levels[0]->createInstance();
-	return lvs->levels[0]->_appearance.release();
+	osg::ref_ptr<game::Level> level = lvs->levels[0];
+	lvs = NULL;
+	return level.release();
 }
+
+class TestController : public osgGA::GUIEventHandler {
+public:
+	TestController(game::Level* lv)
+		: level(lv)
+	{
+
+	}
+
+	virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa) {
+		switch (ea.getEventType()) {
+		case osgGA::GUIEventAdapter::KEYDOWN:
+			switch (ea.getKey()) {
+			case osgGA::GUIEventAdapter::KEY_Up:
+				OSG_NOTICE << "W" << std::flush;
+				break;
+			case osgGA::GUIEventAdapter::KEY_Down:
+				OSG_NOTICE << "S" << std::flush;
+				break;
+			case osgGA::GUIEventAdapter::KEY_Left:
+				OSG_NOTICE << "A" << std::flush;
+				break;
+			case osgGA::GUIEventAdapter::KEY_Right:
+				OSG_NOTICE << "D" << std::flush;
+				break;
+			default:
+				return false;
+			}
+			break;
+		default:
+			return false;
+		}
+		return true;
+	}
+public:
+	osg::ref_ptr<game::Level> level;
+};
 
 int main(int argc, char** argv){
 	osgViewer::Viewer viewer;
 
 	//test
-	osg::ref_ptr<osg::Node> node = test();
+	osg::ref_ptr<game::Level> level = test();
+	level->init();
+	level->createInstance();
+	osg::ref_ptr<osg::Node> node = level->_appearance;
 
 	//osg::ref_ptr<osg::Material> mat = new osg::Material;
 	//mat->setAmbient(osg::Material::FRONT_AND_BACK, osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
@@ -249,6 +290,7 @@ int main(int argc, char** argv){
 
 	viewer.setRunMaxFrameRate(30.0);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
+	viewer.addEventHandler(new TestController(level.get()));
 
 	viewer.setUpViewInWindow(64, 64, 800, 600);
 
