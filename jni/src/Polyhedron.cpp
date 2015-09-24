@@ -177,20 +177,47 @@ namespace game {
 		switch (shape) {
 		case CUBOID:
 			if (customShapeEnabled) {
-				//TODO: custom shape
+				int idx = 0;
+
+				for (int z = lbound.z(); z < lbound.z() + size.z(); z++) {
+					for (int y = lbound.y(); y < lbound.y() + size.y(); y++) {
+						for (int x = lbound.x(); x < lbound.x() + size.x(); x++) {
+							unsigned char c = customShape[idx];
+
+							//TODO: block type
+							switch (c) {
+							case SOLID:
+								//test only
+								geode->addDrawable(geom::createCube(
+									osg::Vec3(x, y, z),
+									osg::Vec3(x + 1, y + 1, z + 1),
+									false,
+									0.05f,
+									osg::Vec3(0.3f, 0.3f, 0.3f)
+									));
+								break;
+							}
+
+							idx++;
+						}
+					}
+				}
 			} else {
-				unsigned char c = SOLID;
-				if (!customShape.empty()) c = customShape[0];
+				unsigned char c = customShape[0];
 
 				//TODO: block type
-				//test only
-				geode->addDrawable(geom::createCube(
-					osg::Vec3(lbound.x(), lbound.y(), lbound.z()),
-					osg::Vec3(lbound.x() + size.x(), lbound.y() + size.y(), lbound.z() + size.z()),
-					false,
-					0.05f,
-					osg::Vec3(0.3f, 0.3f, 0.3f)
-					));
+				switch (c) {
+				case SOLID:
+					//test only
+					geode->addDrawable(geom::createCube(
+						osg::Vec3(lbound.x(), lbound.y(), lbound.z()),
+						osg::Vec3(lbound.x() + size.x(), lbound.y() + size.y(), lbound.z() + size.z()),
+						false,
+						0.05f,
+						osg::Vec3(0.3f, 0.3f, 0.3f)
+						));
+					break;
+				}
 			}
 			break;
 		}

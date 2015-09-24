@@ -201,7 +201,9 @@ game::Level* test(){
 	poly->controller = poly->PLAYER;
 	poly->pos.map = "m1";
 	poly->pos.pos.set(1, 1, 0);
-	poly->resize(osg::Vec3i(-1, -1, -1), osg::Vec3i(1, 2, 3), false, false); //test
+	poly->pos.flags = poly->pos.ROT_YXZ | poly->pos.UPPER_Y;
+	poly->resize(osg::Vec3i(-1, -1, -1), osg::Vec3i(1, 2, 3), true, false); //test
+	poly->customShape[3] = 0;
 	level->addPolyhedron(poly.get());
 
 	//create a level collection
@@ -295,7 +297,7 @@ int main(int argc, char** argv){
 	osg::Vec3 e = c + osg::Vec3(-1, -3, 2)*0.9f* mirror->getBound().radius();
 
 	viewer.getCamera()->setViewMatrixAsLookAt(e, c, osg::Vec3d(0, 0, 1));
-	viewer.getCamera()->setAllowEventFocus(false);
+	//viewer.getCamera()->setAllowEventFocus(false);
 
 	viewer.setRunMaxFrameRate(30.0);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
