@@ -201,6 +201,7 @@ game::Level* test(){
 	poly->controller = poly->PLAYER;
 	poly->pos.map = "m1";
 	poly->pos.pos.set(1, 1, 0);
+	poly->resize(osg::Vec3i(-1, -1, -1), osg::Vec3i(1, 2, 3), false, false); //test
 	level->addPolyhedron(poly.get());
 
 	//create a level collection

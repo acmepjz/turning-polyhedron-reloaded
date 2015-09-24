@@ -64,16 +64,8 @@ namespace game {
 		}
 		for (Polyhedra::iterator it = polyhedra.begin(); it != polyhedra.end(); ++it) {
 			(*it)->createInstance();
-
-			osg::Matrix mat;
-			mat.makeIdentity();
-
-			//ad-hoc get transformation matrix
-			if ((*it)->pos._map) (*it)->pos._map->getTransform((*it)->pos.pos, mat);
-
-			osg::ref_ptr<osg::MatrixTransform> trans = new osg::MatrixTransform(mat);
-			trans->addChild((*it)->_appearance);
-			gp->addChild(trans);
+			(*it)->updateTransform(this);
+			gp->addChild((*it)->_trans);
 		}
 		_appearance = gp;
 	}

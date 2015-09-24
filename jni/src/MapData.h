@@ -57,15 +57,15 @@ namespace game {
 			ret.postMult(_transform);
 		}
 
-		///get the transformation matrix of specified position (integer coordinate).
-		void getTransform(const osg::Vec3i& p, osg::Matrix& ret) const {
-			ret.makeTranslate(step.x()*p.x(), step.y()*p.y(), step.z()*p.z());
+		///apply transformation matrix of specified position (integer coordinate).
+		void applyTransform(const osg::Vec3i& p, osg::Matrix& ret) const {
+			ret.postMultTranslate(osg::Vec3(step.x()*p.x(), step.y()*p.y(), step.z()*p.z()));
 			applyTransform(ret);
 		}
 
-		///get the transformation matrix of specified position (float coordinate).
-		void getTransform(const osg::Vec3& p, osg::Matrix& ret) const {
-			ret.makeTranslate(step.x()*p.x(), step.y()*p.y(), step.z()*p.z());
+		///apply transformation matrix of specified position (float coordinate).
+		void applyTransform(const osg::Vec3& p, osg::Matrix& ret) const {
+			ret.postMultTranslate(osg::Vec3(step.x()*p.x(), step.y()*p.y(), step.z()*p.z()));
 			applyTransform(ret);
 		}
 
@@ -105,7 +105,7 @@ namespace game {
 
 	/// represents a position in a map.
 
-	struct MapPosition {
+	class MapPosition {
 	public:
 		MapPosition() :
 			_map(NULL)
@@ -115,6 +115,15 @@ namespace game {
 			return map != other.map || pos != other.pos;
 		}
 		void init(Level* parent);
+
+		///apply transform to the specified matrix.
+		void applyTransform(osg::Matrix& ret) const {
+			if (_map) {
+				_map->applyTransform(pos, ret);
+			} else {
+				ret.postMultTranslate(osg::Vec3(pos.x(), pos.y(), pos.z()));
+			}
+		}
 	public:
 		std::string map;
 		osg::Vec3i pos;

@@ -3,9 +3,91 @@
 #include "Level.h"
 #include "SimpleGeometry.h"
 #include <osg/Geode>
+#include <osg/MatrixTransform>
 #include <osgDB/ObjectWrapper>
+#include <assert.h>
 
 namespace game {
+
+	void PolyhedronPosition::init(Level* parent){
+		MapPosition::init(parent);
+	}
+
+	void PolyhedronPosition::getCurrentPos(int flags, const Polyhedron* poly, int ret[7]) {
+		osg::Vec3i currentOrigin(
+			(flags & 1) ? (poly->size.x() - 1) : 0,
+			(flags & 2) ? (poly->size.y() - 1) : 0,
+			(flags & 4) ? (poly->size.z() - 1) : 0);
+		ret[0] = (currentOrigin.z()*poly->size.y() + currentOrigin.y())*poly->size.x() + currentOrigin.x(); //new origin
+
+		assert(((1 << ((flags >> 3) & 3)) | (1 << ((flags >> 5) & 3)) | (1 << ((flags >> 7) & 3))) == 7);
+
+		for (int i = 0; i < 3; i++) {
+			int idx = (flags >> (3 + i * 2)) & 3; //new index, should be 0,1,2
+			ret[1 + i] = poly->size[idx]; //new size of dimension i
+
+			int delta = ((flags >> i) & 1) ? -1 : 1;
+			if (idx >= 1) delta *= poly->size.x();
+			if (idx >= 2) delta *= poly->size.y();
+			ret[4 + i] = delta; //new delta
+		}
+	}
+
+	void PolyhedronPosition::getCurrentPos(int flags, const Polyhedron* poly, osg::Vec3i ret[5]) {
+		osg::Vec3i currentOrigin(
+			(flags & 1) ? (poly->size.x() - 1) : 0,
+			(flags & 2) ? (poly->size.y() - 1) : 0,
+			(flags & 4) ? (poly->size.z() - 1) : 0);
+		ret[0] = currentOrigin + poly->lbound; //new origin
+
+		assert(((1 << ((flags >> 3) & 3)) | (1 << ((flags >> 5) & 3)) | (1 << ((flags >> 7) & 3))) == 7);
+
+		for (int i = 0; i < 3; i++) {
+			int idx = (flags >> (3 + i * 2)) & 3; //new index, should be 0,1,2
+			ret[1][i] = poly->size[idx]; //new size of dimension i
+
+			ret[2 + i] = osg::Vec3i();
+			ret[2 + i][idx] = ((flags >> i) & 1) ? -1 : 1; //new delta
+		}
+	}
+
+	void PolyhedronPosition::applyTransform(const Polyhedron* poly, osg::Matrix& ret) const {
+		ret.postMultTranslate(osg::Vec3(
+			(flags & 1) ? (poly->lbound.x() - poly->size.x()) : poly->lbound.x(),
+			(flags & 2) ? (poly->lbound.y() - poly->size.y()) : poly->lbound.y(),
+			(flags & 4) ? (poly->lbound.z() - poly->size.z()) : poly->lbound.z()));
+
+		ret.postMultScale(osg::Vec3(
+			(flags & 1) ? -1 : 1,
+			(flags & 2) ? -1 : 1,
+			(flags & 4) ? -1 : 1));
+
+		assert(((1 << ((flags >> 3) & 3)) | (1 << ((flags >> 5) & 3)) | (1 << ((flags >> 7) & 3))) == 7);
+
+		osg::Matrix mat = ret;
+
+		for (int i = 0; i < 3; i++) {
+			int idx = (flags >> (3 + i * 2)) & 3; //new index, should be 0,1,2
+			for (int j = 0; j < 4; j++) {
+				ret(j, i) = mat(j, idx);
+			}
+		}
+		for (int j = 0; j < 4; j++) {
+			ret(j, 3) = mat(j, 3);
+		}
+
+		MapPosition::applyTransform(ret);
+	}
+
+	osgDB::InputStream& operator>>(osgDB::InputStream& s, PolyhedronPosition& obj){
+		s >> (MapPosition&)obj >> obj.flags;
+		return s;
+	}
+
+	osgDB::OutputStream& operator<<(osgDB::OutputStream& s, const PolyhedronPosition& obj){
+		s << (const MapPosition&)obj << obj.flags;
+		return s;
+	}
 
 	Polyhedron::Polyhedron()
 		: shape(0)
@@ -114,6 +196,20 @@ namespace game {
 		}
 
 		_appearance = geode;
+
+		_trans = new osg::MatrixTransform;
+		_trans->addChild(geode.get());
+	}
+
+	void Polyhedron::updateTransform(Level* parent){
+		if (!_trans.valid() || pos._map == NULL) return;
+
+		osg::Matrix mat;
+
+		//ad-hoc get transformation matrix
+		pos.applyTransform(this, mat);
+
+		_trans->setMatrix(mat);
 	}
 
 	void Polyhedron::init(Level* parent){
@@ -140,7 +236,7 @@ namespace game {
 		ADD_INT_SERIALIZER(flags, 0);
 		ADD_INT_SERIALIZER(movement, 0);
 		ADD_INT_SERIALIZER(controller, 0);
-		ADD_REF_ANY_SERIALIZER(pos, MapPosition, MapPosition());
+		ADD_REF_ANY_SERIALIZER(pos, PolyhedronPosition, PolyhedronPosition());
 		ADD_VEC3I_SERIALIZER(lbound, osg::Vec3i());
 		ADD_VEC3I_SERIALIZER(size, osg::Vec3i(1, 1, 2));
 		ADD_BOOL_SERIALIZER(customShapeEnabled, false);
