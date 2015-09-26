@@ -114,6 +114,12 @@ namespace game {
 		_transform.postMultTranslate(pos);
 	}
 
+	bool MapData::isValidPosition(const osg::Vec3i& pos) const {
+		return pos.x() >= lbound.x() && pos.x() < lbound.x() + size.x()
+			&& pos.y() >= lbound.y() && pos.y() < lbound.y() + size.y()
+			&& pos.z() >= lbound.z() && pos.z() < lbound.z() + size.z();
+	}
+
 	void MapData::init(Level* parent){
 		computeTransform();
 
@@ -137,6 +143,22 @@ namespace game {
 			OSG_NOTICE << "[" __FUNCTION__ "] map id '" << map << " not found" << std::endl;
 			_map = NULL;
 		}
+	}
+
+	void MapPosition::move(MoveDirection dir, int count){
+		//TODO: adjacency
+		switch (dir) {
+		case MOVE_NEG_X: pos.x() -= count; break;
+		case MOVE_POS_X: pos.x() += count; break;
+		case MOVE_NEG_Y: pos.y() -= count; break;
+		case MOVE_POS_Y: pos.y() += count; break;
+		case MOVE_NEG_Z: pos.z() -= count; break;
+		case MOVE_POS_Z: pos.z() += count; break;
+		}
+	}
+
+	bool MapPosition::valid() const{
+		return _map && _map->isValidPosition(pos);
 	}
 
 	REG_OBJ_WRAPPER(game, MapData, "")

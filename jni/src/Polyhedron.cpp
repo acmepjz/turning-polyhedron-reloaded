@@ -13,41 +13,41 @@ namespace game {
 		MapPosition::init(parent);
 	}
 
-	void PolyhedronPosition::getCurrentPos(int flags, const Polyhedron* poly, int ret[7]) {
+	void PolyhedronPosition::getCurrentPos(int flags, const Polyhedron* poly, Idx& ret) {
 		osg::Vec3i currentOrigin(
 			(flags & 1) ? (poly->size.x() - 1) : 0,
 			(flags & 2) ? (poly->size.y() - 1) : 0,
 			(flags & 4) ? (poly->size.z() - 1) : 0);
-		ret[0] = (currentOrigin.z()*poly->size.y() + currentOrigin.y())*poly->size.x() + currentOrigin.x(); //new origin
+		ret.origin = (currentOrigin.z()*poly->size.y() + currentOrigin.y())*poly->size.x() + currentOrigin.x(); //new origin
 
 		assert(((1 << ((flags >> 3) & 3)) | (1 << ((flags >> 5) & 3)) | (1 << ((flags >> 7) & 3))) == 7);
 
 		for (int i = 0; i < 3; i++) {
 			int idx = (flags >> (3 + i * 2)) & 3; //new index, should be 0,1,2
-			ret[1 + i] = poly->size[idx]; //new size of dimension i
+			ret.size[i] = poly->size[idx]; //new size of dimension i
 
 			int delta = ((flags >> i) & 1) ? -1 : 1;
 			if (idx >= 1) delta *= poly->size.x();
 			if (idx >= 2) delta *= poly->size.y();
-			ret[4 + i] = delta; //new delta
+			ret.delta[i] = delta; //new delta
 		}
 	}
 
-	void PolyhedronPosition::getCurrentPos(int flags, const Polyhedron* poly, osg::Vec3i ret[5]) {
+	void PolyhedronPosition::getCurrentPos(int flags, const Polyhedron* poly, Pos& ret) {
 		osg::Vec3i currentOrigin(
 			(flags & 1) ? (poly->size.x() - 1) : 0,
 			(flags & 2) ? (poly->size.y() - 1) : 0,
 			(flags & 4) ? (poly->size.z() - 1) : 0);
-		ret[0] = currentOrigin + poly->lbound; //new origin
+		ret.origin = currentOrigin + poly->lbound; //new origin
 
 		assert(((1 << ((flags >> 3) & 3)) | (1 << ((flags >> 5) & 3)) | (1 << ((flags >> 7) & 3))) == 7);
 
 		for (int i = 0; i < 3; i++) {
 			int idx = (flags >> (3 + i * 2)) & 3; //new index, should be 0,1,2
-			ret[1][i] = poly->size[idx]; //new size of dimension i
+			ret.size[i] = poly->size[idx]; //new size of dimension i
 
-			ret[2 + i] = osg::Vec3i();
-			ret[2 + i][idx] = ((flags >> i) & 1) ? -1 : 1; //new delta
+			ret.delta[i] = osg::Vec3i();
+			ret.delta[i][idx] = ((flags >> i) & 1) ? -1 : 1; //new delta
 		}
 	}
 
@@ -77,6 +77,49 @@ namespace game {
 		}
 
 		MapPosition::applyTransform(ret);
+	}
+
+	void PolyhedronPosition::move(const Polyhedron* poly, MoveDirection dir){
+		//get current size
+		osg::Vec3i size, oflags, nflags;
+		for (int i = 0; i < 3; i++) {
+			int idx = (flags >> (3 + i * 2)) & 3; //new index, should be 0,1,2
+			oflags[i] = idx;
+			size[i] = poly->size[idx]; //new size of dimension i
+		}
+
+#define NFLAGS(X,Y,Z) nflags.x() = oflags.X(); nflags.y() = oflags.Y(); nflags.z() = oflags.Z()
+#define NORIGIN(X) flags ^= (1 << oflags.X())
+
+		switch (dir) {
+		case MOVE_NEG_X:
+			pos.x() -= size.z();
+			NORIGIN(z);
+			NFLAGS(z, y, x);
+			break;
+		case MOVE_POS_X:
+			pos.x() += size.x();
+			NORIGIN(x);
+			NFLAGS(z, y, x);
+			break;
+		case MOVE_NEG_Y:
+			pos.y() -= size.z();
+			NORIGIN(z);
+			NFLAGS(x, z, y);
+			break;
+		case MOVE_POS_Y:
+			pos.y() += size.y();
+			NORIGIN(y);
+			NFLAGS(x, z, y);
+			break;
+		default:
+			return;
+		}
+
+#undef NFLAGS
+#undef NORIGIN
+
+		flags = (flags & UPPER_MASK) | (nflags.x() << 3) | (nflags.y() << 5) | (nflags.z() << 7);
 	}
 
 	osgDB::InputStream& operator>>(osgDB::InputStream& s, PolyhedronPosition& obj){
@@ -228,7 +271,7 @@ namespace game {
 		_trans->addChild(geode.get());
 	}
 
-	void Polyhedron::updateTransform(Level* parent){
+	void Polyhedron::updateTransform(){
 		if (!_trans.valid() || pos._map == NULL) return;
 
 		osg::Matrix mat;

@@ -64,7 +64,7 @@ namespace game {
 		}
 		for (Polyhedra::iterator it = polyhedra.begin(); it != polyhedra.end(); ++it) {
 			(*it)->createInstance();
-			(*it)->updateTransform(this);
+			(*it)->updateTransform();
 			gp->addChild((*it)->_trans);
 		}
 		_appearance = gp;

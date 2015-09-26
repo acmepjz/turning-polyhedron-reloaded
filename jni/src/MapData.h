@@ -18,6 +18,20 @@ namespace osgDB {
 
 namespace game {
 
+	/// The move direction.
+	enum MoveDirection {
+		MOVE_NEG_X = 0,
+		MOVE_POS_X = 1,
+		MOVE_NEG_Y = 2,
+		MOVE_POS_Y = 3,
+		MOVE_NEG_Z = 4,
+		MOVE_POS_Z = 5,
+		MOVE_LEFT = MOVE_NEG_X,
+		MOVE_RIGHT = MOVE_POS_X,
+		MOVE_UP = MOVE_NEG_Y,
+		MOVE_DOWN = MOVE_POS_Y,
+	};
+
 	class Level;
 
 	/// represents a block of map data in a map.
@@ -50,6 +64,7 @@ namespace game {
 
 		void resize(const osg::Vec3i& lbound_, const osg::Vec3i& size_, bool preserved);
 
+		///calculate the \ref _transform matrix.
 		void computeTransform();
 
 		///apply transform to the specified matrix.
@@ -73,6 +88,9 @@ namespace game {
 		void createInstance();
 
 		void init(Level* parent);
+
+		///check if the position is valid
+		bool isValidPosition(const osg::Vec3i& pos) const;
 
 	public:
 		std::string id; //!< id, used to find this block
@@ -124,6 +142,12 @@ namespace game {
 				ret.postMultTranslate(osg::Vec3(pos.x(), pos.y(), pos.z()));
 			}
 		}
+
+		///move to the adjacent position (no sanity check)
+		void move(MoveDirection dir, int count = 1);
+
+		///check if the position is valid
+		bool valid() const;
 	public:
 		std::string map;
 		osg::Vec3i pos;

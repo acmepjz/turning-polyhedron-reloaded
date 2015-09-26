@@ -41,6 +41,18 @@ namespace game {
 			ROT_ZYX = (2 << 3) | (1 << 5) | (0 << 7), //!< mirrored
 			ROT_MASK = (3 << 3) | (3 << 5) | (3 << 7),
 		};
+		/// used in \ref getCurrentPos.
+		struct Pos {
+			osg::Vec3i origin; //!< current origin
+			osg::Vec3i size; //!< current size
+			osg::Vec3i delta[3]; //!< current delta x,y,z
+		};
+		/// used in \ref getCurrentPos.
+		struct Idx {
+			int origin; //!< index of current origin
+			osg::Vec3i size; //!< current size
+			osg::Vec3i delta; //!< current delta x,y,z
+		};
 	public:
 		PolyhedronPosition() :
 			flags(ROT_XYZ)
@@ -51,20 +63,20 @@ namespace game {
 		/** Get current position.
 		\param[in] flags The \ref flags.
 		\param[in] poly The polyhedron (should be cuboid).
-		\param[out] ret The result, 0=current origin, 1,2,3=current size, 4,5,6=current delta x,y,z
+		\param[out] ret The result
 		*/
-		static void getCurrentPos(int flags,const Polyhedron* poly, int ret[7]);
-		void getCurrentPos(const Polyhedron* poly, int ret[7]) const {
+		static void getCurrentPos(int flags, const Polyhedron* poly, Pos& ret);
+		void getCurrentPos(const Polyhedron* poly, Pos& ret) const {
 			return getCurrentPos(flags, poly, ret);
 		}
 
 		/** Get current position.
 		\param[in] flags The \ref flags.
 		\param[in] poly The polyhedron (should be cuboid).
-		\param[out] ret The result, 0=current origin, 1=current size, 2,3,4=current delta x,y,z
+		\param[out] ret The result
 		*/
-		static void getCurrentPos(int flags, const Polyhedron* poly, osg::Vec3i ret[5]);
-		void getCurrentPos(const Polyhedron* poly, osg::Vec3i ret[5]) const {
+		static void getCurrentPos(int flags, const Polyhedron* poly, Idx& ret);
+		void getCurrentPos(const Polyhedron* poly, Idx& ret) const {
 			return getCurrentPos(flags, poly, ret);
 		}
 
@@ -73,6 +85,9 @@ namespace game {
 		\param ret The matrix (in, out).
 		*/
 		void applyTransform(const Polyhedron* poly, osg::Matrix& ret) const;
+
+		///move to the adjacent position (no sanity check)
+		void move(const Polyhedron* poly, MoveDirection dir);
 	public:
 		/** Flags.
 		* * If the shape is cuboid:
@@ -171,7 +186,7 @@ namespace game {
 
 		///test only
 		void createInstance();
-		void updateTransform(Level* parent);
+		void updateTransform();
 
 		void init(Level* parent);
 

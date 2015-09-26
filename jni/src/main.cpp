@@ -202,7 +202,7 @@ game::Level* test(){
 	poly->pos.map = "m1";
 	poly->pos.pos.set(1, 1, 0);
 	poly->pos.flags = poly->pos.ROT_YXZ | poly->pos.UPPER_Y;
-	poly->resize(osg::Vec3i(-1, -1, -1), osg::Vec3i(1, 2, 3), true, false); //test
+	poly->resize(osg::Vec3i(-1, -1, -1), osg::Vec3i(1, 2, 4), true, false); //test
 	poly->customShape[3] = 0;
 	level->addPolyhedron(poly.get());
 
@@ -237,24 +237,29 @@ public:
 	}
 
 	virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa) {
+		if (!level.valid() || level->polyhedra.empty()) return false;
+
+		game::Polyhedron *poly = level->polyhedra[0];
+
 		switch (ea.getEventType()) {
 		case osgGA::GUIEventAdapter::KEYDOWN:
 			switch (ea.getKey()) {
 			case osgGA::GUIEventAdapter::KEY_Up:
-				OSG_NOTICE << "W" << std::flush;
+				poly->pos.move(poly, MOVE_UP);
 				break;
 			case osgGA::GUIEventAdapter::KEY_Down:
-				OSG_NOTICE << "S" << std::flush;
+				poly->pos.move(poly, MOVE_DOWN);
 				break;
 			case osgGA::GUIEventAdapter::KEY_Left:
-				OSG_NOTICE << "A" << std::flush;
+				poly->pos.move(poly, MOVE_LEFT);
 				break;
 			case osgGA::GUIEventAdapter::KEY_Right:
-				OSG_NOTICE << "D" << std::flush;
+				poly->pos.move(poly, MOVE_RIGHT);
 				break;
 			default:
 				return false;
 			}
+			poly->updateTransform();
 			break;
 		default:
 			return false;
@@ -297,7 +302,7 @@ int main(int argc, char** argv){
 	osg::Vec3 e = c + osg::Vec3(-1, -3, 2)*0.9f* mirror->getBound().radius();
 
 	viewer.getCamera()->setViewMatrixAsLookAt(e, c, osg::Vec3d(0, 0, 1));
-	//viewer.getCamera()->setAllowEventFocus(false);
+	viewer.getCamera()->setAllowEventFocus(false);
 
 	viewer.setRunMaxFrameRate(30.0);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
