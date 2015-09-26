@@ -4,8 +4,8 @@
 #include "SimpleGeometry.h"
 #include <osg/Geode>
 #include <osg/MatrixTransform>
+#include <osgGA/GUIEventHandler>
 #include <osgDB/ObjectWrapper>
-#include <assert.h>
 
 namespace game {
 
@@ -19,8 +19,6 @@ namespace game {
 			(flags & 2) ? (poly->size.y() - 1) : 0,
 			(flags & 4) ? (poly->size.z() - 1) : 0);
 		ret.origin = (currentOrigin.z()*poly->size.y() + currentOrigin.y())*poly->size.x() + currentOrigin.x(); //new origin
-
-		assert(((1 << ((flags >> 3) & 3)) | (1 << ((flags >> 5) & 3)) | (1 << ((flags >> 7) & 3))) == 7);
 
 		for (int i = 0; i < 3; i++) {
 			int idx = (flags >> (3 + i * 2)) & 3; //new index, should be 0,1,2
@@ -40,8 +38,6 @@ namespace game {
 			(flags & 4) ? (poly->size.z() - 1) : 0);
 		ret.origin = currentOrigin + poly->lbound; //new origin
 
-		assert(((1 << ((flags >> 3) & 3)) | (1 << ((flags >> 5) & 3)) | (1 << ((flags >> 7) & 3))) == 7);
-
 		for (int i = 0; i < 3; i++) {
 			int idx = (flags >> (3 + i * 2)) & 3; //new index, should be 0,1,2
 			ret.size[i] = poly->size[idx]; //new size of dimension i
@@ -51,7 +47,7 @@ namespace game {
 		}
 	}
 
-	void PolyhedronPosition::applyTransform(const Polyhedron* poly, osg::Matrix& ret) const {
+	void PolyhedronPosition::applyTransform(const Polyhedron* poly, osg::Matrix& ret, bool useMapPosition) const {
 		ret.postMultTranslate(osg::Vec3(
 			(flags & 1) ? (poly->lbound.x() - poly->size.x()) : poly->lbound.x(),
 			(flags & 2) ? (poly->lbound.y() - poly->size.y()) : poly->lbound.y(),
@@ -62,22 +58,70 @@ namespace game {
 			(flags & 2) ? -1 : 1,
 			(flags & 4) ? -1 : 1));
 
-		assert(((1 << ((flags >> 3) & 3)) | (1 << ((flags >> 5) & 3)) | (1 << ((flags >> 7) & 3))) == 7);
-
-		osg::Matrix mat = ret;
+		osg::Matrix tmp = ret;
 
 		for (int i = 0; i < 3; i++) {
 			int idx = (flags >> (3 + i * 2)) & 3; //new index, should be 0,1,2
 			for (int j = 0; j < 4; j++) {
-				ret(j, i) = mat(j, idx);
+				ret(j, i) = tmp(j, idx);
 			}
 		}
 		for (int j = 0; j < 4; j++) {
-			ret(j, 3) = mat(j, 3);
+			ret(j, 3) = tmp(j, 3);
 		}
 
-		MapPosition::applyTransform(ret);
+		if (useMapPosition) MapPosition::applyTransform(ret);
 	}
+
+	void PolyhedronPosition::getTransformAnimation(const Polyhedron* poly, MoveDirection dir, osg::Matrix& mat1, osg::Quat& quat, osg::Matrix& mat2, bool useMapPosition) const {
+		mat1.postMultTranslate(osg::Vec3(
+			(flags & 1) ? (poly->lbound.x() - poly->size.x()) : poly->lbound.x(),
+			(flags & 2) ? (poly->lbound.y() - poly->size.y()) : poly->lbound.y(),
+			(flags & 4) ? (poly->lbound.z() - poly->size.z()) : poly->lbound.z()));
+
+		mat1.postMultScale(osg::Vec3(
+			(flags & 1) ? -1 : 1,
+			(flags & 2) ? -1 : 1,
+			(flags & 4) ? -1 : 1));
+
+		osg::Matrix tmp = mat1;
+		osg::Vec3i size;
+
+		for (int i = 0; i < 3; i++) {
+			int idx = (flags >> (3 + i * 2)) & 3; //new index, should be 0,1,2
+			size[i] = poly->size[idx]; //new size of dimension i
+			for (int j = 0; j < 4; j++) {
+				mat1(j, i) = tmp(j, idx);
+			}
+		}
+		for (int j = 0; j < 4; j++) {
+			mat1(j, 3) = tmp(j, 3);
+		}
+
+		osg::Vec3 offset;
+		switch (dir) {
+		case MOVE_NEG_X:
+			quat.makeRotate(osg::Vec3(0, 0, 1), osg::Vec3(-1, 0, 0));
+			break;
+		case MOVE_POS_X:
+			offset.x() = size.x();
+			quat.makeRotate(osg::Vec3(0, 0, 1), osg::Vec3(1, 0, 0));
+			break;
+		case MOVE_NEG_Y:
+			quat.makeRotate(osg::Vec3(0, 0, 1), osg::Vec3(0, -1, 0));
+			break;
+		case MOVE_POS_Y:
+			offset.y() = size.y();
+			quat.makeRotate(osg::Vec3(0, 0, 1), osg::Vec3(0, 1, 0));
+			break;
+		}
+
+		mat1.postMultTranslate(-offset);
+
+		mat2.makeTranslate(offset);
+		if (useMapPosition) MapPosition::applyTransform(mat2);
+	}
+
 
 	void PolyhedronPosition::move(const Polyhedron* poly, MoveDirection dir){
 		//get current size
@@ -131,6 +175,40 @@ namespace game {
 		s << (const MapPosition&)obj << obj.flags;
 		return s;
 	}
+
+	class TestPolyhedronAnimator : public osgGA::GUIEventHandler {
+	public:
+		TestPolyhedronAnimator(Polyhedron* poly, MoveDirection dir)
+			: _poly(poly)
+			, _t(0)
+		{
+			poly->pos.getTransformAnimation(poly, MoveDirection(dir ^ 1), _mat1, _quat, _mat2);
+		}
+
+		virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa) {
+			//TODO: remove event callback after animation finished
+			if (_t < 8 && ea.getEventType() == osgGA::GUIEventAdapter::FRAME) {
+				_t++;
+				if (_t >= 8) {
+					_poly->updateTransform();
+				} else {
+					osg::Matrix mat = _mat1;
+					osg::Quat q;
+					q.slerp(_t*0.125f, _quat, osg::Quat());
+					mat.postMultRotate(q);
+					mat.postMult(_mat2);
+					_poly->_trans->setMatrix(mat);
+				}
+			}
+
+			return false;
+		}
+	private:
+		osg::ref_ptr<Polyhedron> _poly;
+		osg::Matrix _mat1, _mat2;
+		osg::Quat _quat;
+		int _t;
+	};
 
 	Polyhedron::Polyhedron()
 		: shape(0)
@@ -280,6 +358,14 @@ namespace game {
 		pos.applyTransform(this, mat);
 
 		_trans->setMatrix(mat);
+	}
+
+	void Polyhedron::move(MoveDirection dir){
+		if (!_trans.valid() || pos._map == NULL) return;
+
+		pos.move(this, dir);
+
+		_trans->setEventCallback(new TestPolyhedronAnimator(this, dir));
 	}
 
 	void Polyhedron::init(Level* parent){

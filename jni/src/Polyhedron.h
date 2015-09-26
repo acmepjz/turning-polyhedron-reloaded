@@ -82,9 +82,21 @@ namespace game {
 
 		/** apply transform to the specified matrix.
 		\param[in] poly The polyhedron (should be cuboid).
-		\param ret The matrix (in, out).
+		\param[in,out] ret The matrix.
+		\param[in,optional] useMapPosition use map position, otherwise the polyhedron is at origin.
 		*/
-		void applyTransform(const Polyhedron* poly, osg::Matrix& ret) const;
+		void applyTransform(const Polyhedron* poly, osg::Matrix& ret, bool useMapPosition = true) const;
+
+		/** get the transform of polyhedron animation.
+		The transform matrix is `mat1*slerp(1,quat,t)*mat2`.
+		\param[in] poly The polyhedron (should be cuboid).
+		\param[in] dir The direction.
+		\param[in,out] mat1 The matrix.
+		\param[out] quat The rotation.
+		\param[out] mat2 The matrix.
+		\param[in,optional] useMapPosition use map position, otherwise the polyhedron is at origin.
+		*/
+		void getTransformAnimation(const Polyhedron* poly, MoveDirection dir, osg::Matrix& mat1, osg::Quat& quat, osg::Matrix& mat2, bool useMapPosition = true) const;
 
 		///move to the adjacent position (no sanity check)
 		void move(const Polyhedron* poly, MoveDirection dir);
@@ -186,7 +198,12 @@ namespace game {
 
 		///test only
 		void createInstance();
+
+		///update transform according to \ref pos.
 		void updateTransform();
+
+		///move to the adjacent position (experimental).
+		void move(MoveDirection dir);
 
 		void init(Level* parent);
 

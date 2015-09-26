@@ -245,21 +245,20 @@ public:
 		case osgGA::GUIEventAdapter::KEYDOWN:
 			switch (ea.getKey()) {
 			case osgGA::GUIEventAdapter::KEY_Up:
-				poly->pos.move(poly, MOVE_UP);
+				poly->move(MOVE_UP);
 				break;
 			case osgGA::GUIEventAdapter::KEY_Down:
-				poly->pos.move(poly, MOVE_DOWN);
+				poly->move(MOVE_DOWN);
 				break;
 			case osgGA::GUIEventAdapter::KEY_Left:
-				poly->pos.move(poly, MOVE_LEFT);
+				poly->move(MOVE_LEFT);
 				break;
 			case osgGA::GUIEventAdapter::KEY_Right:
-				poly->pos.move(poly, MOVE_RIGHT);
+				poly->move(MOVE_RIGHT);
 				break;
 			default:
 				return false;
 			}
-			poly->updateTransform();
 			break;
 		default:
 			return false;
