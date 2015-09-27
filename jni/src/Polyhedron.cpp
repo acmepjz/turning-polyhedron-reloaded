@@ -2,6 +2,7 @@
 #include "ObjectType.h"
 #include "Level.h"
 #include "SimpleGeometry.h"
+#include "Rect.h"
 #include <osg/Geode>
 #include <osg/MatrixTransform>
 #include <osgGA/GUIEventHandler>
@@ -360,12 +361,95 @@ namespace game {
 		_trans->setMatrix(mat);
 	}
 
-	void Polyhedron::move(MoveDirection dir){
-		if (!_trans.valid() || pos._map == NULL) return;
+	bool Polyhedron::move(MoveDirection dir){
+		if (!_trans.valid() || pos._map == NULL) return false;
 
-		pos.move(this, dir);
+		PolyhedronPosition newPos = pos;
+		newPos.move(this, dir);
 
-		_trans->setEventCallback(new TestPolyhedronAnimator(this, dir));
+		//TODO: check if it hits something during rolling, not just end state
+		if (valid(newPos)) {
+			pos = newPos;
+			_trans->setEventCallback(new TestPolyhedronAnimator(this, dir));
+			return true;
+		}
+
+		return false;
+	}
+
+	bool Polyhedron::valid(const PolyhedronPosition& pos) const {
+		//get current position
+		PolyhedronPosition::Idx iii;
+		pos.getCurrentPos(this, iii);
+
+		//used if stable mode is SPANNABLE
+		util::Rect<int> r(iii.size.x() + 1, iii.size.y() + 1, -1, -1);
+
+		//used if stable mode is 0 or PARTIAL_FLOATING
+		int suppCount = 0, blockCount = 0;
+
+		//check bottom blocks of polyhedron
+		//FIXME: should check if non-bottom blocks are blocked
+		int yy = pos.pos.y(); //xx,yy,zz=coord in map space
+		const int sz = pos._map->lbound.z();
+		const int ez = pos._map->lbound.z() + pos._map->size.z();
+
+		//x,y=coord in polyhedron space
+		for (int y = 0; y < iii.size.y(); y++) {
+			int idx = iii.origin;
+			int xx = pos.pos.x();
+
+			for (int x = 0; x < iii.size.x(); x++) {
+				unsigned char c = customShape[customShapeEnabled ? idx : 0];
+
+				if (c) {
+					bool needSupport = c == SOLID;
+					bool supported = false;
+
+					for (int zz = sz; zz < ez; zz++) {
+						TileType* t = pos._map->get(xx, yy, zz);
+						if (t) {
+							if (pos.pos.z() >= zz + t->blockedArea[0] && pos.pos.z() < zz + t->blockedArea[1]) {
+								//it is blocked
+								return false;
+							} else if (needSupport && (t->flags & TileType::SUPPORTER) && pos.pos.z() == zz + t->blockedArea[1]) {
+								//it is supported
+								supported = true;
+							}
+						}
+					}
+
+					if (needSupport) {
+						blockCount++; //count solid blocks
+						if (supported) {
+							suppCount++; //count supported blocks
+							r.expandBy(x, y); //expand bounding box
+						}
+					}
+				}
+
+				idx += iii.delta.x();
+				xx++;
+			}
+
+			iii.origin += iii.delta.y();
+			yy++;
+		}
+
+		//check if it is stable
+		if (flags & FLOATING) {
+			return true;
+		} else if (flags & SPANNABLE) {
+			if (r.left <= 0 && r.top <= 0 && r.right >= iii.size.x() - 1 && r.bottom >= iii.size.y() - 1) {
+				return true;
+			}
+		} else if (flags & PARTIAL_FLOATING) {
+			if (suppCount >= 1) return true;
+		} else {
+			if (suppCount >= blockCount) return true;
+		}
+
+		return false;
 	}
 
 	void Polyhedron::init(Level* parent){

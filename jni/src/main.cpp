@@ -196,14 +196,14 @@ game::Level* test(){
 	//create a polyhedron (test only)
 	osg::ref_ptr<game::Polyhedron> poly = new game::Polyhedron;
 	poly->id = "p1";
-	poly->flags = poly->MAIN | poly->FRAGILE | poly->SUPPORTABLE | poly->SUPPORTER | poly->VISIBLE;
+	poly->flags = poly->MAIN | poly->FRAGILE | poly->SUPPORTER | poly->VISIBLE;
 	poly->movement = poly->ROLLING_ALL;
 	poly->controller = poly->PLAYER;
 	poly->pos.map = "m1";
 	poly->pos.pos.set(1, 1, 0);
-	poly->pos.flags = poly->pos.ROT_YXZ | poly->pos.UPPER_Y;
+	/*poly->pos.flags = poly->pos.ROT_YXZ | poly->pos.UPPER_Y;
 	poly->resize(osg::Vec3i(-1, -1, -1), osg::Vec3i(1, 2, 4), true, false); //test
-	poly->customShape[3] = 0;
+	poly->customShape[3] = 0;*/
 	level->addPolyhedron(poly.get());
 
 	//create a level collection

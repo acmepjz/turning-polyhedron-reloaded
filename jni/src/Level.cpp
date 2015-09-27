@@ -71,6 +71,13 @@ namespace game {
 	}
 
 	void Level::initMaps(){
+		_polyhedra.clear();
+		for (Polyhedra::iterator it = polyhedra.begin(); it != polyhedra.end(); ++it) {
+			if (!(*it)->id.empty()) {
+				_polyhedra[(*it)->id] = *it;
+			}
+		}
+
 		for (MapDataMap::iterator it = maps.begin(); it != maps.end(); ++it) {
 			it->second->init(this);
 		}

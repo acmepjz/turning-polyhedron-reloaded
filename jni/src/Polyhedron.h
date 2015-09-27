@@ -58,6 +58,10 @@ namespace game {
 			flags(ROT_XYZ)
 		{
 		}
+		///ad-hoc, don't use
+		bool operator!=(const PolyhedronPosition& other) const {
+			return map != other.map || pos != other.pos || flags != other.flags;
+		}
 		void init(Level* parent);
 
 		/** Get current position.
@@ -83,7 +87,7 @@ namespace game {
 		/** apply transform to the specified matrix.
 		\param[in] poly The polyhedron (should be cuboid).
 		\param[in,out] ret The matrix.
-		\param[in,optional] useMapPosition use map position, otherwise the polyhedron is at origin.
+		\param[in] useMapPosition use map position, otherwise the polyhedron is at origin.
 		*/
 		void applyTransform(const Polyhedron* poly, osg::Matrix& ret, bool useMapPosition = true) const;
 
@@ -94,7 +98,7 @@ namespace game {
 		\param[in,out] mat1 The matrix.
 		\param[out] quat The rotation.
 		\param[out] mat2 The matrix.
-		\param[in,optional] useMapPosition use map position, otherwise the polyhedron is at origin.
+		\param[in] useMapPosition use map position, otherwise the polyhedron is at origin.
 		*/
 		void getTransformAnimation(const Polyhedron* poly, MoveDirection dir, osg::Matrix& mat1, osg::Quat& quat, osg::Matrix& mat2, bool useMapPosition = true) const;
 
@@ -136,12 +140,15 @@ namespace game {
 		enum PolyhedronShape {
 			CUBOID,
 		};
-		/// polyhedron flags
+		/** polyhedron flags.
+		* \note
+		* * PARTIAL_FLOATING, SPANNABLE, FLOATING are mutually exclusive.
+		*/
 		enum PolyhedronFlags {
 			DISCARDABLE = 0x1, //!< It can be killed without losing the game.
 			MAIN = 0x2, //!< Main block, used in winning condition (usually game wins when all main blocks go to the exit), and game logic (only main blocks can go to the exit and eat checkpoints).
 			FRAGILE = 0x4, //!< It will be killed when falling (in other words it can't fall).
-			SUPPORTABLE = 0x8, //!< It can be supported by other polyhedra. Without this flag it can only be supported by solid blocks in MapData.
+			PARTIAL_FLOATING = 0x8, //!< It is stable if any one of its block is supported (e.g. blocks in PuzzleBoy).
 			SUPPORTER = 0x10, //!< It can support other polyhedra.
 			TILTABLE = 0x20, //!< It can be tilted (experimental, buggy).
 			TILT_SUPPORTER = 0x40, //!< It can support other tilting polyhedra.
@@ -171,11 +178,11 @@ namespace game {
 			PLAYER, //!< It can only be controlled by player
 			ELEVATOR, //!< It can only be controlled when player is standing on it
 		};
-		/// used in customShape
+		/// used in \ref customShape
 		enum PolyhedronCell {
 			EMPTY, //!< empty
 			SOLID, //!< solid block
-			ANTENNA, //!< antenna
+			ANTENNA, //!< antenna, don't need to be supported
 		};
 	protected:
 		virtual ~Polyhedron();
@@ -203,7 +210,15 @@ namespace game {
 		void updateTransform();
 
 		///move to the adjacent position (experimental).
-		void move(MoveDirection dir);
+		bool move(MoveDirection dir);
+
+		///check if it is stable and not blocked at given position. (experimental, only works for cuboid polyhedron)
+		bool valid(const PolyhedronPosition& pos) const;
+
+		///check if it is stable and not blocked at current position. (experimental, only works for cuboid polyhedron)
+		bool valid() const {
+			return valid(pos);
+		}
 
 		void init(Level* parent);
 
@@ -220,7 +235,7 @@ namespace game {
 		osg::Vec3i lbound; //!< lower bound of polyhedron data, which in turn determines the center of polyhedron
 		osg::Vec3i size; //!< the size of polyhedron
 
-		bool customShapeEnabled; //!< use custom shape. if it is true then customShape is used, otherwise the polyhedron is a solid cuboid (only customShape[0] is used).
+		bool customShapeEnabled; //!< use custom shape. if it is true then \ref customShape is used, otherwise the polyhedron is a solid cuboid (only \ref customShape[0] is used).
 		std::vector<unsigned char> customShape; //!< the custom shape. \sa PolyhedronCell
 
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, id);

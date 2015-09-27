@@ -53,11 +53,34 @@ namespace game {
 		MapData();
 		MapData(const MapData& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
+		///get tile at specified position (with bounds check)
+		TileType* get(int x, int y, int z);
+
+		///get tile at specified position (with bounds check)
+		TileType* get(const osg::Vec3i& p) {
+			return get(p.x(), p.y(), p.z());
+		}
+
+		///set tile at specified position (with bounds check)
+		void set(int x, int y, int z, TileType* t);
+
+		///set tile at specified position (with bounds check)
+		void set(const osg::Vec3i& p, TileType* t) {
+			set(p.x(), p.y(), p.z(), t);
+		}
+
+		///get or set tile at specified position
 		osg::ref_ptr<TileType>& operator()(int x, int y, int z);
+
+		///get or set tile at specified position
 		osg::ref_ptr<TileType>& operator()(const osg::Vec3i& p) {
 			return operator()(p.x(), p.y(), p.z());
 		}
+
+		///get or set tile at specified position
 		const osg::ref_ptr<TileType>& operator()(int x, int y, int z) const;
+
+		///get or set tile at specified position
 		const osg::ref_ptr<TileType>& operator()(const osg::Vec3i& p) const {
 			return operator()(p.x(), p.y(), p.z());
 		}
@@ -90,7 +113,12 @@ namespace game {
 		void init(Level* parent);
 
 		///check if the position is valid
-		bool isValidPosition(const osg::Vec3i& pos) const;
+		bool isValidPosition(int x, int y, int z) const;
+
+		///check if the position is valid
+		bool isValidPosition(const osg::Vec3i& pos) const {
+			return isValidPosition(pos.x(), pos.y(), pos.z());
+		}
 
 	public:
 		std::string id; //!< id, used to find this block
@@ -129,6 +157,7 @@ namespace game {
 			_map(NULL)
 		{
 		}
+		///ad-hoc, don't use
 		bool operator!=(const MapPosition& other) const {
 			return map != other.map || pos != other.pos;
 		}

@@ -43,6 +43,25 @@ namespace game {
 		return tiles[idx];
 	}
 
+	TileType* MapData::get(int x, int y, int z) {
+		if (isValidPosition(x, y, z)) {
+			int idx = ((z - lbound.z())*size.y() + y - lbound.y())*size.x() + x - lbound.x();
+			return tiles[idx].get();
+		} else {
+			return NULL;
+		}
+	}
+
+	void MapData::set(int x, int y, int z, TileType* t) {
+		if (isValidPosition(x, y, z)) {
+			int idx = ((z - lbound.z())*size.y() + y - lbound.y())*size.x() + x - lbound.x();
+			tiles[idx] = t;
+		} else {
+			//prevent memory leak
+			osg::ref_ptr<TileType> tmp = t;
+		}
+	}
+
 	//TODO: consider the shape
 	void MapData::resize(const osg::Vec3i& lbound_, const osg::Vec3i& size_, bool preserved){
 		if (!preserved) {
@@ -114,10 +133,10 @@ namespace game {
 		_transform.postMultTranslate(pos);
 	}
 
-	bool MapData::isValidPosition(const osg::Vec3i& pos) const {
-		return pos.x() >= lbound.x() && pos.x() < lbound.x() + size.x()
-			&& pos.y() >= lbound.y() && pos.y() < lbound.y() + size.y()
-			&& pos.z() >= lbound.z() && pos.z() < lbound.z() + size.z();
+	bool MapData::isValidPosition(int x, int y, int z) const {
+		return x >= lbound.x() && x < lbound.x() + size.x()
+			&& y >= lbound.y() && y < lbound.y() + size.y()
+			&& z >= lbound.z() && z < lbound.z() + size.z();
 	}
 
 	void MapData::init(Level* parent){
