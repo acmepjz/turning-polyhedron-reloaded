@@ -12,8 +12,12 @@
 #include <osg/CullFace>
 #include <osgGA/GUIEventHandler>
 #include <osgViewer/ViewerEventHandlers>
+
 #include <osgFX/SpecularHighlights>
 #include <osgFX/Scribe>
+
+#include <osgShadow/ShadowedScene>
+#include <osgShadow/ShadowMap>
 
 #include "TileType.h"
 #include "MapData.h"
@@ -171,14 +175,14 @@ game::Level* test(){
 	//create a map
 	osg::ref_ptr<game::MapData> dat = new game::MapData;
 	dat->id = "m1";
-	dat->resize(osg::Vec3i(), osg::Vec3i(10, 6, 1), false);
+	dat->resize(osg::Vec3i(), osg::Vec3i(10, 6, 3), false);
 	{
 		const char s[] =
-			"111       "
+			"1111      "
 			"111111    "
-			"111111111 "
+			"11111111W "
 			" 111111111"
-			"     11811"
+			"    W11811"
 			"      111 ";
 		for (int i = 0; i < 60; i++) {
 			switch (s[i]) {
@@ -188,8 +192,12 @@ game::Level* test(){
 			case '8':
 				dat->tiles[i] = ex;
 				break;
+			case 'W':
+				dat->tiles[i] = wall;
+				break;
 			}
 		}
+		dat->set(3, 0, 2, ground.get());
 	}
 	level->addMapData(dat.get());
 
@@ -289,7 +297,10 @@ int main(int argc, char** argv){
 	osg::ref_ptr<osg::MatrixTransform> mirror = new osg::MatrixTransform(osg::Matrix::scale(1.0f, -1.0f, 1.0f));
 	mirror->addChild(node);
 
-	viewer.setSceneData(mirror.get());
+	osg::ref_ptr<osgShadow::ShadowedScene> shadowedScene = new osgShadow::ShadowedScene(/*new osgShadow::ShadowMap*/);
+	shadowedScene->addChild(mirror);
+
+	viewer.setSceneData(shadowedScene.get());
 	viewer.setLightingMode(osg::View::SKY_LIGHT);
 	viewer.getLight()->setAmbient(osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
 	viewer.getLight()->setDiffuse(osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));

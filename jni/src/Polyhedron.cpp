@@ -388,8 +388,11 @@ namespace game {
 		//used if stable mode is 0 or PARTIAL_FLOATING
 		int suppCount = 0, blockCount = 0;
 
-		//check bottom blocks of polyhedron
-		//FIXME: should check if non-bottom blocks are blocked
+		const unsigned char c = customShapeEnabled ? 0 : customShape[0];
+		bool isEmpty = c == 0; //if the buffer is all 0
+		std::vector<unsigned char> zBlocks(iii.size.z(), c); //a temp buffer for custom shapes
+
+		//check blocks of polyhedron
 		int yy = pos.pos.y(); //xx,yy,zz=coord in map space
 		const int sz = pos._map->lbound.z();
 		const int ez = pos._map->lbound.z() + pos._map->size.z();
@@ -400,21 +403,41 @@ namespace game {
 			int xx = pos.pos.x();
 
 			for (int x = 0; x < iii.size.x(); x++) {
-				unsigned char c = customShape[customShapeEnabled ? idx : 0];
+				//we need to reload blocks only if custom shape is enabled
+				if (customShapeEnabled) {
+					isEmpty = true;
+					for (int z = 0; z < iii.size.z(); z++) {
+						unsigned char c = customShape[idx + z*iii.delta.z()];
+						if (c) isEmpty = false;
+						zBlocks[z] = c;
+					}
+				}
 
-				if (c) {
-					bool needSupport = c == SOLID;
+				if (!isEmpty) {
+					bool needSupport = zBlocks[0] == SOLID;
 					bool supported = false;
 
 					for (int zz = sz; zz < ez; zz++) {
 						TileType* t = pos._map->get(xx, yy, zz);
 						if (t) {
-							if (pos.pos.z() >= zz + t->blockedArea[0] && pos.pos.z() < zz + t->blockedArea[1]) {
-								//it is blocked
-								return false;
-							} else if (needSupport && (t->flags & TileType::SUPPORTER) && pos.pos.z() == zz + t->blockedArea[1]) {
+							//calculate the range
+							int z = zz + t->blockedArea[0] - pos.pos.z();
+							int e = zz + t->blockedArea[1] - pos.pos.z();
+
+							//check if the bottom block is supported
+							if (needSupport && (t->flags & TileType::SUPPORTER) && e == 0) {
 								//it is supported
 								supported = true;
+							}
+
+							//check if some blocks is blocked
+							if (z < 0) z = 0;
+							if (e > iii.size.z()) e = iii.size.z();
+							for (; z < e; z++) {
+								if (zBlocks[z]) {
+									//it is blocked
+									return false;
+								}
 							}
 						}
 					}
