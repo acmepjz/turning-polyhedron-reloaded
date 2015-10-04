@@ -23,6 +23,7 @@
 #include "MapData.h"
 #include "LevelCollection.h"
 #include "SimpleGeometry.h"
+#include "XMLReaderWriter.h"
 
 using namespace game;
 using namespace geom;
@@ -171,6 +172,11 @@ game::Level* test(){
 	level->getOrCreateTileTypeMap()->add(ground.get());
 	level->getOrCreateTileTypeMap()->add(wall.get());
 	level->getOrCreateTileTypeMap()->add(ex.get());
+
+	//TETS
+	osg::ref_ptr<XMLNode> x = XMLReaderWriter::readFile(
+		std::ifstream("../../turningpolyhedron/turningpolyhedron/data/DefaultObjectTypes.xml", std::ios::in | std::ios::binary));
+	if (x.valid()) level->getOrCreateObjectTypeMap()->load(x.get());
 
 	//create a map
 	osg::ref_ptr<game::MapData> dat = new game::MapData;

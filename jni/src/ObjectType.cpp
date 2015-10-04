@@ -39,8 +39,19 @@ namespace game {
 	}
 
 	bool ObjectType::loadInteractions(const XMLNode* node){
-		//TODO: load interactions
-		return true;
+		bool ret = true;
+
+		std::map<std::string, std::string>::const_iterator it = node->attributes.begin();
+		for (; it != node->attributes.end(); ++it) {
+			osg::ref_ptr<Interaction> i = new Interaction;
+			if (i->load(it->second)) {
+				interactions[it->first] = i;
+			} else {
+				ret = false;
+			}
+		}
+
+		return ret;
 	}
 
 	bool ObjectType::load(const XMLNode* node){

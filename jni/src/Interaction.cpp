@@ -18,6 +18,11 @@ namespace game {
 
 	}
 
+	bool Interaction::load(const std::string& data){
+		//TODO: load interactions
+		return true;
+	}
+
 	REG_OBJ_WRAPPER(game, Interaction, "")
 	{
 
