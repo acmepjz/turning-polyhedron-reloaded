@@ -19,6 +19,8 @@ protected:
 public:
 	XMLNode();
 
+	std::string getAttribute(const std::string& name, const std::string& default) const;
+
 	NodeContentType contentType;
 	std::string name;
 	std::string contents;

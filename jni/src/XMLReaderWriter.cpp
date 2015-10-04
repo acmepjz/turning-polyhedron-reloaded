@@ -36,6 +36,12 @@ XMLNode::~XMLNode(){
 
 }
 
+std::string XMLNode::getAttribute(const std::string& name, const std::string& default) const {
+	std::map<std::string, std::string>::const_iterator it = attributes.find(name);
+	if (it == attributes.end()) return default;
+	else return it->second;
+}
+
 enum StringType{
 	IDENTIFIER = 100,
 	STRING,

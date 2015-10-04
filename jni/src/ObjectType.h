@@ -7,6 +7,8 @@
 #include "Interaction.h"
 #include "util.h"
 
+class XMLNode;
+
 namespace game {
 
 	class ObjectTypeMap;
@@ -24,8 +26,12 @@ namespace game {
 
 		void init(ObjectTypeMap* otm);
 
+		bool load(const XMLNode* node); //!< load from XML node, assume the node is called `objectType`
+		bool loadInteractions(const XMLNode* node); //!< load interactions from XML node, assume the node is called `interaction`
+
+	public:
 		std::string name; //!< the name, same as the id
-		std::string desc; //!< the description
+		std::string desc; //!< the gettext'ed description
 
 		typedef std::map<std::string, osg::ref_ptr<Interaction> > InteractionMap;
 

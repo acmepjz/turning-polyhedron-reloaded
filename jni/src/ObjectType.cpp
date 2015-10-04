@@ -2,6 +2,8 @@
 #include "ObjectTypeMap.h"
 #include "Interaction.h"
 #include "util.h"
+#include "util_err.h"
+#include "XMLReaderWriter.h"
 #include <osg/Notify>
 #include <osgDB/ObjectWrapper>
 
@@ -34,6 +36,31 @@ namespace game {
 				if (type2) _interactions[type2] = it->second;
 			}
 		}
+	}
+
+	bool ObjectType::loadInteractions(const XMLNode* node){
+		//TODO: load interactions
+		return true;
+	}
+
+	bool ObjectType::load(const XMLNode* node){
+		bool ret = true;
+
+		name = node->getAttribute("name", "");
+
+		for (size_t i = 0; i < node->subNodes.size(); i++) {
+			const XMLNode* subnode = node->subNodes[i].get();
+
+			if (subnode->name == "interaction") {
+				if (!loadInteractions(subnode)) ret = false;
+			} else if (subnode->name == "description") {
+				desc = subnode->contents;
+			} else {
+				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
+			}
+		}
+
+		return ret;
 	}
 
 	REG_OBJ_WRAPPER(game, ObjectType, "")

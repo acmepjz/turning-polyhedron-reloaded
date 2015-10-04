@@ -52,6 +52,25 @@ namespace game {
 		}
 	}
 
+	bool ObjectTypeMap::load(const XMLNode* node){
+		bool ret = true;
+
+		for (size_t i = 0; i < node->subNodes.size(); i++) {
+			const XMLNode* subnode = node->subNodes[i].get();
+
+			if (subnode->name == "objectType") {
+				osg::ref_ptr<ObjectType> ot = new ObjectType;
+				if (!ot->load(subnode) || !add(ot.get())) {
+					ret = false;
+				}
+			} else {
+				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
+			}
+		}
+
+		return ret;
+	}
+
 	REG_OBJ_WRAPPER(game, ObjectTypeMap, "")
 	{
 		ADD_MAP_SERIALIZER(map, ObjectTypeMap::IdMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);

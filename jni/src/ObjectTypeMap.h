@@ -7,6 +7,8 @@
 #include "ObjectType.h"
 #include "util.h"
 
+class XMLNode;
+
 namespace game {
 
 	/// A map used to look up object type
@@ -25,6 +27,9 @@ namespace game {
 
 		void init();
 
+		bool load(const XMLNode* node); //!< load from XML node, assume the node is called `objectTypes`
+
+	public:
 		typedef std::map<std::string, osg::ref_ptr<ObjectType> > IdMap;
 		IdMap map;
 
