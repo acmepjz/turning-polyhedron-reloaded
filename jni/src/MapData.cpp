@@ -1,5 +1,6 @@
 #include "MapData.h"
 #include "Level.h"
+#include "util_err.h"
 #include <osg/Group>
 #include <osg/MatrixTransform>
 #include <osgDB/ObjectWrapper>
@@ -147,7 +148,7 @@ namespace game {
 			size_t n = size.x()*size.y()*size.z();
 			size_t m = tiles.size();
 			if (m < n) {
-				OSG_NOTICE << "[" __FUNCTION__ "] data size mismatch, expected: " << n << ", actual: " << m << std::endl;
+				UTIL_WARN "data size mismatch, expected: " << n << ", actual: " << m << std::endl;
 				tiles.reserve(n);
 				for (; m < n; m++) tiles.push_back(NULL);
 			}
@@ -159,7 +160,7 @@ namespace game {
 		if (it != parent->maps.end()) {
 			_map = it->second.get();
 		} else {
-			OSG_NOTICE << "[" __FUNCTION__ "] map id '" << map << " not found" << std::endl;
+			UTIL_WARN "map id '" << map << " not found" << std::endl;
 			_map = NULL;
 		}
 	}

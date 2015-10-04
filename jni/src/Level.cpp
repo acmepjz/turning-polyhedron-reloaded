@@ -1,4 +1,5 @@
 #include "Level.h"
+#include "util_err.h"
 #include <osg/Group>
 #include <osg/MatrixTransform>
 #include <osgDB/ObjectWrapper>
@@ -27,13 +28,13 @@ namespace game {
 
 	bool Level::addMapData(MapData* obj){
 		if (!obj || obj->id.empty()) {
-			OSG_NOTICE << "[" __FUNCTION__ "] object doesn't have id" << std::endl;
+			UTIL_ERR "object doesn't have id" << std::endl;
 			return false;
 		}
 
 		MapDataMap::iterator it = maps.find(obj->id);
 		if (it != maps.end()) {
-			OSG_NOTICE << "[" __FUNCTION__ "] object id '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
+			UTIL_WARN "object id '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
 		}
 
 		maps[obj->id] = obj;
@@ -46,7 +47,7 @@ namespace game {
 		if (!obj->id.empty()) {
 			PolyhedronMap::iterator it = _polyhedra.find(obj->id);
 			if (it != _polyhedra.end()) {
-				OSG_NOTICE << "[" __FUNCTION__ "] object id '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
+				UTIL_WARN "object id '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
 			}
 			_polyhedra[obj->id] = obj;
 		}

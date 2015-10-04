@@ -1,7 +1,8 @@
 #include "ObjectTypeMap.h"
 #include "ObjectType.h"
 #include "util.h"
-#include <osg/Notify>
+#include "util_err.h"
+#include "XMLReaderWriter.h"
 #include <osgDB/ObjectWrapper>
 
 namespace game {
@@ -22,13 +23,13 @@ namespace game {
 
 	bool ObjectTypeMap::add(ObjectType* obj){
 		if (!obj || obj->name.empty()) {
-			OSG_NOTICE << "[" __FUNCTION__ "] object doesn't have id" << std::endl;
+			UTIL_ERR "object doesn't have id" << std::endl;
 			return false;
 		}
 
 		IdMap::iterator it = map.find(obj->name);
 		if (it != map.end()) {
-			OSG_NOTICE << "[" __FUNCTION__ "] object name '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
+			UTIL_WARN "object name '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
 		}
 
 		map[obj->name] = obj;
@@ -39,7 +40,7 @@ namespace game {
 		if (name.empty() || name == "default") return NULL;
 		IdMap::iterator it = map.find(name);
 		if (it == map.end()) {
-			OSG_NOTICE << "[" __FUNCTION__ "] name '" << name << "' not found" << std::endl;
+			UTIL_WARN "name '" << name << "' not found" << std::endl;
 			return NULL;
 		}
 		return it->second.get();

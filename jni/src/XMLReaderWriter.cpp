@@ -1,4 +1,5 @@
 #include "XMLReaderWriter.h"
+#include "util_err.h"
 #include <osg/Notify>
 #include <assert.h>
 #include <stdio.h>
@@ -22,8 +23,8 @@
 		}
 
 #define FILE_WRITE_STRING(S) file.write(S,sizeof(S)-1)
-#define ERR_UNEXPECTED_EOF() OSG_NOTICE << "[" __FUNCTION__ "] unexpected end of file" << std::endl
-#define ERR_FILE OSG_NOTICE << "[" __FUNCTION__ "] at offset " << size_t(file.tellg()) << ": "
+#define ERR_UNEXPECTED_EOF() UTIL_ERR "unexpected end of file" << std::endl
+#define ERR_FILE UTIL_ERR "at offset " << size_t(file.tellg()) << ": "
 
 XMLNode::XMLNode()
 	: contentType(TEXT)

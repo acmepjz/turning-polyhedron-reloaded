@@ -1,7 +1,7 @@
 #include "TileTypeMap.h"
 #include "TileType.h"
 #include "util.h"
-#include <osg/Notify>
+#include "util_err.h"
 #include <osgDB/ObjectWrapper>
 #include <stdlib.h>
 
@@ -44,26 +44,26 @@ namespace game {
 			if (index) {
 				std::map<int, osg::ref_ptr<TileType> >::iterator it = indexMap.find(index);
 				if (it != indexMap.end()) return it->second.get();
-				OSG_NOTICE << "[" __FUNCTION__ "] index " << index << " not found" << std::endl;
+				UTIL_WARN "index " << index << " not found" << std::endl;
 			}
 			return NULL;
 		}
 
 		std::map<std::string, osg::ref_ptr<TileType> >::iterator it = idMap.find(idOrIndex);
 		if (it != idMap.end()) return it->second.get();
-		OSG_NOTICE << "[" __FUNCTION__ "] id '" << idOrIndex << "' not found" << std::endl;
+		UTIL_WARN "id '" << idOrIndex << "' not found" << std::endl;
 		return NULL;
 	}
 
 	bool TileTypeMap::add(TileType* obj){
 		if (!obj || obj->id.empty()) {
-			OSG_NOTICE << "[" __FUNCTION__ "] object doesn't have id" << std::endl;
+			UTIL_WARN "object doesn't have id" << std::endl;
 			return false;
 		}
 
 		IdMap::iterator it = idMap.find(obj->id);
 		if (it != idMap.end()) {
-			OSG_NOTICE << "[" __FUNCTION__ "] object id '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
+			UTIL_WARN "object id '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
 		}
 
 		idMap[obj->id] = obj;
@@ -71,7 +71,7 @@ namespace game {
 		if (obj->index) {
 			IndexMap::iterator it = indexMap.find(obj->index);
 			if (it != indexMap.end()) {
-				OSG_NOTICE << "[" __FUNCTION__ "] object index " << it->first << " already defined: '" << it->second->id
+				UTIL_WARN "object index " << it->first << " already defined : '" << it->second->id
 					<< "', redefine to '" << obj->id << "'" << std::endl;
 			}
 
@@ -83,19 +83,19 @@ namespace game {
 
 	bool TileTypeMap::addTileMapping(const std::string& id, int index){
 		if (index == 0) {
-			OSG_NOTICE << "[" __FUNCTION__ "] index 0 invalid" << std::endl;
+			UTIL_WARN "index 0 invalid" << std::endl;
 			return false;
 		}
 
 		std::map<std::string, osg::ref_ptr<TileType> >::iterator it = idMap.find(id);
 		if (it == idMap.end()) {
-			OSG_NOTICE << "[" __FUNCTION__ "] id '" << id << "' not found" << std::endl;
+			UTIL_WARN "id '" << id << "' not found" << std::endl;
 			return false;
 		}
 
 		std::map<int, osg::ref_ptr<TileType> >::iterator it2 = indexMap.find(index);
 		if (it2 != indexMap.end()) {
-			OSG_NOTICE << "[" __FUNCTION__ "] index " << index << " already defined: '" << it2->second->id
+			UTIL_WARN "index " << index << " already defined : '" << it2->second->id
 				<< "', redefine to '" << id << "'" << std::endl;
 		}
 

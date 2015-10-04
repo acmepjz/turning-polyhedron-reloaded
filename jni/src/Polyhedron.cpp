@@ -3,6 +3,7 @@
 #include "Level.h"
 #include "SimpleGeometry.h"
 #include "Rect.h"
+#include "util_err.h"
 #include <osg/Geode>
 #include <osg/MatrixTransform>
 #include <osgGA/GUIEventHandler>
@@ -484,7 +485,7 @@ namespace game {
 			size_t n = customShapeEnabled ? size.x()*size.y()*size.z() : 1;
 			size_t m = customShape.size();
 			if (m < n) {
-				OSG_NOTICE << "[" __FUNCTION__ "] data size mismatch, expected: " << n << ", actual: " << m << std::endl;
+				UTIL_WARN "data size mismatch, expected: " << n << ", actual: " << m << std::endl;
 				customShape.reserve(n);
 				for (; m < n; m++) customShape.push_back(SOLID);
 			}
