@@ -6,8 +6,8 @@
 #include "util_object.h"
 #include "MapData.h"
 #include "Polyhedron.h"
-#include "TileTypeMap.h"
-#include "ObjectTypeMap.h"
+#include "TileType.h"
+#include "ObjectType.h"
 
 namespace game {
 

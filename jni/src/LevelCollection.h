@@ -4,8 +4,8 @@
 #include <vector>
 #include "util_object.h"
 #include "Level.h"
-#include "ObjectTypeMap.h"
-#include "TileTypeMap.h"
+#include "ObjectType.h"
+#include "TileType.h"
 
 namespace game {
 
