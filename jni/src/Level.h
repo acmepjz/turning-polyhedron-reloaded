@@ -1,10 +1,9 @@
 #pragma once
 
-#include <osg/Object>
 #include <osg/Node>
 #include <string>
 #include <map>
-#include "util.h"
+#include "util_object.h"
 #include "MapData.h"
 #include "Polyhedron.h"
 #include "TileTypeMap.h"

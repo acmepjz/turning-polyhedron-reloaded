@@ -1,13 +1,11 @@
 #pragma once
 
-#include <osg/Object>
 #include <osg/Node>
 #include <osg/MatrixTransform>
-#include <osg/ref_ptr>
 #include <osg/Vec3i>
 #include <string>
 #include "MapData.h"
-#include "util.h"
+#include "util_object.h"
 
 namespace osgDB {
 	class InputStream;

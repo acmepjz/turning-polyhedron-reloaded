@@ -1,10 +1,9 @@
 #pragma once
 
-#include <osg/Object>
 #include <osg/Node>
-#include <osg/ref_ptr>
 #include <string>
 #include "TileType.h"
+#include "util_object.h"
 
 namespace game {
 

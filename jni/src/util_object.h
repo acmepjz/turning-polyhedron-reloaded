@@ -1,5 +1,6 @@
 #pragma once
 
+#include <osg/Object>
 #include <osg/CopyOp>
 #include <osg/ref_ptr>
 #include <vector>

@@ -1,12 +1,10 @@
 #pragma once
 
-#include <osg/Object>
 #include <osg/Node>
-#include <osg/ref_ptr>
 #include <osg/Vec2i>
 #include <string>
 #include "ObjectType.h"
-#include "util.h"
+#include "util_object.h"
 
 namespace game {
 

@@ -1,11 +1,9 @@
 #pragma once
 
-#include <osg/Object>
-#include <osg/ref_ptr>
 #include <string>
 #include <map>
 #include "ObjectType.h"
-#include "util.h"
+#include "util_object.h"
 
 class XMLNode;
 

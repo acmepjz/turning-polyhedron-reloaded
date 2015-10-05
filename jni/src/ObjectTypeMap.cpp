@@ -1,6 +1,5 @@
 #include "ObjectTypeMap.h"
 #include "ObjectType.h"
-#include "util.h"
 #include "util_err.h"
 #include "XMLReaderWriter.h"
 #include <osgDB/ObjectWrapper>

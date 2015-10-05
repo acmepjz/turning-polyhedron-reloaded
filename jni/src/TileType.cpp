@@ -1,7 +1,6 @@
 #include "TileType.h"
 #include "ObjectTypeMap.h"
 #include "TileTypeMap.h"
-#include "util.h"
 #include <osg/Node>
 #include <osg/Notify>
 #include <stdlib.h>

@@ -1,14 +1,12 @@
 #pragma once
 
-#include <osg/Object>
 #include <osg/Node>
-#include <osg/ref_ptr>
 #include <osg/Matrix>
 #include <osg/Vec3i>
 #include <osg/Vec3f>
 #include <string>
 #include <vector>
-#include "util.h"
+#include "util_object.h"
 #include "TileType.h"
 
 namespace osgDB {

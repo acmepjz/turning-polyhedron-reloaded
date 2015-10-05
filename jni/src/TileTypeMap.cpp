@@ -1,6 +1,5 @@
 #include "TileTypeMap.h"
 #include "TileType.h"
-#include "util.h"
 #include "util_err.h"
 #include <osgDB/ObjectWrapper>
 #include <stdlib.h>

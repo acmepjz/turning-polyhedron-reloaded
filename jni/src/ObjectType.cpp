@@ -1,7 +1,6 @@
 #include "ObjectType.h"
 #include "ObjectTypeMap.h"
 #include "Interaction.h"
-#include "util.h"
 #include "util_err.h"
 #include "XMLReaderWriter.h"
 #include <osg/Notify>

@@ -1,9 +1,8 @@
 #pragma once
 
-#include <osg/Object>
 #include <string>
 #include <vector>
-#include "util.h"
+#include "util_object.h"
 #include "Level.h"
 #include "ObjectTypeMap.h"
 #include "TileTypeMap.h"
