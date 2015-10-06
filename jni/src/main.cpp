@@ -26,7 +26,7 @@
 #include "XMLReaderWriter.h"
 
 using namespace game;
-using namespace geom;
+using namespace gfx;
 
 game::Level* test(){
 	//create geometry

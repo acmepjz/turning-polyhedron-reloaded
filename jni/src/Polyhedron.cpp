@@ -311,7 +311,7 @@ namespace game {
 							switch (c) {
 							case SOLID:
 								//test only
-								geode->addDrawable(geom::createCube(
+								geode->addDrawable(gfx::createCube(
 									osg::Vec3(x, y, z),
 									osg::Vec3(x + 1, y + 1, z + 1),
 									false,
@@ -332,7 +332,7 @@ namespace game {
 				switch (c) {
 				case SOLID:
 					//test only
-					geode->addDrawable(geom::createCube(
+					geode->addDrawable(gfx::createCube(
 						osg::Vec3(lbound.x(), lbound.y(), lbound.z()),
 						osg::Vec3(lbound.x() + size.x(), lbound.y() + size.y(), lbound.z() + size.z()),
 						false,
