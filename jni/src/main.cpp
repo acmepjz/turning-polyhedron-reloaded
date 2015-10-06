@@ -32,7 +32,7 @@ game::Level* test(){
 	//create geometry
 	osg::ref_ptr<gfx::Appearance> ground_a = new gfx::Appearance;
 	ground_a->type = gfx::Appearance::MESH_CUBE;
-	ground_a->scale.set(1, 1, 0.25f);
+	ground_a->size.set(1, 1, 0.25f);
 	ground_a->center.set(0, 0, 1);
 	ground_a->solidColor.set(0.4f, 0.4f, 0.4f);
 	ground_a->bevel = 0.05f;
@@ -40,7 +40,7 @@ game::Level* test(){
 
 	osg::ref_ptr<gfx::Appearance> wall_a2 = new gfx::Appearance;
 	wall_a2->type = gfx::Appearance::MESH_CUBE;
-	wall_a2->scale.set(1, 1, 1);
+	wall_a2->size.set(1, 1, 1);
 	wall_a2->solidColor.set(0.4f, 0.4f, 0.4f);
 	wall_a2->bevel = 0.05f;
 	wall_a2->lod = true;
@@ -51,7 +51,7 @@ game::Level* test(){
 
 	osg::ref_ptr<gfx::Appearance> ex_a2 = new gfx::Appearance;
 	ex_a2->type = gfx::Appearance::MESH_CUBE;
-	ex_a2->scale.set(1, 1, 1);
+	ex_a2->size.set(1, 1, 1);
 	ex_a2->solid = false;
 	ex_a2->wireframe = true;
 	ex_a2->wireframeColor.set(1, 1, 0);

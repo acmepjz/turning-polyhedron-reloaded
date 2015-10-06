@@ -48,7 +48,7 @@ namespace gfx {
 
 		osg::Vec3 pos; //!< position.
 		osg::Vec3 rot; //!< rotation (yaw, pitch, roll)
-		osg::Vec3 scale; //!< scale
+		osg::Vec3 size; //!< size
 		osg::Vec3 center;
 		float bevel;
 		bool solid;
@@ -58,6 +58,28 @@ namespace gfx {
 		osg::Vec3 wireframeColor;
 
 		std::vector<osg::ref_ptr<Appearance> > subNodes; //!< subnodes
+
+	public:
+		UTIL_ADD_BYVAL_GETTER_SETTER(int, type);
+
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec4, ambient);
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec4, diffuse);
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec4, specular);
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec4, emissive);
+		UTIL_ADD_BYVAL_GETTER_SETTER(float, specularHardness);
+
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, pos);
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, rot);
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, size);
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, center);
+		UTIL_ADD_BYVAL_GETTER_SETTER(float, bevel);
+		UTIL_ADD_BYVAL_GETTER_SETTER(bool, solid);
+		UTIL_ADD_BYVAL_GETTER_SETTER(bool, wireframe);
+		UTIL_ADD_BYVAL_GETTER_SETTER(bool, lod);
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, solidColor);
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, wireframeColor);
+
+		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<Appearance> >, subNodes);
 
 	public:
 		//the following properties don't save to file and is generated at runtime

@@ -6,26 +6,27 @@
 #include <osg/Material>
 #include <osg/LOD>
 #include <osg/MatrixTransform>
+#include <osgDB/ObjectWrapper>
 
 namespace gfx {
 
 	Appearance::Appearance()
 		: type(0)
-		, ambient(0.0f, 0.0f, 0.0f, 1.0f)
-		, diffuse(1.0f, 1.0f, 1.0f, 1.0f)
-		, specular(0.0f, 0.0f, 0.0f, 1.0f)
-		, emissive(0.0f, 0.0f, 0.0f, 1.0f)
-		, specularHardness(0.0f)
+		, ambient(0, 0, 0, 1)
+		, diffuse(1, 1, 1, 1)
+		, specular(0, 0, 0, 1)
+		, emissive(0, 0, 0, 1)
+		, specularHardness(0)
 		, pos()
 		, rot()
-		, scale(1.0f, 1.0f, 1.0f)
+		, size(1, 1, 1)
 		, center()
-		, bevel(0.0f)
+		, bevel(0)
 		, solid(true)
 		, wireframe(false)
 		, lod(false)
-		, solidColor()
-		, wireframeColor()
+		, solidColor(1, 1, 1)
+		, wireframeColor(1, 1, 1)
 	{
 	}
 
@@ -86,8 +87,8 @@ namespace gfx {
 			osg::ref_ptr<osg::LOD> lodNode;
 			osg::ref_ptr<osg::Geode> geode;
 
-			osg::Vec3 p1 = pos - osg::Vec3(scale.x()*center.x(), scale.y()*center.y(), scale.z()*center.z());
-			osg::Vec3 p2 = p1 + scale;
+			osg::Vec3 p1 = pos - osg::Vec3(size.x()*center.x(), size.y()*center.y(), size.z()*center.z());
+			osg::Vec3 p2 = p1 + size;
 
 			for (int i = 0; i < 2; i++) {
 				// check if we need to create bevel geometry
@@ -143,6 +144,27 @@ namespace gfx {
 		_instances[shape] = node;
 
 		return node.release();
+	}
+
+	REG_OBJ_WRAPPER(gfx, Appearance, "")
+	{
+		ADD_INT_SERIALIZER(type, 0);
+		ADD_VEC4_SERIALIZER(ambient, osg::Vec4(0, 0, 0, 1));
+		ADD_VEC4_SERIALIZER(diffuse, osg::Vec4(1, 1, 1, 1));
+		ADD_VEC4_SERIALIZER(specular, osg::Vec4(0, 0, 0, 1));
+		ADD_VEC4_SERIALIZER(emissive, osg::Vec4(0, 0, 0, 1));
+		ADD_FLOAT_SERIALIZER(specularHardness, 0);
+		ADD_VEC3_SERIALIZER(pos, osg::Vec3());
+		ADD_VEC3_SERIALIZER(rot, osg::Vec3());
+		ADD_VEC3_SERIALIZER(size, osg::Vec3(1.0f, 1.0f, 1.0f));
+		ADD_VEC3_SERIALIZER(center, osg::Vec3());
+		ADD_FLOAT_SERIALIZER(bevel, 0);
+		ADD_BOOL_SERIALIZER(solid, true);
+		ADD_BOOL_SERIALIZER(wireframe, false);
+		ADD_BOOL_SERIALIZER(lod, false);
+		ADD_VEC3_SERIALIZER(solidColor, osg::Vec3(1.0f, 1.0f, 1.0f));
+		ADD_VEC3_SERIALIZER(wireframeColor, osg::Vec3(1.0f, 1.0f, 1.0f));
+		ADD_VECTOR_SERIALIZER(subNodes, std::vector<osg::ref_ptr<Appearance> >, osgDB::BaseSerializer::RW_OBJECT, -1);
 	}
 
 }

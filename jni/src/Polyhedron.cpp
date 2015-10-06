@@ -504,7 +504,7 @@ namespace game {
 		ADD_VEC3I_SERIALIZER(lbound, osg::Vec3i());
 		ADD_VEC3I_SERIALIZER(size, osg::Vec3i(1, 1, 2));
 		ADD_BOOL_SERIALIZER(customShapeEnabled, false);
-		ADD_VECTOR_SERIALIZER(customShape, std::vector<unsigned char>, osgDB::BaseSerializer::RW_UCHAR, 32);
+		ADD_VECTOR_SERIALIZER(customShape, std::vector<unsigned char>, osgDB::BaseSerializer::RW_UCHAR, -1);
 	}
 
 }

@@ -191,7 +191,7 @@ namespace game {
 		ADD_VEC3F_SERIALIZER(rot, osg::Vec3f());
 		ADD_VEC3F_SERIALIZER(scale, osg::Vec3f(1.0f, 1.0f, 1.0f));
 		ADD_VEC3F_SERIALIZER(step, osg::Vec3f(1.0f, 1.0f, 1.0f));
-		ADD_VECTOR_SERIALIZER(tiles, std::vector<osg::ref_ptr<TileType> >, osgDB::BaseSerializer::RW_OBJECT, 8);
+		ADD_VECTOR_SERIALIZER(tiles, std::vector<osg::ref_ptr<TileType> >, osgDB::BaseSerializer::RW_OBJECT, -1);
 	}
 
 	osgDB::InputStream& operator>>(osgDB::InputStream& s, MapPosition& obj){
