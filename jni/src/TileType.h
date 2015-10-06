@@ -4,6 +4,7 @@
 #include <osg/Vec2i>
 #include <string>
 #include "ObjectType.h"
+#include "Appearance.h"
 #include "util_object.h"
 
 namespace game {
@@ -51,7 +52,7 @@ namespace game {
 		std::string name; //!< the gettext'ed object name
 		std::string desc; //!< the gettext'ed object description
 
-		osg::ref_ptr<osg::Node> appearance; //!< the appearance
+		osg::ref_ptr<gfx::Appearance> appearance; //!< the appearance
 
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, id);
 		UTIL_ADD_BYVAL_GETTER_SETTER(int, index);
@@ -60,7 +61,7 @@ namespace game {
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec2i, blockedArea);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, name);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, desc);
-		UTIL_ADD_OBJ_GETTER_SETTER(osg::Node, appearance);
+		UTIL_ADD_OBJ_GETTER_SETTER(gfx::Appearance, appearance);
 
 	public:
 		//the following properties don't save to file and is generated at runtime

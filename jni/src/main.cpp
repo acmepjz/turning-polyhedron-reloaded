@@ -30,117 +30,35 @@ using namespace gfx;
 
 game::Level* test(){
 	//create geometry
-	osg::ref_ptr<osg::Geode> geode = new osg::Geode;
-	{
-		osg::ref_ptr<osg::Geometry> ground = createCube(
-			osg::Vec3(0, 0, -0.25f),
-			osg::Vec3(1, 1, 0),
-			false,
-			0.05f,
-			osg::Vec3(0.4f, 0.4f, 0.4f)
-			);
-		/*osg::ref_ptr<osg::Geometry> wireframe = createCube(
-			osg::Vec3(0, 0, -0.25f),
-			osg::Vec3(1, 1, 0),
-			true,
-			0.05f,
-			osg::Vec3(0.2f, 0.2f, 0.2f)
-			);
-		wireframe->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-		ground->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonOffset(1.0f, 1.0f));*/
-		geode->addDrawable(ground);
-		//geode->addDrawable(wireframe);
-	}
-	osg::ref_ptr<osg::LOD> lod = new osg::LOD;
-	lod->addChild(geode, 0.0f, 50.0f);
-	geode = new osg::Geode;
-	{
-		osg::ref_ptr<osg::Geometry> ground = createCube(
-			osg::Vec3(0, 0, -0.25f),
-			osg::Vec3(1, 1, 0),
-			false,
-			0.0f,
-			osg::Vec3(0.4f, 0.4f, 0.4f)
-			);
-		/*osg::ref_ptr<osg::Geometry> wireframe = createCube(
-			osg::Vec3(0, 0, -0.25f),
-			osg::Vec3(1, 1, 0),
-			true,
-			0.0f,
-			osg::Vec3(0.2f, 0.2f, 0.2f)
-			);
-		wireframe->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-		ground->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonOffset(1.0f, 1.0f));*/
-		geode->addDrawable(ground);
-		//geode->addDrawable(wireframe);
-	}
-	lod->addChild(geode, 50.0f, FLT_MAX);
-	geode = new osg::Geode;
-	{
-		osg::ref_ptr<osg::Geometry> ground = createCube(
-			osg::Vec3(0, 0, 0),
-			osg::Vec3(1, 1, 1),
-			false,
-			0.05f,
-			osg::Vec3(0.4f, 0.4f, 0.4f)
-			);
-		/*osg::ref_ptr<osg::Geometry> wireframe = createCube(
-			osg::Vec3(0, 0, 0),
-			osg::Vec3(1, 1, 1),
-			true,
-			0.05f,
-			osg::Vec3(0.2f, 0.2f, 0.2f)
-			);
-		wireframe->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-		ground->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonOffset(1.0f, 1.0f));*/
-		geode->addDrawable(ground);
-		//geode->addDrawable(wireframe);
-	}
-	osg::ref_ptr<osg::LOD> lod2 = new osg::LOD;
-	lod2->addChild(geode, 0.0f, 50.0f);
-	geode = new osg::Geode;
-	{
-		osg::ref_ptr<osg::Geometry> ground = createCube(
-			osg::Vec3(0, 0, 0),
-			osg::Vec3(1, 1, 1),
-			false,
-			0.0f,
-			osg::Vec3(0.4f, 0.4f, 0.4f)
-			);
-		/*osg::ref_ptr<osg::Geometry> wireframe = createCube(
-			osg::Vec3(0, 0, 0),
-			osg::Vec3(1, 1, 1),
-			true,
-			0.0f,
-			osg::Vec3(0.2f, 0.2f, 0.2f)
-			);
-		wireframe->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-		ground->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonOffset(1.0f, 1.0f));*/
-		geode->addDrawable(ground);
-		//geode->addDrawable(wireframe);
-	}
-	lod2->addChild(geode, 50.0f, FLT_MAX);
+	osg::ref_ptr<gfx::Appearance> ground_a = new gfx::Appearance;
+	ground_a->type = gfx::Appearance::MESH_CUBE;
+	ground_a->scale.set(1, 1, 0.25f);
+	ground_a->center.set(0, 0, 1);
+	ground_a->solidColor.set(0.4f, 0.4f, 0.4f);
+	ground_a->bevel = 0.05f;
+	ground_a->lod = true;
 
-	osg::ref_ptr<osg::Group> gp = new osg::Group;
-	gp->addChild(lod);
-	gp->addChild(lod2);
+	osg::ref_ptr<gfx::Appearance> wall_a2 = new gfx::Appearance;
+	wall_a2->type = gfx::Appearance::MESH_CUBE;
+	wall_a2->scale.set(1, 1, 1);
+	wall_a2->solidColor.set(0.4f, 0.4f, 0.4f);
+	wall_a2->bevel = 0.05f;
+	wall_a2->lod = true;
 
-	osg::ref_ptr<osg::Group> gp2 = new osg::Group;
-	gp2->addChild(lod);
-	geode = new osg::Geode;
-	{
-		osg::ref_ptr<osg::Geometry> wireframe = createCube(
-			osg::Vec3(0, 0, 0),
-			osg::Vec3(1, 1, 1),
-			true,
-			0.0f,
-			osg::Vec3(1.0f, 1.0f, 0.0f)
-			);
-		wireframe->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-		geode->addDrawable(wireframe);
-	}
-	gp2->addChild(geode);
+	osg::ref_ptr<gfx::Appearance> wall_a = new gfx::Appearance;
+	wall_a->subNodes.push_back(ground_a);
+	wall_a->subNodes.push_back(wall_a2);
 
+	osg::ref_ptr<gfx::Appearance> ex_a2 = new gfx::Appearance;
+	ex_a2->type = gfx::Appearance::MESH_CUBE;
+	ex_a2->scale.set(1, 1, 1);
+	ex_a2->solid = false;
+	ex_a2->wireframe = true;
+	ex_a2->wireframeColor.set(1, 1, 0);
+
+	osg::ref_ptr<gfx::Appearance> ex_a = new gfx::Appearance;
+	ex_a->subNodes.push_back(ground_a);
+	ex_a->subNodes.push_back(ex_a2);
 	//create some tile types
 	const TileType* tt = NULL;
 	osg::ref_ptr<TileType> ground = new TileType;
@@ -149,7 +67,7 @@ game::Level* test(){
 	ground->flags = tt->SUPPORTER | tt->TILT_SUPPORTER;
 	ground->name = "Ground";
 	ground->desc = "Normal ground.";
-	ground->appearance = lod;
+	ground->appearance = ground_a;
 	osg::ref_ptr<TileType> wall = new TileType;
 	wall->id = "wall";
 	wall->index = 11;
@@ -157,14 +75,14 @@ game::Level* test(){
 	wall->blockedArea.set(-1, 1);
 	wall->name = "Wall";
 	wall->desc = "As an obstacle, your block can't pass through the wall, but...";
-	wall->appearance = gp;
+	wall->appearance = wall_a;
 	osg::ref_ptr<TileType> ex = new TileType;
 	ex->id = "goal";
 	ex->index = 8;
 	ex->flags = tt->SUPPORTER | tt->TILT_SUPPORTER | tt->EXIT;
 	ex->name = "Goal";
 	ex->desc = "You'll win the game if you get your block to fall into this square hole after visiting all checkpoints.";
-	ex->appearance = gp2;
+	ex->appearance = ex_a;
 
 	//create a level
 	osg::ref_ptr<game::Level> level = new game::Level;
@@ -226,16 +144,14 @@ game::Level* test(){
 	lvs->levels.push_back(level);
 
 	//test!!!
-	osgDB::writeObjectFile(*lvs, "out.osgb");
 	osgDB::writeObjectFile(*lvs, "out.osgt");
-	osgDB::writeObjectFile(*lvs, "out.osgx");
 
 	lvs = NULL;
 	return level.release();
 }
 
 game::Level* test2(){
-	osg::ref_ptr<osg::Object> obj = osgDB::readObjectFile("out.osgb");
+	osg::ref_ptr<osg::Object> obj = osgDB::readObjectFile("out.osgt");
 	osg::ref_ptr<game::LevelCollection> lvs = dynamic_cast<game::LevelCollection*>(obj.get());
 	osg::ref_ptr<game::Level> level = lvs->levels[0];
 	lvs = NULL;

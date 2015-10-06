@@ -24,7 +24,7 @@ namespace game {
 		, blockedArea(other.blockedArea)
 		, name(other.name)
 		, desc(other.desc)
-		, appearance(copyop(other.appearance))
+		, appearance(util::copyObj(other.appearance.get(), copyop))
 		, _objType(NULL)
 	{
 	}
@@ -151,7 +151,7 @@ namespace game {
 		ADD_VEC2I_SERIALIZER(blockedArea, osg::Vec2i(-1, 0));
 		ADD_STRING_SERIALIZER(name, "");
 		ADD_STRING_SERIALIZER(desc, "");
-		ADD_OBJECT_SERIALIZER(appearance, osg::Node, NULL);
+		ADD_OBJECT_SERIALIZER(appearance, gfx::Appearance, NULL);
 	}
 #undef MyClass
 #define MyClass MyClass_TileTypeMap

@@ -117,7 +117,7 @@ namespace game {
 
 						osg::MatrixTransform *trans = new osg::MatrixTransform;
 						trans->setMatrix(mat);
-						trans->addChild(tile->appearance.get());
+						trans->addChild(tile->appearance->getOrCreateInstance(shape));
 						group->addChild(trans);
 					}
 					idx++;
