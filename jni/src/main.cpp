@@ -150,23 +150,26 @@ game::Level* test(){
 	poly->customShape[3] = 0;*/
 	level->addPolyhedron(poly.get());
 
-	//create a level collection
-	osg::ref_ptr<game::LevelCollection> lvs = new game::LevelCollection;
-	lvs->name = "Unnamed level pack";
-	lvs->levels.push_back(level);
+	{
+		//create a level collection
+		osg::ref_ptr<game::LevelCollection> lvs = new game::LevelCollection;
+		lvs->name = "Unnamed level pack";
+		lvs->levels.push_back(level);
 
-	//test!!!
-	osgDB::writeObjectFile(*lvs, "out.osgt");
+		//test!!!
+		osgDB::writeObjectFile(*lvs, "out.osgt");
+	}
 
-	lvs = NULL;
 	return level.release();
 }
 
 game::Level* test2(){
-	osg::ref_ptr<osg::Object> obj = osgDB::readObjectFile("out.osgt");
-	osg::ref_ptr<game::LevelCollection> lvs = dynamic_cast<game::LevelCollection*>(obj.get());
-	osg::ref_ptr<game::Level> level = lvs->levels[0];
-	lvs = NULL;
+	osg::ref_ptr<game::Level> level;
+	{
+		osg::ref_ptr<osg::Object> obj = osgDB::readObjectFile("out.osgt");
+		osg::ref_ptr<game::LevelCollection> lvs = dynamic_cast<game::LevelCollection*>(obj.get());
+		level = lvs->levels[0];
+	}
 	return level.release();
 }
 
