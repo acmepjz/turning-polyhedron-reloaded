@@ -21,8 +21,8 @@ T getAttrFromStringOsgVec(const std::string& s, const T& default) {
 	std::string::size_type lps = 0;
 	for (int i = 0; i < T::num_components; i++) {
 		std::string::size_type lpe = s.find(',', lps);
-		T[i] = getAttrFromString(s.c_str() + lps, default[i]);
-		if (lpe == s.npos()) break;
+		ret[i] = getAttrFromString(s.c_str() + lps, default[i]);
+		if (lpe == s.npos) break;
 		lps = lpe + 1;
 	}
 	return ret;
@@ -32,7 +32,7 @@ template <class T>
 T setAttrToStringOsgVec(std::string& s, const T& value) {
 	for (int i = 0; i < T::num_components; i++) {
 		if (i) s.push_back(',');
-		setAttrToString(s, T[i]);
+		setAttrToString(s, value[i]);
 	}
 }
 
@@ -81,7 +81,7 @@ public:
 	template<class T>
 	T getAttrOsgVec(const std::string& name, const T& default) const {
 		std::map<std::string, std::string>::const_iterator it = attributes.find(name);
-		return (it == attributes.end()) ? default: getAttrFromStringV(it->second.c_str(), default);
+		return (it == attributes.end()) ? default: getAttrFromStringOsgVec(it->second.c_str(), default);
 	}
 
 	template<class T>
