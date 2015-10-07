@@ -55,7 +55,7 @@ namespace game {
 	bool ObjectType::load(const XMLNode* node){
 		bool ret = true;
 
-		name = node->getAttribute("name", "");
+		name = node->getAttr("name", "");
 
 		for (size_t i = 0; i < node->subNodes.size(); i++) {
 			const XMLNode* subnode = node->subNodes[i].get();

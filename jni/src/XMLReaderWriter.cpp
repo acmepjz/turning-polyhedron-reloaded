@@ -36,10 +36,63 @@ XMLNode::~XMLNode(){
 
 }
 
-std::string XMLNode::getAttribute(const std::string& name, const std::string& default) const {
-	std::map<std::string, std::string>::const_iterator it = attributes.find(name);
-	if (it == attributes.end()) return default;
-	else return it->second;
+bool getAttrFromString(const char* s, bool default){
+	if (s == NULL) return default;
+
+	//skip whitespaces
+	for (; *s == ' '; s++);
+
+	if ((s[0] == 'T' || s[0] == 't')
+		&& (s[1] == 'R' || s[1] == 'r')
+		&& (s[2] == 'U' || s[2] == 'u')
+		&& (s[3] == 'E' || s[3] == 'e')) return true;
+	if ((s[0] == 'F' || s[0] == 'f')
+		&& (s[1] == 'A' || s[1] == 'a')
+		&& (s[2] == 'L' || s[2] == 'l')
+		&& (s[3] == 'S' || s[3] == 's')
+		&& (s[4] == 'E' || s[4] == 'e')) return false;
+
+	//check if it is number
+	int ret;
+	if (sscanf(s, "%d", &ret) == 1) {
+		return ret != 0 ? true : false;
+	}
+
+	return default;
+}
+
+int getAttrFromString(const char* s, int default){
+	if (s == NULL) return default;
+
+	int ret;
+	if (sscanf(s, "%d", &ret) == 1) return ret;
+
+	return default;
+}
+
+double getAttrFromString(const char* s, double default){
+	if (s == NULL) return default;
+
+	double ret;
+	if (sscanf(s, "%lf", &ret) == 1) return ret;
+
+	return default;
+}
+
+void setAttrToString(std::string& s, bool value){
+	s.append(value ? "true" : "false");
+}
+
+void setAttrToString(std::string& s, int value){
+	char s1[32];
+	sprintf(s1, "%d", value);
+	s.append(s1);
+}
+
+void setAttrToString(std::string& s, double value){
+	char s1[32];
+	sprintf(s1, "%g", value);
+	s.append(s1);
 }
 
 enum StringType{

@@ -100,6 +100,7 @@ game::Level* test(){
 	osg::ref_ptr<game::Level> level = new game::Level;
 	level->name = "Unnamed level";
 	level->getOrCreateTileTypeMap()->add(ground.get());
+	level->getOrCreateTileTypeMap()->add(ground2.get());
 	level->getOrCreateTileTypeMap()->add(wall.get());
 	level->getOrCreateTileTypeMap()->add(ex.get());
 
