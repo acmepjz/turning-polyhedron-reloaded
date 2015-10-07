@@ -32,7 +32,7 @@ game::Level* test(){
 	//create geometry
 	osg::ref_ptr<gfx::Appearance> ground_a = new gfx::Appearance;
 	ground_a->type = gfx::Appearance::MESH_CUBE;
-	ground_a->size.set(1, 1, 0.25f);
+	ground_a->scale.set(1, 1, 0.25f);
 	ground_a->center.set(0, 0, 1);
 	ground_a->solidColor.set(0.4f, 0.4f, 0.4f);
 	ground_a->bevel = 0.05f;
@@ -40,7 +40,7 @@ game::Level* test(){
 
 	osg::ref_ptr<gfx::Appearance> wall_a2 = new gfx::Appearance;
 	wall_a2->type = gfx::Appearance::MESH_CUBE;
-	wall_a2->size.set(1, 1, 1);
+	wall_a2->scale.set(1, 1, 1);
 	wall_a2->solidColor.set(0.4f, 0.4f, 0.4f);
 	wall_a2->bevel = 0.05f;
 	wall_a2->lod = true;
@@ -49,9 +49,14 @@ game::Level* test(){
 	wall_a->subNodes.push_back(ground_a);
 	wall_a->subNodes.push_back(wall_a2);
 
+	osg::ref_ptr<gfx::Appearance> ground2_a = new gfx::Appearance;
+	ground2_a->type = gfx::Appearance::TRANSFORM;
+	ground2_a->pos.set(0, 0, -1);
+	ground2_a->subNodes.push_back(wall_a2);
+
 	osg::ref_ptr<gfx::Appearance> ex_a2 = new gfx::Appearance;
 	ex_a2->type = gfx::Appearance::MESH_CUBE;
-	ex_a2->size.set(1, 1, 1);
+	ex_a2->scale.set(1, 1, 1);
 	ex_a2->solid = false;
 	ex_a2->wireframe = true;
 	ex_a2->wireframeColor.set(1, 1, 0);
@@ -59,27 +64,34 @@ game::Level* test(){
 	osg::ref_ptr<gfx::Appearance> ex_a = new gfx::Appearance;
 	ex_a->subNodes.push_back(ground_a);
 	ex_a->subNodes.push_back(ex_a2);
+
 	//create some tile types
-	const TileType* tt = NULL;
 	osg::ref_ptr<TileType> ground = new TileType;
 	ground->id = "ground";
 	ground->index = 1;
-	ground->flags = tt->SUPPORTER | tt->TILT_SUPPORTER;
+	ground->flags = TileType::SUPPORTER | TileType::TILT_SUPPORTER;
 	ground->name = "Ground";
 	ground->desc = "Normal ground.";
 	ground->appearance = ground_a;
+
+	osg::ref_ptr<TileType> ground2 = new TileType;
+	ground2->id = "block-ground";
+	ground2->flags = TileType::SUPPORTER | TileType::TILT_SUPPORTER;
+	ground2->appearance = ground2_a;
+
 	osg::ref_ptr<TileType> wall = new TileType;
 	wall->id = "wall";
 	wall->index = 11;
-	wall->flags = tt->SUPPORTER | tt->TILT_SUPPORTER;
+	wall->flags = TileType::SUPPORTER | TileType::TILT_SUPPORTER;
 	wall->blockedArea.set(-1, 1);
 	wall->name = "Wall";
 	wall->desc = "As an obstacle, your block can't pass through the wall, but...";
 	wall->appearance = wall_a;
+
 	osg::ref_ptr<TileType> ex = new TileType;
 	ex->id = "goal";
 	ex->index = 8;
-	ex->flags = tt->SUPPORTER | tt->TILT_SUPPORTER | tt->EXIT;
+	ex->flags = TileType::SUPPORTER | TileType::TILT_SUPPORTER | TileType::EXIT;
 	ex->name = "Goal";
 	ex->desc = "You'll win the game if you get your block to fall into this square hole after visiting all checkpoints.";
 	ex->appearance = ex_a;
@@ -102,7 +114,7 @@ game::Level* test(){
 	dat->resize(osg::Vec3i(), osg::Vec3i(10, 6, 3), false);
 	{
 		const char s[] =
-			"1111      "
+			"11111     "
 			"111111    "
 			"11111111W "
 			" 111111111"
@@ -121,7 +133,7 @@ game::Level* test(){
 				break;
 			}
 		}
-		dat->set(3, 0, 2, ground.get());
+		dat->set(3, 0, 2, ground2.get());
 	}
 	level->addMapData(dat.get());
 

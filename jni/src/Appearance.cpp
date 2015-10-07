@@ -19,7 +19,7 @@ namespace gfx {
 		, specularHardness(0)
 		, pos()
 		, rot()
-		, size(1, 1, 1)
+		, scale(1, 1, 1)
 		, center()
 		, bevel(0)
 		, solid(true)
@@ -54,16 +54,27 @@ namespace gfx {
 		switch (type) {
 		case APPEARANCE:
 		case SHADER:
+		case TRANSFORM:
 		{
 			if (subNodes.empty()) break;
 			
-			osg::ref_ptr<osg::Group> gp = new osg::Group;
+			osg::ref_ptr<osg::Group> gp;
+			if (type == TRANSFORM) {
+				osg::Matrix mat;
+				mat.makeScale(scale);
+				mat.postMultRotate(osg::Quat(rot.x(), osg::X_AXIS, rot.y(), osg::Y_AXIS, rot.z(), osg::Z_AXIS));
+				mat.postMultTranslate(pos);
+
+				gp = new osg::MatrixTransform(mat);
+			} else {
+				gp = new osg::Group;
+			}
 			for (size_t i = 0; i < subNodes.size(); i++) {
 				gp->addChild(subNodes[i]->getOrCreateInstance(shape));
 			}
 			node = gp.get();
 
-			if (type == SHADER && node.valid()) {
+			if (type == SHADER) {
 				if (!_stateSet.valid()) {
 					//create new state set
 					_stateSet = new osg::StateSet;
@@ -87,8 +98,8 @@ namespace gfx {
 			osg::ref_ptr<osg::LOD> lodNode;
 			osg::ref_ptr<osg::Geode> geode;
 
-			osg::Vec3 p1 = pos - osg::Vec3(size.x()*center.x(), size.y()*center.y(), size.z()*center.z());
-			osg::Vec3 p2 = p1 + size;
+			osg::Vec3 p1 = pos - osg::Vec3(scale.x()*center.x(), scale.y()*center.y(), scale.z()*center.z());
+			osg::Vec3 p2 = p1 + scale;
 
 			for (int i = 0; i < 2; i++) {
 				// check if we need to create bevel geometry
@@ -156,7 +167,7 @@ namespace gfx {
 		ADD_FLOAT_SERIALIZER(specularHardness, 0);
 		ADD_VEC3_SERIALIZER(pos, osg::Vec3());
 		ADD_VEC3_SERIALIZER(rot, osg::Vec3());
-		ADD_VEC3_SERIALIZER(size, osg::Vec3(1.0f, 1.0f, 1.0f));
+		ADD_VEC3_SERIALIZER(scale, osg::Vec3(1.0f, 1.0f, 1.0f));
 		ADD_VEC3_SERIALIZER(center, osg::Vec3());
 		ADD_FLOAT_SERIALIZER(bevel, 0);
 		ADD_BOOL_SERIALIZER(solid, true);

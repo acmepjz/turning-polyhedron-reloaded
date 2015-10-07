@@ -16,7 +16,8 @@ namespace gfx {
 		enum Type {
 			APPEARANCE,
 			SHADER,
-			MESH_CUBE, //!< ad-hoc
+			TRANSFORM,
+			MESH_CUBE = 0x100, //!< ad-hoc
 		};
 	protected:
 		virtual ~Appearance();
@@ -48,7 +49,7 @@ namespace gfx {
 
 		osg::Vec3 pos; //!< position.
 		osg::Vec3 rot; //!< rotation (yaw, pitch, roll)
-		osg::Vec3 size; //!< size
+		osg::Vec3 scale; //!< scale or size
 		osg::Vec3 center;
 		float bevel;
 		bool solid;
@@ -70,7 +71,7 @@ namespace gfx {
 
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, pos);
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, rot);
-		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, size);
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, scale);
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, center);
 		UTIL_ADD_BYVAL_GETTER_SETTER(float, bevel);
 		UTIL_ADD_BYVAL_GETTER_SETTER(bool, solid);
