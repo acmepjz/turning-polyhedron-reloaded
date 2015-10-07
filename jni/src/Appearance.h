@@ -17,7 +17,11 @@ namespace gfx {
 			APPEARANCE,
 			SHADER,
 			TRANSFORM,
-			MESH_CUBE = 0x100, //!< ad-hoc
+			MESH,
+		};
+		/// the mesh type
+		enum MeshType {
+			MESH_CUBE,
 		};
 	protected:
 		virtual ~Appearance();
@@ -45,18 +49,19 @@ namespace gfx {
 		osg::Vec4 emissive; //!< emission color
 		float specularHardness; //!< specular hardness
 
-		// if node type is MESH_CUBE
+		// if node type is MESH
 
+		int meshType; //!< the mesh type. \sa MeshType
 		osg::Vec3 pos; //!< position.
 		osg::Vec3 rot; //!< rotation (yaw, pitch, roll)
 		osg::Vec3 scale; //!< scale or size
 		osg::Vec3 center;
-		float bevel;
-		bool solid;
-		bool wireframe;
-		bool lod;
-		osg::Vec3 solidColor;
-		osg::Vec3 wireframeColor;
+		float bevel; //!< bevel size
+		bool solid; //!< set to draw solid or not
+		bool wireframe; //!< set to draw wireframe or not
+		bool lod; //!< set to use LOD or not (used when \ref bevel > 0)
+		osg::Vec3 solidColor; //!< color
+		osg::Vec3 wireframeColor; //!< wireframe color
 
 		std::vector<osg::ref_ptr<Appearance> > subNodes; //!< subnodes
 
@@ -69,6 +74,7 @@ namespace gfx {
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec4, emissive);
 		UTIL_ADD_BYVAL_GETTER_SETTER(float, specularHardness);
 
+		UTIL_ADD_BYVAL_GETTER_SETTER(int, meshType);
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, pos);
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, rot);
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, scale);

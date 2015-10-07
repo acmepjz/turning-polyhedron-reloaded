@@ -29,85 +29,24 @@ using namespace game;
 using namespace gfx;
 
 game::Level* test(){
-	//create geometry
-	osg::ref_ptr<gfx::Appearance> ground_a = new gfx::Appearance;
-	ground_a->type = gfx::Appearance::MESH_CUBE;
-	ground_a->scale.set(1, 1, 0.25f);
-	ground_a->center.set(0, 0, 1);
-	ground_a->solidColor.set(0.4f, 0.4f, 0.4f);
-	ground_a->bevel = 0.05f;
-	ground_a->lod = true;
-
-	osg::ref_ptr<gfx::Appearance> wall_a2 = new gfx::Appearance;
-	wall_a2->type = gfx::Appearance::MESH_CUBE;
-	wall_a2->scale.set(1, 1, 1);
-	wall_a2->solidColor.set(0.4f, 0.4f, 0.4f);
-	wall_a2->bevel = 0.05f;
-	wall_a2->lod = true;
-
-	osg::ref_ptr<gfx::Appearance> wall_a = new gfx::Appearance;
-	wall_a->subNodes.push_back(ground_a);
-	wall_a->subNodes.push_back(wall_a2);
-
-	osg::ref_ptr<gfx::Appearance> ground2_a = new gfx::Appearance;
-	ground2_a->type = gfx::Appearance::TRANSFORM;
-	ground2_a->pos.set(0, 0, -1);
-	ground2_a->subNodes.push_back(wall_a2);
-
-	osg::ref_ptr<gfx::Appearance> ex_a2 = new gfx::Appearance;
-	ex_a2->type = gfx::Appearance::MESH_CUBE;
-	ex_a2->scale.set(1, 1, 1);
-	ex_a2->solid = false;
-	ex_a2->wireframe = true;
-	ex_a2->wireframeColor.set(1, 1, 0);
-
-	osg::ref_ptr<gfx::Appearance> ex_a = new gfx::Appearance;
-	ex_a->subNodes.push_back(ground_a);
-	ex_a->subNodes.push_back(ex_a2);
-
-	//create some tile types
-	osg::ref_ptr<TileType> ground = new TileType;
-	ground->id = "ground";
-	ground->index = 1;
-	ground->flags = TileType::SUPPORTER | TileType::TILT_SUPPORTER;
-	ground->name = "Ground";
-	ground->desc = "Normal ground.";
-	ground->appearance = ground_a;
-
-	osg::ref_ptr<TileType> ground2 = new TileType;
-	ground2->id = "block-ground";
-	ground2->flags = TileType::SUPPORTER | TileType::TILT_SUPPORTER;
-	ground2->appearance = ground2_a;
-
-	osg::ref_ptr<TileType> wall = new TileType;
-	wall->id = "wall";
-	wall->index = 11;
-	wall->flags = TileType::SUPPORTER | TileType::TILT_SUPPORTER;
-	wall->blockedArea.set(-1, 1);
-	wall->name = "Wall";
-	wall->desc = "As an obstacle, your block can't pass through the wall, but...";
-	wall->appearance = wall_a;
-
-	osg::ref_ptr<TileType> ex = new TileType;
-	ex->id = "goal";
-	ex->index = 8;
-	ex->flags = TileType::SUPPORTER | TileType::TILT_SUPPORTER | TileType::EXIT;
-	ex->name = "Goal";
-	ex->desc = "You'll win the game if you get your block to fall into this square hole after visiting all checkpoints.";
-	ex->appearance = ex_a;
-
 	//create a level
 	osg::ref_ptr<game::Level> level = new game::Level;
 	level->name = "Unnamed level";
-	level->getOrCreateTileTypeMap()->add(ground.get());
-	level->getOrCreateTileTypeMap()->add(ground2.get());
-	level->getOrCreateTileTypeMap()->add(wall.get());
-	level->getOrCreateTileTypeMap()->add(ex.get());
 
 	//TETS
 	osg::ref_ptr<XMLNode> x = XMLReaderWriter::readFile(
-		std::ifstream("../../turningpolyhedron/turningpolyhedron/data/DefaultObjectTypes.xml", std::ios::in | std::ios::binary));
+		std::ifstream("../data/DefaultObjectTypes.xml", std::ios::in | std::ios::binary));
 	if (x.valid()) level->getOrCreateObjectTypeMap()->load(x.get());
+	x = XMLReaderWriter::readFile(
+		std::ifstream("../data/DefaultTileTypes.xml", std::ios::in | std::ios::binary));
+	if (x.valid()) level->getOrCreateTileTypeMap()->load(x.get());
+
+	//some tile types
+	osg::ref_ptr<TileType> ground, ground2, wall, ex;
+	ground = level->getOrCreateTileTypeMap()->lookup("ground");
+	ground2 = level->getOrCreateTileTypeMap()->lookup("block-ground");
+	wall = level->getOrCreateTileTypeMap()->lookup("wall");
+	ex = level->getOrCreateTileTypeMap()->lookup("goal");
 
 	//create a map
 	osg::ref_ptr<game::MapData> dat = new game::MapData;

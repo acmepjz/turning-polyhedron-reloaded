@@ -1,5 +1,7 @@
 #include "Appearance.h"
 #include "SimpleGeometry.h"
+#include "XMLReaderWriter.h"
+#include "util_err.h"
 #include <osg/Group>
 #include <osg/Geode>
 #include <osg/PolygonOffset>
@@ -13,10 +15,11 @@ namespace gfx {
 	Appearance::Appearance()
 		: type(0)
 		, ambient(0, 0, 0, 1)
-		, diffuse(1, 1, 1, 1)
+		, diffuse(0, 0, 0, 1)
 		, specular(0, 0, 0, 1)
 		, emissive(0, 0, 0, 1)
 		, specularHardness(0)
+		, meshType(0)
 		, pos()
 		, rot()
 		, scale(1, 1, 1)
@@ -93,7 +96,7 @@ namespace gfx {
 			}
 			break;
 		}
-		case MESH_CUBE:
+		case MESH:
 		{
 			osg::ref_ptr<osg::LOD> lodNode;
 			osg::ref_ptr<osg::Geode> geode;
@@ -101,39 +104,43 @@ namespace gfx {
 			osg::Vec3 p1 = pos - osg::Vec3(scale.x()*center.x(), scale.y()*center.y(), scale.z()*center.z());
 			osg::Vec3 p2 = p1 + scale;
 
-			for (int i = 0; i < 2; i++) {
-				// check if we need to create bevel geometry
-				if (i == 0 && bevel <= 1E-6f) continue;
+			if (meshType == MESH_CUBE) {
+				for (int i = 0; i < 2; i++) {
+					// check if we need to create bevel geometry
+					if (i == 0 && bevel <= 1E-6f) continue;
 
-				// create geometry
-				if (geode.valid()) break;
-				geode = new osg::Geode;
-				if (solid) {
-					osg::Geometry* g = gfx::createCube(p1, p2, false, i ? 0.0f : bevel, solidColor);
-					if (wireframe) {
-						g->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonOffset(1.0f, 1.0f));
+					// create geometry
+					if (geode.valid()) break;
+					geode = new osg::Geode;
+					if (solid) {
+						osg::Geometry* g = gfx::createCube(p1, p2, false, i ? 0.0f : bevel, solidColor);
+						if (wireframe) {
+							g->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonOffset(1.0f, 1.0f));
+						}
+						geode->addDrawable(g);
 					}
-					geode->addDrawable(g);
-				}
-				if (wireframe) {
-					osg::Geometry* g = gfx::createCube(p1, p2, true, i ? 0.0f : bevel, wireframeColor);
-					g->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-					geode->addDrawable(g);
-				}
+					if (wireframe) {
+						osg::Geometry* g = gfx::createCube(p1, p2, true, i ? 0.0f : bevel, wireframeColor);
+						//FIXME: wireframe should be affected by material color?
+						//g->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF); //???
+						geode->addDrawable(g);
+					}
 
-				// check if we need to create LOD
-				if (lod) {
-					if (i == 0) {
-						lodNode = new osg::LOD;
-						lodNode->addChild(geode.release(), 0.0f, 50.0f);
-					} else {
-						lodNode->addChild(geode.release(), 50.0f, FLT_MAX);
+					// check if we need to create LOD
+					if (lod) {
+						if (i == 0) {
+							lodNode = new osg::LOD;
+							lodNode->addChild(geode.release(), 0.0f, 50.0f);
+						} else {
+							lodNode->addChild(geode.release(), 50.0f, FLT_MAX);
+						}
 					}
 				}
 			}
 
 			if (lodNode.valid()) node = lodNode.get();
-			else node = geode.get();
+			else if (geode.valid()) node = geode.get();
+			else break;
 
 			if (rot.x() < -1E-6f || rot.x() > 1E-6f
 				|| rot.x() < -1E-6f || rot.x() > 1E-6f
@@ -157,14 +164,98 @@ namespace gfx {
 		return node.release();
 	}
 
+	bool Appearance::load(const XMLNode* node){
+		//check node type
+		for (;;) {
+			if (node->name == "appearance") type = APPEARANCE;
+			else if (node->name == "shader") type = SHADER;
+			else if (node->name == "transform") type = TRANSFORM;
+			else if (node->name == "mesh") type = MESH;
+			else {
+				UTIL_WARN "unrecognized node name: " << node->name << std::endl;
+				return false;
+			}
+
+			//if it is appearance node and only have one child then load recursively
+			if (type == APPEARANCE && node->subNodes.size() == 1) {
+				node = node->subNodes[0].get();
+				continue;
+			}
+
+			break;
+		}
+
+		if (type == MESH) {
+			std::string s = node->getAttr("type", std::string("cube"));
+			if (s == "cube") meshType = MESH_CUBE;
+			else {
+				UTIL_WARN "unrecognized mesh type: " << s << std::endl;
+				return false;
+			}
+
+			pos = node->getAttrOsgVec("p", osg::Vec3());
+			rot = node->getAttrOsgVec("r", osg::Vec3());
+			scale = node->getAttrOsgVec("s", osg::Vec3(1, 1, 1));
+			center = node->getAttrOsgVec("c", osg::Vec3());
+			bevel = node->getAttr("bevel", 0.0f);
+
+			if (node->getAttr("solidAndWireframe", false)) {
+				solid = true;
+				wireframe = true;
+				solidColor = node->getAttrOsgVec("color", osg::Vec3(1, 1, 1));
+				wireframeColor = node->getAttrOsgVec("wireframeColor", osg::Vec3(1, 1, 1));
+			} else if (node->getAttr("wireframe", false)) {
+				solid = false;
+				wireframe = true;
+				if (node->attributes.find("wireframeColor") != node->attributes.end()) {
+					wireframeColor = node->getAttrOsgVec("wireframeColor", osg::Vec3(1, 1, 1));
+				} else {
+					wireframeColor = node->getAttrOsgVec("color", osg::Vec3(1, 1, 1));
+				}
+			} else {
+				solid = node->getAttr("solid", true);
+				wireframe = false;
+				solidColor = node->getAttrOsgVec("color", osg::Vec3(1, 1, 1));
+			}
+
+			lod = node->getAttr("lod", false);
+		} else {
+			switch (type) {
+			case SHADER:
+				ambient = node->getAttrOsgVec("ambient", osg::Vec4(0, 0, 0, 1));
+				diffuse = node->getAttrOsgVec("diffuse", osg::Vec4(0, 0, 0, 1));
+				specular = node->getAttrOsgVec("specular", osg::Vec4(0, 0, 0, 1));
+				emissive = node->getAttrOsgVec("emissive", osg::Vec4(0, 0, 0, 1));
+				specularHardness = node->getAttr("specularHardness", 0.0f);
+				break;
+			case TRANSFORM:
+				pos = node->getAttrOsgVec("p", osg::Vec3());
+				rot = node->getAttrOsgVec("r", osg::Vec3());
+				scale = node->getAttrOsgVec("s", osg::Vec3(1, 1, 1));
+				break;
+			}
+
+			//load subnodes
+			for (size_t i = 0; i < node->subNodes.size(); i++) {
+				osg::ref_ptr<Appearance> a = new Appearance;
+				if (a->load(node->subNodes[i].get())) {
+					subNodes.push_back(a);
+				}
+			}
+		}
+
+		return true;
+	}
+
 	REG_OBJ_WRAPPER(gfx, Appearance, "")
 	{
 		ADD_INT_SERIALIZER(type, 0);
 		ADD_VEC4_SERIALIZER(ambient, osg::Vec4(0, 0, 0, 1));
-		ADD_VEC4_SERIALIZER(diffuse, osg::Vec4(1, 1, 1, 1));
+		ADD_VEC4_SERIALIZER(diffuse, osg::Vec4(0, 0, 0, 1));
 		ADD_VEC4_SERIALIZER(specular, osg::Vec4(0, 0, 0, 1));
 		ADD_VEC4_SERIALIZER(emissive, osg::Vec4(0, 0, 0, 1));
 		ADD_FLOAT_SERIALIZER(specularHardness, 0);
+		ADD_INT_SERIALIZER(meshType, 0);
 		ADD_VEC3_SERIALIZER(pos, osg::Vec3());
 		ADD_VEC3_SERIALIZER(rot, osg::Vec3());
 		ADD_VEC3_SERIALIZER(scale, osg::Vec3(1.0f, 1.0f, 1.0f));

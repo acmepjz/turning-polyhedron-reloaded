@@ -1,4 +1,5 @@
 #include "TileType.h"
+#include "XMLReaderWriter.h"
 #include "util_err.h"
 #include <osg/Node>
 #include <osg/Notify>
@@ -29,13 +30,61 @@ namespace game {
 	{
 	}
 
-
 	TileType::~TileType()
 	{
 	}
 
 	void TileType::init(ObjectTypeMap* otm, TileTypeMap* ttm){
 		_objType = otm->lookup(objType);
+	}
+
+	bool TileType::load(const XMLNode* node){
+		id = node->getAttr("id", std::string());
+		if (id.empty()) {
+			UTIL_WARN "object doesn't have id" << std::endl;
+			return false;
+		}
+		index = node->getAttr("index", 0);
+		objType = node->getAttr("type", std::string());
+
+		//read flags
+#define GETFLAGS(NAME,DEFAULT,FLAGS) (node->getAttr(NAME, DEFAULT) ? FLAGS : 0)
+		flags = GETFLAGS("supporter", true, SUPPORTER)
+			| GETFLAGS("tilt-supporter", true, TILT_SUPPORTER)
+			| GETFLAGS("checkpoint", false, CHECKPOINT)
+			| GETFLAGS("targetBlock", false, TARGET)
+			| GETFLAGS("exitBlock", false, EXIT);
+#undef GETFLAGS
+
+		//backward compatibility code
+		if (node->getAttr("non-block", false)) {
+			blockedArea.set(0, 0);
+		} else if (node->getAttr("blocked", false)) {
+			blockedArea[0] = -1;
+			blockedArea[1] = node->getAttr("block-height", 0x40000000);
+		} else {
+			blockedArea = node->getAttrOsgVec("blockedArea", osg::Vec2i(-1, 0));
+		}
+
+		//check subnodes
+		for (size_t i = 0; i < node->subNodes.size(); i++) {
+			const XMLNode* subnode = node->subNodes[i].get();
+
+			if (subnode->name == "name") {
+				name = subnode->contents;
+			} else if (subnode->name == "description") {
+				desc = subnode->contents;
+			} else if (subnode->name == "appearance") {
+				osg::ref_ptr<gfx::Appearance> a = new gfx::Appearance;
+				if (a->load(subnode)) {
+					appearance = a;
+				}
+			} else {
+				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
+			}
+		}
+
+		return true;
 	}
 
 	TileTypeMap::TileTypeMap(){
@@ -139,6 +188,32 @@ namespace game {
 		for (IdMap::iterator it = idMap.begin(); it != idMap.end(); ++it) {
 			it->second->init(otm, this);
 		}
+	}
+
+	bool TileTypeMap::load(const XMLNode* node){
+		for (size_t i = 0; i < node->subNodes.size(); i++) {
+			const XMLNode* subnode = node->subNodes[i].get();
+
+			if (subnode->name == "tileType") {
+				osg::ref_ptr<TileType> tt = new TileType;
+				if (tt->load(subnode)) {
+					add(tt.get());
+				}
+			} else {
+				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
+			}
+		}
+
+		return true;
+	}
+
+	bool TileTypeMap::loadTileMapping(const XMLNode* node){
+		std::string id = node->getAttr("id", std::string());
+		if (id.empty()) return false;
+
+		int index = node->getAttr("index", 0);
+
+		return addTileMapping(id, index);
 	}
 
 #define MyClass MyClass_TileType

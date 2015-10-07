@@ -36,32 +36,21 @@ namespace game {
 		}
 	}
 
-	bool ObjectType::loadInteractions(const XMLNode* node){
-		bool ret = true;
-
-		std::map<std::string, std::string>::const_iterator it = node->attributes.begin();
-		for (; it != node->attributes.end(); ++it) {
-			osg::ref_ptr<Interaction> i = new Interaction;
-			if (i->load(it->second)) {
-				interactions[it->first] = i;
-			} else {
-				ret = false;
-			}
-		}
-
-		return ret;
-	}
-
 	bool ObjectType::load(const XMLNode* node){
-		bool ret = true;
+		name = node->getAttr("name", std::string());
 
-		name = node->getAttr("name", "");
-
+		//check subnodes
 		for (size_t i = 0; i < node->subNodes.size(); i++) {
 			const XMLNode* subnode = node->subNodes[i].get();
 
 			if (subnode->name == "interaction") {
-				if (!loadInteractions(subnode)) ret = false;
+				std::map<std::string, std::string>::const_iterator it = subnode->attributes.begin();
+				for (; it != subnode->attributes.end(); ++it) {
+					osg::ref_ptr<Interaction> interaction = new Interaction;
+					if (interaction->load(it->second)) {
+						interactions[it->first] = interaction;
+					}
+				}
 			} else if (subnode->name == "description") {
 				desc = subnode->contents;
 			} else {
@@ -69,7 +58,7 @@ namespace game {
 			}
 		}
 
-		return ret;
+		return true;
 	}
 
 	ObjectTypeMap::ObjectTypeMap(){
@@ -118,22 +107,20 @@ namespace game {
 	}
 
 	bool ObjectTypeMap::load(const XMLNode* node){
-		bool ret = true;
-
 		for (size_t i = 0; i < node->subNodes.size(); i++) {
 			const XMLNode* subnode = node->subNodes[i].get();
 
 			if (subnode->name == "objectType") {
 				osg::ref_ptr<ObjectType> ot = new ObjectType;
-				if (!ot->load(subnode) || !add(ot.get())) {
-					ret = false;
+				if (ot->load(subnode)) {
+					add(ot.get());
 				}
 			} else {
 				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
 			}
 		}
 
-		return ret;
+		return true;
 	}
 
 #define MyClass MyClass_ObjectType

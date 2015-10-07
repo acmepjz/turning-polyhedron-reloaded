@@ -36,6 +36,8 @@ namespace game {
 
 		void init(ObjectTypeMap* otm, TileTypeMap* ttm);
 
+		bool load(const XMLNode* node); //!< load from XML node, assume the node is called `tileType`
+
 	public:
 		std::string id; //!< id, used to find this tile type
 		int index; //!< the (permanent) index (optional), used to find this tile type, 0 = no index
@@ -85,6 +87,9 @@ namespace game {
 		bool addTileMapping(const std::string& id, int index); //!< Add a (temporary) index to a tile type with specified id
 
 		void init(ObjectTypeMap* otm);
+
+		bool load(const XMLNode* node); //!< load from XML node, assume the node is called `tileTypes`
+		bool loadTileMapping(const XMLNode* node); //!< load from XML node, assume the node is called `tileMapping`
 
 	public:
 		typedef std::map<std::string, osg::ref_ptr<TileType> > IdMap;
