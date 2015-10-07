@@ -26,7 +26,7 @@ namespace game {
 			int idx = (flags >> (3 + i * 2)) & 3; //new index, should be 0,1,2
 			ret.size[i] = poly->size[idx]; //new size of dimension i
 
-			int delta = ((flags >> i) & 1) ? -1 : 1;
+			int delta = ((flags >> idx) & 1) ? -1 : 1;
 			if (idx >= 1) delta *= poly->size.x();
 			if (idx >= 2) delta *= poly->size.y();
 			ret.delta[i] = delta; //new delta
@@ -45,7 +45,7 @@ namespace game {
 			ret.size[i] = poly->size[idx]; //new size of dimension i
 
 			ret.delta[i] = osg::Vec3i();
-			ret.delta[i][idx] = ((flags >> i) & 1) ? -1 : 1; //new delta
+			ret.delta[i][idx] = ((flags >> idx) & 1) ? -1 : 1; //new delta
 		}
 	}
 
