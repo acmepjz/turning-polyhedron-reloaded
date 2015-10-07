@@ -18,16 +18,16 @@ namespace game {
 
 	/// The move direction.
 	enum MoveDirection {
-		MOVE_NEG_X = 0,
-		MOVE_POS_X = 1,
-		MOVE_NEG_Y = 2,
-		MOVE_POS_Y = 3,
-		MOVE_NEG_Z = 4,
-		MOVE_POS_Z = 5,
-		MOVE_LEFT = MOVE_NEG_X,
-		MOVE_RIGHT = MOVE_POS_X,
-		MOVE_UP = MOVE_NEG_Y,
-		MOVE_DOWN = MOVE_POS_Y,
+		MOVE_NEG_X = 0, //!< x--
+		MOVE_POS_X = 1, //!< x++
+		MOVE_NEG_Y = 2, //!< y--
+		MOVE_POS_Y = 3, //!< y++
+		MOVE_NEG_Z = 4, //!< z--
+		MOVE_POS_Z = 5, //!< z++
+		MOVE_LEFT = MOVE_NEG_X, //!< x--
+		MOVE_RIGHT = MOVE_POS_X, //!< x++
+		MOVE_UP = MOVE_NEG_Y, //!< y--
+		MOVE_DOWN = MOVE_POS_Y, //!< y++
 	};
 
 	class Level;
