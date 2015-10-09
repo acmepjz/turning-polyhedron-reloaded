@@ -154,7 +154,8 @@ namespace game {
 			VISIBLE = 0x100, //!< It is visible and take part in the game logic (only an ad-hoc solution).
 			FLOATING = 0x200, //!< It isn't affected by gravity, e.g. the target block in PuzzleBoy.
 			TARGET = 0x400, //!< It is a target block, e.g. in Sokoban.
-			EXIT = 0x800, //!< It is an exit block (will check shape).
+			EXIT = 0x800, //!< It is an exit block (e.g. an exit which checks shape).
+			CONTINUOUS_HITTEST = 0x1000, //!< Enables continuous hit test (see \ref isRollable).
 		};
 		/// polyhedron movement
 		enum PolyhedronMovement {
@@ -215,6 +216,21 @@ namespace game {
 
 		///move to the adjacent position (experimental).
 		bool move(MoveDirection dir);
+
+		/** do continuous collision hit test for rolling block.
+		\param pos old position
+		\param dir move direction
+		\return `true` if it cal roll (i.e. hits nothing), `false` if hits something.
+		*/
+		bool isRollable(const PolyhedronPosition& pos, MoveDirection dir) const;
+
+		/** do continuous collision hit test for rolling block (at current position).
+		\param dir move direction
+		\return `true` if it cal roll (i.e. hits nothing), `false` if hits something.
+		*/
+		bool isRollable(MoveDirection dir) const {
+			return isRollable(pos, dir);
+		}
 
 		///check if it is stable and not blocked at given position. (experimental, only works for cuboid polyhedron)
 		bool valid(const PolyhedronPosition& pos) const;

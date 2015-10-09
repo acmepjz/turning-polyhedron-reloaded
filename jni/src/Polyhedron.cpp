@@ -8,6 +8,8 @@
 #include <osg/MatrixTransform>
 #include <osgGA/GUIEventHandler>
 #include <osgDB/ObjectWrapper>
+#include <math.h>
+#include <string.h>
 
 namespace game {
 
@@ -180,14 +182,14 @@ namespace game {
 
 	class TestPolyhedronAnimator : public osgGA::GUIEventHandler {
 	public:
-		TestPolyhedronAnimator(Polyhedron* poly, MoveDirection dir, int movement)
+		TestPolyhedronAnimator(Polyhedron* poly, MoveDirection dir, int moveType)
 			: _poly(poly)
 			, _t(0)
-			, _movement(movement)
+			, _moveType(moveType)
 		{
-			if (movement & Polyhedron::ROLLING_ALL) {
+			if (moveType & Polyhedron::ROLLING_ALL) {
 				poly->pos.getTransformAnimation(poly, MoveDirection(dir ^ 1), _mat1, _quat, _mat2);
-			} else if (movement & Polyhedron::MOVING_ALL) {
+			} else if (moveType & Polyhedron::MOVING_ALL) {
 				PolyhedronPosition oldPos = poly->pos;
 				oldPos.applyTransform(poly, _mat2);
 				switch (dir) {
@@ -211,14 +213,14 @@ namespace game {
 				_t++;
 				if (_t >= 8) {
 					_poly->updateTransform();
-				} else if (_movement & Polyhedron::ROLLING_ALL) {
+				} else if (_moveType & Polyhedron::ROLLING_ALL) {
 					osg::Matrix mat = _mat1;
 					osg::Quat q;
 					q.slerp(_t*0.125f, _quat, osg::Quat());
 					mat.postMultRotate(q);
 					mat.postMult(_mat2);
 					_poly->_trans->setMatrix(mat);
-				} else if (_movement & Polyhedron::MOVING_ALL) {
+				} else if (_moveType & Polyhedron::MOVING_ALL) {
 					float t = _t*0.125f;
 					osg::Matrix mat = _mat1;
 					for (int i = 0; i < 16; i++) {
@@ -235,7 +237,7 @@ namespace game {
 		osg::Matrix _mat1, _mat2;
 		osg::Quat _quat;
 		int _t;
-		int _movement;
+		int _moveType;
 	};
 
 	Polyhedron::Polyhedron()
@@ -433,7 +435,12 @@ namespace game {
 			return false;
 		}
 
-		//TODO: check if it hits something during rolling, not just end state
+		//check if it hits something during rolling
+		if ((moveType & ROLLING_ALL) && (flags & CONTINUOUS_HITTEST)) {
+			if (!isRollable(dir)) return false;
+		}
+
+		//check if the end position is valid
 		if (valid(newPos)) {
 			pos = newPos;
 			_trans->setEventCallback(new TestPolyhedronAnimator(this, dir, moveType));
@@ -441,6 +448,131 @@ namespace game {
 		}
 
 		return false;
+	}
+
+	bool Polyhedron::isRollable(const PolyhedronPosition& pos, MoveDirection dir) const {
+		//get move type
+		const bool isNegative = (dir == MOVE_NEG_X || dir == MOVE_NEG_Y);
+		const bool isY = (dir == MOVE_NEG_Y || dir == MOVE_POS_Y);
+
+		//get current position
+		PolyhedronPosition::Idx iii;
+		pos.getCurrentPos(this, iii);
+
+		//swap size if move is along Y axis
+		if (isY) {
+			std::swap(iii.size.x(), iii.size.y());
+			std::swap(iii.delta.x(), iii.delta.y());
+		}
+
+		const int sz = pos._map->lbound.z();
+		const int ez = pos._map->lbound.z() + pos._map->size.z();
+
+		//create a 2D array to save hit test area
+		const int w = iii.size.x() + iii.size.z();
+		const int h = floorf(sqrtf(iii.size.x()*iii.size.x() + iii.size.z()*iii.size.z()) + 2.0f);
+		const int offset = isNegative ? -iii.size.z() : 0;
+		const int size = w*h;
+		std::vector<char> hitTestArea(size);
+
+		//y coord if move along X axis, otherwise it is x coord
+		for (int y = 0; y < iii.size.y(); y++) {
+			//calculate hit test area
+			int idx = iii.origin;
+			memset(&(hitTestArea[0]), 0, size);
+
+			//x coord if move along X axis, otherwise it is y coord
+			for (int x = 0; x < iii.size.x(); x++) {
+				for (int z = 0; z < iii.size.z(); z++) {
+					if (customShape[customShapeEnabled ? (idx + z*iii.delta.z()) : 0]) {
+						//it is non-empty, calculate the hit test area
+						int x1 = isNegative ? (-x - 1) : (x - iii.size.x());
+
+						const int v0x = x1 * 2 + 1, v0y = z * 2 + 1; //old vector, x coord should be negative
+						const int d0 = v0x*v0x + v0y*v0y; //4*square(length(v0))
+						const int d0_minus_1 = d0 - 4 * (v0y - v0x) + 4; //not larger than 4*square(length(v0)-1)
+
+						for (; x1 <= z; x1++) {
+							const int v1x = x1 * 2 + 1;
+							const int v1x_sq = v1x*v1x;
+
+							//calculate the min z
+							int z1 = 0;
+							if (v1x_sq < d0_minus_1) {
+								z1 = floorf(sqrtf(d0_minus_1 - v1x_sq)*0.5f);
+							}
+
+							for (; z1 < h; z1++) {
+								const int v1y = z1 * 2 + 1;
+
+								//check if the angle is between 0 and 90
+								if (v0x*v1y - v0y*v1x > 0) continue; //angle < 0
+								if (v0x*v1x + v0y*v1y < 0) continue; //angle > 90
+
+								const int d1 = v1x_sq + v1y*v1y; //4*square(length(v1))
+
+								//check if abs(length(v1)-length(v0))<1. (simplified using middle school mathematics)
+								const int tmp = ((d1 - d0) >> 2) - 1;
+								if (tmp*tmp < d0) {
+									//it is in the hit test area
+									if (isNegative) {
+										hitTestArea[z1*w - x1 - 1 + iii.size.z()] = 1;
+									} else {
+										hitTestArea[z1*w + x1 + iii.size.x()] = 1;
+									}
+								} else if (tmp > 0) {
+									//it is too long
+									break;
+								}
+							}
+						}
+					}
+				}
+				idx += iii.delta.x();
+			}
+
+#if 0
+			//DEBUG
+			UTIL_INFO "Hit test area:" << std::endl;
+			for (int z = h - 1; z >= 0; z--) {
+				for (int x = 0; x < w; x++) {
+					OSG_NOTICE << int(hitTestArea[z*w + x]);
+				}
+				OSG_NOTICE << std::endl;
+			}
+#endif
+
+			//now do the actual hit test
+
+			//x coord if move along X axis, otherwise it is y coord
+			for (int x = 0; x < w; x++) {
+				const int xx = pos.pos.x() + (isY ? y : (x + offset));
+				const int yy = pos.pos.y() + (isY ? (x + offset) : y);
+
+				for (int zz = sz; zz < ez; zz++) {
+					TileType* t = pos._map->get(xx, yy, zz);
+					if (t) {
+						//calculate the range
+						int z = zz + t->blockedArea[0] - pos.pos.z();
+						int e = zz + t->blockedArea[1] - pos.pos.z();
+
+						//check if some blocks is blocked
+						if (z < 0) z = 0;
+						if (e > h) e = h;
+						for (; z < e; z++) {
+							if (hitTestArea[z*w + x]) {
+								//it is blocked
+								return false;
+							}
+						}
+					}
+				}
+			}
+
+			iii.origin += iii.delta.y();
+		}
+
+		return true;
 	}
 
 	bool Polyhedron::valid(const PolyhedronPosition& pos) const {
