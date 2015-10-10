@@ -1,4 +1,6 @@
 #include "TileProperty.h"
+#include "XMLReaderWriter.h"
+#include "util_err.h"
 #include <osgDB/ObjectWrapper>
 
 namespace game {
@@ -45,6 +47,24 @@ namespace game {
 			if (lpe == s.npos) break;
 			lps = lpe + 1;
 		}
+	}
+
+	bool TileProperty::load(const XMLNode* node){
+		//add tags
+		addTags(node->getAttr("tag", std::string()));
+
+		//check subnodes
+		for (size_t i = 0; i < node->subNodes.size(); i++) {
+			const XMLNode* subnode = node->subNodes[i].get();
+
+			if (false) {
+			} else {
+				//TODO: events
+				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
+			}
+		}
+
+		return true;
 	}
 
 	REG_OBJ_WRAPPER(game, TileProperty, "")

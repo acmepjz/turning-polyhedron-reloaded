@@ -8,11 +8,14 @@
 #include <vector>
 #include "util_object.h"
 #include "TileType.h"
+#include "TileProperty.h"
 
 namespace osgDB {
 	class InputStream;
 	class OutputStream;
 }
+
+class XMLNode;
 
 namespace game {
 
@@ -83,6 +86,22 @@ namespace game {
 			return operator()(p.x(), p.y(), p.z());
 		}
 
+		///get tile property at specified position (with bounds check)
+		TileProperty* getProp(int x, int y, int z);
+
+		///get tile property at specified position (with bounds check)
+		TileProperty* getProp(const osg::Vec3i& p) {
+			return getProp(p.x(), p.y(), p.z());
+		}
+
+		///set tile property at specified position (with bounds check)
+		void setProp(int x, int y, int z, TileProperty* t);
+
+		///set tile property at specified position (with bounds check)
+		void setProp(const osg::Vec3i& p, TileProperty* t) {
+			setProp(p.x(), p.y(), p.z(), t);
+		}
+
 		void resize(const osg::Vec3i& lbound_, const osg::Vec3i& size_, bool preserved);
 
 		///calculate the \ref _transform matrix.
@@ -110,8 +129,14 @@ namespace game {
 
 		void init(Level* parent);
 
+		bool load(const XMLNode* node, Level* parent); //!< load from XML node, assume the node is called `mapData`
+
 		///check if the position is valid
-		bool isValidPosition(int x, int y, int z) const;
+		bool isValidPosition(int x, int y, int z) const {
+			return x >= lbound.x() && x < lbound.x() + size.x()
+				&& y >= lbound.y() && y < lbound.y() + size.y()
+				&& z >= lbound.z() && z < lbound.z() + size.z();
+		}
 
 		///check if the position is valid
 		bool isValidPosition(const osg::Vec3i& pos) const {
@@ -130,6 +155,7 @@ namespace game {
 		osg::Vec3f step; //!< step, which determines spaces between individual blocks.
 
 		std::vector<osg::ref_ptr<TileType> > tiles; //!< a 3D array of tiles.
+		std::vector<osg::ref_ptr<TileProperty> > tileProperties; //!< a 3D array of tile properties.
 
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, id);
 		UTIL_ADD_BYVAL_GETTER_SETTER(int, shape);
@@ -140,6 +166,7 @@ namespace game {
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3f, scale);
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3f, step);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<TileType> >, tiles);
+		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<TileProperty> >, tileProperties);
 
 	public:
 		//the following properties don't save to file and is generated at runtime

@@ -3,6 +3,8 @@
 #include "util_object.h"
 #include <set>
 
+class XMLNode;
+
 namespace game {
 
 	/// The tile property (tags, events, etc.) in map data
@@ -42,6 +44,8 @@ namespace game {
 		\param isRemove `false` if add tags, `true` if remove tags
 		*/
 		void modifyTags(const std::string& s, bool isRemove = false);
+
+		bool load(const XMLNode* node); //!< load from XML node, assume the node is called `property`
 
 	public:
 		std::set<std::string> tags; //!< the tags (can have multiple)

@@ -1,6 +1,7 @@
 #include "MapData.h"
 #include "Level.h"
 #include "util_err.h"
+#include "XMLReaderWriter.h"
 #include <osg/Group>
 #include <osg/MatrixTransform>
 #include <osgDB/ObjectWrapper>
@@ -63,17 +64,39 @@ namespace game {
 		}
 	}
 
+	TileProperty* MapData::getProp(int x, int y, int z) {
+		if (isValidPosition(x, y, z)) {
+			int idx = ((z - lbound.z())*size.y() + y - lbound.y())*size.x() + x - lbound.x();
+			return tileProperties[idx].get();
+		} else {
+			return NULL;
+		}
+	}
+
+	void MapData::setProp(int x, int y, int z, TileProperty* t) {
+		if (isValidPosition(x, y, z)) {
+			int idx = ((z - lbound.z())*size.y() + y - lbound.y())*size.x() + x - lbound.x();
+			tileProperties[idx] = t;
+		} else {
+			//prevent memory leak
+			osg::ref_ptr<TileProperty> tmp = t;
+		}
+	}
+
 	//TODO: consider the shape
 	void MapData::resize(const osg::Vec3i& lbound_, const osg::Vec3i& size_, bool preserved){
 		if (!preserved) {
 			lbound = lbound_;
 			size = size_;
 			tiles.resize(size_.x()*size_.y()*size_.z());
+			tileProperties.resize(size_.x()*size_.y()*size_.z());
 			return;
 		}
 
 		std::vector<osg::ref_ptr<TileType> > tmp = tiles;
+		std::vector<osg::ref_ptr<TileProperty> > tmp2 = tileProperties;
 		tiles.resize(size_.x()*size_.y()*size_.z());
+		tileProperties.resize(size_.x()*size_.y()*size_.z());
 
 #define SX(X) s##X = lbound.X() > lbound_.X() ? lbound.X() : lbound_.X()
 #define EX(X) e##X = (lbound.X() + size.X() < lbound_.X() + size_.X()) ? \
@@ -88,6 +111,7 @@ namespace game {
 					int old_idx = ((z - lbound.z())*size.y() + y - lbound.y())*size.x() + x - lbound.x();
 					int new_idx = ((z - lbound_.z())*size_.y() + y - lbound_.y())*size_.x() + x - lbound_.x();
 					tiles[new_idx] = tmp[old_idx];
+					tileProperties[new_idx] = tmp2[old_idx];
 				}
 			}
 		}
@@ -134,25 +158,281 @@ namespace game {
 		_transform.postMultTranslate(pos);
 	}
 
-	bool MapData::isValidPosition(int x, int y, int z) const {
-		return x >= lbound.x() && x < lbound.x() + size.x()
-			&& y >= lbound.y() && y < lbound.y() + size.y()
-			&& z >= lbound.z() && z < lbound.z() + size.z();
-	}
-
 	void MapData::init(Level* parent){
 		computeTransform();
 
 		//check map data size
 		{
-			size_t n = size.x()*size.y()*size.z();
+			const size_t n = size.x()*size.y()*size.z();
 			size_t m = tiles.size();
 			if (m < n) {
-				UTIL_WARN "data size mismatch, expected: " << n << ", actual: " << m << std::endl;
+				UTIL_WARN "tile data size mismatch, expected: " << n << ", actual: " << m << std::endl;
 				tiles.reserve(n);
 				for (; m < n; m++) tiles.push_back(NULL);
 			}
+			m = tileProperties.size();
+			if (m < n) {
+				UTIL_WARN "tile property data size mismatch, expected: " << n << ", actual: " << m << std::endl;
+				tileProperties.reserve(n);
+				for (; m < n; m++) tileProperties.push_back(NULL);
+			}
 		}
+	}
+
+	static int getCharacter(const std::string& s, std::string::size_type& lps) {
+		std::string::size_type m = s.size();
+		for (; lps < m; lps++) {
+			unsigned char c = s[lps];
+			switch (c) {
+			case ' ':
+			case '\t':
+			case '\f':
+			case '\v':
+			case '\n':
+			case '\r':
+				continue;
+			}
+			return c;
+		}
+		return EOF;
+	}
+
+	struct MapDataItem {
+		osg::Vec3i pos;
+		int count;
+		TileType* tile;
+		osg::ref_ptr<TileProperty> prop;
+	};
+
+	bool MapData::load(const XMLNode* node, Level* parent) {
+		id = node->getAttr("id", std::string());
+		if (id.empty()) {
+			UTIL_WARN "object doesn't have id" << std::endl;
+			return false;
+		}
+
+		//get shape
+		{
+			std::string s = node->getAttr("shape", std::string("rect"));
+			if (s == "rect") shape = RECTANGULAR;
+			else {
+				UTIL_WARN "unrecognized shape: " << s << std::endl;
+				return false;
+			}
+		}
+
+		pos = node->getAttrOsgVec("p", osg::Vec3());
+		rot = node->getAttrOsgVec("r", osg::Vec3());
+		scale = node->getAttrOsgVec("s", osg::Vec3(1, 1, 1));
+		step = node->getAttrOsgVec("step", osg::Vec3(1, 1, 1));
+
+		lbound = node->getAttrOsgVec("lbound", osg::Vec3i());
+		bool hasSize = node->attributes.find("size") != node->attributes.end();
+		int theSize = 0;
+		if (hasSize) {
+			size = node->getAttrOsgVec("size", osg::Vec3i(1, 1, 1));
+			if (size.x() <= 0 || size.y() <= 0 || size.z() <= 0) {
+				UTIL_WARN "invalid size" << std::endl;
+				return false;
+			}
+			theSize = size.x()*size.y()*size.z();
+			tiles.resize(theSize);
+			tileProperties.resize(theSize);
+		} else {
+			size.set(1, 1, 1);
+		}
+
+		//get property from property index
+		std::map<int, osg::ref_ptr<TileProperty> > propIndexMap;
+
+		//used when size is unspecified
+		std::vector<MapDataItem> mapDataItems;
+
+		//load subnodes
+		for (size_t i = 0; i < node->subNodes.size(); i++) {
+			const XMLNode* subnode = node->subNodes[i].get();
+
+			if (subnode->name == "typeArray") {
+				//this node contains map data array
+				/*
+				format: [<index>|<id>[@<new_index>]]["["<property_index>|<tag>"]"]["*"<count>]
+				","=next pos (x++)
+				";"=next row (y++)
+				"|"=next plane (z++)
+				<new_index> should be a negative integer
+				*/
+				const std::string& contents = subnode->contents;
+				std::string::size_type lps = 0;
+#define GET_CHARACTER() getCharacter(contents, lps)
+
+				int c = 0;
+				MapDataItem current;
+
+				for (;;) {
+					//get id
+					std::string idOrIndex;
+					for (;;) {
+						c = GET_CHARACTER();
+						if (c == '@' || c == '[' || c == '*' || c == ',' || c == ';' || c == '|' || c == EOF) break;
+						idOrIndex.push_back(c);
+					}
+
+					//get new index
+					int newIndex = 0;
+					if (c == '@') {
+						std::string s;
+						for (;;) {
+							c = GET_CHARACTER();
+							if (c == '[' || c == '*' || c == ',' || c == ';' || c == '|' || c == EOF) break;
+							s.push_back(c);
+						}
+						if (!s.empty()) newIndex = atoi(s.c_str());
+					}
+
+					//get tag
+					std::string propOrTag;
+					if (c == '[') {
+						for (;;) {
+							c = GET_CHARACTER();
+							if (c == ']' || c == EOF) break;
+							propOrTag.push_back(c);
+						}
+						c = GET_CHARACTER();
+					}
+
+					//get count
+					current.count = 1;
+					if (c == '*') {
+						std::string s;
+						for (;;) {
+							c = GET_CHARACTER();
+							if (c == ',' || c == ';' || c == '|' || c == EOF) break;
+							s.push_back(c);
+						}
+						if (!s.empty()) current.count = atoi(s.c_str());
+					}
+
+					//get tile type from id
+					current.tile = parent->getOrCreateTileTypeMap()->lookup(idOrIndex);
+
+					//add new tile mapping
+					if (newIndex) parent->getOrCreateTileTypeMap()->addTileMapping(current.tile, newIndex);
+
+					//add property
+					current.prop = NULL;
+					if (!propOrTag.empty()) {
+						if (TileTypeMap::isNumeric(propOrTag)) {
+							//it is prop index
+							int propIndex = atoi(propOrTag.c_str());
+							current.prop = propIndexMap[propIndex];
+							if (!current.prop.valid()) {
+								current.prop = new TileProperty;
+								propIndexMap[propIndex] = current.prop;
+							}
+						} else {
+							//it is tag
+							current.prop = new TileProperty;
+							current.prop->setTags(propOrTag);
+						}
+					}
+
+					//put these data to array, and advance to next position
+					if (hasSize) {
+						int idx = (current.pos.z()*size.y() + current.pos.y())*size.x() + current.pos.x();
+						for (int i = 0; i < current.count; i++) {
+							if (idx < theSize) {
+								tiles[idx] = current.tile;
+								tileProperties[idx] = current.prop;
+							}
+							idx++;
+
+							if (i == current.count - 1) {
+								if (c == ';') {
+									current.pos.x() = 0;
+									current.pos.y()++;
+									if (current.pos.y() >= size.y()) {
+										current.pos.y() = 0;
+										current.pos.z()++;
+									}
+									break;
+								} else if (c == '|') {
+									current.pos.x() = 0;
+									current.pos.y() = 0;
+									current.pos.z()++;
+									break;
+								}
+							}
+
+							current.pos.x()++;
+							if (current.pos.x() >= size.x()) {
+								current.pos.x() = 0;
+								current.pos.y()++;
+								if (current.pos.y() >= size.y()) {
+									current.pos.y() = 0;
+									current.pos.z()++;
+								}
+							}
+						}
+					} else {
+						//size is unspecified
+						mapDataItems.push_back(current);
+						current.pos.x() += current.count;
+
+						//extend size
+						if (current.pos.x() > size.x()) size.x() = current.pos.x();
+						if (current.pos.y() >= size.y()) size.y() = current.pos.y() + 1;
+						if (current.pos.z() >= size.z()) size.z() = current.pos.z() + 1;
+
+						if (c == ';') {
+							current.pos.x() = 0;
+							current.pos.y()++;
+						} else if (c == '|') {
+							current.pos.x() = 0;
+							current.pos.y() = 0;
+							current.pos.z()++;
+						}
+					}
+
+					if (c == EOF) break;
+					if (c != ',' && c != ';' && c != '|') {
+						UTIL_WARN "unexpected character: '" << char(c) << "', expected ',' or ';' or '|'" << std::endl;
+						break;
+					}
+				}
+			} else if (subnode->name == "property") {
+				//this node contains a property
+				int index = subnode->getAttr("index", 0);
+
+				//lode node only if the index is used, otherwise ignore it
+				std::map<int, osg::ref_ptr<TileProperty> >::iterator it = propIndexMap.find(index);
+				if (it != propIndexMap.end()) {
+					it->second->load(subnode);
+				}
+			} else {
+				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
+			}
+		}
+
+		//put map data when size is unspecified
+		if (!hasSize) {
+			theSize = size.x()*size.y()*size.z();
+			tiles.resize(theSize);
+			tileProperties.resize(theSize);
+
+			for (size_t i = 0; i < mapDataItems.size(); i++) {
+				MapDataItem &current = mapDataItems[i];
+
+				int idx = (current.pos.z()*size.y() + current.pos.y())*size.x() + current.pos.x();
+				for (int i = 0; i < current.count; i++) {
+					tiles[idx] = current.tile;
+					tileProperties[idx] = current.prop;
+					idx++;
+				}
+			}
+		}
+
+		//over
+		return true;
 	}
 
 	void MapPosition::init(Level* parent){
@@ -192,6 +472,7 @@ namespace game {
 		ADD_VEC3F_SERIALIZER(scale, osg::Vec3f(1.0f, 1.0f, 1.0f));
 		ADD_VEC3F_SERIALIZER(step, osg::Vec3f(1.0f, 1.0f, 1.0f));
 		ADD_VECTOR_SERIALIZER(tiles, std::vector<osg::ref_ptr<TileType> >, osgDB::BaseSerializer::RW_OBJECT, -1);
+		ADD_VECTOR_SERIALIZER(tileProperties, std::vector<osg::ref_ptr<TileProperty> >, osgDB::BaseSerializer::RW_OBJECT, -1);
 	}
 
 	osgDB::InputStream& operator>>(osgDB::InputStream& s, MapPosition& obj){

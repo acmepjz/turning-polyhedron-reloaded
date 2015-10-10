@@ -80,6 +80,7 @@ namespace game {
 					appearance = a;
 				}
 			} else {
+				//TODO: events
 				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
 			}
 		}
@@ -102,24 +103,28 @@ namespace game {
 
 	}
 
+	bool TileTypeMap::isNumeric(const std::string s) {
+		const size_t m = s.size();
+		if (m == 0) return false;
+
+		char c = s[0];
+		size_t i = (c == '+' || c == '-') ? 1 : 0;
+
+		if (i < m) {
+			for (; i < m; i++) {
+				c = s[i];
+				if (c<'0' || c>'9') return false;
+			}
+			return true;
+		}
+
+		return false;
+	}
+
 	TileType* TileTypeMap::lookup(const std::string& idOrIndex){
 		if (idOrIndex.empty()) return NULL;
 
-		bool isNumeric = false;
-		size_t m = idOrIndex.size();
-		size_t i = idOrIndex[0] == '-' ? 1 : 0;
-		if (i < m) {
-			isNumeric = true;
-			for (; i < m; i++) {
-				char c = idOrIndex[i];
-				if (c<'0' || c>'9') {
-					isNumeric = false;
-					break;
-				}
-			}
-		}
-
-		if (isNumeric) {
+		if (isNumeric(idOrIndex)) {
 			int index = atoi(idOrIndex.c_str());
 			if (index) {
 				std::map<int, osg::ref_ptr<TileType> >::iterator it = indexMap.find(index);
