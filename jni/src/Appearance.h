@@ -8,6 +8,8 @@ class XMLNode;
 
 namespace gfx {
 
+	/// The appearance node (experimental)
+
 	class Appearance :
 		public osg::Object
 	{

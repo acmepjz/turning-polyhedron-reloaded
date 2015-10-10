@@ -37,6 +37,7 @@ namespace gfx {
 	{
 	}
 
+	//TODO: copy constructor
 	Appearance::Appearance(const Appearance& other, const osg::CopyOp& copyop)
 		: osg::Object(other, copyop)
 	{

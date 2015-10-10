@@ -151,7 +151,7 @@ namespace game {
 		if (obj->index) {
 			IndexMap::iterator it = indexMap.find(obj->index);
 			if (it != indexMap.end()) {
-				UTIL_WARN "object index " << it->first << " already defined : '" << it->second->id
+				UTIL_WARN "object index " << it->first << " already defined: '" << it->second->id
 					<< "', redefine to '" << obj->id << "'" << std::endl;
 			}
 
@@ -162,24 +162,30 @@ namespace game {
 	}
 
 	bool TileTypeMap::addTileMapping(const std::string& id, int index){
-		if (index == 0) {
-			UTIL_WARN "index 0 invalid" << std::endl;
-			return false;
-		}
-
 		std::map<std::string, osg::ref_ptr<TileType> >::iterator it = idMap.find(id);
 		if (it == idMap.end()) {
 			UTIL_WARN "id '" << id << "' not found" << std::endl;
 			return false;
 		}
 
-		std::map<int, osg::ref_ptr<TileType> >::iterator it2 = indexMap.find(index);
-		if (it2 != indexMap.end()) {
-			UTIL_WARN "index " << index << " already defined : '" << it2->second->id
-				<< "', redefine to '" << id << "'" << std::endl;
+		return addTileMapping(it->second.get(), index);
+	}
+
+	bool TileTypeMap::addTileMapping(TileType* tile, int index){
+		if (tile == NULL) return false;
+
+		if (index == 0) {
+			UTIL_WARN "index 0 invalid" << std::endl;
+			return false;
 		}
 
-		indexMap[index] = it->second.get();
+		std::map<int, osg::ref_ptr<TileType> >::iterator it2 = indexMap.find(index);
+		if (it2 != indexMap.end()) {
+			UTIL_WARN "index " << index << " already defined: '" << it2->second->id
+				<< "', redefine to '" << tile->id << "'" << std::endl;
+		}
+
+		indexMap[index] = tile;
 
 		return true;
 	}
