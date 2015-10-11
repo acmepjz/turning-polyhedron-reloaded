@@ -7,6 +7,8 @@
 #include "ObjectType.h"
 #include "TileType.h"
 
+class XMLNode;
+
 namespace game {
 
 	/// Represents a level collection.
@@ -30,6 +32,15 @@ namespace game {
 			if (!objectTypeMap.valid()) objectTypeMap = new ObjectTypeMap;
 			return objectTypeMap.get();
 		}
+
+		bool load(const XMLNode* node); //!< load from XML node, assume the node is called `levelCollection`
+
+		/** load from XML node, assume the node is called `level` or `levelCollection`
+		\param node the XML node
+		\param otm the default object types
+		\param ttm the default tile types
+		*/
+		static osg::Object* loadLevelOrCollection(const XMLNode* node, ObjectTypeMap* otm, TileTypeMap* ttm);
 
 	public:
 		std::string name; //!< level pack name

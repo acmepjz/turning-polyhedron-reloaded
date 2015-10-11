@@ -30,6 +30,7 @@ namespace game {
 		, step(other.step)
 	{
 		util::copyVector(tiles, other.tiles, copyop);
+		util::copyVector(tileProperties, other.tileProperties, copyop);
 	}
 
 	MapData::~MapData()
@@ -353,32 +354,7 @@ namespace game {
 							}
 							idx++;
 
-							if (i == current.count - 1) {
-								if (c == ';') {
-									current.pos.x() = 0;
-									current.pos.y()++;
-									if (current.pos.y() >= size.y()) {
-										current.pos.y() = 0;
-										current.pos.z()++;
-									}
-									break;
-								} else if (c == '|') {
-									current.pos.x() = 0;
-									current.pos.y() = 0;
-									current.pos.z()++;
-									break;
-								}
-							}
-
-							current.pos.x()++;
-							if (current.pos.x() >= size.x()) {
-								current.pos.x() = 0;
-								current.pos.y()++;
-								if (current.pos.y() >= size.y()) {
-									current.pos.y() = 0;
-									current.pos.z()++;
-								}
-							}
+							util::typeArrayAdvance(current.pos, size, i == current.count - 1, c);
 						}
 					} else {
 						//size is unspecified
@@ -414,6 +390,13 @@ namespace game {
 				std::map<int, osg::ref_ptr<TileProperty> >::iterator it = propIndexMap.find(index);
 				if (it != propIndexMap.end()) {
 					it->second->load(subnode);
+				}
+			} else if (subnode->name == "polyhedron") {
+				osg::ref_ptr<Polyhedron> poly = new Polyhedron;
+				if (poly->load(subnode, parent, this)) {
+					parent->addPolyhedron(poly.get());
+				} else {
+					UTIL_WARN "failed to load polyhedron" << std::endl;
 				}
 			} else {
 				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
@@ -468,6 +451,100 @@ namespace game {
 	bool MapPosition::valid() const{
 		return _map && _map->isValidPosition(pos);
 	}
+
+	bool MapPosition::load(const std::string& data, Level* parent, MapData* mapData){
+		std::string::size_type lps = 0;
+#define GET_CHARACTER() util::getCharacter(data, lps)
+
+		int c = 0;
+
+		pos.set(0, 0, 0);
+
+		/* format is
+		(<id>|<index>)["("<subscript>...")"|"."<tag>] (if mapData == NULL)
+		or [<subscript>...|["."]<tag>] (if mapData != NULL)
+		*/
+
+		if (mapData) {
+			map = mapData->id;
+
+			std::string s;
+			int i = 0;
+			bool isTag = false;
+
+			for (;;) {
+				c = GET_CHARACTER();
+				i++;
+				if (c == '.' && i == 1) {
+					//skip the first '.'
+					isTag = true;
+					continue;
+				}
+				if (c == ':' || c == EOF) break;
+				s.push_back(c);
+				if (c == '+' || c == '-' || (c >= '0' && c <= '9') || c == ',') {
+					//do nothing
+				} else {
+					isTag = true;
+				}
+			}
+
+			if (isTag) {
+				if (!mapData->findTag(s, pos)) {
+					UTIL_WARN "tag '" << s << " not found in map '" << map << "'" << std::endl;
+				}
+			} else {
+				pos = util::getAttrFromStringOsgVec(s, osg::Vec3i());
+			}
+
+			return true;
+		}
+
+		//get map id
+		map.clear();
+		for (;;) {
+			c = GET_CHARACTER();
+			if (c == '(' || c == '.' || c == ':' || c == EOF) break;
+			map.push_back(c);
+		}
+
+		//check type
+		if (c == '(') {
+			//it is subscript
+			std::string s;
+			for (;;) {
+				c = GET_CHARACTER();
+				if (c == ')' || c == EOF) break;
+				s.push_back(c);
+			}
+			pos = util::getAttrFromStringOsgVec(s, osg::Vec3i());
+		} else if (c == '.') {
+			//it is tag
+			std::string tag;
+			for (;;) {
+				c = GET_CHARACTER();
+				if (c == ':' || c == EOF) break;
+				tag.push_back(c);
+			}
+
+			Level::MapDataMap::iterator it = parent->maps.find(map);
+			if (it != parent->maps.end()) {
+				if (!it->second->findTag(tag, pos)) {
+					UTIL_WARN "tag '" << tag << " not found in map '" << map << "'" << std::endl;
+				}
+			} else {
+				UTIL_WARN "map id '" << map << " not found" << std::endl;
+			}
+		} else {
+			//unsupported, assume it is (0,0,0)
+			if (c >= 0) {
+				UTIL_WARN "unexpected character: '" << char(c) << "', expected: '(' or '.'" << std::endl;
+			}
+		}
+
+		return true;
+	}
+#undef GET_CHARACTER
 
 	REG_OBJ_WRAPPER(game, MapData, "")
 	{

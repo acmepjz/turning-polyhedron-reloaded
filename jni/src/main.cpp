@@ -28,7 +28,7 @@
 using namespace game;
 using namespace gfx;
 
-game::Level* test(){
+game::Level* test(const char* filename){
 	//create a level
 	osg::ref_ptr<game::Level> level = new game::Level;
 	level->name = "Unnamed level";
@@ -40,6 +40,33 @@ game::Level* test(){
 	x = XMLReaderWriter::readFile(
 		std::ifstream("../data/DefaultTileTypes.xml", std::ios::in | std::ios::binary));
 	if (x.valid()) level->getOrCreateTileTypeMap()->load(x.get());
+
+	//try to load a level
+	if (filename) {
+		x = XMLReaderWriter::readFile(std::ifstream(filename, std::ios::in | std::ios::binary));
+		if (x.valid()) {
+			osg::ref_ptr<osg::Object> obj = LevelCollection::loadLevelOrCollection(x.get(),
+				level->getOrCreateObjectTypeMap(), level->getOrCreateTileTypeMap());
+			//check if it is level collection
+			{
+				LevelCollection *lc = dynamic_cast<LevelCollection*>(obj.get());
+				if (lc) {
+					level = lc->levels[0];
+					obj = NULL;
+					return level.release();
+				}
+			}
+			//check if it is level
+			{
+				Level *lv = dynamic_cast<Level*>(obj.get());
+				if (lv) {
+					level = lv;
+					obj = NULL;
+					return level.release();
+				}
+			}
+		}
+	}
 
 	//some tile types
 	osg::ref_ptr<TileType> ground, ground2, wall, ex;
@@ -160,7 +187,7 @@ int main(int argc, char** argv){
 	osgViewer::Viewer viewer;
 
 	//test
-	osg::ref_ptr<game::Level> level = test();
+	osg::ref_ptr<game::Level> level = test(argc >= 2 ? argv[1] : NULL);
 	level->init();
 	level->createInstance();
 	osg::ref_ptr<osg::Node> node = level->_appearance;

@@ -1,5 +1,6 @@
 #include "Level.h"
 #include "util_err.h"
+#include "XMLReaderWriter.h"
 #include <osg/Group>
 #include <osg/MatrixTransform>
 #include <osgDB/ObjectWrapper>
@@ -85,6 +86,43 @@ namespace game {
 		for (Polyhedra::iterator it = polyhedra.begin(); it != polyhedra.end(); ++it) {
 			(*it)->init(this);
 		}
+	}
+
+	bool Level::load(const XMLNode* node) {
+		//load subnodes
+		for (size_t i = 0; i < node->subNodes.size(); i++) {
+			const XMLNode* subnode = node->subNodes[i].get();
+
+			if (subnode->name == "name") {
+				name = subnode->contents;
+			} else if (subnode->name == "solution") {
+				solution = subnode->contents;
+			} else if (subnode->name == "mapData") {
+				osg::ref_ptr<MapData> md = new MapData;
+				if (md->load(subnode, this)) {
+					addMapData(md.get());
+				} else {
+					UTIL_WARN "failed to load map data" << std::endl;
+				}
+			} else if (subnode->name == "objectType") {
+				getOrCreateObjectTypeMap()->loadObjectType(subnode);
+			} else if (subnode->name == "tileType") {
+				getOrCreateTileTypeMap()->loadTileType(subnode);
+			} else if (subnode->name == "tileMapping") {
+				getOrCreateTileTypeMap()->loadTileMapping(subnode);
+			} else if (subnode->name == "polyhedron") {
+				osg::ref_ptr<Polyhedron> poly = new Polyhedron;
+				if (poly->load(subnode, this, NULL)) {
+					addPolyhedron(poly.get());
+				} else {
+					UTIL_WARN "failed to load polyhedron" << std::endl;
+				}
+			} else {
+				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
+			}
+		}
+
+		return true;
 	}
 
 	REG_OBJ_WRAPPER(game, Level, "")

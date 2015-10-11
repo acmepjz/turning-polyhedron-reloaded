@@ -67,6 +67,7 @@ namespace game {
 		void init();
 
 		bool load(const XMLNode* node); //!< load from XML node, assume the node is called `objectTypes`
+		bool loadObjectType(const XMLNode* node); //!< load from XML node, assume the node is called `objectType`
 
 	public:
 		typedef std::map<std::string, osg::ref_ptr<ObjectType> > IdMap;

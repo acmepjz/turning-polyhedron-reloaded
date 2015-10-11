@@ -209,6 +209,8 @@ namespace game {
 
 		///check if the position is valid
 		bool valid() const;
+
+		bool load(const std::string& data, Level* parent, MapData* mapData); //!< load from a string in XML node,
 	public:
 		std::string map;
 		osg::Vec3i pos;

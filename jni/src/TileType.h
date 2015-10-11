@@ -90,6 +90,7 @@ namespace game {
 		void init(ObjectTypeMap* otm);
 
 		bool load(const XMLNode* node); //!< load from XML node, assume the node is called `tileTypes`
+		bool loadTileType(const XMLNode* node); //!< load from XML node, assume the node is called `tileType`
 		bool loadTileMapping(const XMLNode* node); //!< load from XML node, assume the node is called `tileMapping`
 
 	public:

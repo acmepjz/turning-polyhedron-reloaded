@@ -38,4 +38,33 @@ namespace util {
 		return EOF;
 	}
 
+	void typeArrayAdvance(osg::Vec3i& p, const osg::Vec3i& size, bool isLast, int c) {
+		if (isLast) {
+			if (c == ';') {
+				p.x() = 0;
+				p.y()++;
+				if (p.y() >= size.y()) {
+					p.y() = 0;
+					p.z()++;
+				}
+				return;
+			} else if (c == '|') {
+				p.x() = 0;
+				p.y() = 0;
+				p.z()++;
+				return;
+			}
+		}
+
+		p.x()++;
+		if (p.x() >= size.x()) {
+			p.x() = 0;
+			p.y()++;
+			if (p.y() >= size.y()) {
+				p.y() = 0;
+				p.z()++;
+			}
+		}
+	}
+
 }

@@ -189,16 +189,24 @@ namespace game {
 			const XMLNode* subnode = node->subNodes[i].get();
 
 			if (subnode->name == "tileType") {
-				osg::ref_ptr<TileType> tt = new TileType;
-				if (tt->load(subnode)) {
-					add(tt.get());
-				}
+				loadTileType(subnode);
 			} else {
 				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
 			}
 		}
 
 		return true;
+	}
+
+	bool TileTypeMap::loadTileType(const XMLNode* node){
+		osg::ref_ptr<TileType> tt = new TileType;
+		if (tt->load(node)) {
+			add(tt.get());
+			return true;
+		} else {
+			UTIL_WARN "failed to load tile type" << std::endl;
+			return false;
+		}
 	}
 
 	bool TileTypeMap::loadTileMapping(const XMLNode* node){

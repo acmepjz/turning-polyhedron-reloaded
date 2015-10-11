@@ -9,6 +9,8 @@
 #include "TileType.h"
 #include "ObjectType.h"
 
+class XMLNode;
+
 namespace game {
 
 	/// Represents a level.
@@ -51,6 +53,8 @@ namespace game {
 			initTileTypes();
 			initMaps();
 		}
+
+		bool load(const XMLNode* node); //!< load from XML node, assume the node is called `level`
 
 	public:
 		std::string name; //!< level name

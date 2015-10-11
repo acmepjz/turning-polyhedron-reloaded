@@ -12,6 +12,8 @@ namespace osgDB {
 	class OutputStream;
 }
 
+class XMLNode;
+
 namespace game {
 
 	class Level;
@@ -102,6 +104,8 @@ namespace game {
 
 		///move to the adjacent position (no sanity check)
 		void move(const Polyhedron* poly, MoveDirection dir);
+
+		bool load(const std::string& data, Level* parent, MapData* mapData); //!< load from a string in XML node,
 	public:
 		/** Flags.
 		* * If the shape is cuboid:
@@ -241,6 +245,8 @@ namespace game {
 		}
 
 		void init(Level* parent);
+
+		bool load(const XMLNode* node, Level* parent, MapData* mapData); //!< load from XML node, assume the node is called `polyhedron`
 
 	public:
 		std::string id; //!< the polyhedron id

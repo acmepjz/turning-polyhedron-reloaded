@@ -4,6 +4,8 @@
 #include "SimpleGeometry.h"
 #include "Rect.h"
 #include "util_err.h"
+#include "util_misc.h"
+#include "XMLReaderWriter.h"
 #include <osg/Geode>
 #include <osg/MatrixTransform>
 #include <osgGA/GUIEventHandler>
@@ -168,6 +170,19 @@ namespace game {
 #undef NORIGIN
 
 		flags = (flags & UPPER_MASK) | (nflags.x() << 3) | (nflags.y() << 5) | (nflags.z() << 7);
+	}
+
+	bool PolyhedronPosition::load(const std::string& data, Level* parent, MapData* mapData){
+		/* format is
+		<MapPosition>[:...[:...[:...]]] <-- this is currently unsupported
+		*/
+
+		if (!MapPosition::load(data, parent, mapData)) return false;
+
+		//TODO: load flags
+		flags = ROT_XYZ;
+
+		return true;
 	}
 
 	osgDB::InputStream& operator>>(osgDB::InputStream& s, PolyhedronPosition& obj){
@@ -687,6 +702,158 @@ namespace game {
 				for (; m < n; m++) customShape.push_back(SOLID);
 			}
 		}
+	}
+
+	bool Polyhedron::load(const XMLNode* node, Level* parent, MapData* mapData){
+		id = node->getAttr("id", std::string());
+
+		//get shape
+		{
+			std::string s = node->getAttr("shape", std::string("cuboid"));
+			bool isVec3i = true;
+			for (size_t i = 0; i < s.size(); i++) {
+				char c = s[i];
+				if ((c >= '0' && c <= '9') || c == ',') {
+					//do nothing
+				} else if (c == 'X' || c == 'x') {
+					s[i] = ',';
+				} else {
+					isVec3i = false;
+					break;
+				}
+			}
+
+			if (isVec3i) {
+				shape = CUBOID;
+				size = util::getAttrFromStringOsgVec(s, osg::Vec3i(1, 1, 1));
+			} else if (s == "cube") {
+				shape = CUBOID;
+				size.set(1, 1, 1);
+			} else if (s == "cuboid" || s == "classical") {
+				shape = CUBOID;
+				size.set(1, 1, 2);
+			} else {
+				UTIL_WARN "unrecognized shape: '" << s << "'" << std::endl;
+				return false;
+			}
+		}
+
+		if (size.x() <= 0 || size.y() <= 0 || size.z() <= 0) {
+			UTIL_WARN "invalid size" << std::endl;
+			return false;
+		}
+
+		const int theSize = size.x()*size.y()*size.z();
+
+		customShapeEnabled = false;
+		customShape.resize(1, SOLID);
+
+		//lbound
+		lbound = node->getAttrOsgVec("lbound", osg::Vec3i());
+
+		//get position
+		pos.load(node->getAttr("p", std::string()), parent, mapData);
+
+		//object type
+		objType = node->getAttr("type", std::string());
+
+		//flags
+#define GETFLAGS(NAME,DEFAULT,FLAGS) (node->getAttr(NAME, DEFAULT) ? FLAGS : 0)
+		flags = GETFLAGS("discardable", false, DISCARDABLE)
+			| GETFLAGS("main", true, MAIN)
+			| GETFLAGS("fragile", true, FRAGILE)
+			| GETFLAGS("partialFloating", false, PARTIAL_FLOATING)
+			| GETFLAGS("supporter", true, SUPPORTER)
+			| GETFLAGS("tiltable", true, TILTABLE)
+			| GETFLAGS("tilt-supporter", true, TILT_SUPPORTER)
+			| GETFLAGS("spannable", true, SPANNABLE)
+			| GETFLAGS("visible", true, VISIBLE)
+			| GETFLAGS("floating", false, FLOATING)
+			| GETFLAGS("targetBlock", false, TARGET)
+			| GETFLAGS("exitBlock", false, EXIT);
+		flags |= GETFLAGS("continuousHittest", (flags & TILTABLE) ? true : false, CONTINUOUS_HITTEST);
+#undef GETFLAGS
+
+		//controller
+		{
+			std::string s = node->getAttr("controller", std::string("player"));
+			if (s == "player") controller = PLAYER;
+			else if (s == "elevator") controller = ELEVATOR;
+			else controller = PASSIVE;
+		}
+
+		//movement
+		movement = node->getAttr("movement", ROLLING_ALL);
+
+		//load subnodes
+		for (size_t i = 0; i < node->subNodes.size(); i++) {
+			const XMLNode* subnode = node->subNodes[i].get();
+
+			if (subnode->name == "customShape") {
+				//this node contains an array
+				/*
+				format: <value>["*"<count>]
+				","=next pos (x++)
+				";"=next row (y++)
+				"|"=next plane (z++)
+				*/
+				customShapeEnabled = true;
+				customShape.resize(theSize, 0);
+
+				const std::string& contents = subnode->contents;
+				std::string::size_type lps = 0;
+#define GET_CHARACTER() util::getCharacter(contents, lps)
+
+				int c = 0;
+				osg::Vec3i p;
+				int type, count;
+
+				for (;;) {
+					//get type
+					std::string s;
+					for (;;) {
+						c = GET_CHARACTER();
+						if (c == '*' || c == ',' || c == ';' || c == '|' || c == EOF) break;
+						s.push_back(c);
+					}
+					if (!s.empty()) type = atoi(s.c_str());
+					else type = 0;
+
+					//get count
+					count = 1;
+					if (c == '*') {
+						s.clear();
+						for (;;) {
+							c = GET_CHARACTER();
+							if (c == ',' || c == ';' || c == '|' || c == EOF) break;
+							s.push_back(c);
+						}
+						if (!s.empty()) count = atoi(s.c_str());
+					}
+
+					//put these data to array, and advance to next position
+					int idx = (p.z()*size.y() + p.y())*size.x() + p.x();
+					for (int i = 0; i < count; i++) {
+						if (idx < theSize) {
+							customShape[idx] = type;
+						}
+						idx++;
+
+						util::typeArrayAdvance(p, size, i == count - 1, c);
+					}
+
+					if (c == EOF) break;
+					if (c != ',' && c != ';' && c != '|') {
+						UTIL_WARN "unexpected character: '" << char(c) << "', expected ',' or ';' or '|'" << std::endl;
+						break;
+					}
+				}
+			} else {
+				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
+			}
+		}
+
+		return true;
 	}
 
 	REG_OBJ_WRAPPER(game, Polyhedron, "")

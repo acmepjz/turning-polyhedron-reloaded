@@ -111,16 +111,24 @@ namespace game {
 			const XMLNode* subnode = node->subNodes[i].get();
 
 			if (subnode->name == "objectType") {
-				osg::ref_ptr<ObjectType> ot = new ObjectType;
-				if (ot->load(subnode)) {
-					add(ot.get());
-				}
+				loadObjectType(subnode);
 			} else {
 				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
 			}
 		}
 
 		return true;
+	}
+
+	bool ObjectTypeMap::loadObjectType(const XMLNode* node){
+		osg::ref_ptr<ObjectType> ot = new ObjectType;
+		if (ot->load(node)) {
+			add(ot.get());
+			return true;
+		} else {
+			UTIL_WARN "failed to load object type" << std::endl;
+			return false;
+		}
 	}
 
 #define MyClass MyClass_ObjectType
