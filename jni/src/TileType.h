@@ -84,8 +84,6 @@ namespace game {
 		bool add(TileType* obj); //!< Add an object to map (which must has a valid id, optional index).
 		TileType* lookup(const std::string& idOrIndex); //!< Find an object. If id is empty or "0" then returns NULL.
 
-		static bool isNumeric(const std::string s); //!< check if a string is a decimal integer without spaces
-
 		bool addTileMapping(const std::string& id, int index); //!< Add a (temporary) index to a tile type with specified id
 		bool addTileMapping(TileType* tile, int index); //!< Add a (temporary) index to a tile type
 

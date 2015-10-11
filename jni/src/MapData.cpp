@@ -1,6 +1,7 @@
 #include "MapData.h"
 #include "Level.h"
 #include "util_err.h"
+#include "util_misc.h"
 #include "XMLReaderWriter.h"
 #include <osg/Group>
 #include <osg/MatrixTransform>
@@ -179,22 +180,28 @@ namespace game {
 		}
 	}
 
-	static int getCharacter(const std::string& s, std::string::size_type& lps) {
-		std::string::size_type m = s.size();
-		for (; lps < m; lps++) {
-			unsigned char c = s[lps];
-			switch (c) {
-			case ' ':
-			case '\t':
-			case '\f':
-			case '\v':
-			case '\n':
-			case '\r':
-				continue;
+	bool MapData::findTag(const std::string& tag, osg::Vec3i& ret) const {
+#define SX(X) s##X = lbound.X()
+#define EX(X) e##X = lbound.X() + size.X()
+		const int SX(x), EX(x), SX(y), EX(y), SX(z), EX(z);
+#undef SX
+#undef EX
+
+		int idx = 0;
+		for (int z = sz; z < ez; z++) {
+			for (int y = sy; y < ey; y++) {
+				for (int x = sx; x < ex; x++) {
+					TileProperty *prop = tileProperties[idx].get();
+					if (prop && prop->tags.find(tag) != prop->tags.end()) {
+						ret.set(x, y, z);
+						return true;
+					}
+					idx++;
+				}
 			}
-			return c;
 		}
-		return EOF;
+
+		return false;
 	}
 
 	struct MapDataItem {
@@ -263,7 +270,7 @@ namespace game {
 				*/
 				const std::string& contents = subnode->contents;
 				std::string::size_type lps = 0;
-#define GET_CHARACTER() getCharacter(contents, lps)
+#define GET_CHARACTER() util::getCharacter(contents, lps)
 
 				int c = 0;
 				MapDataItem current;
@@ -321,7 +328,7 @@ namespace game {
 					//add property
 					current.prop = NULL;
 					if (!propOrTag.empty()) {
-						if (TileTypeMap::isNumeric(propOrTag)) {
+						if (util::isNumeric(propOrTag)) {
 							//it is prop index
 							int propIndex = atoi(propOrTag.c_str());
 							current.prop = propIndexMap[propIndex];
@@ -434,6 +441,7 @@ namespace game {
 		//over
 		return true;
 	}
+#undef GET_CHARACTER
 
 	void MapPosition::init(Level* parent){
 		Level::MapDataMap::iterator it = parent->maps.find(map);

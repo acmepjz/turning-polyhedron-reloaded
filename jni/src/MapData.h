@@ -143,6 +143,13 @@ namespace game {
 			return isValidPosition(pos.x(), pos.y(), pos.z());
 		}
 
+		/** find the first tile with specified tag.
+		\param[in] tag The tag.
+		\param[out] ret The result position.
+		\return Found or not.
+		*/
+		bool findTag(const std::string& tag, osg::Vec3i& ret) const;
+
 	public:
 		std::string id; //!< id, used to find this block
 		int shape; //!< map shape. \sa MapShape
