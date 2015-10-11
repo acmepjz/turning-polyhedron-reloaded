@@ -22,8 +22,8 @@ namespace util {
 
 	int getCharacter(const std::string& s, std::string::size_type& lps) {
 		std::string::size_type m = s.size();
-		for (; lps < m; lps++) {
-			unsigned char c = s[lps];
+		for (; lps < m;) {
+			unsigned char c = s[lps++];
 			switch (c) {
 			case ' ':
 			case '\t':
