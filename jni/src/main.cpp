@@ -14,7 +14,6 @@
 #include <osgViewer/ViewerEventHandlers>
 
 #include <osgFX/SpecularHighlights>
-#include <osgFX/Scribe>
 
 #include <osgShadow/ShadowedScene>
 #include <osgShadow/ShadowMap>
@@ -151,24 +150,27 @@ public:
 	}
 
 	virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa) {
-		if (!level.valid() || level->polyhedra.empty()) return false;
+		if (!level.valid()) return false;
 
-		game::Polyhedron *poly = level->polyhedra[0];
+		game::Polyhedron *poly = level->getSelectedPolyhedron();
 
 		switch (ea.getEventType()) {
 		case osgGA::GUIEventAdapter::KEYDOWN:
 			switch (ea.getKey()) {
 			case osgGA::GUIEventAdapter::KEY_Up:
-				poly->move(MOVE_UP);
+				if (poly) poly->move(MOVE_UP);
 				break;
 			case osgGA::GUIEventAdapter::KEY_Down:
-				poly->move(MOVE_DOWN);
+				if (poly) poly->move(MOVE_DOWN);
 				break;
 			case osgGA::GUIEventAdapter::KEY_Left:
-				poly->move(MOVE_LEFT);
+				if (poly) poly->move(MOVE_LEFT);
 				break;
 			case osgGA::GUIEventAdapter::KEY_Right:
-				poly->move(MOVE_RIGHT);
+				if (poly) poly->move(MOVE_RIGHT);
+				break;
+			case osgGA::GUIEventAdapter::KEY_Space:
+				level->switchToNextPolyhedron();
 				break;
 			default:
 				return false;
@@ -185,6 +187,8 @@ public:
 
 int main(int argc, char** argv){
 	osgViewer::Viewer viewer;
+
+	osg::DisplaySettings::instance()->setMinimumNumStencilBits(1);
 
 	//test
 	osg::ref_ptr<game::Level> level = test(argc >= 2 ? argv[1] : NULL);
@@ -219,6 +223,9 @@ int main(int argc, char** argv){
 
 	viewer.getCamera()->setViewMatrixAsLookAt(e, c, osg::Vec3d(0, 0, 1));
 	viewer.getCamera()->setAllowEventFocus(false);
+
+	viewer.getCamera()->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	viewer.getCamera()->setClearStencil(0);
 
 	viewer.setRunMaxFrameRate(30.0);
 	viewer.addEventHandler(new osgViewer::StatsHandler);

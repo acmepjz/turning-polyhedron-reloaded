@@ -56,6 +56,22 @@ namespace game {
 
 		bool load(const XMLNode* node); //!< load from XML node, assume the node is called `level`
 
+		void switchToFirstPolyhedron(){
+			switchToNextPolyhedron(-1);
+		}
+		void switchToNextPolyhedron(){
+			switchToNextPolyhedron(_currentPolyhedron);
+		}
+		void switchToNextPolyhedron(int prev);
+
+		bool isPolyhedronSelected() const {
+			return _currentPolyhedron >= 0 && _currentPolyhedron < (int)polyhedra.size();
+		}
+		Polyhedron* getSelectedPolyhedron() {
+			if (isPolyhedronSelected()) return polyhedra[_currentPolyhedron].get();
+			return NULL;
+		}
+
 	public:
 		std::string name; //!< level name
 		std::string solution; //!< solution include in level file, for reference only
@@ -82,6 +98,8 @@ namespace game {
 		PolyhedronMap _polyhedra; //!< polyhedra with a valid id
 
 		osg::ref_ptr<osg::Node> _appearance; //!< the appearance
+
+		int _currentPolyhedron; //!< current polyhedron
 	};
 
 }

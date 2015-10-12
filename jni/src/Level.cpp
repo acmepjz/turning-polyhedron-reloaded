@@ -8,6 +8,7 @@
 namespace game {
 
 	Level::Level()
+		: _currentPolyhedron(-1)
 	{
 	}
 
@@ -17,6 +18,7 @@ namespace game {
 		, solution(other.solution)
 		, tileTypeMap(util::copyObj(other.tileTypeMap.get(), copyop)) //always deep copy
 		, objectTypeMap(util::copyObj(other.objectTypeMap.get(), copyop)) //always deep copy
+		, _currentPolyhedron(other._currentPolyhedron)
 	{
 		//following objects are always deep copy
 		util::copyMap(maps, other.maps, copyop, true);
@@ -64,10 +66,12 @@ namespace game {
 			it->second->createInstance();
 			gp->addChild(it->second->_appearance);
 		}
-		for (Polyhedra::iterator it = polyhedra.begin(); it != polyhedra.end(); ++it) {
-			(*it)->createInstance();
-			(*it)->updateTransform();
-			gp->addChild((*it)->_trans);
+		for (int i = 0, m = polyhedra.size(); i < m; i++) {
+			Polyhedron *poly = polyhedra[i].get();
+			poly->createInstance();
+			if (i == _currentPolyhedron) poly->setSelected(true);
+			poly->updateTransform();
+			gp->addChild(poly->_trans);
 		}
 		_appearance = gp;
 	}
@@ -86,6 +90,31 @@ namespace game {
 		for (Polyhedra::iterator it = polyhedra.begin(); it != polyhedra.end(); ++it) {
 			(*it)->init(this);
 		}
+
+		switchToFirstPolyhedron();
+	}
+
+	void Level::switchToNextPolyhedron(int prev){
+		Polyhedron *current = getSelectedPolyhedron();
+		if (current) current->setSelected(false);
+
+		int i = 0, m = polyhedra.size();
+		if (prev < 0 || prev >= m) prev = -1;
+
+		for (; i < m; i++) {
+			prev++;
+			if (prev >= m) prev = 0;
+
+			Polyhedron *poly = polyhedra[prev].get();
+			if (poly->controller == Polyhedron::PLAYER && (poly->flags & Polyhedron::VISIBLE)) {
+				poly->setSelected(true);
+				_currentPolyhedron = prev;
+				return;
+			}
+		}
+
+		//can't find available polyhedron
+		_currentPolyhedron = -1;
 	}
 
 	bool Level::load(const XMLNode* node) {

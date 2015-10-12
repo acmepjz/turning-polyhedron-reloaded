@@ -248,6 +248,8 @@ namespace game {
 
 		bool load(const XMLNode* node, Level* parent, MapData* mapData); //!< load from XML node, assume the node is called `polyhedron`
 
+		void setSelected(bool selected);
+
 	public:
 		std::string id; //!< the polyhedron id
 		int shape; //!< the polyhedron shape. \sa PolyhedronShape

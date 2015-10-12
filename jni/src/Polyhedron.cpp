@@ -8,6 +8,7 @@
 #include "XMLReaderWriter.h"
 #include <osg/Geode>
 #include <osg/MatrixTransform>
+#include <osgFX/Outline>
 #include <osgGA/GUIEventHandler>
 #include <osgDB/ObjectWrapper>
 #include <math.h>
@@ -388,10 +389,21 @@ namespace game {
 			break;
 		}
 
-		_appearance = geode;
+		osg::ref_ptr<osgFX::Outline> outline = new osgFX::Outline;
+		outline->setEnabled(false);
+		outline->setColor(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+		outline->setWidth(4.0f);
+		outline->addChild(geode);
+
+		_appearance = outline.get();
 
 		_trans = new osg::MatrixTransform;
-		_trans->addChild(geode.get());
+		_trans->addChild(_appearance.get());
+	}
+
+	void Polyhedron::setSelected(bool selected){
+		osgFX::Outline *outline = dynamic_cast<osgFX::Outline*>(_appearance.get());
+		if (outline) outline->setEnabled(selected);
 	}
 
 	void Polyhedron::updateTransform(){
