@@ -430,11 +430,11 @@ namespace game {
 		_trans->setMatrix(mat);
 	}
 
-	bool Polyhedron::isSupportingOtherPolyhedron(const Level* parent) const {
+	const Polyhedron* Polyhedron::isSupportingOtherPolyhedron(const Level* parent) const {
 		if (parent == NULL || pos._map == NULL
 			|| (flags & SUPPORTER) == 0
 			|| (flags & VISIBLE) == 0
-			|| (flags & EXIT) != 0) return false;
+			|| (flags & EXIT) != 0) return NULL;
 
 		PolyhedronPosition::Idx iii;
 		pos.getCurrentPos(this, iii);
@@ -472,7 +472,7 @@ namespace game {
 								(iii.origin + (x - sx)*iii.delta.x() + (y - sy)*iii.delta.y()
 								+ (sz2 - sz1 - 1)*iii.delta.z()) : 0;
 							if (customShape[idx1] == SOLID) {
-								return true;
+								return other;
 							}
 						}
 					}
@@ -480,7 +480,7 @@ namespace game {
 			}
 		}
 
-		return false;
+		return NULL;
 	}
 
 	bool Polyhedron::move(Level* parent, MoveDirection dir){
@@ -535,11 +535,11 @@ namespace game {
 
 		//check if it hits something during rolling
 		if ((moveType & ROLLING_ALL) && (flags & CONTINUOUS_HITTEST)) {
-			if (!isRollable(dir)) return false;
+			if (!isRollable(parent, dir)) return false;
 		}
 
 		//check if the end position is valid
-		if (valid(newPos)) {
+		if (valid(parent, newPos)) {
 			pos = newPos;
 			_trans->setEventCallback(new TestPolyhedronAnimator(this, dir, moveType));
 			return true;
@@ -548,7 +548,7 @@ namespace game {
 		return false;
 	}
 
-	bool Polyhedron::isRollable(const PolyhedronPosition& pos, MoveDirection dir) const {
+	bool Polyhedron::isRollable(const Level* parent, const PolyhedronPosition& pos, MoveDirection dir) const {
 		//get move type
 		const bool isNegative = (dir == MOVE_NEG_X || dir == MOVE_NEG_Y);
 		const bool isY = (dir == MOVE_NEG_Y || dir == MOVE_POS_Y);
@@ -647,6 +647,37 @@ namespace game {
 				const int xx = pos.pos.x() + (isY ? y : (x + offset));
 				const int yy = pos.pos.y() + (isY ? (x + offset) : y);
 
+				//hit test with polyhedra
+				for (size_t i = 0, m = parent->polyhedra.size(); i < m; i++) {
+					const Polyhedron *other = parent->polyhedra[i].get();
+
+					if (other == this || other->pos._map != pos._map
+						|| (other->flags & VISIBLE) == 0
+						|| (other->flags & EXIT) != 0) continue;
+
+					PolyhedronPosition::Idx iii2;
+					other->pos.getCurrentPos(other, iii2);
+
+					const int sx2 = other->pos.pos.x(), ex2 = sx2 + iii2.size.x();
+					const int sy2 = other->pos.pos.y(), ey2 = sy2 + iii2.size.y();
+					const int sz2 = other->pos.pos.z(), ez2 = sz2 + iii2.size.z();
+
+					const int sz = std::max(pos.pos.z(), sz2), ez = std::min(pos.pos.z() + h, ez2);
+
+					if (xx >= sx2 && xx < ex2 && yy >= sy2 && yy < ey2 && sz < ez) {
+						iii2.origin += (xx - sx2)*iii2.delta.x() + (yy - sy2)*iii2.delta.y();
+						for (int zz = sz; zz < ez; zz++) {
+							const int idx2 = other->customShapeEnabled ?
+								(iii2.origin + (zz - sz2)*iii2.delta.z()) : 0;
+							const int z = zz - pos.pos.z();
+							if (hitTestArea[z*w + x] && other->customShape[idx2]) {
+								return false;
+							}
+						}
+					}
+				}
+
+				//hit test with tiles
 				for (int zz = sz; zz < ez; zz++) {
 					TileType* t = pos._map->get(xx, yy, zz);
 					if (t) {
@@ -673,7 +704,7 @@ namespace game {
 		return true;
 	}
 
-	bool Polyhedron::valid(const PolyhedronPosition& pos) const {
+	bool Polyhedron::valid(const Level* parent, const PolyhedronPosition& pos) const {
 		//get current position
 		PolyhedronPosition::Idx iii;
 		pos.getCurrentPos(this, iii);
@@ -710,9 +741,56 @@ namespace game {
 				}
 
 				if (!isEmpty) {
-					bool needSupport = zBlocks[0] == SOLID;
+					const bool needSupport = zBlocks[0] == SOLID;
 					bool supported = false;
 
+					//hit test with polyhedra
+					for (size_t i = 0, m = parent->polyhedra.size(); i < m; i++) {
+						const Polyhedron *other = parent->polyhedra[i].get();
+
+						if (other == this || other->pos._map != pos._map
+							|| (other->flags & VISIBLE) == 0
+							|| (other->flags & EXIT) != 0) continue;
+
+						PolyhedronPosition::Idx iii2;
+						other->pos.getCurrentPos(other, iii2);
+
+						const int sx2 = other->pos.pos.x(), ex2 = sx2 + iii2.size.x();
+						const int sy2 = other->pos.pos.y(), ey2 = sy2 + iii2.size.y();
+						const int sz2 = other->pos.pos.z(), ez2 = sz2 + iii2.size.z();
+
+						if (xx >= sx2 && xx < ex2 && yy >= sy2 && yy < ey2) {
+							iii2.origin += (xx - sx2)*iii2.delta.x() + (yy - sy2)*iii2.delta.y();
+
+							//check if supported
+							if (needSupport && (other->flags & SUPPORTER) != 0
+								&& pos.pos.z() > sz2 && pos.pos.z() <= ez2) {
+								const int idx2 = other->customShapeEnabled ?
+									(iii2.origin + (pos.pos.z() - sz2 - 1)*iii2.delta.z()) : 0;
+								if (other->customShape[idx2] == SOLID) {
+									//it is supported
+									supported = true;
+								}
+							}
+
+							const int sz = std::max(pos.pos.z(), sz2), ez = std::min(pos.pos.z() + iii.size.z(), ez2);
+
+							//check if some blocks are blocked
+							if (sz < ez) {
+								for (int zz = sz; zz < ez; zz++) {
+									const int idx2 = other->customShapeEnabled ?
+										(iii2.origin + (zz - sz2)*iii2.delta.z()) : 0;
+									const int z = zz - pos.pos.z();
+									if (zBlocks[z] && other->customShape[idx2]) {
+										//it is blocked
+										return false;
+									}
+								}
+							}
+						}
+					}
+
+					//hit test with tiles
 					for (int zz = sz; zz < ez; zz++) {
 						TileType* t = pos._map->get(xx, yy, zz);
 						if (t) {

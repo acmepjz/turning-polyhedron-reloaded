@@ -253,8 +253,10 @@ namespace game {
 		///update transform according to \ref pos.
 		void updateTransform();
 
-		///check if this polyhedron is supporting any other polyhedron.
-		bool isSupportingOtherPolyhedron(const Level* parent) const;
+		/** check if this polyhedron is supporting any other polyhedron.
+		\return a polyhedron it supported, `NULL` if none.
+		*/
+		const Polyhedron* isSupportingOtherPolyhedron(const Level* parent) const;
 
 		///move to the adjacent position (experimental).
 		bool move(Level* parent, MoveDirection dir);
@@ -264,22 +266,22 @@ namespace game {
 		\param dir move direction
 		\return `true` if it cal roll (i.e. hits nothing), `false` if hits something.
 		*/
-		bool isRollable(const PolyhedronPosition& pos, MoveDirection dir) const;
+		bool isRollable(const Level* parent, const PolyhedronPosition& pos, MoveDirection dir) const;
 
 		/** do continuous collision hit test for rolling block (at current position).
 		\param dir move direction
 		\return `true` if it cal roll (i.e. hits nothing), `false` if hits something.
 		*/
-		bool isRollable(MoveDirection dir) const {
-			return isRollable(pos, dir);
+		bool isRollable(const Level* parent, MoveDirection dir) const {
+			return isRollable(parent, pos, dir);
 		}
 
 		///check if it is stable and not blocked at given position. (experimental, only works for cuboid polyhedron)
-		bool valid(const PolyhedronPosition& pos) const;
+		bool valid(const Level* parent, const PolyhedronPosition& pos) const;
 
 		///check if it is stable and not blocked at current position. (experimental, only works for cuboid polyhedron)
-		bool valid() const {
-			return valid(pos);
+		bool valid(const Level* parent) const {
+			return valid(parent, pos);
 		}
 
 		void init(Level* parent);
