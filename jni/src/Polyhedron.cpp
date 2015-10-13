@@ -13,6 +13,7 @@
 #include <osgDB/ObjectWrapper>
 #include <math.h>
 #include <string.h>
+#include <algorithm>
 
 namespace game {
 
@@ -300,6 +301,18 @@ namespace game {
 		return customShape[idx];
 	}
 
+	unsigned char Polyhedron::get(int x, int y, int z) const {
+		if (!isValidPosition(x, y, z)) return 0;
+		int idx = customShapeEnabled ? ((z - lbound.z())*size.y() + y - lbound.y())*size.x() + x - lbound.x() : 0;
+		return customShape[idx];
+	}
+
+	void Polyhedron::set(int x, int y, int z, unsigned char value) {
+		if (!isValidPosition(x, y, z)) return;
+		int idx = customShapeEnabled ? ((z - lbound.z())*size.y() + y - lbound.y())*size.x() + x - lbound.x() : 0;
+		customShape[idx] = value;
+	}
+
 	void Polyhedron::resize(const osg::Vec3i& lbound_, const osg::Vec3i& size_, bool customShape_, bool preserved){
 		bool old = customShapeEnabled;
 		customShapeEnabled = customShape_;
@@ -417,7 +430,60 @@ namespace game {
 		_trans->setMatrix(mat);
 	}
 
-	bool Polyhedron::move(MoveDirection dir){
+	bool Polyhedron::isSupportingOtherPolyhedron(const Level* parent) const {
+		if (parent == NULL || pos._map == NULL
+			|| (flags & SUPPORTER) == 0
+			|| (flags & VISIBLE) == 0
+			|| (flags & EXIT) != 0) return false;
+
+		PolyhedronPosition::Idx iii;
+		pos.getCurrentPos(this, iii);
+
+		const int sx1 = pos.pos.x(), ex1 = sx1 + iii.size.x();
+		const int sy1 = pos.pos.y(), ey1 = sy1 + iii.size.y();
+		const int sz1 = pos.pos.z(), ez1 = sz1 + iii.size.z();
+
+		//TODO: adjacency
+
+		for (size_t i = 0, m = parent->polyhedra.size(); i < m; i++) {
+			const Polyhedron *other = parent->polyhedra[i].get();
+
+			if (other == this || other->pos._map != pos._map
+				|| (other->flags & VISIBLE) == 0
+				|| (other->flags & (FLOATING | EXIT)) != 0
+				|| (other->movement & ROTATING_ALL) != 0) continue;
+
+			PolyhedronPosition::Idx iii2;
+			other->pos.getCurrentPos(other, iii2);
+
+			const int sx2 = other->pos.pos.x(), ex2 = sx2 + iii2.size.x();
+			const int sy2 = other->pos.pos.y(), ey2 = sy2 + iii2.size.y();
+			const int sz2 = other->pos.pos.z();
+
+			const int sx = std::max(sx1, sx2), ex = std::min(ex1, ex2);
+			const int sy = std::max(sy1, sy2), ey = std::min(ey1, ey2);
+			if (sx < ex && sy < ey && sz2 > sz1 && sz2 <= ez1) {
+				for (int y = sy; y < ey; y++) {
+					for (int x = sx; x < ex; x++) {
+						const int idx2 = other->customShapeEnabled ?
+							(iii2.origin + (x - sx2)*iii2.delta.x() + (y - sy2)*iii2.delta.y()) : 0;
+						if (other->customShape[idx2] == SOLID) {
+							const int idx1 = customShapeEnabled ?
+								(iii.origin + (x - sx)*iii.delta.x() + (y - sy)*iii.delta.y()
+								+ (sz2 - sz1 - 1)*iii.delta.z()) : 0;
+							if (customShape[idx1] == SOLID) {
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	bool Polyhedron::move(Level* parent, MoveDirection dir){
 		if (!_trans.valid() || pos._map == NULL) return false;
 
 		PolyhedronPosition newPos = pos;
@@ -459,6 +525,11 @@ namespace game {
 			}
 			break;
 		default:
+			return false;
+		}
+
+		//check if it is supporting other polyhedron
+		if (isSupportingOtherPolyhedron(parent)) {
 			return false;
 		}
 

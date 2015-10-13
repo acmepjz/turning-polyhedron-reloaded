@@ -158,16 +158,16 @@ public:
 		case osgGA::GUIEventAdapter::KEYDOWN:
 			switch (ea.getKey()) {
 			case osgGA::GUIEventAdapter::KEY_Up:
-				if (poly) poly->move(MOVE_UP);
+				if (poly) poly->move(level.get(), MOVE_UP);
 				break;
 			case osgGA::GUIEventAdapter::KEY_Down:
-				if (poly) poly->move(MOVE_DOWN);
+				if (poly) poly->move(level.get(), MOVE_DOWN);
 				break;
 			case osgGA::GUIEventAdapter::KEY_Left:
-				if (poly) poly->move(MOVE_LEFT);
+				if (poly) poly->move(level.get(), MOVE_LEFT);
 				break;
 			case osgGA::GUIEventAdapter::KEY_Right:
-				if (poly) poly->move(MOVE_RIGHT);
+				if (poly) poly->move(level.get(), MOVE_RIGHT);
 				break;
 			case osgGA::GUIEventAdapter::KEY_Space:
 				level->switchToNextPolyhedron();

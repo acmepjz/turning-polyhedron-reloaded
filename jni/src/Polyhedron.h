@@ -201,13 +201,48 @@ namespace game {
 		Polyhedron();
 		Polyhedron(const Polyhedron& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
+		///check if the position is valid
+		bool isValidPosition(int x, int y, int z) const {
+			return x >= lbound.x() && x < lbound.x() + size.x()
+				&& y >= lbound.y() && y < lbound.y() + size.y()
+				&& z >= lbound.z() && z < lbound.z() + size.z();
+		}
+
+		///check if the position is valid
+		bool isValidPosition(const osg::Vec3i& pos) const {
+			return isValidPosition(pos.x(), pos.y(), pos.z());
+		}
+
+		///get or set \ref customShape at specified position (<font color="red">without</font> bounds check)
 		unsigned char& operator()(int x, int y, int z);
+
+		///get or set \ref customShape at specified position (<font color="red">without</font> bounds check)
 		unsigned char& operator()(const osg::Vec3i& p) {
 			return operator()(p.x(), p.y(), p.z());
 		}
+
+		///get or set \ref customShape at specified position (<font color="red">without</font> bounds check)
 		unsigned char operator()(int x, int y, int z) const;
+
+		///get or set \ref customShape at specified position (<font color="red">without</font> bounds check)
 		unsigned char operator()(const osg::Vec3i& p) const {
 			return operator()(p.x(), p.y(), p.z());
+		}
+
+		///get \ref customShape at specified position (with \ref customShapeEnabled and bounds check)
+		unsigned char get(int x, int y, int z) const;
+
+		///get \ref customShape at specified position (with \ref customShapeEnabled and bounds check)
+		unsigned char get(const osg::Vec3i& p) const {
+			return get(p.x(), p.y(), p.z());
+		}
+
+		///set \ref customShape at specified position (with \ref customShapeEnabled and bounds check)
+		void set(int x, int y, int z, unsigned char value);
+
+		///set \ref customShape at specified position (with \ref customShapeEnabled and bounds check)
+		void set(const osg::Vec3i& p, unsigned char value) {
+			set(p.x(), p.y(), p.z(), value);
 		}
 
 		void resize(const osg::Vec3i& lbound_, const osg::Vec3i& size_, bool customShape_, bool preserved);
@@ -218,8 +253,11 @@ namespace game {
 		///update transform according to \ref pos.
 		void updateTransform();
 
+		///check if this polyhedron is supporting any other polyhedron.
+		bool isSupportingOtherPolyhedron(const Level* parent) const;
+
 		///move to the adjacent position (experimental).
-		bool move(MoveDirection dir);
+		bool move(Level* parent, MoveDirection dir);
 
 		/** do continuous collision hit test for rolling block.
 		\param pos old position
@@ -281,7 +319,7 @@ namespace game {
 	public:
 		//the following properties don't save to file and is generated at runtime
 		osg::ref_ptr<osg::Node> _appearance; //!< the appearance
-		osg::ref_ptr<osg::MatrixTransform> _trans;
+		osg::ref_ptr<osg::MatrixTransform> _trans; //!< the appearance with correct transform
 		ObjectType* _objType;
 	};
 
