@@ -9,6 +9,7 @@ namespace game {
 
 	Level::Level()
 		: _currentPolyhedron(-1)
+		, _isAnimating(true)
 	{
 	}
 
@@ -19,6 +20,7 @@ namespace game {
 		, tileTypeMap(util::copyObj(other.tileTypeMap.get(), copyop)) //always deep copy
 		, objectTypeMap(util::copyObj(other.objectTypeMap.get(), copyop)) //always deep copy
 		, _currentPolyhedron(other._currentPolyhedron)
+		, _isAnimating(true)
 	{
 		//following objects are always deep copy
 		util::copyMap(maps, other.maps, copyop, true);
@@ -152,6 +154,14 @@ namespace game {
 		}
 
 		return true;
+	}
+
+	bool Level::update() {
+		_isAnimating = false;
+		for (int i = 0, m = polyhedra.size(); i < m; i++) {
+			if (polyhedra[i]->update()) _isAnimating = true;
+		}
+		return _isAnimating;
 	}
 
 	REG_OBJ_WRAPPER(game, Level, "")

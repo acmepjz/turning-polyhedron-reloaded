@@ -120,6 +120,28 @@ namespace game {
 	osgDB::InputStream& operator>>(osgDB::InputStream& s, PolyhedronPosition& obj);
 	osgDB::OutputStream& operator<<(osgDB::OutputStream& s, const PolyhedronPosition& obj);
 
+	/// an internal class to represent a polyhedron animation.
+
+	class PolyhedronAnimation : public osg::Referenced {
+	public:
+		/// the animation type
+		enum AnimationType {
+			ROLLING,
+			MOVING,
+		};
+	protected:
+		virtual ~PolyhedronAnimation();
+	public:
+		PolyhedronAnimation(Polyhedron* poly, MoveDirection dir, AnimationType type);
+		bool update(); //!< update animation
+	public:
+		Polyhedron* _poly; //!< the polyhedron
+		osg::Matrix _mat1, _mat2; //!< the matrices used if \ref ROLLING or \ref MOVING
+		osg::Quat _quat; //!< the rotation used if \ref ROLLING
+		int _t; //!< the animation time
+		AnimationType _type; //!< the \ref AnimationType
+	};
+
 	/** Represents a polyhedron.
 	* A polyhedron has the following properties:
 	* * Shape:
@@ -290,6 +312,8 @@ namespace game {
 
 		void setSelected(bool selected);
 
+		bool update(); //!< update animation
+
 	public:
 		std::string id; //!< the polyhedron id
 		int shape; //!< the polyhedron shape. \sa PolyhedronShape
@@ -323,6 +347,9 @@ namespace game {
 		osg::ref_ptr<osg::Node> _appearance; //!< the appearance
 		osg::ref_ptr<osg::MatrixTransform> _trans; //!< the appearance with correct transform
 		ObjectType* _objType;
+
+		std::vector<osg::ref_ptr<PolyhedronAnimation> > _animations;
+		int _currentAnimation;
 	};
 
 }

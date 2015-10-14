@@ -155,22 +155,25 @@ public:
 		game::Polyhedron *poly = level->getSelectedPolyhedron();
 
 		switch (ea.getEventType()) {
+		case osgGA::GUIEventAdapter::FRAME:
+			level->update();
+			return false;
 		case osgGA::GUIEventAdapter::KEYDOWN:
 			switch (ea.getKey()) {
 			case osgGA::GUIEventAdapter::KEY_Up:
-				if (poly) poly->move(level.get(), MOVE_UP);
+				if (!level->isAnimating() && poly) poly->move(level.get(), MOVE_UP);
 				break;
 			case osgGA::GUIEventAdapter::KEY_Down:
-				if (poly) poly->move(level.get(), MOVE_DOWN);
+				if (!level->isAnimating() && poly) poly->move(level.get(), MOVE_DOWN);
 				break;
 			case osgGA::GUIEventAdapter::KEY_Left:
-				if (poly) poly->move(level.get(), MOVE_LEFT);
+				if (!level->isAnimating() && poly) poly->move(level.get(), MOVE_LEFT);
 				break;
 			case osgGA::GUIEventAdapter::KEY_Right:
-				if (poly) poly->move(level.get(), MOVE_RIGHT);
+				if (!level->isAnimating() && poly) poly->move(level.get(), MOVE_RIGHT);
 				break;
 			case osgGA::GUIEventAdapter::KEY_Space:
-				level->switchToNextPolyhedron();
+				if (!level->isAnimating()) level->switchToNextPolyhedron();
 				break;
 			default:
 				return false;

@@ -72,6 +72,11 @@ namespace game {
 			return NULL;
 		}
 
+		bool update(); //!< update animation
+		bool isAnimating() const {
+			return _isAnimating;
+		}
+
 	public:
 		std::string name; //!< level name
 		std::string solution; //!< solution include in level file, for reference only
@@ -100,6 +105,8 @@ namespace game {
 		osg::ref_ptr<osg::Node> _appearance; //!< the appearance
 
 		int _currentPolyhedron; //!< current polyhedron
+
+		bool _isAnimating; //!< is animating, updated when \ref update() is called
 	};
 
 }

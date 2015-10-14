@@ -197,65 +197,62 @@ namespace game {
 		return s;
 	}
 
-	class TestPolyhedronAnimator : public osgGA::GUIEventHandler {
-	public:
-		TestPolyhedronAnimator(Polyhedron* poly, MoveDirection dir, int moveType)
-			: _poly(poly)
-			, _t(0)
-			, _moveType(moveType)
-		{
-			if (moveType & Polyhedron::ROLLING_ALL) {
-				poly->pos.getTransformAnimation(poly, MoveDirection(dir ^ 1), _mat1, _quat, _mat2);
-			} else if (moveType & Polyhedron::MOVING_ALL) {
-				PolyhedronPosition oldPos = poly->pos;
-				oldPos.applyTransform(poly, _mat2);
-				switch (dir) {
-				case MOVE_NEG_X: oldPos.pos.x()++; break;
-				case MOVE_POS_X: oldPos.pos.x()--; break;
-				case MOVE_NEG_Y: oldPos.pos.y()++; break;
-				case MOVE_POS_Y: oldPos.pos.y()--; break;
-				case MOVE_NEG_Z: oldPos.pos.z()++; break;
-				case MOVE_POS_Z: oldPos.pos.z()--; break;
-				}
-				oldPos.applyTransform(poly, _mat1);
+	PolyhedronAnimation::PolyhedronAnimation(Polyhedron* poly, MoveDirection dir, AnimationType type)
+		: _poly(poly)
+		, _t(0)
+		, _type(type)
+	{
+		if (type == ROLLING) {
+			poly->pos.getTransformAnimation(poly, MoveDirection(dir ^ 1), _mat1, _quat, _mat2);
+		} else if (type == MOVING) {
+			PolyhedronPosition oldPos = poly->pos;
+			oldPos.applyTransform(poly, _mat2);
+			switch (dir) {
+			case MOVE_NEG_X: oldPos.pos.x()++; break;
+			case MOVE_POS_X: oldPos.pos.x()--; break;
+			case MOVE_NEG_Y: oldPos.pos.y()++; break;
+			case MOVE_POS_Y: oldPos.pos.y()--; break;
+			case MOVE_NEG_Z: oldPos.pos.z()++; break;
+			case MOVE_POS_Z: oldPos.pos.z()--; break;
+			}
+			oldPos.applyTransform(poly, _mat1);
+			for (int i = 0; i < 16; i++) {
+				_mat2.ptr()[i] -= _mat1.ptr()[i];
+			}
+		}
+	}
+
+	PolyhedronAnimation::~PolyhedronAnimation() {
+	}
+
+	bool PolyhedronAnimation::update() {
+		if (_t < 8) {
+			_t++;
+			if (_t >= 8) {
+				_poly->updateTransform();
+			} else if (_type == ROLLING) {
+				osg::Matrix mat = _mat1;
+				osg::Quat q;
+				q.slerp(_t*0.125f, _quat, osg::Quat());
+				mat.postMultRotate(q);
+				mat.postMult(_mat2);
+				_poly->_trans->setMatrix(mat);
+			} else if (_type == MOVING) {
+				float t = _t*0.125f;
+				osg::Matrix mat = _mat1;
 				for (int i = 0; i < 16; i++) {
-					_mat2.ptr()[i] -= _mat1.ptr()[i];
+					mat.ptr()[i] += t*_mat2.ptr()[i];
 				}
+				_poly->_trans->setMatrix(mat);
+			} else {
+				UTIL_WARN "unrecognized animation type: " << int(_type) << std::endl;
+				return false;
 			}
+			return true;
 		}
 
-		virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa) {
-			//TODO: remove event callback after animation finished
-			if (_t < 8 && ea.getEventType() == osgGA::GUIEventAdapter::FRAME) {
-				_t++;
-				if (_t >= 8) {
-					_poly->updateTransform();
-				} else if (_moveType & Polyhedron::ROLLING_ALL) {
-					osg::Matrix mat = _mat1;
-					osg::Quat q;
-					q.slerp(_t*0.125f, _quat, osg::Quat());
-					mat.postMultRotate(q);
-					mat.postMult(_mat2);
-					_poly->_trans->setMatrix(mat);
-				} else if (_moveType & Polyhedron::MOVING_ALL) {
-					float t = _t*0.125f;
-					osg::Matrix mat = _mat1;
-					for (int i = 0; i < 16; i++) {
-						mat.ptr()[i] += t*_mat2.ptr()[i];
-					}
-					_poly->_trans->setMatrix(mat);
-				}
-			}
-
-			return false;
-		}
-	private:
-		osg::ref_ptr<Polyhedron> _poly;
-		osg::Matrix _mat1, _mat2;
-		osg::Quat _quat;
-		int _t;
-		int _moveType;
-	};
+		return false;
+	}
 
 	Polyhedron::Polyhedron()
 		: shape(0)
@@ -266,6 +263,7 @@ namespace game {
 		, customShapeEnabled(false)
 		, customShape(1, SOLID)
 		, _objType(NULL)
+		, _currentAnimation(0)
 	{
 	}
 
@@ -283,6 +281,7 @@ namespace game {
 		, customShapeEnabled(other.customShapeEnabled)
 		, customShape(other.customShape)
 		, _objType(NULL)
+		, _currentAnimation(0)
 	{
 
 	}
@@ -487,17 +486,16 @@ namespace game {
 		if (!_trans.valid() || pos._map == NULL) return false;
 
 		PolyhedronPosition newPos = pos;
-		int moveType = 0;
+		PolyhedronAnimation::AnimationType moveType = PolyhedronAnimation::ROLLING;
 
 		//TODO: rotating block
 		switch (dir) {
 		case MOVE_NEG_X:
 		case MOVE_POS_X:
 			if (movement & ROLLING_X) {
-				moveType = ROLLING_X;
 				newPos.move(this, dir);
 			} else if (movement & MOVING_X) {
-				moveType = MOVING_X;
+				moveType = PolyhedronAnimation::MOVING;
 				newPos.pos.x() += (dir == MOVE_POS_X) ? 1 : -1;
 			} else {
 				return false;
@@ -506,10 +504,9 @@ namespace game {
 		case MOVE_NEG_Y:
 		case MOVE_POS_Y:
 			if (movement & ROLLING_Y) {
-				moveType = ROLLING_Y;
 				newPos.move(this, dir);
 			} else if (movement & MOVING_Y) {
-				moveType = MOVING_Y;
+				moveType = PolyhedronAnimation::MOVING;
 				newPos.pos.y() += (dir == MOVE_POS_Y) ? 1 : -1;
 			} else {
 				return false;
@@ -518,7 +515,7 @@ namespace game {
 		case MOVE_NEG_Z:
 		case MOVE_POS_Z:
 			if (movement & MOVING_Z) {
-				moveType = MOVING_Z;
+				moveType = PolyhedronAnimation::MOVING;
 				newPos.pos.z() += (dir == MOVE_POS_Z) ? 1 : -1;
 			} else {
 				return false;
@@ -534,18 +531,35 @@ namespace game {
 		}
 
 		//check if it hits something during rolling
-		if ((moveType & ROLLING_ALL) && (flags & CONTINUOUS_HITTEST)) {
+		if (moveType == PolyhedronAnimation::ROLLING && (flags & CONTINUOUS_HITTEST)) {
 			if (!isRollable(parent, dir)) return false;
 		}
 
 		//check if the end position is valid
 		if (valid(parent, newPos)) {
 			pos = newPos;
-			_trans->setEventCallback(new TestPolyhedronAnimator(this, dir, moveType));
+			_animations.push_back(new PolyhedronAnimation(this, dir, moveType));
 			return true;
 		}
 
 		return false;
+	}
+
+	bool Polyhedron::update() {
+		const int m = _animations.size();
+		if (m == 0) {
+			_currentAnimation = 0;
+			return false;
+		}
+
+		if (_currentAnimation < m && !_animations[_currentAnimation]->update()) _currentAnimation++;
+		if (_currentAnimation >= m) {
+			_animations.clear();
+			_currentAnimation = 0;
+			return false;
+		}
+
+		return true;
 	}
 
 	bool Polyhedron::isRollable(const Level* parent, const PolyhedronPosition& pos, MoveDirection dir) const {
