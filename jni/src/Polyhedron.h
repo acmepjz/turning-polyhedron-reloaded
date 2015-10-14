@@ -128,6 +128,7 @@ namespace game {
 		enum AnimationType {
 			ROLLING,
 			MOVING,
+			FLASHING,
 		};
 	protected:
 		virtual ~PolyhedronAnimation();
@@ -139,6 +140,7 @@ namespace game {
 		osg::Matrix _mat1, _mat2; //!< the matrices used if \ref ROLLING or \ref MOVING
 		osg::Quat _quat; //!< the rotation used if \ref ROLLING
 		int _t; //!< the animation time
+		int _maxt; //!< the max animation time
 		AnimationType _type; //!< the \ref AnimationType
 	};
 

@@ -200,11 +200,15 @@ namespace game {
 	PolyhedronAnimation::PolyhedronAnimation(Polyhedron* poly, MoveDirection dir, AnimationType type)
 		: _poly(poly)
 		, _t(0)
+		, _maxt(8)
 		, _type(type)
 	{
-		if (type == ROLLING) {
+		switch (type) {
+		case ROLLING:
 			poly->pos.getTransformAnimation(poly, MoveDirection(dir ^ 1), _mat1, _quat, _mat2);
-		} else if (type == MOVING) {
+			break;
+		case MOVING:
+		{
 			PolyhedronPosition oldPos = poly->pos;
 			oldPos.applyTransform(poly, _mat2);
 			switch (dir) {
@@ -220,34 +224,61 @@ namespace game {
 				_mat2.ptr()[i] -= _mat1.ptr()[i];
 			}
 		}
+			break;
+		}
 	}
 
 	PolyhedronAnimation::~PolyhedronAnimation() {
 	}
 
 	bool PolyhedronAnimation::update() {
-		if (_t < 8) {
+		if (_t < _maxt) {
 			_t++;
-			if (_t >= 8) {
-				_poly->updateTransform();
-			} else if (_type == ROLLING) {
-				osg::Matrix mat = _mat1;
-				osg::Quat q;
-				q.slerp(_t*0.125f, _quat, osg::Quat());
-				mat.postMultRotate(q);
-				mat.postMult(_mat2);
-				_poly->_trans->setMatrix(mat);
-			} else if (_type == MOVING) {
-				float t = _t*0.125f;
-				osg::Matrix mat = _mat1;
-				for (int i = 0; i < 16; i++) {
-					mat.ptr()[i] += t*_mat2.ptr()[i];
+
+			switch (_type) {
+			case ROLLING:
+				if (_t >= _maxt) {
+					_poly->updateTransform();
+				} else {
+					osg::Matrix mat = _mat1;
+					osg::Quat q;
+					q.slerp(float(_t) / float(_maxt), _quat, osg::Quat());
+					mat.postMultRotate(q);
+					mat.postMult(_mat2);
+					_poly->_trans->setMatrix(mat);
 				}
-				_poly->_trans->setMatrix(mat);
-			} else {
+				break;
+			case MOVING:
+				if (_t >= _maxt) {
+					_poly->updateTransform();
+				} else {
+					float t = float(_t) / float(_maxt);
+					osg::Matrix mat = _mat1;
+					for (int i = 0; i < 16; i++) {
+						mat.ptr()[i] += t*_mat2.ptr()[i];
+					}
+					_poly->_trans->setMatrix(mat);
+				}
+				break;
+			case FLASHING:
+			{
+				osgFX::Outline *outline = dynamic_cast<osgFX::Outline*>(_poly->_appearance.get());
+				if (outline) {
+					if (_t >= _maxt) {
+						outline->setEnabled(false);
+						outline->setColor(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+					} else {
+						outline->setEnabled(((_t - 1) & 2) ? false : true);
+						outline->setColor(osg::Vec4(1.0f, 0.0f, 0.0f, 1.0f));
+					}
+				}
+			}
+				break;
+			default:
 				UTIL_WARN "unrecognized animation type: " << int(_type) << std::endl;
 				return false;
 			}
+
 			return true;
 		}
 
@@ -526,7 +557,9 @@ namespace game {
 		}
 
 		//check if it is supporting other polyhedron
-		if (isSupportingOtherPolyhedron(parent)) {
+		Polyhedron* other = const_cast<Polyhedron*>(isSupportingOtherPolyhedron(parent));
+		if (other) {
+			other->_animations.push_back(new PolyhedronAnimation(other, (MoveDirection)0, PolyhedronAnimation::FLASHING));
 			return false;
 		}
 
