@@ -8,6 +8,8 @@ class XMLNode;
 
 namespace gfx {
 
+	class SimpleGeometry;
+
 	/// The appearance node (experimental)
 
 	class Appearance :
@@ -32,6 +34,11 @@ namespace gfx {
 
 		Appearance();
 		Appearance(const Appearance& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+
+		/** create a \ref SimpleGeometry if the node has appropriate type.
+		\param shape The shape, see \ref game::MapData::MapShape.
+		*/
+		SimpleGeometry* createSimpleGeometry(int shape);
 
 		/** get or create instance.
 		\param shape The shape, see \ref game::MapData::MapShape.
