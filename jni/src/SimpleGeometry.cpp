@@ -1,4 +1,5 @@
 #include "SimpleGeometry.h"
+#include "util_err.h"
 
 namespace gfx {
 
@@ -188,19 +189,132 @@ namespace gfx {
 	};
 
 	struct SimpleGeometry::Face {
-		Face() : edge(NULL), triangulation(NULL) {}
-		~Face() {
-			if (triangulation) {
-				delete[] triangulation;
-			}
-		}
+		Face() : edge(NULL) {}
 
 		Halfedge *edge; //!< one of the halfedges bounding it
 
-		/** the triangulation (optional)
-		*/
-		int *triangulation;
+		osg::ref_ptr<Triangulation> triangulation; //!< the triangulation (optional)
 	};
+
+	Triangulation::Triangulation()
+		: type(TRIANGLE_FAN)
+	{
+	}
+
+	Triangulation::~Triangulation()
+	{
+	}
+
+	Triangulation::Triangulation(const Triangulation& other, const osg::CopyOp& copyop)
+		: osg::Object(other, copyop)
+		, type(other.type)
+		, indices(other.indices)
+	{
+	}
+
+	void Triangulation::addTriangulation(const std::vector<SimpleGeometry::Halfedge*>& es, osg::DrawElementsUInt* ii) const {
+		if (this) {
+			switch (type) {
+			case TRIANGLES:
+				if (indices.size() >= 3) {
+					for (int i = 0, m = indices.size(); i + 3 <= m; i += 3) {
+						ii->push_back(es[indices[i]]->vertex->tempIndex);
+						ii->push_back(es[indices[i + 1]]->vertex->tempIndex);
+						ii->push_back(es[indices[i + 2]]->vertex->tempIndex);
+					}
+					return;
+				}
+				break;
+			case TRIANGLE_STRIP:
+				if (indices.size() >= 3) {
+					int i0 = es[indices[0]]->vertex->tempIndex;
+					int i1 = es[indices[1]]->vertex->tempIndex;
+					for (int i = 2, m = indices.size(); i < m; i++) {
+						if (i & 1) {
+							ii->push_back(i1); ii->push_back(i0);
+						} else {
+							ii->push_back(i0); ii->push_back(i1);
+						}
+						int i2 = es[indices[i]]->vertex->tempIndex;
+						ii->push_back(i2);
+						i0 = i1; i1 = i2;
+					}
+					return;
+				} else if (indices.size() >= 1) {
+					const int m = es.size();
+					int idxStart = indices[0];
+					if (idxStart < 0 || idxStart >= m) idxStart = 0;
+					int i0 = es[idxStart]->vertex->tempIndex;
+					int i1 = es[(idxStart + 1 >= m) ? 0 : (idxStart + 1)]->vertex->tempIndex;
+					for (int i = 2; i < m; i++) {
+						int idx;
+						if (i & 1) {
+							ii->push_back(i1); ii->push_back(i0);
+							idx = idxStart + (i >> 1) + 1;
+							if (idx >= m) idx -= m;
+						} else {
+							ii->push_back(i0); ii->push_back(i1);
+							idx = idxStart - (i >> 1);
+							if (idx < 0) idx += m;
+						}
+						int i2 = es[idx]->vertex->tempIndex;
+						ii->push_back(i2);
+						i0 = i1; i1 = i2;
+					}
+					return;
+				}
+				break;
+			case TRIANGLE_FAN:
+				if (indices.size() >= 3) {
+					int i0 = es[indices[0]]->vertex->tempIndex;
+					int i1 = es[indices[1]]->vertex->tempIndex;
+					for (int i = 2, m = indices.size(); i < m; i++) {
+						int i2 = es[indices[i]]->vertex->tempIndex;
+						ii->push_back(i0); ii->push_back(i1); ii->push_back(i2);
+						i1 = i2;
+					}
+					return;
+				} else if (indices.size() >= 1) {
+					const int m = es.size();
+					int idxStart = indices[0];
+					if (idxStart < 0 || idxStart >= m) idxStart = 0;
+					int i0 = es[idxStart]->vertex->tempIndex;
+					int i1 = es[(idxStart + 1 >= m) ? 0 : (idxStart + 1)]->vertex->tempIndex;
+					for (int i = 2; i < m; i++) {
+						int idx = idxStart + i;
+						if (idx >= m) idx -= m;
+						int i2 = es[idx]->vertex->tempIndex;
+						ii->push_back(i0); ii->push_back(i1); ii->push_back(i2);
+						i1 = i2;
+					}
+					return;
+				}
+				break;
+			case QUADS:
+				if (indices.size() >= 4) {
+					for (int i = 0, m = indices.size(); i + 4 <= m; i += 4) {
+						int i0 = es[indices[i]]->vertex->tempIndex,
+							i1 = es[indices[i + 1]]->vertex->tempIndex,
+							i2 = es[indices[i + 2]]->vertex->tempIndex,
+							i3 = es[indices[i + 3]]->vertex->tempIndex;
+						ii->push_back(i0); ii->push_back(i1); ii->push_back(i2);
+						ii->push_back(i0); ii->push_back(i2); ii->push_back(i3);
+					}
+					return;
+				}
+				break;
+			}
+		}
+
+		// default implementation
+		int i0 = es[0]->vertex->tempIndex;
+		int i1 = es[1]->vertex->tempIndex;
+		for (int i = 2, m = es.size(); i < m; i++) {
+			int i2 = es[i]->vertex->tempIndex;
+			ii->push_back(i0); ii->push_back(i1); ii->push_back(i2);
+			i1 = i2;
+		}
+	}
 
 	SimpleGeometry::SimpleGeometry()
 	{
@@ -340,7 +454,8 @@ namespace gfx {
 
 		if (vv->empty() || ii->empty()) return NULL;
 
-		OSG_NOTICE << (ii->size() / 2) << std::endl;
+		// debug
+		UTIL_INFO "Edge count: " << (ii->size() / 2) << std::endl;
 
 		// over
 		osg::ref_ptr<osg::Geometry> geom = new osg::Geometry;
@@ -398,21 +513,7 @@ namespace gfx {
 			}
 
 			// add triangles of this face
-			if (f->triangulation) {
-				for (int i = 0, m = (es.size() - 2) * 3; i < m; i++) {
-					ii->push_back(es[f->triangulation[i]]->vertex->tempIndex);
-				}
-			} else {
-				int idx0 = es[0]->vertex->tempIndex;
-				int idxPrev = es[1]->vertex->tempIndex;
-				for (size_t i = 2, m = es.size(); i < m; i++) {
-					int idx = es[i]->vertex->tempIndex;
-					ii->push_back(idx0);
-					ii->push_back(idxPrev);
-					ii->push_back(idx);
-					idxPrev = idx;
-				}
-			}
+			f->triangulation->addTriangulation(es, ii.get());
 		}
 
 		// normalize normals
@@ -421,6 +522,9 @@ namespace gfx {
 		}
 
 		if (vv->empty() || ii->empty()) return NULL;
+
+		// debug
+		UTIL_INFO "Triangle count: " << (ii->size() / 3) << std::endl;
 
 		// over
 		osg::ref_ptr<osg::Geometry> geom = new osg::Geometry;

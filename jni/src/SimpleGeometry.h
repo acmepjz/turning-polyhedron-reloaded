@@ -15,7 +15,9 @@ namespace gfx {
 	*/
 	osg::Geometry* createCube(const osg::Vec3& p1, const osg::Vec3& p2, bool wireframe, float bevel, const osg::Vec3& color);
 
-	/// represents a polygon mesh using halfedge structure
+	class Triangluation;
+
+	/// represents a simple polygon mesh using halfedge structure
 
 	class SimpleGeometry : public osg::Object {
 	protected:
@@ -47,14 +49,45 @@ namespace gfx {
 		osg::Geometry* createEdges(const osg::Vec3& color);
 		osg::Geometry* createFaces(const osg::Vec3& color);
 
-	private:
+	public:
 		struct Vertex;
 		struct Halfedge;
 		struct Face;
 
+	private:
 		std::vector<Vertex*> vertices;
 		std::vector<Halfedge*> halfedges;
 		std::vector<Face*> faces;
+	};
+
+	/// represents a simple triangulation method (internal class)
+
+	class Triangulation : public osg::Object {
+	public:
+		/// the triangulation type
+		enum TriangulationType {
+			TRIANGLES = GL_TRIANGLES, //!< a list of triangles.
+			TRIANGLE_STRIP = GL_TRIANGLE_STRIP, //!< triangle strip (in this case \ref indices can have only 1 element).
+			TRIANGLE_FAN = GL_TRIANGLE_FAN, //!< triangle fan (default value, in this case \ref indices can have only 1 element).
+			QUADS = GL_QUADS, //!< a list of quads.
+		};
+	protected:
+		virtual ~Triangulation();
+	public:
+		META_Object(gfx, Triangulation);
+
+		Triangulation();
+		Triangulation(const Triangulation& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+
+		/** add triangulation of this face (internal function)
+		\param[in] es The halfedges of this face
+		\param[out] ii The triangle list
+		*/
+		void addTriangulation(const std::vector<SimpleGeometry::Halfedge*>& es, osg::DrawElementsUInt* ii) const;
+
+	public:
+		TriangulationType type; //!< the \ref TriangulationType.
+		std::vector<int> indices; //!< the indices of triangle vertices, whose structure depends on the value of \ref type.
 	};
 
 }
