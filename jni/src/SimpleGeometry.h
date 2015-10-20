@@ -15,7 +15,7 @@ namespace gfx {
 	*/
 	osg::Geometry* createCube(const osg::Vec3& p1, const osg::Vec3& p2, bool wireframe, float bevel, const osg::Vec3& color);
 
-	class Triangluation;
+	class Triangulation;
 
 	/// represents a simple polygon mesh using halfedge structure
 
@@ -30,8 +30,15 @@ namespace gfx {
 
 		void clear();
 
+		/** add a polygon
+		\param vertices The array of vertices
+		\param vertexCount The vertex count
+		\param triangulation The optional triangulation
+		*/
+		void addPolygon(const osg::Vec3* vertices, int vertexCount, Triangulation* triangulation);
+
 		/** add a polyhedron
-		\param vertices The array vertices
+		\param vertices The array of vertices
 		\param vertexCount The vertex count
 		\param faceVertexIndices The array of index of vertices of faces, e.g. 0,1,2,3,0,3,4,5, ...
 		\param faceVertexCount The array of face vertex count, e.g. 4,4,4 ...
@@ -46,8 +53,17 @@ namespace gfx {
 		*/
 		void addCube(const osg::Vec3& p1, const osg::Vec3& p2, float bevel);
 
+		/** create a wireframe geometry
+		\param color The color
+		*/
 		osg::Geometry* createEdges(const osg::Vec3& color);
-		osg::Geometry* createFaces(const osg::Vec3& color);
+
+		/** create a solid geometry
+		\param color The color
+		\param useFaceCenter Create a face center if the face has >=4 vertices and doesn't have a triangulator
+		\param useWeightedFaceNormal Use face area as weight for face normal
+		*/
+		osg::Geometry* createFaces(const osg::Vec3& color, bool useFaceCenter, bool useWeightedFaceNormal);
 
 	public:
 		struct Vertex;
@@ -81,9 +97,10 @@ namespace gfx {
 
 		/** add triangulation of this face (internal function)
 		\param[in] es The halfedges of this face
-		\param[out] ii The triangle list
+		\param[out] ii The vertex index list of triangles
+		\param[in] centerIndex The vertex index of center of this face (will overwrite \ref type), -1 means no center
 		*/
-		void addTriangulation(const std::vector<SimpleGeometry::Halfedge*>& es, osg::DrawElementsUInt* ii) const;
+		void addTriangulation(const std::vector<SimpleGeometry::Halfedge*>& es, osg::DrawElementsUInt* ii, int centerIndex) const;
 
 	public:
 		TriangulationType type; //!< the \ref TriangulationType.

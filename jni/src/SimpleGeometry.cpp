@@ -8,7 +8,7 @@ namespace gfx {
 		// test only
 		osg::ref_ptr<SimpleGeometry> geom = new SimpleGeometry;
 		geom->addCube(p1, p2, bevel);
-		return wireframe ? geom->createEdges(color) : geom->createFaces(color);
+		return wireframe ? geom->createEdges(color) : geom->createFaces(color, false, true);
 #else
 		osg::Vec3 p[2] = { p1, p2 };
 		for (int i = 0; i < 2; i++) {
@@ -212,7 +212,19 @@ namespace gfx {
 	{
 	}
 
-	void Triangulation::addTriangulation(const std::vector<SimpleGeometry::Halfedge*>& es, osg::DrawElementsUInt* ii) const {
+	void Triangulation::addTriangulation(const std::vector<SimpleGeometry::Halfedge*>& es, osg::DrawElementsUInt* ii, int centerIndex) const {
+		if (centerIndex >= 0) {
+			// forced to use triangle fan mode starting with center
+			const int m = es.size();
+			int i1 = es[m - 1]->vertex->tempIndex;
+			for (int i = 0; i < m; i++) {
+				int i2 = es[i]->vertex->tempIndex;
+				ii->push_back(centerIndex); ii->push_back(i1); ii->push_back(i2);
+				i1 = i2;
+			}
+			return;
+		}
+
 		if (this) {
 			switch (type) {
 			case TRIANGLES:
@@ -306,7 +318,7 @@ namespace gfx {
 			}
 		}
 
-		// default implementation
+		// default mode is triangle fan
 		int i0 = es[0]->vertex->tempIndex;
 		int i1 = es[1]->vertex->tempIndex;
 		for (int i = 2, m = es.size(); i < m; i++) {
@@ -344,6 +356,60 @@ namespace gfx {
 		vertices.clear();
 		halfedges.clear();
 		faces.clear();
+	}
+
+	void SimpleGeometry::addPolygon(const osg::Vec3* vertices_, int vertexCount, Triangulation* triangulation) {
+		std::vector<Vertex*> newVertices;
+
+		// create new vertices
+		for (int i = 0; i < vertexCount; i++) {
+			Vertex *v = new Vertex;
+			v->pos = vertices_[i];
+			newVertices.push_back(v);
+		}
+
+		// create new face
+		Face *f = new Face;
+		f->triangulation = triangulation;
+
+		int prevIndex = vertexCount - 1;
+		Halfedge *prevEdge = NULL;
+
+		for (int i = 0; i < vertexCount; i++) {
+			Halfedge *e = new Halfedge;
+
+			if (i == 0) {
+				// init first edge
+				f->edge = e;
+			} else {
+				// set next edge of prev edge
+				prevEdge->next = e;
+			}
+
+			// set end vertex
+			e->vertex = newVertices[i];
+
+			// set start vertex
+			Vertex *prevVertex = newVertices[prevIndex];
+			if (prevVertex->edge == NULL) prevVertex->edge = e;
+
+			// set face
+			e->face = f;
+
+			// over
+			halfedges.push_back(e);
+			prevIndex = i;
+			prevEdge = e;
+		}
+
+		// set next edge of last edge
+		prevEdge->next = f->edge;
+
+		// add new face
+		faces.push_back(f);
+
+		// add to existing data
+		vertices.insert(vertices.end(), newVertices.begin(), newVertices.end());
 	}
 
 	void SimpleGeometry::addPolyhedron(const osg::Vec3* vertices_, int vertexCount, const int* faceVertexIndices, const int* faceVertexCount, int faceCount) {
@@ -465,7 +531,7 @@ namespace gfx {
 		return geom.release();
 	}
 
-	osg::Geometry* SimpleGeometry::createFaces(const osg::Vec3& color) {
+	osg::Geometry* SimpleGeometry::createFaces(const osg::Vec3& color, bool useFaceCenter, bool useWeightedFaceNormal) {
 		if (vertices.empty() || halfedges.empty() || faces.empty()) return NULL;
 
 		osg::ref_ptr<osg::Vec3Array> vv = new osg::Vec3Array(osg::Array::BIND_PER_VERTEX);
@@ -503,17 +569,30 @@ namespace gfx {
 				prevVector = currentVector;
 			}
 
-			if (es.size() < 3) continue;
+			const size_t m = es.size();
+			if (m < 3) continue;
 
 			// add face normal to each vertex
 			//TODO: other normal type
-			//faceNormal.normalize();
-			for (size_t i = 0, m = es.size(); i < m; i++) {
+			if (!useWeightedFaceNormal) faceNormal.normalize();
+			for (size_t i = 0; i < m; i++) {
 				(*nn)[es[i]->vertex->tempIndex] += faceNormal;
 			}
 
+			// add face center if necessary
+			int centerIndex = -1;
+			if (useFaceCenter && m >= 4) {
+				osg::Vec3 p;
+				for (size_t i = 0; i < m; i++) {
+					p += es[i]->vertex->pos;
+				}
+				centerIndex = vv->size();
+				vv->push_back(p / m);
+				nn->push_back(faceNormal);
+			}
+
 			// add triangles of this face
-			f->triangulation->addTriangulation(es, ii.get());
+			f->triangulation->addTriangulation(es, ii.get(), centerIndex);
 		}
 
 		// normalize normals
