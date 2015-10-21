@@ -102,6 +102,8 @@ namespace gfx {
 			TRIANGLE_STRIP = GL_TRIANGLE_STRIP, //!< triangle strip (in this case \ref indices can have only 1 element).
 			TRIANGLE_FAN = GL_TRIANGLE_FAN, //!< triangle fan (default value, in this case \ref indices can have only 1 element).
 			QUADS = GL_QUADS, //!< a list of quads.
+			TYPE_MASK = 0xFF,
+			FLIPPED = 0x100,
 		};
 	protected:
 		virtual ~Triangulation();
@@ -118,9 +120,21 @@ namespace gfx {
 		*/
 		void addTriangulation(const std::vector<SimpleGeometry::Halfedge*>& es, osg::DrawElementsUInt* ii, int centerIndex) const;
 
+		bool isFlipped() const {
+			return (type & FLIPPED) != 0;
+		}
+
 	public:
 		TriangulationType type; //!< the \ref TriangulationType.
 		std::vector<int> indices; //!< the indices of triangle vertices, whose structure depends on the value of \ref type.
+
+	private:
+		static int flip(int index, int size) {
+			return index ? (size - index) : 0;
+		}
+		int flipIfNecessary(int index, int size) const {
+			return (type & FLIPPED) ? flip(index, size) : index;
+		}
 	};
 
 }

@@ -195,6 +195,26 @@ namespace gfx {
 		Halfedge *edge; //!< one of the halfedges bounding it
 
 		osg::ref_ptr<Triangulation> triangulation; //!< the triangulation (optional)
+
+		/// flip the face direction
+		void flip() {
+			Halfedge *oldEdge = edge, *e0 = edge;
+			Halfedge *e1 = edge = edge->next;
+
+			Vertex *v0 = e0->vertex;
+
+			for (;;) {
+				std::swap(e1->vertex, v0);
+
+				Halfedge *tmp = e1->next;
+				e1->next = e0;
+				if (e1 == oldEdge) break;
+				e0 = e1;
+				e1 = tmp;
+			}
+
+			if (triangulation.valid()) (int&)(triangulation->type) ^= Triangulation::FLIPPED;
+		}
 	};
 
 	Triangulation::Triangulation()
@@ -227,28 +247,33 @@ namespace gfx {
 		}
 
 		if (this) {
-			switch (type) {
+			switch (type & TYPE_MASK) {
 			case TRIANGLES:
 				if (indices.size() >= 3) {
 					for (int i = 0, m = indices.size(); i + 3 <= m; i += 3) {
-						ii->push_back(es[indices[i]]->vertex->tempIndex);
-						ii->push_back(es[indices[i + 1]]->vertex->tempIndex);
-						ii->push_back(es[indices[i + 2]]->vertex->tempIndex);
+						ii->push_back(es[flipIfNecessary(indices[i], es.size())]->vertex->tempIndex);
+						if (isFlipped()) {
+							ii->push_back(es[flip(indices[i + 2], es.size())]->vertex->tempIndex);
+							ii->push_back(es[flip(indices[i + 1], es.size())]->vertex->tempIndex);
+						} else {
+							ii->push_back(es[indices[i + 1]]->vertex->tempIndex);
+							ii->push_back(es[indices[i + 2]]->vertex->tempIndex);
+						}
 					}
 					return;
 				}
 				break;
 			case TRIANGLE_STRIP:
 				if (indices.size() >= 3) {
-					int i0 = es[indices[0]]->vertex->tempIndex;
-					int i1 = es[indices[1]]->vertex->tempIndex;
+					int i0 = es[flipIfNecessary(indices[0], es.size())]->vertex->tempIndex;
+					int i1 = es[flipIfNecessary(indices[1], es.size())]->vertex->tempIndex;
 					for (int i = 2, m = indices.size(); i < m; i++) {
-						if (i & 1) {
+						if (((i & 1) != 0) ^ isFlipped()) {
 							ii->push_back(i1); ii->push_back(i0);
 						} else {
 							ii->push_back(i0); ii->push_back(i1);
 						}
-						int i2 = es[indices[i]]->vertex->tempIndex;
+						int i2 = es[flipIfNecessary(indices[i], es.size())]->vertex->tempIndex;
 						ii->push_back(i2);
 						i0 = i1; i1 = i2;
 					}
@@ -257,6 +282,7 @@ namespace gfx {
 					const int m = es.size();
 					int idxStart = indices[0];
 					if (idxStart < 0 || idxStart >= m) idxStart = 0;
+					if (isFlipped()) idxStart = m - 1 - idxStart; //FIXME: this is not accurate, only works if all quads are convex
 					int i0 = es[idxStart]->vertex->tempIndex;
 					int i1 = es[(idxStart + 1 >= m) ? 0 : (idxStart + 1)]->vertex->tempIndex;
 					for (int i = 2; i < m; i++) {
@@ -279,17 +305,23 @@ namespace gfx {
 				break;
 			case TRIANGLE_FAN:
 				if (indices.size() >= 3) {
-					int i0 = es[indices[0]]->vertex->tempIndex;
-					int i1 = es[indices[1]]->vertex->tempIndex;
+					int i0 = es[flipIfNecessary(indices[0], es.size())]->vertex->tempIndex;
+					int i1 = es[flipIfNecessary(indices[1], es.size())]->vertex->tempIndex;
 					for (int i = 2, m = indices.size(); i < m; i++) {
-						int i2 = es[indices[i]]->vertex->tempIndex;
-						ii->push_back(i0); ii->push_back(i1); ii->push_back(i2);
+						int i2 = es[flipIfNecessary(indices[i], es.size())]->vertex->tempIndex;
+						if (isFlipped()) {
+							ii->push_back(i1); ii->push_back(i0);
+						} else {
+							ii->push_back(i0); ii->push_back(i1);
+						}
+						ii->push_back(i2);
 						i1 = i2;
 					}
 					return;
 				} else if (indices.size() >= 1) {
 					const int m = es.size();
 					int idxStart = indices[0];
+					if (isFlipped()) idxStart = m - idxStart;
 					if (idxStart < 0 || idxStart >= m) idxStart = 0;
 					int i0 = es[idxStart]->vertex->tempIndex;
 					int i1 = es[(idxStart + 1 >= m) ? 0 : (idxStart + 1)]->vertex->tempIndex;
@@ -306,12 +338,17 @@ namespace gfx {
 			case QUADS:
 				if (indices.size() >= 4) {
 					for (int i = 0, m = indices.size(); i + 4 <= m; i += 4) {
-						int i0 = es[indices[i]]->vertex->tempIndex,
-							i1 = es[indices[i + 1]]->vertex->tempIndex,
-							i2 = es[indices[i + 2]]->vertex->tempIndex,
-							i3 = es[indices[i + 3]]->vertex->tempIndex;
-						ii->push_back(i0); ii->push_back(i1); ii->push_back(i2);
-						ii->push_back(i0); ii->push_back(i2); ii->push_back(i3);
+						int i0 = es[flipIfNecessary(indices[i], es.size())]->vertex->tempIndex,
+							i2 = es[flipIfNecessary(indices[i + 2], es.size())]->vertex->tempIndex;
+						ii->push_back(i0);
+						if (isFlipped()) {
+							ii->push_back(i2); ii->push_back(es[flip(indices[i + 1], es.size())]->vertex->tempIndex);
+							ii->push_back(i0); ii->push_back(es[flip(indices[i + 3], es.size())]->vertex->tempIndex);
+						} else {
+							ii->push_back(es[indices[i + 1]]->vertex->tempIndex); ii->push_back(i2);
+							ii->push_back(es[indices[i + 3]]->vertex->tempIndex); ii->push_back(i0);
+						}
+						ii->push_back(i2);
 					}
 					return;
 				}
