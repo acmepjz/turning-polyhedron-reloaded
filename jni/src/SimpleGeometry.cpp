@@ -1,5 +1,6 @@
 #include "SimpleGeometry.h"
 #include "util_err.h"
+#include <math.h>
 
 namespace gfx {
 
@@ -410,6 +411,54 @@ namespace gfx {
 
 		// add to existing data
 		vertices.insert(vertices.end(), newVertices.begin(), newVertices.end());
+	}
+
+	void SimpleGeometry::addRect(const osg::Vec3& p1, const osg::Vec3& p2, float bevel, int segments) {
+		float p[2][2] = { p1.x(), p1.y(), p2.x(), p2.y() };
+		for (int i = 0; i < 1; i++) {
+			if (p[0][i] > p[1][i]) std::swap(p[0][i], p[1][i]);
+		}
+		float q[4][6] = {
+			p[0][0], p[0][1], 0, bevel, bevel, 0,
+			p[1][0], p[0][1], -bevel, 0, 0, bevel,
+			p[1][0], p[1][1], 0, -bevel, -bevel, 0,
+			p[0][0], p[1][1], bevel, 0, 0, -bevel,
+		};
+
+		std::vector<osg::Vec3> vv;
+
+		if (bevel < 1E-6f || segments < 0) segments = 0;
+
+		for (int i = 0; i < 4; i++) {
+			if (segments <= 0) {
+				vv.push_back(osg::Vec3(q[i][0], q[i][1], p1.z()));
+			} else {
+				vv.push_back(osg::Vec3(q[i][0] + q[i][2], q[i][1] + q[i][3], p1.z()));
+				for (int j = 1; j < segments; j++) {
+					const float a = float(osg::PI_2) * j / segments;
+					const float s = 1.0f - sinf(a), c = 1.0f - cosf(a);
+					vv.push_back(osg::Vec3(
+						q[i][0] + q[i][2] * s + q[i][4] * c,
+						q[i][1] + q[i][3] * s + q[i][5] * c,
+						p1.z()));
+				}
+				vv.push_back(osg::Vec3(q[i][0] + q[i][4], q[i][1] + q[i][5], p1.z()));
+			}
+		}
+
+		addPolygon(&(vv[0]), vv.size(), NULL);
+	}
+
+	void SimpleGeometry::addEllipse(const osg::Vec3& center, const osg::Vec2& size, int segments) {
+		std::vector<osg::Vec3> vv;
+
+		for (int i = 0; i < segments; i++) {
+			const float a = float(2 * osg::PI) * i / segments;
+			const float s = sinf(a), c = cosf(a);
+			vv.push_back(osg::Vec3(center.x() + size.x()*c, center.y() + size.y()*s, center.z()));
+		}
+
+		addPolygon(&(vv[0]), vv.size(), NULL);
 	}
 
 	void SimpleGeometry::addPolyhedron(const osg::Vec3* vertices_, int vertexCount, const int* faceVertexIndices, const int* faceVertexCount, int faceCount) {

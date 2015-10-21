@@ -37,6 +37,22 @@ namespace gfx {
 		*/
 		void addPolygon(const osg::Vec3* vertices, int vertexCount, Triangulation* triangulation);
 
+		/** add a (rounded) rectangle
+		\param p1 A corner
+		\param p2 Another corner, assume p1 and p2 have the same z coordinate
+		\param bevel The bevel size
+		\param segments The bevel segments
+		*/
+		void addRect(const osg::Vec3& p1, const osg::Vec3& p2, float bevel, int segments);
+
+		/** add an ellipse */
+		void addEllipse(const osg::Vec3& center, const osg::Vec2& size, int segments);
+
+		/** add a circle */
+		void addCircle(const osg::Vec3& center, float size, int segments) {
+			addEllipse(center, osg::Vec2(size, size), segments);
+		}
+
 		/** add a polyhedron
 		\param vertices The array of vertices
 		\param vertexCount The vertex count
