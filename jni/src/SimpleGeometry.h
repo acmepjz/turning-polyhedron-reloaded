@@ -20,6 +20,11 @@ namespace gfx {
 	/// represents a simple polygon mesh using halfedge structure
 
 	class SimpleGeometry : public osg::Object {
+	public:
+		struct Vertex;
+		struct Halfedge;
+		struct Face;
+
 	protected:
 		virtual ~SimpleGeometry();
 	public:
@@ -35,7 +40,7 @@ namespace gfx {
 		\param vertexCount The vertex count
 		\param triangulation The optional triangulation
 		*/
-		void addPolygon(const osg::Vec3* vertices, int vertexCount, Triangulation* triangulation);
+		Face* addPolygon(const osg::Vec3* vertices, int vertexCount, Triangulation* triangulation);
 
 		/** add a (rounded) rectangle
 		\param p1 A corner
@@ -43,24 +48,26 @@ namespace gfx {
 		\param bevel The bevel size
 		\param segments The bevel segments
 		*/
-		void addRect(const osg::Vec3& p1, const osg::Vec3& p2, float bevel, int segments);
+		Face* addRect(const osg::Vec3& p1, const osg::Vec3& p2, float bevel, int segments);
 
 		/** add an ellipse */
-		void addEllipse(const osg::Vec3& center, const osg::Vec2& size, int segments);
+		Face* addEllipse(const osg::Vec3& center, const osg::Vec2& size, int segments);
 
 		/** add a circle */
-		void addCircle(const osg::Vec3& center, float size, int segments) {
-			addEllipse(center, osg::Vec2(size, size), segments);
+		Face* addCircle(const osg::Vec3& center, float size, int segments) {
+			return addEllipse(center, osg::Vec2(size, size), segments);
 		}
 
 		/** add a polyhedron
-		\param vertices The array of vertices
-		\param vertexCount The vertex count
-		\param faceVertexIndices The array of index of vertices of faces, e.g. 0,1,2,3,0,3,4,5, ...
-		\param faceVertexCount The array of face vertex count, e.g. 4,4,4 ...
-		\param faceCount The face count
+		\param[in] vertices The array of vertices
+		\param[in] vertexCount The vertex count
+		\param[in] faceVertexIndices The array of index of vertices of faces, e.g. 0,1,2,3,0,3,4,5, ...
+		\param[in] faceVertexCount The array of face vertex count, e.g. 4,4,4 ...
+		\param[in] faceCount The face count
+		\param[out] outVertices The vertices added
+		\param[out] outFaces The faces added
 		*/
-		void addPolyhedron(const osg::Vec3* vertices, int vertexCount, const int* faceVertexIndices, const int* faceVertexCount, int faceCount);
+		void addPolyhedron(const osg::Vec3* vertices, int vertexCount, const int* faceVertexIndices, const int* faceVertexCount, int faceCount, std::vector<Vertex*>* outVertices = NULL, std::vector<Face*>* outFaces = NULL);
 
 		/** add a cube
 		\param p1 A corner
@@ -68,6 +75,16 @@ namespace gfx {
 		\param bevel The bevel size
 		*/
 		void addCube(const osg::Vec3& p1, const osg::Vec3& p2, float bevel);
+
+		/** add a pyramid or bipyramid
+		\param src The source
+		\param isBipyramid Is it a bipyramid, `true` then `p2` is used
+		\param useFaceNormal Use face normal to determine the height, `true` then only z coordinate of `p1` and `p2` is used
+		\param p1 The apex coordinate
+		\param p2 The apex coordinate (only used if it is a bipyramid)
+		*/
+		void addPyramid(const Face* src, bool isBipyramid, bool useFaceNormal, const osg::Vec3& p1, const osg::Vec3& p2);
+		void addPyramid(const SimpleGeometry* src, bool isBipyramid, bool useFaceNormal, const osg::Vec3& p1, const osg::Vec3& p2);
 
 		/** create a wireframe geometry
 		\param color The color
@@ -80,11 +97,6 @@ namespace gfx {
 		\param useWeightedFaceNormal Use face area as weight for face normal
 		*/
 		osg::Geometry* createFaces(const osg::Vec3& color, bool useFaceCenter, bool useWeightedFaceNormal);
-
-	public:
-		struct Vertex;
-		struct Halfedge;
-		struct Face;
 
 	private:
 		std::vector<Vertex*> vertices;

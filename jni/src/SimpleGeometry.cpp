@@ -103,7 +103,7 @@ namespace gfx {
 
 	void SimpleGeometry::addCube(const osg::Vec3& p1, const osg::Vec3& p2, float bevel) {
 		osg::Vec3 p[2] = { p1, p2 };
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 3; i++) {
 			if (p[0][i] > p[1][i]) std::swap(p[0][i], p[1][i]);
 		}
 
@@ -214,6 +214,37 @@ namespace gfx {
 			}
 
 			if (triangulation.valid()) (int&)(triangulation->type) ^= Triangulation::FLIPPED;
+		}
+
+		void calculate(int* vertexCount, osg::Vec3* faceNormal, osg::Vec3* faceCenter, std::vector<Halfedge*>* halfedges) const {
+			Halfedge* e0 = edge;
+			if (e0 == NULL) {
+				if (vertexCount) *vertexCount = 0;
+				if (faceNormal) *faceNormal = osg::Vec3(0, 0, 1);
+				if (faceCenter) *faceCenter = osg::Vec3();
+				return;
+			}
+
+			if (faceCenter) *faceCenter = e0->vertex->pos;
+			if (halfedges) halfedges->push_back(e0);
+
+			osg::Vec3 prevVector;
+			int m = 1;
+
+			for (Halfedge* e = e0->next; e != e0; e = e->next) {
+				if (halfedges) halfedges->push_back(e);
+				m++;
+
+				if (faceNormal) {
+					osg::Vec3 currentVector = e->vertex->pos - e0->vertex->pos;
+					if (m >= 3) *faceNormal += prevVector ^ currentVector;
+					prevVector = currentVector;
+				}
+				if (faceCenter) *faceCenter += e->vertex->pos;
+			}
+
+			if (vertexCount) *vertexCount = m;
+			if (faceCenter) *faceCenter /= m;
 		}
 	};
 
@@ -396,7 +427,7 @@ namespace gfx {
 		faces.clear();
 	}
 
-	void SimpleGeometry::addPolygon(const osg::Vec3* vertices_, int vertexCount, Triangulation* triangulation) {
+	SimpleGeometry::Face* SimpleGeometry::addPolygon(const osg::Vec3* vertices_, int vertexCount, Triangulation* triangulation) {
 		std::vector<Vertex*> newVertices;
 
 		// create new vertices
@@ -448,11 +479,13 @@ namespace gfx {
 
 		// add to existing data
 		vertices.insert(vertices.end(), newVertices.begin(), newVertices.end());
+
+		return f;
 	}
 
-	void SimpleGeometry::addRect(const osg::Vec3& p1, const osg::Vec3& p2, float bevel, int segments) {
+	SimpleGeometry::Face* SimpleGeometry::addRect(const osg::Vec3& p1, const osg::Vec3& p2, float bevel, int segments) {
 		float p[2][2] = { p1.x(), p1.y(), p2.x(), p2.y() };
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 2; i++) {
 			if (p[0][i] > p[1][i]) std::swap(p[0][i], p[1][i]);
 		}
 		float q[4][6] = {
@@ -483,10 +516,10 @@ namespace gfx {
 			}
 		}
 
-		addPolygon(&(vv[0]), vv.size(), NULL);
+		return addPolygon(&(vv[0]), vv.size(), NULL);
 	}
 
-	void SimpleGeometry::addEllipse(const osg::Vec3& center, const osg::Vec2& size, int segments) {
+	SimpleGeometry::Face* SimpleGeometry::addEllipse(const osg::Vec3& center, const osg::Vec2& size, int segments) {
 		std::vector<osg::Vec3> vv;
 
 		for (int i = 0; i < segments; i++) {
@@ -495,10 +528,10 @@ namespace gfx {
 			vv.push_back(osg::Vec3(center.x() + size.x()*c, center.y() + size.y()*s, center.z()));
 		}
 
-		addPolygon(&(vv[0]), vv.size(), NULL);
+		return addPolygon(&(vv[0]), vv.size(), NULL);
 	}
 
-	void SimpleGeometry::addPolyhedron(const osg::Vec3* vertices_, int vertexCount, const int* faceVertexIndices, const int* faceVertexCount, int faceCount) {
+	void SimpleGeometry::addPolyhedron(const osg::Vec3* vertices_, int vertexCount, const int* faceVertexIndices, const int* faceVertexCount, int faceCount, std::vector<Vertex*>* outVertices, std::vector<Face*>* outFaces) {
 		std::vector<Vertex*> newVertices;
 
 		// create new vertices
@@ -506,14 +539,16 @@ namespace gfx {
 			Vertex *v = new Vertex;
 			v->pos = vertices_[i];
 			newVertices.push_back(v);
+			if (outVertices) outVertices->push_back(v);
 		}
 
 		// create new faces
 		std::map<std::pair<int, int>, Halfedge*> edgeMap;
 		for (int i = 0, idx = 0; i < faceCount; i++) {
+			Face *f = NULL;
 			const int m = faceVertexCount[i];
 			if (m >= 3) {
-				Face *f = new Face;
+				f = new Face;
 				int prevIndex = faceVertexIndices[idx + m - 1];
 				Halfedge *prevEdge = NULL;
 
@@ -559,12 +594,84 @@ namespace gfx {
 				// add new face
 				faces.push_back(f);
 			}
+			if (outFaces) outFaces->push_back(f);
 
 			idx += m;
 		}
 
 		// add to existing data
 		vertices.insert(vertices.end(), newVertices.begin(), newVertices.end());
+	}
+
+	void SimpleGeometry::addPyramid(const Face* src, bool isBipyramid, bool useFaceNormal, const osg::Vec3& p1, const osg::Vec3& p2) {
+		// calculate face normal
+		osg::Vec3 faceNormal, faceCenter;
+		std::vector<Halfedge*> es;
+		src->calculate(NULL, &faceNormal, &faceCenter, &es);
+		faceNormal.normalize();
+		const int m = es.size();
+
+		// calculate apex coordinate
+		osg::Vec3 pa[2] = { p1, p2 };
+		if (useFaceNormal) {
+			pa[0] = faceCenter + faceNormal*p1.z();
+			pa[1] = faceCenter + faceNormal*p2.z();
+		}
+		const bool flipped = (pa[0] - faceCenter) * faceNormal < 0;
+
+		std::vector<osg::Vec3> vv;
+		std::vector<int> i1, i2;
+		std::vector<Face*> newFaces;
+
+		// add vertices
+		for (int i = 0; i < m; i++) {
+			vv.push_back(es[i]->vertex->pos);
+		}
+		vv.push_back(pa[0]);
+		if (isBipyramid) vv.push_back(pa[1]);
+
+		// add faces
+		if (!isBipyramid) {
+			i1.push_back(0);
+			for (int i = 1; i < m; i++) {
+				i1.push_back(flipped ? (m - i) : i);
+			}
+			i2.push_back(m);
+		}
+		int i0 = m - 1;
+		for (int i = 0; i < m; i++) {
+			if (flipped) {
+				i1.push_back(i0); i1.push_back(i);
+			} else {
+				i1.push_back(i); i1.push_back(i0);
+			}
+			i1.push_back(m);
+			i2.push_back(3);
+			if (isBipyramid) {
+				if (flipped) {
+					i1.push_back(i); i1.push_back(i0);
+				} else {
+					i1.push_back(i0); i1.push_back(i);
+				}
+				i1.push_back(m + 1);
+				i2.push_back(3);
+			}
+			i0 = i;
+		}
+
+		addPolyhedron(&(vv[0]), vv.size(), &(i1[0]), &(i2[0]), i2.size(),
+			NULL, isBipyramid ? NULL : &newFaces);
+
+		if (!isBipyramid && src->triangulation.valid()) {
+			newFaces[0]->triangulation = new Triangulation(*(src->triangulation.get()));
+			if (flipped) (int&)(newFaces[0]->triangulation->type) ^= Triangulation::FLIPPED;
+		}
+	}
+
+	void SimpleGeometry::addPyramid(const SimpleGeometry* src, bool isBipyramid, bool useFaceNormal, const osg::Vec3& p1, const osg::Vec3& p2) {
+		for (size_t i = 0, m = src->faces.size(); i < m; i++) {
+			if (src->faces[i]) addPyramid(src->faces[i], isBipyramid, useFaceNormal, p1, p2);
+		}
 	}
 
 	osg::Geometry* SimpleGeometry::createEdges(const osg::Vec3& color) {
@@ -637,23 +744,15 @@ namespace gfx {
 		}
 
 		// for each face
-		for (size_t i = 0, m = faces.size(); i < m; i++) {
+		for (size_t i = 0, mf = faces.size(); i < mf; i++) {
 			Face *f = faces[i];
-			if (f == NULL) continue;
-			Halfedge *e0 = f->edge;
-			if (e0 == NULL) continue;
+			if (f == NULL || f->edge==NULL) continue;
 
 			// calculate face normal and vertex count
-			osg::Vec3 faceNormal, prevVector;
 			std::vector<Halfedge*> es;
-			es.push_back(e0);
-			for (Halfedge* e = e0->next; e != e0; e = e->next) {
-				es.push_back(e);
-
-				osg::Vec3 currentVector = e->vertex->pos - e0->vertex->pos;
-				if (es.size() >= 3) faceNormal += currentVector ^ prevVector;
-				prevVector = currentVector;
-			}
+			osg::Vec3 faceNormal;
+			f->calculate(NULL, &faceNormal, NULL, &es);
+			faceNormal *= -1; //???
 
 			const size_t m = es.size();
 			if (m < 3) continue;
