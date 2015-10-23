@@ -660,9 +660,9 @@ namespace gfx {
 		}
 
 		addPolyhedron(&(vv[0]), vv.size(), &(i1[0]), &(i2[0]), i2.size(),
-			NULL, isBipyramid ? NULL : &newFaces);
+			NULL, (!isBipyramid && src->triangulation.valid()) ? &newFaces : NULL);
 
-		if (!isBipyramid && src->triangulation.valid()) {
+		if (!newFaces.empty()) {
 			newFaces[0]->triangulation = new Triangulation(*(src->triangulation.get()));
 			if (flipped) (int&)(newFaces[0]->triangulation->type) ^= Triangulation::FLIPPED;
 		}
@@ -671,6 +671,117 @@ namespace gfx {
 	void SimpleGeometry::addPyramid(const SimpleGeometry* src, bool isBipyramid, bool useFaceNormal, const osg::Vec3& p1, const osg::Vec3& p2) {
 		for (size_t i = 0, m = src->faces.size(); i < m; i++) {
 			if (src->faces[i]) addPyramid(src->faces[i], isBipyramid, useFaceNormal, p1, p2);
+		}
+	}
+
+	void SimpleGeometry::addPrism(const Face* src, int antiprism, bool useFaceNormal, const osg::Vec3& p1, float scale, bool useEdgeNormal) {
+		// calculate face normal
+		osg::Vec3 faceNormal, faceCenter;
+		std::vector<Halfedge*> es;
+		src->calculate(NULL, &faceNormal, &faceCenter, &es);
+		faceNormal.normalize();
+		const int m = es.size();
+
+		// calculate height
+		osg::Vec3 ht = p1;
+		if (useFaceNormal) {
+			ht = faceNormal*p1.z();
+		}
+		const bool flipped = ht * faceNormal < 0;
+
+		std::vector<osg::Vec3> vv, vtemp;
+		std::vector<int> i1, i2;
+		std::vector<Face*> newFaces;
+
+		// calculate vertices
+		vtemp.resize(m);
+		if (useEdgeNormal) { //FIXME: not exactly
+			int i0 = m - 1;
+			for (int i = 0; i < m; i++) {
+				osg::Vec3 nn = (es[i]->vertex->pos - es[i0]->vertex->pos) ^ faceNormal;
+				nn.normalize();
+				vtemp[i] += nn;
+				vtemp[i0] += nn;
+				i0 = i;
+			}
+			for (int i = 0; i < m; i++) {
+				osg::Vec3 nn = vtemp[i];
+				nn.normalize();
+				vtemp[i] = es[i]->vertex->pos + nn*scale + ht;
+			}
+		} else {
+			for (int i = 0; i < m; i++) {
+				vtemp[i] = faceCenter + (es[i]->vertex->pos - faceCenter)*scale + ht;
+			}
+		}
+
+		// add vertices
+		for (int i = 0; i < m; i++) {
+			vv.push_back(es[i]->vertex->pos);
+		}
+		if (antiprism == 0) {
+			for (int i = 0; i < m; i++) {
+				vv.push_back(vtemp[i]);
+			}
+		} else {
+			int i0 = m - 1;
+			for (int i = 0; i < m; i++) {
+				vv.push_back((vtemp[i] + vtemp[i0])*0.5f);
+				i0 = i;
+			}
+		}
+
+		// add faces
+		i1.push_back(0);
+		for (int i = 1; i < m; i++) {
+			i1.push_back(flipped ? (m - i) : i);
+		}
+		i2.push_back(m);
+
+		i1.push_back(m);
+		for (int i = 1; i < m; i++) {
+			i1.push_back(m + (flipped ? i : (m - i)));
+		}
+		i2.push_back(m);
+
+		int i0 = m - 1;
+		for (int i = 0; i < m; i++) {
+			if (antiprism) {
+				if (flipped) {
+					i1.push_back(i0); i1.push_back(i); i1.push_back(i + m);
+					i1.push_back(i0); i1.push_back(i + m); i1.push_back(i0 + m);
+				} else {
+					i1.push_back(i); i1.push_back(i0); i1.push_back(i + m);
+					i1.push_back(i0); i1.push_back(i0 + m); i1.push_back(i + m);
+				}
+				i2.push_back(3); i2.push_back(3);
+			} else {
+				if (flipped) {
+					i1.push_back(i0); i1.push_back(i);
+					i1.push_back(i + m); i1.push_back(i0 + m);
+				} else {
+					i1.push_back(i); i1.push_back(i0);
+					i1.push_back(i0 + m); i1.push_back(i + m);
+				}
+				i2.push_back(4);
+			}
+			i0 = i;
+		}
+
+		addPolyhedron(&(vv[0]), vv.size(), &(i1[0]), &(i2[0]), i2.size(),
+			NULL, (src->triangulation.valid()) ? &newFaces : NULL);
+
+		if (!newFaces.empty()) {
+			newFaces[0]->triangulation = new Triangulation(*(src->triangulation.get()));
+			newFaces[1]->triangulation = new Triangulation(*(src->triangulation.get()));
+			if (flipped) (int&)(newFaces[0]->triangulation->type) ^= Triangulation::FLIPPED;
+			else (int&)(newFaces[1]->triangulation->type) ^= Triangulation::FLIPPED;
+		}
+	}
+
+	void SimpleGeometry::addPrism(const SimpleGeometry* src, int antiprism, bool useFaceNormal, const osg::Vec3& p1, float shrink, bool useEdgeNormal) {
+		for (size_t i = 0, m = src->faces.size(); i < m; i++) {
+			if (src->faces[i]) addPrism(src->faces[i], antiprism, useFaceNormal, p1, shrink, useEdgeNormal);
 		}
 	}
 

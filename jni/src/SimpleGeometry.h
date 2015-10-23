@@ -86,6 +86,17 @@ namespace gfx {
 		void addPyramid(const Face* src, bool isBipyramid, bool useFaceNormal, const osg::Vec3& p1, const osg::Vec3& p2);
 		void addPyramid(const SimpleGeometry* src, bool isBipyramid, bool useFaceNormal, const osg::Vec3& p1, const osg::Vec3& p2);
 
+		/** add a prism or antiprism
+		\param src The source
+		\param antiprism 0=prism, 1=antiprism with linear interpolated coordinate
+		\param useFaceNormal Use face normal to determine the height, `true` then only z coordinate of `p1` is used
+		\param p1 The height vector
+		\param scale The scale factor or expand length if `useEdgeNormal` is true.
+		\param useEdgeNormal Use edge normal to determine the scale.
+		*/
+		void addPrism(const Face* src, int antiprism, bool useFaceNormal, const osg::Vec3& p1, float scale = 1.0f, bool useEdgeNormal = false);
+		void addPrism(const SimpleGeometry* src, int antiprism, bool useFaceNormal, const osg::Vec3& p1, float scale = 1.0f, bool useEdgeNormal = false);
+
 		/** create a wireframe geometry
 		\param color The color
 		*/
