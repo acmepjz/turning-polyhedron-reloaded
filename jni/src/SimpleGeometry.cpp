@@ -524,11 +524,63 @@ namespace gfx {
 
 		for (int i = 0; i < segments; i++) {
 			const float a = float(2 * osg::PI) * i / segments;
-			const float s = sinf(a), c = cosf(a);
-			vv.push_back(osg::Vec3(center.x() + size.x()*c, center.y() + size.y()*s, center.z()));
+			vv.push_back(osg::Vec3(center.x() + size.x() * cosf(a),
+				center.y() + size.y() * sinf(a),
+				center.z()));
 		}
 
 		return addPolygon(&(vv[0]), vv.size(), NULL);
+	}
+
+	SimpleGeometry::Face* SimpleGeometry::addChord(const osg::Vec3& center, const osg::Vec2& size, float a1, float a2, int segments) {
+		std::vector<osg::Vec3> vv;
+
+		a2 -= a1;
+		for (int i = 0; i <= segments; i++) {
+			const float a = a1 + a2 * i / segments;
+			vv.push_back(osg::Vec3(center.x() + size.x() * cosf(a),
+				center.y() + size.y() * sinf(a),
+				center.z()));
+		}
+
+		return addPolygon(&(vv[0]), vv.size(), NULL);
+	}
+
+	SimpleGeometry::Face* SimpleGeometry::addPie(const osg::Vec3& center, const osg::Vec2& size, float a1, float a2, int segments, const osg::Vec2& size2) {
+		std::vector<osg::Vec3> vv;
+		Triangulation* t = NULL;
+
+		a2 -= a1;
+		if (size2.x() >= 1E-6f && size2.y() >= 1E-6f) {
+			t = new Triangulation;
+			t->type = Triangulation::TRIANGLE_STRIP;
+			t->indices.push_back(0);
+			vv.push_back(osg::Vec3(center.x() + size2.x() * cosf(a1),
+				center.y() + size2.y() * sinf(a1),
+				center.z()));
+			for (int i = 0; i <= segments; i++) {
+				const float a = a1 + a2 * i / segments;
+				vv.push_back(osg::Vec3(center.x() + size.x() * cosf(a),
+					center.y() + size.y() * sinf(a),
+					center.z()));
+			}
+			for (int i = segments; i > 0; i--) {
+				const float a = a1 + a2 * i / segments;
+				vv.push_back(osg::Vec3(center.x() + size2.x() * cosf(a),
+					center.y() + size2.y() * sinf(a),
+					center.z()));
+			}
+		} else {
+			vv.push_back(center);
+			for (int i = 0; i <= segments; i++) {
+				const float a = a1 + a2 * i / segments;
+				vv.push_back(osg::Vec3(center.x() + size.x() * cosf(a),
+					center.y() + size.y() * sinf(a),
+					center.z()));
+			}
+		}
+
+		return addPolygon(&(vv[0]), vv.size(), t);
 	}
 
 	void SimpleGeometry::addPolyhedron(const osg::Vec3* vertices_, int vertexCount, const int* faceVertexIndices, const int* faceVertexCount, int faceCount, std::vector<Vertex*>* outVertices, std::vector<Face*>* outFaces) {
@@ -722,6 +774,13 @@ namespace gfx {
 		if (antiprism == 0) {
 			for (int i = 0; i < m; i++) {
 				vv.push_back(vtemp[i]);
+			}
+		} else if (antiprism == 2 && m >= 3) {
+			int i0 = m - 1, i_1 = m - 2;
+			for (int i = 0; i < m; i++) {
+				int i1 = (i + 1 < m) ? i + 1 : 0;
+				vv.push_back((vtemp[i] + vtemp[i0])*0.5625f - (vtemp[i1] + vtemp[i_1])*0.0625f);
+				i_1 = i0; i0 = i;
 			}
 		} else {
 			int i0 = m - 1;

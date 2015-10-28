@@ -46,16 +46,66 @@ namespace gfx {
 		\param p1 A corner
 		\param p2 Another corner, assume p1 and p2 have the same z coordinate
 		\param bevel The bevel size
-		\param segments The bevel segments
+		\param segments The number of line segments in beveled corner
 		*/
 		Face* addRect(const osg::Vec3& p1, const osg::Vec3& p2, float bevel, int segments);
 
-		/** add an ellipse */
+		/** add an ellipse
+		\param center The center
+		\param size The size
+		\param segments The number of line segments
+		*/
 		Face* addEllipse(const osg::Vec3& center, const osg::Vec2& size, int segments);
 
-		/** add a circle */
+		/** add a circle
+		\param center The center
+		\param size The size
+		\param segments The number of line segments
+		*/
 		Face* addCircle(const osg::Vec3& center, float size, int segments) {
 			return addEllipse(center, osg::Vec2(size, size), segments);
+		}
+
+		/** add a chord
+		\param center The center
+		\param size The size
+		\param a1 The start angle (in radian)
+		\param a2 The end angle (in radian)
+		\param segments The number of line segments
+		*/
+		Face* addChord(const osg::Vec3& center, const osg::Vec2& size, float a1, float a2, int segments);
+
+		/** add a chord
+		\param center The center
+		\param size The size
+		\param a1 The start angle (in radian)
+		\param a2 The end angle (in radian)
+		\param segments The number of line segments
+		*/
+		Face* addChord(const osg::Vec3& center, float size, float a1, float a2, int segments) {
+			return addChord(center, osg::Vec2(size, size), a1, a2, segments);
+		}
+
+		/** add a pie
+		\param center The center
+		\param size The size
+		\param a1 The start angle (in radian)
+		\param a2 The end angle (in radian)
+		\param segments The number of line segments
+		\param size2 The inner size, used to create an annular pie
+		*/
+		Face* addPie(const osg::Vec3& center, const osg::Vec2& size, float a1, float a2, int segments, const osg::Vec2& size2 = osg::Vec2());
+
+		/** add a pie
+		\param center The center
+		\param size The size
+		\param a1 The start angle (in radian)
+		\param a2 The end angle (in radian)
+		\param segments The number of line segments
+		\param size2 The inner size, used to create an annular pie
+		*/
+		Face* addPie(const osg::Vec3& center, float size, float a1, float a2, int segments, float size2 = 0.0f) {
+			return addPie(center, osg::Vec2(size, size), a1, a2, segments, osg::Vec2(size2, size2));
 		}
 
 		/** add a polyhedron
@@ -88,7 +138,7 @@ namespace gfx {
 
 		/** add a prism or antiprism
 		\param src The source
-		\param antiprism 0=prism, 1=antiprism with linear interpolated coordinate
+		\param antiprism 0=prism, 1=antiprism with linear interpolated coordinate, 2=cubic interolated
 		\param useFaceNormal Use face normal to determine the height, `true` then only z coordinate of `p1` is used
 		\param p1 The height vector
 		\param scale The scale factor or expand length if `useEdgeNormal` is true.
