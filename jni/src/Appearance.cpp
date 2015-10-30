@@ -23,8 +23,11 @@ namespace gfx {
 		, pos()
 		, rot()
 		, scale(1, 1, 1)
+		, scale2(1, 1, 1)
+		, angles()
 		, center()
 		, bevel(0)
+		, segments(1)
 		, solid(true)
 		, wireframe(false)
 		, lod(false)
@@ -41,6 +44,129 @@ namespace gfx {
 	Appearance::Appearance(const Appearance& other, const osg::CopyOp& copyop)
 		: osg::Object(other, copyop)
 	{
+	}
+
+	bool Appearance::hasLOD() const {
+		if (type != MESH) return false;
+
+		switch (meshType) {
+		case CUBE:
+		case RECTANGLE:
+			if (lod && bevel >= 1E-6f) return true;
+		}
+
+		for (size_t i = 0, m = subNodes.size(); i < m; i++) {
+			if (subNodes[i].valid() && subNodes[i]->hasLOD()) return true;
+		}
+
+		return false;
+	}
+
+	SimpleGeometry* Appearance::createSimpleGeometry(SimpleGeometry* existing, int shape, bool isLODed) const {
+		osg::ref_ptr<SimpleGeometry> g = existing;
+
+		switch (meshType) {
+		case CUBE:
+			if (!g.valid()) g = new SimpleGeometry;
+			{
+				osg::Vec3 p1 = pos - osg::Vec3(scale.x()*center.x(), scale.y()*center.y(), scale.z()*center.z());
+				osg::Vec3 p2 = p1 + scale;
+				g->addCube(p1, p2, isLODed ? 0.0f : bevel);
+			}
+			break;
+		case RECTANGLE:
+			if (!g.valid()) g = new SimpleGeometry;
+			{
+				osg::Vec3 p1 = pos - osg::Vec3(scale.x()*center.x(), scale.y()*center.y(), scale.z()*center.z());
+				osg::Vec3 p2 = p1 + scale;
+				g->addRect(p1, p2, isLODed ? 0.0f : bevel, segments);
+			}
+			break;
+		case ELLIPSE:
+			if (!g.valid()) g = new SimpleGeometry;
+			{
+				osg::Vec3 p1 = pos - osg::Vec3(scale.x()*(center.x() - 0.5f), scale.y()*(center.y() - 0.5f), scale.z()*center.z());
+				g->addEllipse(p1, osg::Vec2(scale.x()*0.5f, scale.y()*0.5f), segments < 3 ? 3 : segments);
+			}
+			break;
+		case CHORD:
+			if (!g.valid()) g = new SimpleGeometry;
+			{
+				osg::Vec3 p1 = pos - osg::Vec3(scale.x()*(center.x() - 0.5f), scale.y()*(center.y() - 0.5f), scale.z()*center.z());
+				g->addChord(p1, osg::Vec2(scale.x()*0.5f, scale.y()*0.5f), angles.x(), angles.y(), segments < 1 ? 1 : segments);
+			}
+			break;
+		case PIE:
+			if (!g.valid()) g = new SimpleGeometry;
+			{
+				osg::Vec3 p1 = pos - osg::Vec3(scale.x()*(center.x() - 0.5f), scale.y()*(center.y() - 0.5f), scale.z()*center.z());
+				g->addPie(p1, osg::Vec2(scale.x()*0.5f, scale.y()*0.5f), angles.x(), angles.y(), segments < 1 ? 1 : segments, osg::Vec2(scale2.x()*0.5f, scale2.y()*0.5f));
+			}
+			break;
+		case PRISM:
+		{
+			for (size_t i = 0, m = subNodes.size(); i < m; i++) {
+				if (subNodes[i].valid()) {
+					osg::ref_ptr<SimpleGeometry> g2 = subNodes[i]->createSimpleGeometry(g.get(), shape, isLODed);
+					g = g2;
+				}
+			}
+			if (g.valid()) {
+				osg::ref_ptr<SimpleGeometry> g2 = new SimpleGeometry;
+				//FIXME: ad-hoc
+				g2->addPrism(g.get(), false, true, osg::Vec3(0, 0, scale.z()),
+					scale.x() < 0 ? scale.y() : scale.x(), scale.x() < 0);
+				g = g2;
+			}
+		}
+			break;
+		case PYRAMID:
+		{
+			for (size_t i = 0, m = subNodes.size(); i < m; i++) {
+				if (subNodes[i].valid()) {
+					osg::ref_ptr<SimpleGeometry> g2 = subNodes[i]->createSimpleGeometry(g.get(), shape, isLODed);
+					g = g2;
+				}
+			}
+			if (g.valid()) {
+				osg::ref_ptr<SimpleGeometry> g2 = new SimpleGeometry;
+				//FIXME: ad-hoc
+				g2->addPyramid(g.get(), false, true, osg::Vec3(0, 0, scale.z()),
+					osg::Vec3());
+				g = g2;
+			}
+		}
+			break;
+		}
+
+		return g.release();
+	}
+
+	osg::Geode* Appearance::createGeodeFromSimpleGeometry(SimpleGeometry* sg) const {
+		if (sg == NULL) return NULL;
+
+		osg::ref_ptr<osg::Geode> geode = new osg::Geode;
+
+		if (solid) {
+			osg::Geometry* g = sg->createFaces(solidColor, false, true);
+			if (g) {
+				if (wireframe) {
+					g->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonOffset(1.0f, 1.0f));
+				}
+				geode->addDrawable(g);
+			}
+		}
+
+		if (wireframe) {
+			osg::Geometry* g = sg->createEdges(wireframeColor);
+			if (g) {
+				//FIXME: wireframe should be affected by material color?
+				//g->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF); //???
+				geode->addDrawable(g);
+			}
+		}
+
+		return geode.release();
 	}
 
 	osg::Node* Appearance::getOrCreateInstance(int shape)
@@ -99,49 +225,19 @@ namespace gfx {
 		}
 		case MESH:
 		{
-			osg::ref_ptr<osg::LOD> lodNode;
 			osg::ref_ptr<osg::Geode> geode;
 
-			osg::Vec3 p1 = pos - osg::Vec3(scale.x()*center.x(), scale.y()*center.y(), scale.z()*center.z());
-			osg::Vec3 p2 = p1 + scale;
-
-			if (meshType == MESH_CUBE) {
-				for (int i = 0; i < 2; i++) {
-					// check if we need to create bevel geometry
-					if (i == 0 && bevel <= 1E-6f) continue;
-
-					// create geometry
-					if (geode.valid()) break;
-					geode = new osg::Geode;
-					if (solid) {
-						osg::Geometry* g = gfx::createCube(p1, p2, false, i ? 0.0f : bevel, solidColor);
-						if (wireframe) {
-							g->getOrCreateStateSet()->setAttributeAndModes(new osg::PolygonOffset(1.0f, 1.0f));
-						}
-						geode->addDrawable(g);
-					}
-					if (wireframe) {
-						osg::Geometry* g = gfx::createCube(p1, p2, true, i ? 0.0f : bevel, wireframeColor);
-						//FIXME: wireframe should be affected by material color?
-						//g->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF); //???
-						geode->addDrawable(g);
-					}
-
-					// check if we need to create LOD
-					if (lod) {
-						if (i == 0) {
-							lodNode = new osg::LOD;
-							lodNode->addChild(geode.release(), 0.0f, 50.0f);
-						} else {
-							lodNode->addChild(geode.release(), 50.0f, FLT_MAX);
-						}
-					}
-				}
+			if (hasLOD()) {
+				osg::ref_ptr<osg::LOD> lodNode = new osg::LOD;
+				osg::ref_ptr<SimpleGeometry> sg = createSimpleGeometry(NULL, shape, false);
+				lodNode->addChild(createGeodeFromSimpleGeometry(sg.get()), 0.0f, 50.0f);
+				sg = createSimpleGeometry(NULL, shape, true);
+				lodNode->addChild(createGeodeFromSimpleGeometry(sg.get()), 50.0f, FLT_MAX);
+				node = lodNode;
+			} else {
+				osg::ref_ptr<SimpleGeometry> sg = createSimpleGeometry(NULL, shape, false);
+				node = createGeodeFromSimpleGeometry(sg.get());
 			}
-
-			if (lodNode.valid()) node = lodNode.get();
-			else if (geode.valid()) node = geode.get();
-			else break;
 
 			if (rot.x() < -1E-6f || rot.x() > 1E-6f
 				|| rot.x() < -1E-6f || rot.x() > 1E-6f
@@ -186,9 +282,29 @@ namespace gfx {
 			break;
 		}
 
-		if (type == MESH) {
+		switch (type) {
+		case SHADER:
+			ambient = node->getAttrOsgVec("ambient", osg::Vec4(0, 0, 0, 1));
+			diffuse = node->getAttrOsgVec("diffuse", osg::Vec4(0, 0, 0, 1));
+			specular = node->getAttrOsgVec("specular", osg::Vec4(0, 0, 0, 1));
+			emissive = node->getAttrOsgVec("emissive", osg::Vec4(0, 0, 0, 1));
+			specularHardness = node->getAttr("specularHardness", 0.0f);
+			break;
+		case TRANSFORM:
+			pos = node->getAttrOsgVec("p", osg::Vec3());
+			rot = node->getAttrOsgVec("r", osg::Vec3());
+			scale = node->getAttrOsgVec("s", osg::Vec3(1, 1, 1));
+			break;
+		case MESH:
+		{
 			std::string s = node->getAttr("type", std::string("cube"));
-			if (s == "cube") meshType = MESH_CUBE;
+			if (s == "cube") meshType = CUBE;
+			else if (s == "rectangle") meshType = RECTANGLE;
+			else if (s == "ellipse") meshType = ELLIPSE;
+			else if (s == "chord") meshType = CHORD;
+			else if (s == "pie") meshType = PIE;
+			else if (s == "prism") meshType = PRISM;
+			else if (s == "pyramid") meshType = PYRAMID;
 			else {
 				UTIL_WARN "unrecognized mesh type: " << s << std::endl;
 				return false;
@@ -197,8 +313,11 @@ namespace gfx {
 			pos = node->getAttrOsgVec("p", osg::Vec3());
 			rot = node->getAttrOsgVec("r", osg::Vec3());
 			scale = node->getAttrOsgVec("s", osg::Vec3(1, 1, 1));
+			scale2 = node->getAttrOsgVec("s2", osg::Vec3(1, 1, 1));
+			angles = node->getAttrOsgVec("a", osg::Vec2(1, 1));
 			center = node->getAttrOsgVec("c", osg::Vec3());
 			bevel = node->getAttr("bevel", 0.0f);
+			segments = node->getAttr("segments", 1);
 
 			if (node->getAttr("solidAndWireframe", false)) {
 				solid = true;
@@ -220,28 +339,15 @@ namespace gfx {
 			}
 
 			lod = node->getAttr("lod", false);
-		} else {
-			switch (type) {
-			case SHADER:
-				ambient = node->getAttrOsgVec("ambient", osg::Vec4(0, 0, 0, 1));
-				diffuse = node->getAttrOsgVec("diffuse", osg::Vec4(0, 0, 0, 1));
-				specular = node->getAttrOsgVec("specular", osg::Vec4(0, 0, 0, 1));
-				emissive = node->getAttrOsgVec("emissive", osg::Vec4(0, 0, 0, 1));
-				specularHardness = node->getAttr("specularHardness", 0.0f);
-				break;
-			case TRANSFORM:
-				pos = node->getAttrOsgVec("p", osg::Vec3());
-				rot = node->getAttrOsgVec("r", osg::Vec3());
-				scale = node->getAttrOsgVec("s", osg::Vec3(1, 1, 1));
-				break;
-			}
+		}
+			break;
+		}
 
-			//load subnodes
-			for (size_t i = 0; i < node->subNodes.size(); i++) {
-				osg::ref_ptr<Appearance> a = new Appearance;
-				if (a->load(node->subNodes[i].get())) {
-					subNodes.push_back(a);
-				}
+		//load subnodes, although sometimes these nodes are ignored
+		for (size_t i = 0; i < node->subNodes.size(); i++) {
+			osg::ref_ptr<Appearance> a = new Appearance;
+			if (a->load(node->subNodes[i].get())) {
+				subNodes.push_back(a);
 			}
 		}
 
@@ -260,8 +366,11 @@ namespace gfx {
 		ADD_VEC3_SERIALIZER(pos, osg::Vec3());
 		ADD_VEC3_SERIALIZER(rot, osg::Vec3());
 		ADD_VEC3_SERIALIZER(scale, osg::Vec3(1.0f, 1.0f, 1.0f));
+		ADD_VEC3_SERIALIZER(scale2, osg::Vec3(1.0f, 1.0f, 1.0f));
+		ADD_VEC2_SERIALIZER(angles, osg::Vec2());
 		ADD_VEC3_SERIALIZER(center, osg::Vec3());
 		ADD_FLOAT_SERIALIZER(bevel, 0);
+		ADD_INT_SERIALIZER(segments, 1);
 		ADD_BOOL_SERIALIZER(solid, true);
 		ADD_BOOL_SERIALIZER(wireframe, false);
 		ADD_BOOL_SERIALIZER(lod, false);

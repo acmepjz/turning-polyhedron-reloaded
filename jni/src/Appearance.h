@@ -25,7 +25,13 @@ namespace gfx {
 		};
 		/// the mesh type
 		enum MeshType {
-			MESH_CUBE,
+			CUBE,
+			RECTANGLE = 0x100,
+			ELLIPSE,
+			CHORD,
+			PIE,
+			PRISM = 0x200,
+			PYRAMID,
 		};
 	protected:
 		virtual ~Appearance();
@@ -35,10 +41,17 @@ namespace gfx {
 		Appearance();
 		Appearance(const Appearance& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
-		/** create a \ref SimpleGeometry if the node has appropriate type.
+		/** create a \ref SimpleGeometry if the node type is \ref MESH.
+		\param existing The existing geometry (optional).
 		\param shape The shape, see \ref game::MapData::MapShape.
+		\param isLODed Is it less detailed
 		*/
-		SimpleGeometry* createSimpleGeometry(int shape);
+		SimpleGeometry* createSimpleGeometry(SimpleGeometry* existing, int shape, bool isLODed) const;
+
+		osg::Geode* createGeodeFromSimpleGeometry(SimpleGeometry* sg) const;
+
+		/** check if the node has LOD if the node type is \ref MESH. */
+		bool hasLOD() const;
 
 		/** get or create instance.
 		\param shape The shape, see \ref game::MapData::MapShape.
@@ -64,8 +77,11 @@ namespace gfx {
 		osg::Vec3 pos; //!< position.
 		osg::Vec3 rot; //!< rotation (yaw, pitch, roll)
 		osg::Vec3 scale; //!< scale or size
+		osg::Vec3 scale2;
+		osg::Vec2 angles;
 		osg::Vec3 center;
 		float bevel; //!< bevel size
+		int segments;
 		bool solid; //!< set to draw solid or not
 		bool wireframe; //!< set to draw wireframe or not
 		bool lod; //!< set to use LOD or not (used when \ref bevel > 0)
@@ -87,8 +103,11 @@ namespace gfx {
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, pos);
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, rot);
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, scale);
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, scale2);
+		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec2, angles);
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, center);
 		UTIL_ADD_BYVAL_GETTER_SETTER(float, bevel);
+		UTIL_ADD_BYVAL_GETTER_SETTER(int, segments);
 		UTIL_ADD_BYVAL_GETTER_SETTER(bool, solid);
 		UTIL_ADD_BYVAL_GETTER_SETTER(bool, wireframe);
 		UTIL_ADD_BYVAL_GETTER_SETTER(bool, lod);

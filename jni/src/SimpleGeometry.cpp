@@ -497,7 +497,8 @@ namespace gfx {
 
 		std::vector<osg::Vec3> vv;
 
-		if (bevel < 1E-6f || segments < 0) segments = 0;
+		if (bevel < 1E-6f) segments = 0;
+		else if (segments <= 0) segments = 1;
 
 		for (int i = 0; i < 4; i++) {
 			if (segments <= 0) {
