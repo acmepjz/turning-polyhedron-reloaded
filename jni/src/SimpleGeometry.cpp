@@ -762,6 +762,7 @@ namespace gfx {
 	}
 
 	void SimpleGeometry::addPyramid(const SimpleGeometry* src, bool isBipyramid, bool useFaceNormal, const osg::Vec3& p1, const osg::Vec3& p2) {
+		if (src == NULL || src == this) return;
 		for (size_t i = 0, m = src->faces.size(); i < m; i++) {
 			if (src->faces[i]) addPyramid(src->faces[i], isBipyramid, useFaceNormal, p1, p2);
 		}
@@ -880,6 +881,7 @@ namespace gfx {
 	}
 
 	void SimpleGeometry::addPrism(const SimpleGeometry* src, int antiprism, bool useFaceNormal, const osg::Vec3& p1, float shrink, bool useEdgeNormal) {
+		if (src == NULL || src == this) return;
 		for (size_t i = 0, m = src->faces.size(); i < m; i++) {
 			if (src->faces[i]) addPrism(src->faces[i], antiprism, useFaceNormal, p1, shrink, useEdgeNormal);
 		}
@@ -1017,6 +1019,24 @@ namespace gfx {
 				v->pos = osg::Matrix::transform3x3(v->pos, mat);
 			}
 		}
+	}
+
+	void SimpleGeometry::addSimpleGeometry(SimpleGeometry* src) {
+		if (src == NULL || src == this) return;
+
+		for (size_t i = 0, m = src->vertices.size(); i < m; i++) {
+			if (src->vertices[i]) vertices.push_back(src->vertices[i]);
+		}
+		for (size_t i = 0, m = src->halfedges.size(); i < m; i++) {
+			if (src->halfedges[i]) halfedges.push_back(src->halfedges[i]);
+		}
+		for (size_t i = 0, m = src->faces.size(); i < m; i++) {
+			if (src->faces[i]) faces.push_back(src->faces[i]);
+		}
+
+		src->vertices.clear();
+		src->halfedges.clear();
+		src->faces.clear();
 	}
 
 }

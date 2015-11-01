@@ -67,51 +67,58 @@ namespace gfx {
 	SimpleGeometry* Appearance::createSimpleGeometry(SimpleGeometry* existing, int shape, bool isLODed) const {
 		osg::ref_ptr<SimpleGeometry> g = existing;
 
-		if (type == APPEARANCE || type == TRANSFORM) {
-			// just group subnodes together
+		if (type == APPEARANCE) {
+			// just add all subnodes to existing node
 			for (size_t i = 0, m = subNodes.size(); i < m; i++) {
 				if (subNodes[i].valid()) {
 					osg::ref_ptr<SimpleGeometry> g2 = subNodes[i]->createSimpleGeometry(g.get(), shape, isLODed);
 					g = g2;
 				}
 			}
+		} else if (type == TRANSFORM) {
+			// get all nodes together
+			osg::ref_ptr<SimpleGeometry> gNew;
+			for (size_t i = 0, m = subNodes.size(); i < m; i++) {
+				if (subNodes[i].valid()) {
+					osg::ref_ptr<SimpleGeometry> g2 = subNodes[i]->createSimpleGeometry(gNew.get(), shape, isLODed);
+					gNew = g2;
+				}
+			}
 
-			if (type == TRANSFORM && g.valid()) {
+			// apply transform
+			if (gNew.valid()) {
 				osg::Matrix mat;
 				mat.makeScale(scale);
 				mat.postMultRotate(osg::Quat(rot.x(), osg::X_AXIS, rot.y(), osg::Y_AXIS, rot.z(), osg::Z_AXIS));
 				mat.postMultTranslate(pos);
-				g->applyTransform(mat);
+
+				gNew->applyTransform(mat);
+
+				g->addSimpleGeometry(gNew.get());
 			}
 		} else if (type == MESH) {
 			if (((meshType >> 8) & 0xFF) == 0x2) {
 				// it's modifying existing geometry
+				osg::ref_ptr<SimpleGeometry> gNew;
 				for (size_t i = 0, m = subNodes.size(); i < m; i++) {
 					if (subNodes[i].valid()) {
-						osg::ref_ptr<SimpleGeometry> g2 = subNodes[i]->createSimpleGeometry(g.get(), shape, isLODed);
-						g = g2;
+						osg::ref_ptr<SimpleGeometry> g2 = subNodes[i]->createSimpleGeometry(gNew.get(), shape, isLODed);
+						gNew = g2;
 					}
 				}
 
-				if (g.valid()) {
+				if (gNew.valid()) {
+					if (!g.valid()) g = new SimpleGeometry;
 					switch (meshType) {
 					case PRISM:
-					{
-						osg::ref_ptr<SimpleGeometry> g2 = new SimpleGeometry;
 						//FIXME: ad-hoc
-						g2->addPrism(g.get(), false, true, osg::Vec3(0, 0, scale.z()),
+						g->addPrism(gNew.get(), false, true, osg::Vec3(0, 0, scale.z()),
 							scale.x() < 0 ? scale.y() : scale.x(), scale.x() < 0);
-						g = g2;
-					}
 						break;
 					case PYRAMID:
-					{
-						osg::ref_ptr<SimpleGeometry> g2 = new SimpleGeometry;
 						//FIXME: ad-hoc
-						g2->addPyramid(g.get(), false, true, osg::Vec3(0, 0, scale.z()),
+						g->addPyramid(gNew.get(), false, true, osg::Vec3(0, 0, scale.z()),
 							osg::Vec3());
-						g = g2;
-					}
 						break;
 					}
 				}

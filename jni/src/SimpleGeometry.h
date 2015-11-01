@@ -41,6 +41,9 @@ namespace gfx {
 		/// apply transform
 		void applyTransform(const osg::Matrix& mat);
 
+		/// transfer the source geometry to this geometry (after calling this function contents in `src` is cleared).
+		void addSimpleGeometry(SimpleGeometry* src);
+
 		/** add a polygon
 		\param vertices The array of vertices
 		\param vertexCount The vertex count
