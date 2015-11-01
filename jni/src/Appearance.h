@@ -9,6 +9,7 @@ class XMLNode;
 namespace gfx {
 
 	class SimpleGeometry;
+	class Triangulation;
 
 	/// The appearance node (experimental)
 
@@ -25,8 +26,10 @@ namespace gfx {
 		};
 		/// the mesh type
 		enum MeshType {
+			POLYHEDRON = 0,
 			CUBE,
-			RECTANGLE = 0x100,
+			POLYGON = 0x100,
+			RECTANGLE,
 			ELLIPSE,
 			CHORD,
 			PIE,
@@ -60,6 +63,9 @@ namespace gfx {
 
 		bool load(const XMLNode* node); //!< load from XML node
 
+		void loadVertices(const XMLNode* node); //!< (internal function) load vertices, assume the node name is `vertices`.
+		void loadFaces(const XMLNode* node); //!< (internal function) load faces, assume the node name is `faces`.
+
 	public:
 		int type; //!< the node \ref Type.
 
@@ -87,6 +93,10 @@ namespace gfx {
 		bool lod; //!< set to use LOD or not (used when \ref bevel > 0)
 		osg::Vec3 solidColor; //!< color
 		osg::Vec3 wireframeColor; //!< wireframe color
+
+		std::vector<float> _vertices;
+		std::vector<int> _faces;
+		osg::ref_ptr<Triangulation> _triangulation;
 
 		std::vector<osg::ref_ptr<Appearance> > subNodes; //!< subnodes
 

@@ -9,6 +9,8 @@
 #include <osg/LOD>
 #include <osg/MatrixTransform>
 #include <osgDB/ObjectWrapper>
+#include <stdio.h>
+#include <string.h>
 
 namespace gfx {
 
@@ -66,12 +68,46 @@ namespace gfx {
 		osg::ref_ptr<SimpleGeometry> g = existing;
 
 		switch (meshType) {
+		case POLYHEDRON:
+			if (!g.valid()) g = new SimpleGeometry;
+			{
+				const int vertexCount = _vertices.size() / 3;
+				std::vector<int> v1, v2;
+				for (int i = 0, m = _faces.size(); i < m; i++) {
+					const int n = _faces[i];
+					if (n <= 2 || i + n >= m) break;
+					bool err = false;
+					for (int j = 0; j < n; j++) {
+						int idx = _faces[++i];
+						if (idx < 0 || idx >= vertexCount) {
+							err = true;
+							break;
+						}
+						v1.push_back(idx);
+					}
+					if (err) break;
+					v2.push_back(n);
+				}
+				if (!v2.empty()) {
+					g->addPolyhedron((osg::Vec3*)(&(_vertices[0])), vertexCount, &(v1[0]), &(v2[0]), v2.size());
+				}
+			}
+			break;
 		case CUBE:
 			if (!g.valid()) g = new SimpleGeometry;
 			{
 				osg::Vec3 p1 = pos - osg::Vec3(scale.x()*center.x(), scale.y()*center.y(), scale.z()*center.z());
 				osg::Vec3 p2 = p1 + scale;
 				g->addCube(p1, p2, isLODed ? 0.0f : bevel);
+			}
+			break;
+		case POLYGON:
+			if (!g.valid()) g = new SimpleGeometry;
+			{
+				const int vertexCount = _vertices.size() / 3;
+				if (!_triangulation.valid() || _triangulation->valid(vertexCount)) {
+					g->addPolygon((osg::Vec3*)(&(_vertices[0])), vertexCount, _triangulation.get());
+				}
 			}
 			break;
 		case RECTANGLE:
@@ -298,7 +334,9 @@ namespace gfx {
 		case MESH:
 		{
 			std::string s = node->getAttr("type", std::string("cube"));
-			if (s == "cube") meshType = CUBE;
+			if (s.empty() || s == "polyhedron") meshType = POLYHEDRON;
+			else if (s == "cube") meshType = CUBE;
+			else if (s == "polygon") meshType = POLYGON;
 			else if (s == "rectangle") meshType = RECTANGLE;
 			else if (s == "ellipse") meshType = ELLIPSE;
 			else if (s == "chord") meshType = CHORD;
@@ -343,15 +381,72 @@ namespace gfx {
 			break;
 		}
 
-		//load subnodes, although sometimes these nodes are ignored
-		for (size_t i = 0; i < node->subNodes.size(); i++) {
-			osg::ref_ptr<Appearance> a = new Appearance;
-			if (a->load(node->subNodes[i].get())) {
-				subNodes.push_back(a);
+		if (type == MESH && meshType == POLYHEDRON) {
+			for (size_t i = 0; i < node->subNodes.size(); i++) {
+				XMLNode *subnode = node->subNodes[i];
+				if (subnode->name == "vertices") {
+					loadVertices(subnode);
+				} else if (subnode->name == "faces") {
+					loadFaces(subnode);
+				} else {
+					UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
+				}
+			}
+		} else if (type == MESH && meshType == POLYGON) {
+			for (size_t i = 0; i < node->subNodes.size(); i++) {
+				XMLNode *subnode = node->subNodes[i];
+				if (subnode->name == "vertices") {
+					loadVertices(subnode);
+				} else if (subnode->name == "triangulation") {
+					osg::ref_ptr<Triangulation> t = new Triangulation;
+					if (t->load(subnode)) {
+						_triangulation = t;
+					}
+				} else {
+					UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
+				}
+			}
+		} else {
+			//load subnodes, although sometimes these nodes are ignored
+			for (size_t i = 0; i < node->subNodes.size(); i++) {
+				osg::ref_ptr<Appearance> a = new Appearance;
+				if (a->load(node->subNodes[i].get())) {
+					subNodes.push_back(a);
+				}
 			}
 		}
 
 		return true;
+	}
+
+	void Appearance::loadVertices(const XMLNode* node) {
+		if (!node->contents.empty()) {
+			const char* s = node->contents.c_str();
+			for (;;) {
+				float f = 0.0f;
+				if (sscanf(s, "%f", &f) != 1) break;
+				_vertices.push_back(f);
+				s = strchr(s, ',');
+				if (s == NULL) break;
+				s++;
+				if (*s == 0) break;
+			}
+		}
+	}
+
+	void Appearance::loadFaces(const XMLNode* node) {
+		if (!node->contents.empty()) {
+			const char* s = node->contents.c_str();
+			for (;;) {
+				int i = 0;
+				if (sscanf(s, "%d", &i) != 1) break;
+				_faces.push_back(i);
+				s = strchr(s, ',');
+				if (s == NULL) break;
+				s++;
+				if (*s == 0) break;
+			}
+		}
 	}
 
 	REG_OBJ_WRAPPER(gfx, Appearance, "")

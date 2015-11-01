@@ -4,6 +4,8 @@
 #include <osg/Geometry>
 #include <set>
 
+class XMLNode;
+
 namespace gfx {
 
 	/** create a cube (ad-hoc)
@@ -196,6 +198,10 @@ namespace gfx {
 		bool isFlipped() const {
 			return (type & FLIPPED) != 0;
 		}
+
+		bool load(const XMLNode* node); //!< load from XML node, assume the node is called `triangulation`
+
+		bool valid(int vertexCount) const; //!< check if vertex index is valid
 
 	public:
 		TriangulationType type; //!< the \ref TriangulationType.

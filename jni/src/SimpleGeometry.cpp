@@ -1,6 +1,9 @@
 #include "SimpleGeometry.h"
+#include "XMLReaderWriter.h"
 #include "util_err.h"
 #include <math.h>
+#include <stdio.h>
+#include <string.h>
 
 namespace gfx {
 
@@ -395,6 +398,43 @@ namespace gfx {
 			ii->push_back(i0); ii->push_back(i1); ii->push_back(i2);
 			i1 = i2;
 		}
+	}
+
+	bool Triangulation::load(const XMLNode* node) {
+		std::string s = node->getAttr("type", std::string());
+		if (s.empty() || s == "triangleFan") type = TRIANGLE_FAN;
+		else if (s == "triangles") type = TRIANGLES;
+		else if (s == "triangleStrip") type = TRIANGLE_STRIP;
+		else if (s == "quads") type = QUADS;
+		else {
+			UTIL_WARN "unrecognized triangulation type: " << s << std::endl;
+			return false;
+		}
+
+		if (node->getAttr("flipped", false)) (int&)type |= FLIPPED;
+
+		if (!node->contents.empty()) {
+			const char* s = node->contents.c_str();
+			for (;;) {
+				int i = 0;
+				if (sscanf(s, "%d", &i) != 1) break;
+				indices.push_back(i);
+				s = strchr(s, ',');
+				if (s == NULL) break;
+				s++;
+				if (*s == 0) break;
+			}
+		}
+
+		return true;
+	}
+
+	bool Triangulation::valid(int vertexCount) const {
+		for (size_t i = 0, m = indices.size(); i < m; i++) {
+			int idx = indices[i];
+			if (idx < 0 || idx >= vertexCount) return false;
+		}
+		return true;
 	}
 
 	SimpleGeometry::SimpleGeometry()
