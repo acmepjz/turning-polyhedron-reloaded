@@ -1010,4 +1010,13 @@ namespace gfx {
 		return geom.release();
 	}
 
+	void SimpleGeometry::applyTransform(const osg::Matrix& mat) {
+		for (size_t i = 0, m = vertices.size(); i < m; i++) {
+			Vertex *v = vertices[i];
+			if (v) {
+				v->pos = osg::Matrix::transform3x3(v->pos, mat);
+			}
+		}
+	}
+
 }

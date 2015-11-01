@@ -49,12 +49,12 @@ namespace gfx {
 	}
 
 	bool Appearance::hasLOD() const {
-		if (type != MESH) return false;
-
-		switch (meshType) {
-		case CUBE:
-		case RECTANGLE:
-			if (lod && bevel >= 1E-6f) return true;
+		if (type == MESH) {
+			switch (meshType) {
+			case CUBE:
+			case RECTANGLE:
+				if (lod && bevel >= 1E-6f) return true;
+			}
 		}
 
 		for (size_t i = 0, m = subNodes.size(); i < m; i++) {
@@ -67,112 +67,124 @@ namespace gfx {
 	SimpleGeometry* Appearance::createSimpleGeometry(SimpleGeometry* existing, int shape, bool isLODed) const {
 		osg::ref_ptr<SimpleGeometry> g = existing;
 
-		switch (meshType) {
-		case POLYHEDRON:
-			if (!g.valid()) g = new SimpleGeometry;
-			{
-				const int vertexCount = _vertices.size() / 3;
-				std::vector<int> v1, v2;
-				for (int i = 0, m = _faces.size(); i < m; i++) {
-					const int n = _faces[i];
-					if (n <= 2 || i + n >= m) break;
-					bool err = false;
-					for (int j = 0; j < n; j++) {
-						int idx = _faces[++i];
-						if (idx < 0 || idx >= vertexCount) {
-							err = true;
-							break;
-						}
-						v1.push_back(idx);
+		if (type == APPEARANCE || type == TRANSFORM) {
+			// just group subnodes together
+			for (size_t i = 0, m = subNodes.size(); i < m; i++) {
+				if (subNodes[i].valid()) {
+					osg::ref_ptr<SimpleGeometry> g2 = subNodes[i]->createSimpleGeometry(g.get(), shape, isLODed);
+					g = g2;
+				}
+			}
+
+			if (type == TRANSFORM && g.valid()) {
+				osg::Matrix mat;
+				mat.makeScale(scale);
+				mat.postMultRotate(osg::Quat(rot.x(), osg::X_AXIS, rot.y(), osg::Y_AXIS, rot.z(), osg::Z_AXIS));
+				mat.postMultTranslate(pos);
+				g->applyTransform(mat);
+			}
+		} else if (type == MESH) {
+			if (((meshType >> 8) & 0xFF) == 0x2) {
+				// it's modifying existing geometry
+				for (size_t i = 0, m = subNodes.size(); i < m; i++) {
+					if (subNodes[i].valid()) {
+						osg::ref_ptr<SimpleGeometry> g2 = subNodes[i]->createSimpleGeometry(g.get(), shape, isLODed);
+						g = g2;
 					}
-					if (err) break;
-					v2.push_back(n);
 				}
-				if (!v2.empty()) {
-					g->addPolyhedron((osg::Vec3*)(&(_vertices[0])), vertexCount, &(v1[0]), &(v2[0]), v2.size());
+
+				if (g.valid()) {
+					switch (meshType) {
+					case PRISM:
+					{
+						osg::ref_ptr<SimpleGeometry> g2 = new SimpleGeometry;
+						//FIXME: ad-hoc
+						g2->addPrism(g.get(), false, true, osg::Vec3(0, 0, scale.z()),
+							scale.x() < 0 ? scale.y() : scale.x(), scale.x() < 0);
+						g = g2;
+					}
+						break;
+					case PYRAMID:
+					{
+						osg::ref_ptr<SimpleGeometry> g2 = new SimpleGeometry;
+						//FIXME: ad-hoc
+						g2->addPyramid(g.get(), false, true, osg::Vec3(0, 0, scale.z()),
+							osg::Vec3());
+						g = g2;
+					}
+						break;
+					}
+				}
+			} else {
+				// it's polyhedron or polygon
+				if (!g.valid()) g = new SimpleGeometry;
+				switch (meshType) {
+				case POLYHEDRON:
+				{
+					const int vertexCount = _vertices.size() / 3;
+					std::vector<int> v1, v2;
+					for (int i = 0, m = _faces.size(); i < m; i++) {
+						const int n = _faces[i];
+						if (n <= 2 || i + n >= m) break;
+						bool err = false;
+						for (int j = 0; j < n; j++) {
+							int idx = _faces[++i];
+							if (idx < 0 || idx >= vertexCount) {
+								err = true;
+								break;
+							}
+							v1.push_back(idx);
+						}
+						if (err) break;
+						v2.push_back(n);
+					}
+					if (!v2.empty()) {
+						g->addPolyhedron((osg::Vec3*)(&(_vertices[0])), vertexCount, &(v1[0]), &(v2[0]), v2.size());
+					}
+				}
+					break;
+				case CUBE:
+				{
+					osg::Vec3 p1 = pos - osg::Vec3(scale.x()*center.x(), scale.y()*center.y(), scale.z()*center.z());
+					osg::Vec3 p2 = p1 + scale;
+					g->addCube(p1, p2, isLODed ? 0.0f : bevel);
+				}
+					break;
+				case POLYGON:
+				{
+					const int vertexCount = _vertices.size() / 3;
+					if (!_triangulation.valid() || _triangulation->valid(vertexCount)) {
+						g->addPolygon((osg::Vec3*)(&(_vertices[0])), vertexCount, _triangulation.get());
+					}
+				}
+					break;
+				case RECTANGLE:
+				{
+					osg::Vec3 p1 = pos - osg::Vec3(scale.x()*center.x(), scale.y()*center.y(), scale.z()*center.z());
+					osg::Vec3 p2 = p1 + scale;
+					g->addRect(p1, p2, isLODed ? 0.0f : bevel, segments);
+				}
+					break;
+				case ELLIPSE:
+				{
+					osg::Vec3 p1 = pos - osg::Vec3(scale.x()*(center.x() - 0.5f), scale.y()*(center.y() - 0.5f), scale.z()*center.z());
+					g->addEllipse(p1, osg::Vec2(scale.x()*0.5f, scale.y()*0.5f), segments < 3 ? 3 : segments);
+				}
+					break;
+				case CHORD:
+				{
+					osg::Vec3 p1 = pos - osg::Vec3(scale.x()*(center.x() - 0.5f), scale.y()*(center.y() - 0.5f), scale.z()*center.z());
+					g->addChord(p1, osg::Vec2(scale.x()*0.5f, scale.y()*0.5f), angles.x(), angles.y(), segments < 1 ? 1 : segments);
+				}
+					break;
+				case PIE:
+				{
+					osg::Vec3 p1 = pos - osg::Vec3(scale.x()*(center.x() - 0.5f), scale.y()*(center.y() - 0.5f), scale.z()*center.z());
+					g->addPie(p1, osg::Vec2(scale.x()*0.5f, scale.y()*0.5f), angles.x(), angles.y(), segments < 1 ? 1 : segments, osg::Vec2(scale2.x()*0.5f, scale2.y()*0.5f));
+				}
+					break;
 				}
 			}
-			break;
-		case CUBE:
-			if (!g.valid()) g = new SimpleGeometry;
-			{
-				osg::Vec3 p1 = pos - osg::Vec3(scale.x()*center.x(), scale.y()*center.y(), scale.z()*center.z());
-				osg::Vec3 p2 = p1 + scale;
-				g->addCube(p1, p2, isLODed ? 0.0f : bevel);
-			}
-			break;
-		case POLYGON:
-			if (!g.valid()) g = new SimpleGeometry;
-			{
-				const int vertexCount = _vertices.size() / 3;
-				if (!_triangulation.valid() || _triangulation->valid(vertexCount)) {
-					g->addPolygon((osg::Vec3*)(&(_vertices[0])), vertexCount, _triangulation.get());
-				}
-			}
-			break;
-		case RECTANGLE:
-			if (!g.valid()) g = new SimpleGeometry;
-			{
-				osg::Vec3 p1 = pos - osg::Vec3(scale.x()*center.x(), scale.y()*center.y(), scale.z()*center.z());
-				osg::Vec3 p2 = p1 + scale;
-				g->addRect(p1, p2, isLODed ? 0.0f : bevel, segments);
-			}
-			break;
-		case ELLIPSE:
-			if (!g.valid()) g = new SimpleGeometry;
-			{
-				osg::Vec3 p1 = pos - osg::Vec3(scale.x()*(center.x() - 0.5f), scale.y()*(center.y() - 0.5f), scale.z()*center.z());
-				g->addEllipse(p1, osg::Vec2(scale.x()*0.5f, scale.y()*0.5f), segments < 3 ? 3 : segments);
-			}
-			break;
-		case CHORD:
-			if (!g.valid()) g = new SimpleGeometry;
-			{
-				osg::Vec3 p1 = pos - osg::Vec3(scale.x()*(center.x() - 0.5f), scale.y()*(center.y() - 0.5f), scale.z()*center.z());
-				g->addChord(p1, osg::Vec2(scale.x()*0.5f, scale.y()*0.5f), angles.x(), angles.y(), segments < 1 ? 1 : segments);
-			}
-			break;
-		case PIE:
-			if (!g.valid()) g = new SimpleGeometry;
-			{
-				osg::Vec3 p1 = pos - osg::Vec3(scale.x()*(center.x() - 0.5f), scale.y()*(center.y() - 0.5f), scale.z()*center.z());
-				g->addPie(p1, osg::Vec2(scale.x()*0.5f, scale.y()*0.5f), angles.x(), angles.y(), segments < 1 ? 1 : segments, osg::Vec2(scale2.x()*0.5f, scale2.y()*0.5f));
-			}
-			break;
-		case PRISM:
-		{
-			for (size_t i = 0, m = subNodes.size(); i < m; i++) {
-				if (subNodes[i].valid()) {
-					osg::ref_ptr<SimpleGeometry> g2 = subNodes[i]->createSimpleGeometry(g.get(), shape, isLODed);
-					g = g2;
-				}
-			}
-			if (g.valid()) {
-				osg::ref_ptr<SimpleGeometry> g2 = new SimpleGeometry;
-				//FIXME: ad-hoc
-				g2->addPrism(g.get(), false, true, osg::Vec3(0, 0, scale.z()),
-					scale.x() < 0 ? scale.y() : scale.x(), scale.x() < 0);
-				g = g2;
-			}
-		}
-			break;
-		case PYRAMID:
-		{
-			for (size_t i = 0, m = subNodes.size(); i < m; i++) {
-				if (subNodes[i].valid()) {
-					osg::ref_ptr<SimpleGeometry> g2 = subNodes[i]->createSimpleGeometry(g.get(), shape, isLODed);
-					g = g2;
-				}
-			}
-			if (g.valid()) {
-				osg::ref_ptr<SimpleGeometry> g2 = new SimpleGeometry;
-				//FIXME: ad-hoc
-				g2->addPyramid(g.get(), false, true, osg::Vec3(0, 0, scale.z()),
-					osg::Vec3());
-				g = g2;
-			}
-		}
-			break;
 		}
 
 		return g.release();

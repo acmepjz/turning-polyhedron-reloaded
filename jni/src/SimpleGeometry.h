@@ -35,7 +35,11 @@ namespace gfx {
 		SimpleGeometry();
 		SimpleGeometry(const SimpleGeometry& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
+		/// clear all vertices, edges and faces
 		void clear();
+
+		/// apply transform
+		void applyTransform(const osg::Matrix& mat);
 
 		/** add a polygon
 		\param vertices The array of vertices
