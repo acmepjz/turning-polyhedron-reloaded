@@ -435,6 +435,21 @@ namespace gfx {
 			}
 		}
 
+		// transform loaded vertices
+		if (_vertices.size() >= 3) {
+			osg::Matrix mat;
+			mat.makeScale(scale);
+			mat.postMultRotate(osg::Quat(rot.x(), osg::X_AXIS, rot.y(), osg::Y_AXIS, rot.z(), osg::Z_AXIS));
+			mat.postMultTranslate(pos);
+
+			for (size_t i = 0, m = _vertices.size(); i + 3 <= m; i += 3) {
+				osg::Vec4 v = osg::Vec4(_vertices[i], _vertices[i + 1], _vertices[i + 2], 1) * mat;
+				_vertices[i] = v.x();
+				_vertices[i + 1] = v.y();
+				_vertices[i + 2] = v.z();
+			}
+		}
+
 		return true;
 	}
 

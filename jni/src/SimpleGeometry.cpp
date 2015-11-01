@@ -1016,7 +1016,10 @@ namespace gfx {
 		for (size_t i = 0, m = vertices.size(); i < m; i++) {
 			Vertex *v = vertices[i];
 			if (v) {
-				v->pos = osg::Matrix::transform3x3(v->pos, mat);
+				osg::Vec4 v4 = osg::Vec4(v->pos, 1) * mat;
+				v->pos.x() = v4.x();
+				v->pos.y() = v4.y();
+				v->pos.z() = v4.z();
 			}
 		}
 	}

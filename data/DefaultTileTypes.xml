@@ -24,8 +24,8 @@
       <!-- TODO: -->
       <shader templateName="simple1_fixed" ambient="0.3,0.3,0.3" diffuse="0.3,0.3,0.3" specular="0.4,0.4,0.3" specularHardness="50">
         <mesh type="cube" s="1,1,0.25" c="0,0,1" bevel="0.05" bevelNormalSmoothness="1"/>
-		<mesh type="prism" s="-1,-0.1,0.1">
-		  <mesh type="ellipse" p="0.5,0.5" s="0.75,0.75" c="0.5,0.5" segments="32"/>
+		<mesh type="prism" s="-1,-0.05,0.05">
+		  <mesh type="ellipse" p="0.5,0.5" s="0.75,0.75" c="0.5,0.5" segments="16"/>
 		</mesh>
       </shader>
     </appearance>
@@ -36,12 +36,29 @@
     <description>Hard button. Activated only when the block standing on it.</description>
     <appearance>
       <!-- TODO: -->
-      <shader templateName="simple1_fixed_with_texture_normal"
-      	baseColor="textureFile:gfx/hard_button.png"
-      	normalMap="textureFile:gfx/hard_button_normal.png"
-      	ambient="0.3,0.3,0.3" diffuse="0.3,0.3,0.3" specular="0.4,0.4,0.3" specularHardness="50">
-        <mesh type="cube" s="1,1,0.25" c="0,0,1" bevel="0.05" bevelNormalSmoothness="1"
-        	texcoord0="rect_unwrap"/>
+      <shader templateName="simple1_fixed" ambient="0.3,0.3,0.3" diffuse="0.3,0.3,0.3" specular="0.4,0.4,0.3" specularHardness="50">
+        <mesh type="cube" s="1,1,0.25" c="0,0,1" bevel="0.05" bevelNormalSmoothness="1"/>
+		<mesh type="prism" s="-1,-0.05,0.05">
+		  <mesh type="polygon" p="0.5,0.5" s="0.375,0.375">
+		    <vertices>
+			0.5,0,0,
+			1,0.5,0,
+			0.5,1,0,
+			0,0.5,0,
+			-0.5,1,0,
+			-1,0.5,0,
+			-0.5,0,0,
+			-1,-0.5,0,
+			-0.5,-1,0,
+			0,-0.5,0,
+			0.5,-1,0,
+			1,-0.5,0
+			</vertices>
+			<triangulation type="quads">
+			0,1,2,3,3,4,5,6,6,7,8,9,9,10,11,0,0,3,6,9
+			</triangulation>
+		  </mesh>
+		</mesh>
       </shader>
     </appearance>
     <onEnter condition="pressure=2~" event="triggerEvent:pressed:this"/>
@@ -51,12 +68,12 @@
     <description>Teleporter will teleports your block to different locations, optionally splitting it into two smaller blocks at the same time.</description>
     <appearance>
       <!-- TODO: -->
-      <shader templateName="simple1_fixed_with_texture_normal"
-      	baseColor="textureFile:gfx/tele_button.png"
-      	normalMap="textureFile:gfx/tele_button_normal.png"
-      	ambient="0.3,0.3,0.3" diffuse="0.3,0.3,0.3" specular="0.4,0.4,0.3" specularHardness="50">
-        <mesh type="cube" s="1,1,0.25" c="0,0,1" bevel="0.05" bevelNormalSmoothness="1"
-        	texcoord0="rect_unwrap"/>
+      <shader templateName="simple1_fixed" ambient="0.3,0.3,0.3" diffuse="0.3,0.3,0.3" specular="0.4,0.4,0.3" specularHardness="50">
+        <mesh type="cube" s="1,1,0.25" c="0,0,1" bevel="0.05" bevelNormalSmoothness="1"/>
+		<mesh type="prism" s="-1,-0.05,0.05">
+		  <mesh type="pie" p="0.5,0.5" s="0.75,0.75" s2="0.5,0.5" c="0.5,0.5" a="-0.7854,0.7854" segments="8"/>
+		  <mesh type="pie" p="0.5,0.5" s="0.75,0.75" s2="0.5,0.5" c="0.5,0.5" a="2.3562,3.9270" segments="8"/>
+		</mesh>
       </shader>
     </appearance>
     <onMoveEnter condition="onGroundCount=1;main=true" event="triggerEvent:pressed:this"/> <!-- ??? -->

@@ -29,7 +29,7 @@
 using namespace game;
 using namespace gfx;
 
-game::Level* test(const char* filename){
+game::Level* test(const char* filename, int levelIndex) {
 	//create a level
 	osg::ref_ptr<game::Level> level = new game::Level;
 	level->name = "Unnamed level";
@@ -52,7 +52,8 @@ game::Level* test(const char* filename){
 			{
 				LevelCollection *lc = dynamic_cast<LevelCollection*>(obj.get());
 				if (lc) {
-					level = lc->levels[0];
+					if (levelIndex < 0 || levelIndex >= (int)lc->levels.size()) levelIndex = 0;
+					level = lc->levels[levelIndex];
 					obj = NULL;
 					return level.release();
 				}
@@ -196,7 +197,12 @@ int main(int argc, char** argv){
 	osg::DisplaySettings::instance()->setMinimumNumStencilBits(1);
 
 	//test
-	osg::ref_ptr<game::Level> level = test(argc >= 2 ? argv[1] : NULL);
+	int levelIndex = 0;
+	if (argc >= 3) {
+		sscanf(argv[2], "%d", &levelIndex);
+		levelIndex--;
+	}
+	osg::ref_ptr<game::Level> level = test(argc >= 2 ? argv[1] : NULL, levelIndex);
 	level->init();
 	level->createInstance();
 	osg::ref_ptr<osg::Node> node = level->_appearance;
