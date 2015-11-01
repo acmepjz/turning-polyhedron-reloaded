@@ -11,6 +11,8 @@
 #include <osg/LOD>
 #include <osg/CullFace>
 #include <osgGA/GUIEventHandler>
+#include <osgGA/TrackballManipulator>
+#include <osgGA/StateSetManipulator>
 #include <osgViewer/ViewerEventHandlers>
 
 #include <osgFX/SpecularHighlights>
@@ -219,19 +221,25 @@ int main(int argc, char** argv){
 	viewer.getLight()->setDiffuse(osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
 	viewer.getLight()->setPosition(osg::Vec4(3.0f, 4.0f, 5.0f, 0.0f));
 
-	mirror->computeBound();
-	osg::Vec3 c = mirror->getBound().center();
-	c.z() = 0.0f;
-	osg::Vec3 e = c + osg::Vec3(-1, -3, 2)*0.9f* mirror->getBound().radius();
+	{
+		osgGA::OrbitManipulator *om = new osgGA::OrbitManipulator;
+		viewer.setCameraManipulator(om);
 
-	viewer.getCamera()->setViewMatrixAsLookAt(e, c, osg::Vec3d(0, 0, 1));
-	viewer.getCamera()->setAllowEventFocus(false);
+		mirror->computeBound();
+		osg::BoundingSphere bs = mirror->getBound();
+		osg::Vec3 c = bs.center();
+		c.z() = 0.0f;
+		osg::Vec3 e = c + osg::Vec3(-1, -3, 2) * bs.radius();
+
+		om->setTransformation(e, c, osg::Vec3d(1, 1, 1));
+	}
 
 	viewer.getCamera()->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	viewer.getCamera()->setClearStencil(0);
 
 	viewer.setRunMaxFrameRate(30.0);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
+	//viewer.addEventHandler(new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()));
 	viewer.addEventHandler(new TestController(level.get()));
 
 	viewer.setUpViewInWindow(64, 64, 800, 600);
