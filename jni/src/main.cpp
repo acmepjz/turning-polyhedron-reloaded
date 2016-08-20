@@ -9,6 +9,7 @@
 #include <osg/PolygonMode>
 #include <osg/PolygonOffset>
 #include <osg/LOD>
+#include <osg/Depth>
 #include <osg/CullFace>
 #include <osgGA/GUIEventHandler>
 #include <osgGA/TrackballManipulator>
@@ -156,6 +157,7 @@ public:
 		if (!level.valid()) return false;
 
 		game::Polyhedron *poly = level->getSelectedPolyhedron();
+		int dir = -1;
 
 		switch (ea.getEventType()) {
 		case osgGA::GUIEventAdapter::FRAME:
@@ -164,22 +166,33 @@ public:
 		case osgGA::GUIEventAdapter::KEYDOWN:
 			switch (ea.getKey()) {
 			case osgGA::GUIEventAdapter::KEY_Up:
-				if (!level->isAnimating() && poly) poly->move(level.get(), MOVE_UP);
-				break;
-			case osgGA::GUIEventAdapter::KEY_Down:
-				if (!level->isAnimating() && poly) poly->move(level.get(), MOVE_DOWN);
-				break;
+				dir = 0; break;
 			case osgGA::GUIEventAdapter::KEY_Left:
-				if (!level->isAnimating() && poly) poly->move(level.get(), MOVE_LEFT);
-				break;
+				dir = 1; break;
+			case osgGA::GUIEventAdapter::KEY_Down:
+				dir = 2; break;
 			case osgGA::GUIEventAdapter::KEY_Right:
-				if (!level->isAnimating() && poly) poly->move(level.get(), MOVE_RIGHT);
-				break;
+				dir = 3; break;
 			case osgGA::GUIEventAdapter::KEY_Space:
 				if (!level->isAnimating()) level->switchToNextPolyhedron();
 				break;
 			default:
 				return false;
+			}
+			if (dir >= 0) {
+				osgViewer::Viewer* viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
+				osg::Camera* camera = viewer ? viewer->getCamera() : NULL;
+				if (camera) {
+					osg::Vec3 eye, center, up;
+					camera->getViewMatrixAsLookAt(eye, center, up);
+					eye = (eye - center) ^ up;
+					if (eye.x() < eye.y()) {
+						if (eye.x() + eye.y() > 0) dir += 3;
+					} else if (eye.x() + eye.y() > 0) dir += 2;
+					else dir += 1;
+				}
+				const game::MoveDirection dirs[4] = { MOVE_UP, MOVE_LEFT, MOVE_DOWN, MOVE_RIGHT };
+				if (!level->isAnimating() && poly) poly->move(level.get(), dirs[dir & 3]);
 			}
 			break;
 		default:
@@ -194,7 +207,28 @@ public:
 int main(int argc, char** argv){
 	osgViewer::Viewer viewer;
 
-	osg::DisplaySettings::instance()->setMinimumNumStencilBits(1);
+	osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
+	traits->x = 50;
+	traits->y = 50;
+	traits->width = 800;
+	traits->height = 600;
+	traits->windowDecoration = true;
+	traits->doubleBuffer = true;
+	traits->stencil = 8;
+	traits->windowName = "Turning Polyhedron Reloaded";
+
+	osg::ref_ptr<osg::Camera> camera = new osg::Camera;
+	camera->setGraphicsContext(osg::GraphicsContext::createGraphicsContext(traits.get()));
+	camera->setViewport(new osg::Viewport(0, 0, traits->width, traits->height));
+	camera->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	camera->setClearColor(osg::Vec4f(0.2f, 0.2f, 0.4f, 1.0f));
+	camera->setProjectionMatrixAsPerspective(
+		30.0f, (double)traits->width / (double)traits->height,
+		1.0, 1000.0);
+	camera->getOrCreateStateSet()->setAttributeAndModes(new osg::Depth());
+	camera->getOrCreateStateSet()->setAttributeAndModes(new osg::CullFace());
+
+	viewer.setCamera(camera.get());
 
 	//test
 	int levelIndex = 0;
@@ -212,7 +246,6 @@ int main(int argc, char** argv){
 	//mat->setDiffuse(osg::Material::FRONT_AND_BACK, osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
 	//mat->setSpecular(osg::Material::FRONT_AND_BACK, osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
 	//mat->setShininess(osg::Material::FRONT_AND_BACK, 64.0f);
-	node->getOrCreateStateSet()->setAttributeAndModes(new osg::CullFace());
 	//node->getOrCreateStateSet()->setAttributeAndModes(mat.get());
 
 	osg::ref_ptr<osg::MatrixTransform> mirror = new osg::MatrixTransform(osg::Matrix::scale(1.0f, -1.0f, 1.0f));
@@ -240,15 +273,10 @@ int main(int argc, char** argv){
 		om->setTransformation(e, c, osg::Vec3d(1, 1, 1));
 	}
 
-	viewer.getCamera()->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-	viewer.getCamera()->setClearStencil(0);
-
 	viewer.setRunMaxFrameRate(30.0);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 	//viewer.addEventHandler(new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()));
 	viewer.addEventHandler(new TestController(level.get()));
-
-	viewer.setUpViewInWindow(64, 64, 800, 600);
 
 	return viewer.run();
 }
