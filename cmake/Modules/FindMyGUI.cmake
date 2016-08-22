@@ -1,7 +1,7 @@
 # This module defines
 # MYGUI_LIBRARIES, MYGUI_OPENGL_LIBRARIES, MYGUI_OGRE_LIBRARIES
 # MYGUI_FOUND, etc.
-# MYGUI_INCLUDE_DIRS, where to find the headers
+# MYGUI_INCLUDE_DIR, where to find the headers
 
 SET(MYGUI_DEBUG_POSTFIX "_d" CACHE STRING "add a postfix for MyGUI Debug library, usually _d on windows")
 

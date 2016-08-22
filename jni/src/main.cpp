@@ -27,6 +27,90 @@
 #include "SimpleGeometry.h"
 #include "XMLReaderWriter.h"
 
+//======TEST
+#include "MYGUIManager.h"
+
+// This class is modified from the Demo_Themes example of MyGUI
+class CustomMYGUIManager : public MYGUIManager
+{
+public:
+	CustomMYGUIManager() : _demoView(NULL), _comboSkins(NULL) {}
+protected:
+	virtual void setupResources()
+	{
+		MYGUIManager::setupResources();
+		_platform->getDataManagerPtr()->addResourceLocation(_rootMedia + "/Demos/Demo_Themes", false);
+		_platform->getDataManagerPtr()->addResourceLocation(_rootMedia + "/Common/Demos", false);
+		_platform->getDataManagerPtr()->addResourceLocation(_rootMedia + "/Common/Themes", false);
+	}
+
+	virtual void initializeControls()
+	{
+		//MyGUI::LayoutManager::getInstance().loadLayout("Wallpaper.layout");
+		const MyGUI::VectorWidgetPtr& root = MyGUI::LayoutManager::getInstance().loadLayout("HelpPanel.layout");
+		if (root.size() == 1)
+		{
+			root.at(0)->findWidget("Text")->castType<MyGUI::TextBox>()->setCaption(
+				"Select skin theme in combobox to see default MyGUI themes.");
+		}
+		createDemo(0);
+	}
+
+	void notifyComboAccept(MyGUI::ComboBox* sender, size_t index)
+	{
+		createDemo(index);
+	}
+
+	void createDemo(int index)
+	{
+		destroyDemo();
+		switch (index)
+		{
+		case 0:
+			MyGUI::ResourceManager::getInstance().load("MyGUI_BlueWhiteTheme.xml");
+			break;
+		case 1:
+			MyGUI::ResourceManager::getInstance().load("MyGUI_BlackBlueTheme.xml");
+			break;
+		case 2:
+			MyGUI::ResourceManager::getInstance().load("MyGUI_BlackOrangeTheme.xml");
+			break;
+		default: break;
+		}
+
+		MyGUI::VectorWidgetPtr windows = MyGUI::LayoutManager::getInstance().loadLayout("Themes.layout");
+		if (windows.size()<1)
+		{
+			OSG_WARN << "Error load layout" << std::endl;
+			return;
+		}
+
+		_demoView = windows[0];
+		_comboSkins = MyGUI::Gui::getInstance().findWidget<MyGUI::ComboBox>("Combo");
+		if (_comboSkins)
+		{
+			_comboSkins->setComboModeDrop(true);
+			_comboSkins->addItem("blue & white");
+			_comboSkins->addItem("black & blue");
+			_comboSkins->addItem("black & orange");
+			_comboSkins->setIndexSelected(index);
+			_comboSkins->eventComboAccept += MyGUI::newDelegate(this, &CustomMYGUIManager::notifyComboAccept);
+		}
+	}
+
+	void destroyDemo()
+	{
+		if (_demoView)
+			MyGUI::WidgetManager::getInstance().destroyWidget(_demoView);
+		_demoView = NULL;
+		_comboSkins = NULL;
+	}
+
+	MyGUI::Widget* _demoView;
+	MyGUI::ComboBox* _comboSkins;
+};
+//========
+
 using namespace game;
 using namespace gfx;
 
@@ -207,6 +291,7 @@ public:
 int main(int argc, char** argv){
 	osgViewer::Viewer viewer;
 
+	//create window traits
 	osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
 	traits->x = 50;
 	traits->y = 50;
@@ -217,20 +302,15 @@ int main(int argc, char** argv){
 	traits->stencil = 8;
 	traits->windowName = "Turning Polyhedron Reloaded";
 
-	osg::ref_ptr<osg::Camera> camera = new osg::Camera;
+	//setup camera
+	osg::ref_ptr<osg::Camera> camera = viewer.getCamera();
 	camera->setGraphicsContext(osg::GraphicsContext::createGraphicsContext(traits.get()));
 	camera->setViewport(new osg::Viewport(0, 0, traits->width, traits->height));
 	camera->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	camera->setClearColor(osg::Vec4f(0.2f, 0.2f, 0.4f, 1.0f));
-	camera->setProjectionMatrixAsPerspective(
-		30.0f, (double)traits->width / (double)traits->height,
-		1.0, 1000.0);
 	camera->getOrCreateStateSet()->setAttributeAndModes(new osg::Depth());
-	camera->getOrCreateStateSet()->setAttributeAndModes(new osg::CullFace());
 
-	viewer.setCamera(camera.get());
-
-	//test
+	//test: create a level
 	int levelIndex = 0;
 	if (argc >= 3) {
 		sscanf(argv[2], "%d", &levelIndex);
@@ -253,8 +333,31 @@ int main(int argc, char** argv){
 
 	osg::ref_ptr<osgShadow::ShadowedScene> shadowedScene = new osgShadow::ShadowedScene(/*new osgShadow::ShadowMap*/);
 	shadowedScene->addChild(mirror);
+	shadowedScene->getOrCreateStateSet()->setAttributeAndModes(new osg::CullFace());
 
-	viewer.setSceneData(shadowedScene.get());
+	osg::ref_ptr<osg::Group> root = new osg::Group();
+	root->addChild(shadowedScene);
+
+	//test: GUI
+	osg::ref_ptr<CustomMYGUIManager> mygui = new CustomMYGUIManager;
+
+	osg::ref_ptr<osg::Geode> ui_geode = new osg::Geode;
+	ui_geode->setCullingActive(false);
+	ui_geode->addDrawable(mygui.get());
+	ui_geode->getOrCreateStateSet()->setMode(GL_BLEND, osg::StateAttribute::ON);
+	ui_geode->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+
+	osg::ref_ptr<osg::Camera> ui_camera = new osg::Camera;
+	ui_camera->setClearMask(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	ui_camera->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
+	ui_camera->setRenderOrder(osg::Camera::POST_RENDER);
+	ui_camera->setAllowEventFocus(false);
+	ui_camera->setProjectionMatrix(osg::Matrix::ortho2D(0.0, traits->width, 0.0, traits->height));
+	ui_camera->addChild(ui_geode.get());
+
+	root->addChild(ui_camera.get());
+
+	viewer.setSceneData(root.get());
 	viewer.setLightingMode(osg::View::SKY_LIGHT);
 	viewer.getLight()->setAmbient(osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
 	viewer.getLight()->setDiffuse(osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
@@ -273,10 +376,23 @@ int main(int argc, char** argv){
 		om->setTransformation(e, c, osg::Vec3d(1, 1, 1));
 	}
 
+	viewer.setThreadingModel(osgViewer::ViewerBase::SingleThreaded); //otherwise it randomly crashes
 	viewer.setRunMaxFrameRate(30.0);
+	viewer.addEventHandler(new MYGUIHandler(ui_camera.get(), mygui.get()));
+	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 	//viewer.addEventHandler(new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()));
 	viewer.addEventHandler(new TestController(level.get()));
+
+	viewer.realize();
+
+	osgViewer::GraphicsWindow* gw = dynamic_cast<osgViewer::GraphicsWindow*>(camera->getGraphicsContext());
+	if (gw)
+	{
+		// Send window size for MyGUI to initialize
+		int x, y, w, h; gw->getWindowRectangle(x, y, w, h);
+		viewer.getEventQueue()->windowResize(x, y, w, h);
+	}
 
 	return viewer.run();
 }
