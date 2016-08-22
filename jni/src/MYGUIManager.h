@@ -1,3 +1,6 @@
+// osgMyGUI, modified from osgRecipe <https://github.com/xarray/osgRecipes>
+// Warning: this version of osgMyGUI only works under single-threaded mode.
+
 #ifndef H_MYGUIDRAWABLE
 #define H_MYGUIDRAWABLE
 
@@ -49,7 +52,8 @@ protected:
     virtual ~MYGUIManager() {}
     
     virtual void updateEvents() const;
-    virtual void setupResources();
+	virtual bool handleEvent(const osgGA::GUIEventAdapter& ea) const;
+	virtual void setupResources();
     virtual void initializeControls() {}
     
     MyGUI::MouseButton convertMouseButton( int button ) const;
@@ -63,6 +67,8 @@ protected:
     std::string _rootMedia;
     unsigned int _activeContextID;
     bool _initialized;
+
+	friend class MYGUIHandler;
 };
 
 #endif

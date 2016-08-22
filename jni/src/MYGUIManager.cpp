@@ -1,3 +1,6 @@
+// osgMyGUI, modified from osgRecipe <https://github.com/xarray/osgRecipes>
+// Warning: this version of osgMyGUI only works under single-threaded mode.
+
 #include "MYGUIManager.h"
 #include <osgDB/ReadFile>
 #include <osgDB/WriteFile>
@@ -18,11 +21,10 @@ bool MYGUIHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAda
         break;
     }
     
-    // As MyGUI handle all events within the OpenGL context, we have to record the event here
-    // and process it later in the draw implementation
-    if ( ea.getEventType()!=osgGA::GUIEventAdapter::FRAME )
-        _manager->pushEvent( &ea );
-    return false;
+	// This only works under single-threaded mode
+	if (ea.getEventType() != osgGA::GUIEventAdapter::FRAME)
+		return _manager->handleEvent(ea);
+	return false;
 }
 
 MYGUIManager::MYGUIManager()
@@ -178,44 +180,57 @@ void MYGUIManager::releaseGLObjects( osg::State* state ) const
     }
 }
 
+bool MYGUIManager::handleEvent(const osgGA::GUIEventAdapter& ea) const {
+	if (!_platform || !_initialized) {
+		const_cast<MYGUIManager*>(this)->pushEvent(&ea);
+		return false;
+	}
+
+	int x = ea.getX(), y = ea.getY(), key = ea.getKey();
+	if (ea.getMouseYOrientation() == osgGA::GUIEventAdapter::Y_INCREASING_UPWARDS)
+		y = ea.getWindowHeight() - y;
+
+	switch (ea.getEventType())
+	{
+	case osgGA::GUIEventAdapter::PUSH:
+		return MyGUI::InputManager::getInstance().injectMousePress(x, y, convertMouseButton(ea.getButton()));
+		break;
+	case osgGA::GUIEventAdapter::RELEASE:
+		return MyGUI::InputManager::getInstance().injectMouseRelease(x, y, convertMouseButton(ea.getButton()));
+		break;
+	case osgGA::GUIEventAdapter::DRAG:
+	case osgGA::GUIEventAdapter::MOVE:
+		return MyGUI::InputManager::getInstance().injectMouseMove(x, y, 0);
+		break;
+	case osgGA::GUIEventAdapter::KEYDOWN:
+		if (key<127)
+			return MyGUI::InputManager::getInstance().injectKeyPress(convertKeyCode(key), (char)key);
+		else
+			return MyGUI::InputManager::getInstance().injectKeyPress(convertKeyCode(key));
+		break;
+	case osgGA::GUIEventAdapter::KEYUP:
+		return MyGUI::InputManager::getInstance().injectKeyRelease(convertKeyCode(key));
+		break;
+	case osgGA::GUIEventAdapter::RESIZE:
+		_platform->getRenderManagerPtr()->setViewSize(ea.getWindowWidth(), ea.getWindowHeight());
+		break;
+	default:
+		break;
+	}
+
+	return false;
+}
+
 void MYGUIManager::updateEvents() const
 {
+	if (!_platform || !_initialized) return;
     unsigned int size = _eventsToHandle.size();
     for ( unsigned int i=0; i<size; ++i )
     {
         const osgGA::GUIEventAdapter& ea = *(_eventsToHandle.front());
-        int x = ea.getX(), y = ea.getY(), key = ea.getKey();
-        if ( ea.getMouseYOrientation()==osgGA::GUIEventAdapter::Y_INCREASING_UPWARDS )
-            y = ea.getWindowHeight() - y;
-        
-        switch ( ea.getEventType() )
-        {
-        case osgGA::GUIEventAdapter::PUSH:
-            MyGUI::InputManager::getInstance().injectMousePress( x, y, convertMouseButton(ea.getButton()) );
-            break;
-        case osgGA::GUIEventAdapter::RELEASE:
-            MyGUI::InputManager::getInstance().injectMouseRelease( x, y, convertMouseButton(ea.getButton()) );
-            break;
-        case osgGA::GUIEventAdapter::DRAG:
-        case osgGA::GUIEventAdapter::MOVE:
-            MyGUI::InputManager::getInstance().injectMouseMove( x, y, 0 );
-            break;
-        case osgGA::GUIEventAdapter::KEYDOWN:
-            if ( key<127 )
-                MyGUI::InputManager::getInstance().injectKeyPress( convertKeyCode(key), (char)key );
-            else
-                MyGUI::InputManager::getInstance().injectKeyPress( convertKeyCode(key) );
-            break;
-        case osgGA::GUIEventAdapter::KEYUP:
-            MyGUI::InputManager::getInstance().injectKeyRelease( convertKeyCode(key) );
-            break;
-        case osgGA::GUIEventAdapter::RESIZE:
-            _platform->getRenderManagerPtr()->setViewSize( ea.getWindowWidth(), ea.getWindowHeight() );
-            break;
-        default:
-            break;
-        }
-        const_cast<MYGUIManager*>(this)->_eventsToHandle.pop();
+		handleEvent(ea);
+
+		const_cast<MYGUIManager*>(this)->_eventsToHandle.pop();
     }
 }
 
