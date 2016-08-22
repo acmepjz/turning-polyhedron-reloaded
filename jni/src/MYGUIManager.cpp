@@ -30,7 +30,7 @@ bool MYGUIHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAda
 MYGUIManager::MYGUIManager()
 :   _gui(0), _platform(0),
     _resourcePathFile("resources.xml"), _resourceCoreFile("MyGUI_Core.xml"),
-    _activeContextID(0), _initialized(false)
+	_activeContextID(0), _initialized(false), _gw(0)
 {
     setSupportsDisplayList( false );
     getOrCreateStateSet()->setMode( GL_LIGHTING, osg::StateAttribute::OFF );
@@ -120,6 +120,23 @@ void MYGUIManager::saveImage( int width, int height, MyGUI::PixelFormat format, 
     osgDB::writeImageFile( *image, filename );
 }
 
+void MYGUIManager::notifyChangeMousePointer(const std::string& _name) {
+	static std::map<std::string, osgViewer::GraphicsWindow::MouseCursor> s_cursorMap;
+	if (_gw) {
+		if (s_cursorMap.empty()) {
+			s_cursorMap["beam"] = osgViewer::GraphicsWindow::TextCursor;
+			s_cursorMap["size_left"] = osgViewer::GraphicsWindow::TopLeftCorner; //ad-hoc
+			s_cursorMap["size_right"] = osgViewer::GraphicsWindow::TopRightCorner; //ad-hoc
+			s_cursorMap["size_horz"] = osgViewer::GraphicsWindow::LeftRightCursor;
+			s_cursorMap["size_vert"] = osgViewer::GraphicsWindow::UpDownCursor;
+			s_cursorMap["hand"] = osgViewer::GraphicsWindow::SprayCursor; //??
+			s_cursorMap["link"] = osgViewer::GraphicsWindow::HandCursor; //??
+		}
+		std::map<std::string, osgViewer::GraphicsWindow::MouseCursor>::const_iterator it = s_cursorMap.find(_name);
+		_gw->setCursor(it == s_cursorMap.end() ? osgViewer::GraphicsWindow::RightArrowCursor : it->second);
+	}
+}
+
 void MYGUIManager::drawImplementation( osg::RenderInfo& renderInfo ) const
 {
     unsigned int contextID = renderInfo.getContextID();
@@ -133,7 +150,13 @@ void MYGUIManager::drawImplementation( osg::RenderInfo& renderInfo ) const
         constMe->_gui = new MyGUI::Gui;
         constMe->_gui->initialise( _resourceCoreFile );
         constMe->initializeControls();
-        
+
+		if (_gw) {
+			MyGUI::PointerManager& manager = MyGUI::PointerManager::getInstance();
+			manager.setVisible(false);
+			manager.eventChangeMousePointer += MyGUI::newDelegate(constMe, &MYGUIManager::notifyChangeMousePointer);
+		}
+
         constMe->_activeContextID = contextID;
         constMe->_initialized = true;
     }
@@ -187,6 +210,7 @@ bool MYGUIManager::handleEvent(const osgGA::GUIEventAdapter& ea) const {
 	}
 
 	int x = ea.getX(), y = ea.getY(), key = ea.getKey();
+	static int z = 0;
 	if (ea.getMouseYOrientation() == osgGA::GUIEventAdapter::Y_INCREASING_UPWARDS)
 		y = ea.getWindowHeight() - y;
 
@@ -198,9 +222,17 @@ bool MYGUIManager::handleEvent(const osgGA::GUIEventAdapter& ea) const {
 	case osgGA::GUIEventAdapter::RELEASE:
 		return MyGUI::InputManager::getInstance().injectMouseRelease(x, y, convertMouseButton(ea.getButton()));
 		break;
+	case osgGA::GUIEventAdapter::SCROLL:
+		switch (ea.getScrollingMotion()) {
+		case osgGA::GUIEventAdapter::SCROLL_UP:
+			z++; break;
+		case osgGA::GUIEventAdapter::SCROLL_DOWN:
+			z--; break;
+		}
+		// fall through
 	case osgGA::GUIEventAdapter::DRAG:
 	case osgGA::GUIEventAdapter::MOVE:
-		return MyGUI::InputManager::getInstance().injectMouseMove(x, y, 0);
+		return MyGUI::InputManager::getInstance().injectMouseMove(x, y, z);
 		break;
 	case osgGA::GUIEventAdapter::KEYDOWN:
 		if (key<127)

@@ -9,6 +9,7 @@
 #include <osg/Camera>
 #include <osg/Drawable>
 #include <osgGA/GUIEventHandler>
+#include <osgViewer/GraphicsWindow>
 #include <queue>
 
 class MYGUIManager;
@@ -47,6 +48,8 @@ public:
     // drawable methods
     virtual void drawImplementation( osg::RenderInfo& renderInfo ) const;
     virtual void releaseGLObjects( osg::State* state=0 ) const;
+
+	void setGraphicsWindow(osgViewer::GraphicsWindow* gw) { _gw = gw; }
     
 protected:
     virtual ~MYGUIManager() {}
@@ -67,6 +70,10 @@ protected:
     std::string _rootMedia;
     unsigned int _activeContextID;
     bool _initialized;
+	osgViewer::GraphicsWindow* _gw;
+
+private:
+	void notifyChangeMousePointer(const std::string& _name);
 
 	friend class MYGUIHandler;
 };

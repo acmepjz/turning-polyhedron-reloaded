@@ -393,6 +393,7 @@ int main(int argc, char** argv){
 		int x, y, w, h; gw->getWindowRectangle(x, y, w, h);
 		viewer.getEventQueue()->windowResize(x, y, w, h);
 	}
+	mygui->setGraphicsWindow(gw);
 
 	return viewer.run();
 }
