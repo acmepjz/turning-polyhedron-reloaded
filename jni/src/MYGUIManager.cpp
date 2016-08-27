@@ -125,12 +125,29 @@ void MYGUIManager::notifyChangeMousePointer(const std::string& _name) {
 	if (_gw) {
 		if (s_cursorMap.empty()) {
 			s_cursorMap["beam"] = osgViewer::GraphicsWindow::TextCursor;
-			s_cursorMap["size_left"] = osgViewer::GraphicsWindow::TopLeftCorner; //ad-hoc
-			s_cursorMap["size_right"] = osgViewer::GraphicsWindow::TopRightCorner; //ad-hoc
+			s_cursorMap["size_left"] = osgViewer::GraphicsWindow::BottomRightCorner; //ad-hoc
+			s_cursorMap["size_right"] = osgViewer::GraphicsWindow::BottomLeftCorner; //ad-hoc
 			s_cursorMap["size_horz"] = osgViewer::GraphicsWindow::LeftRightCursor;
 			s_cursorMap["size_vert"] = osgViewer::GraphicsWindow::UpDownCursor;
 			s_cursorMap["hand"] = osgViewer::GraphicsWindow::SprayCursor; //??
 			s_cursorMap["link"] = osgViewer::GraphicsWindow::HandCursor; //??
+
+			//new??
+#if defined(WIN32)
+			s_cursorMap["TopSideCursor"] = osgViewer::GraphicsWindow::UpDownCursor;
+			s_cursorMap["BottomSideCursor"] = osgViewer::GraphicsWindow::UpDownCursor;
+			s_cursorMap["LeftSideCursor"] = osgViewer::GraphicsWindow::LeftRightCursor;
+			s_cursorMap["RightSideCursor"] = osgViewer::GraphicsWindow::LeftRightCursor;
+#else
+			s_cursorMap["TopSideCursor"] = osgViewer::GraphicsWindow::TopSideCursor;
+			s_cursorMap["BottomSideCursor"] = osgViewer::GraphicsWindow::BottomSideCursor;
+			s_cursorMap["LeftSideCursor"] = osgViewer::GraphicsWindow::LeftSideCursor;
+			s_cursorMap["RightSideCursor"] = osgViewer::GraphicsWindow::RightSideCursor;
+#endif
+			s_cursorMap["TopLeftCorner"] = osgViewer::GraphicsWindow::TopLeftCorner;
+			s_cursorMap["TopRightCorner"] = osgViewer::GraphicsWindow::TopRightCorner;
+			s_cursorMap["BottomRightCorner"] = osgViewer::GraphicsWindow::BottomRightCorner;
+			s_cursorMap["BottomLeftCorner"] = osgViewer::GraphicsWindow::BottomLeftCorner;
 		}
 		std::map<std::string, osgViewer::GraphicsWindow::MouseCursor>::const_iterator it = s_cursorMap.find(_name);
 		_gw->setCursor(it == s_cursorMap.end() ? osgViewer::GraphicsWindow::RightArrowCursor : it->second);

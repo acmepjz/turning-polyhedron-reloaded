@@ -73,7 +73,7 @@ protected:
 			MyGUI::ResourceManager::getInstance().load("MyGUI_BlackBlueTheme.xml");
 			break;
 		case 2:
-			MyGUI::ResourceManager::getInstance().load("MyGUI_BlackOrangeTheme.xml");
+			MyGUI::ResourceManager::getInstance().load("MyGUI_TestTheme.xml");
 			break;
 		default: break;
 		}
@@ -92,7 +92,7 @@ protected:
 			_comboSkins->setComboModeDrop(true);
 			_comboSkins->addItem("blue & white");
 			_comboSkins->addItem("black & blue");
-			_comboSkins->addItem("black & orange");
+			_comboSkins->addItem("test");
 			_comboSkins->setIndexSelected(index);
 			_comboSkins->eventComboAccept += MyGUI::newDelegate(this, &CustomMYGUIManager::notifyComboAccept);
 		}
