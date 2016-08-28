@@ -16,7 +16,7 @@ bool MYGUIHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAda
 MYGUIManager::MYGUIManager()
 :   _gui(0), _platform(0),
     _resourcePathFile("resources.xml"), _resourceCoreFile("MyGUI_Core.xml"),
-	_activeContextID(0), _initialized(false), _gw(0), _uiScale(1.0f)
+	_activeContextID(0), _initialized(false), _gw(0), _uiScale(1.0f), _useHWCursor(true)
 {
     setSupportsDisplayList( false );
     getOrCreateStateSet()->setMode( GL_LIGHTING, osg::StateAttribute::OFF );
@@ -32,7 +32,8 @@ MYGUIManager::MYGUIManager( const MYGUIManager& copy,const osg::CopyOp& copyop )
     _activeContextID(copy._activeContextID),
     _initialized(copy._initialized),
 	_gw(copy._gw),
-	_uiScale(copy._uiScale)
+	_uiScale(copy._uiScale),
+	_useHWCursor(copy._useHWCursor)
 {}
 
 void MYGUIManager::setUIScale(float uiScale) {
@@ -43,6 +44,15 @@ void MYGUIManager::setUIScale(float uiScale) {
 		int x, y, w, h; gw->getWindowRectangle(x, y, w, h);
 		gw->getEventQueue()->windowResize(x, y, w, h);
 	}
+}
+
+void MYGUIManager::setUseHWCursor(bool b) {
+	_useHWCursor = b;
+	osg::ref_ptr<osgViewer::GraphicsWindow> gw;
+	if (_gw.lock(gw)) {
+		gw->useCursor(b);
+	}
+	if (_initialized) MyGUI::PointerManager::getInstance().setVisible(!b);
 }
 
 void* MYGUIManager::loadImage( int& width, int& height, MyGUI::PixelFormat& format, const std::string& filename )
@@ -148,8 +158,13 @@ void MYGUIManager::notifyChangeMousePointer(const std::string& _name) {
 			s_cursorMap["BottomRightCorner"] = osgViewer::GraphicsWindow::BottomRightCorner;
 			s_cursorMap["BottomLeftCorner"] = osgViewer::GraphicsWindow::BottomLeftCorner;
 		}
-		std::map<std::string, osgViewer::GraphicsWindow::MouseCursor>::const_iterator it = s_cursorMap.find(_name);
-		gw->setCursor(it == s_cursorMap.end() ? osgViewer::GraphicsWindow::RightArrowCursor : it->second);
+		if (_useHWCursor) {
+			std::map<std::string, osgViewer::GraphicsWindow::MouseCursor>::const_iterator it = s_cursorMap.find(_name);
+			gw->useCursor(true);
+			gw->setCursor(it == s_cursorMap.end() ? osgViewer::GraphicsWindow::RightArrowCursor : it->second);
+		} else {
+			gw->useCursor(false);
+		}
 	}
 }
 
@@ -169,10 +184,11 @@ void MYGUIManager::drawImplementation( osg::RenderInfo& renderInfo ) const
 
 		osg::ref_ptr<osgViewer::GraphicsWindow> gw;
 		if (_gw.lock(gw)) {
-			MyGUI::PointerManager& manager = MyGUI::PointerManager::getInstance();
-			manager.setVisible(false);
-			manager.eventChangeMousePointer += MyGUI::newDelegate(constMe, &MYGUIManager::notifyChangeMousePointer);
+			gw->useCursor(_useHWCursor);
 		}
+		MyGUI::PointerManager& manager = MyGUI::PointerManager::getInstance();
+		manager.setVisible(!_useHWCursor);
+		manager.eventChangeMousePointer += MyGUI::newDelegate(constMe, &MYGUIManager::notifyChangeMousePointer);
 
         constMe->_activeContextID = contextID;
         constMe->_initialized = true;

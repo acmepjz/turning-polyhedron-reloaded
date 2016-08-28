@@ -40,6 +40,9 @@ public:
 
 	void setUIScale(float uiScale);
 	float getUIScale() const { return _uiScale; }
+
+	void setUseHWCursor(bool b);
+	bool getUseHWCursor() const { return _useHWCursor; }
     
     void pushEvent( const osgGA::GUIEventAdapter* ea )
     { _eventsToHandle.push( ea ); }
@@ -75,6 +78,7 @@ protected:
     bool _initialized;
 	osg::observer_ptr<osgViewer::GraphicsWindow> _gw;
 	float _uiScale;
+	bool _useHWCursor;
 
 private:
 	void notifyChangeMousePointer(const std::string& _name);
