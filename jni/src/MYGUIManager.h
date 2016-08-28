@@ -37,6 +37,9 @@ public:
     
     void setResourceCoreFile( const std::string& file ) { _resourceCoreFile = file; }
     const std::string& getResourceCoreFile() const { return _resourceCoreFile; }
+
+	void setUIScale(float uiScale);
+	float getUIScale() const { return _uiScale; }
     
     void pushEvent( const osgGA::GUIEventAdapter* ea )
     { _eventsToHandle.push( ea ); }
@@ -70,7 +73,8 @@ protected:
     std::string _rootMedia;
     unsigned int _activeContextID;
     bool _initialized;
-	osgViewer::GraphicsWindow* _gw;
+	osg::observer_ptr<osgViewer::GraphicsWindow> _gw;
+	float _uiScale;
 
 private:
 	void notifyChangeMousePointer(const std::string& _name);

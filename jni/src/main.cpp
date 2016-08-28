@@ -41,43 +41,37 @@ protected:
 		MYGUIManager::setupResources();
 		_platform->getDataManagerPtr()->addResourceLocation(_rootMedia + "/Demos/Demo_Themes", false);
 		_platform->getDataManagerPtr()->addResourceLocation(_rootMedia + "/Common/Demos", false);
-		_platform->getDataManagerPtr()->addResourceLocation(_rootMedia + "/Common/Themes", false);
 	}
 
 	virtual void initializeControls()
 	{
-		//MyGUI::LayoutManager::getInstance().loadLayout("Wallpaper.layout");
 		const MyGUI::VectorWidgetPtr& root = MyGUI::LayoutManager::getInstance().loadLayout("HelpPanel.layout");
 		if (root.size() == 1)
 		{
 			root.at(0)->findWidget("Text")->castType<MyGUI::TextBox>()->setCaption(
 				"Select skin theme in combobox to see default MyGUI themes.");
 		}
-		createDemo(0);
+		createDemo();
 	}
 
 	void notifyComboAccept(MyGUI::ComboBox* sender, size_t index)
 	{
-		createDemo(index);
-	}
-
-	void createDemo(int index)
-	{
-		destroyDemo();
-		switch (index)
-		{
+		switch (index) {
 		case 0:
-			MyGUI::ResourceManager::getInstance().load("MyGUI_BlueWhiteTheme.xml");
+			setUIScale(1.0f);
 			break;
 		case 1:
-			MyGUI::ResourceManager::getInstance().load("MyGUI_BlackBlueTheme.xml");
+			setUIScale(1.5f);
 			break;
 		case 2:
-			MyGUI::ResourceManager::getInstance().load("MyGUI_TestTheme.xml");
+			setUIScale(2.0f);
 			break;
-		default: break;
 		}
+		if (_comboSkins) _comboSkins->setIndexSelected(index);
+	}
 
+	void createDemo()
+	{
 		MyGUI::VectorWidgetPtr windows = MyGUI::LayoutManager::getInstance().loadLayout("Themes.layout");
 		if (windows.size()<1)
 		{
@@ -90,20 +84,12 @@ protected:
 		if (_comboSkins)
 		{
 			_comboSkins->setComboModeDrop(true);
-			_comboSkins->addItem("blue & white");
-			_comboSkins->addItem("black & blue");
-			_comboSkins->addItem("test");
-			_comboSkins->setIndexSelected(index);
+			_comboSkins->addItem("1.0");
+			_comboSkins->addItem("1.5");
+			_comboSkins->addItem("2.0");
+			_comboSkins->setIndexSelected(0);
 			_comboSkins->eventComboAccept += MyGUI::newDelegate(this, &CustomMYGUIManager::notifyComboAccept);
 		}
-	}
-
-	void destroyDemo()
-	{
-		if (_demoView)
-			MyGUI::WidgetManager::getInstance().destroyWidget(_demoView);
-		_demoView = NULL;
-		_comboSkins = NULL;
 	}
 
 	MyGUI::Widget* _demoView;
@@ -379,7 +365,7 @@ int main(int argc, char** argv){
 	viewer.setThreadingModel(osgViewer::ViewerBase::SingleThreaded); //otherwise it randomly crashes
 	viewer.setRunMaxFrameRate(30.0);
 	viewer.addEventHandler(new MYGUIHandler(ui_camera.get(), mygui.get()));
-	viewer.addEventHandler(new osgViewer::WindowSizeHandler);
+	//viewer.addEventHandler(new osgViewer::WindowSizeHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 	//viewer.addEventHandler(new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()));
 	viewer.addEventHandler(new TestController(level.get()));
@@ -392,8 +378,8 @@ int main(int argc, char** argv){
 		// Send window size for MyGUI to initialize
 		int x, y, w, h; gw->getWindowRectangle(x, y, w, h);
 		viewer.getEventQueue()->windowResize(x, y, w, h);
+		mygui->setGraphicsWindow(gw);
 	}
-	mygui->setGraphicsWindow(gw);
 
 	return viewer.run();
 }

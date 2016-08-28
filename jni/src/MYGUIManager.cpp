@@ -7,20 +7,6 @@
 
 bool MYGUIHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa )
 {
-    int width = ea.getWindowWidth(), height = ea.getWindowHeight();
-    switch ( ea.getEventType() )
-    {
-    case osgGA::GUIEventAdapter::RESIZE:
-        if ( _camera.valid() )
-        {
-            _camera->setProjectionMatrix( osg::Matrixd::ortho2D(0.0, width, 0.0, height) );
-            _camera->setViewport( 0.0, 0.0, width, height );
-        }
-        break;
-    default:
-        break;
-    }
-    
 	// This only works under single-threaded mode
 	if (ea.getEventType() != osgGA::GUIEventAdapter::FRAME)
 		return _manager->handleEvent(ea);
@@ -30,7 +16,7 @@ bool MYGUIHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAda
 MYGUIManager::MYGUIManager()
 :   _gui(0), _platform(0),
     _resourcePathFile("resources.xml"), _resourceCoreFile("MyGUI_Core.xml"),
-	_activeContextID(0), _initialized(false), _gw(0)
+	_activeContextID(0), _initialized(false), _gw(0), _uiScale(1.0f)
 {
     setSupportsDisplayList( false );
     getOrCreateStateSet()->setMode( GL_LIGHTING, osg::StateAttribute::OFF );
@@ -44,8 +30,20 @@ MYGUIManager::MYGUIManager( const MYGUIManager& copy,const osg::CopyOp& copyop )
     _resourceCoreFile(copy._resourceCoreFile),
     _rootMedia(copy._rootMedia),
     _activeContextID(copy._activeContextID),
-    _initialized(copy._initialized)
+    _initialized(copy._initialized),
+	_gw(copy._gw),
+	_uiScale(copy._uiScale)
 {}
+
+void MYGUIManager::setUIScale(float uiScale) {
+	_uiScale = uiScale;
+	osg::ref_ptr<osgViewer::GraphicsWindow> gw;
+	if (_gw.lock(gw)) {
+		// Send window size for MyGUI to initialize
+		int x, y, w, h; gw->getWindowRectangle(x, y, w, h);
+		gw->getEventQueue()->windowResize(x, y, w, h);
+	}
+}
 
 void* MYGUIManager::loadImage( int& width, int& height, MyGUI::PixelFormat& format, const std::string& filename )
 {
@@ -122,7 +120,8 @@ void MYGUIManager::saveImage( int width, int height, MyGUI::PixelFormat format, 
 
 void MYGUIManager::notifyChangeMousePointer(const std::string& _name) {
 	static std::map<std::string, osgViewer::GraphicsWindow::MouseCursor> s_cursorMap;
-	if (_gw) {
+	osg::ref_ptr<osgViewer::GraphicsWindow> gw;
+	if (_gw.lock(gw)) {
 		if (s_cursorMap.empty()) {
 			s_cursorMap["beam"] = osgViewer::GraphicsWindow::TextCursor;
 			s_cursorMap["size_left"] = osgViewer::GraphicsWindow::BottomRightCorner; //ad-hoc
@@ -150,7 +149,7 @@ void MYGUIManager::notifyChangeMousePointer(const std::string& _name) {
 			s_cursorMap["BottomLeftCorner"] = osgViewer::GraphicsWindow::BottomLeftCorner;
 		}
 		std::map<std::string, osgViewer::GraphicsWindow::MouseCursor>::const_iterator it = s_cursorMap.find(_name);
-		_gw->setCursor(it == s_cursorMap.end() ? osgViewer::GraphicsWindow::RightArrowCursor : it->second);
+		gw->setCursor(it == s_cursorMap.end() ? osgViewer::GraphicsWindow::RightArrowCursor : it->second);
 	}
 }
 
@@ -168,7 +167,8 @@ void MYGUIManager::drawImplementation( osg::RenderInfo& renderInfo ) const
         constMe->_gui->initialise( _resourceCoreFile );
         constMe->initializeControls();
 
-		if (_gw) {
+		osg::ref_ptr<osgViewer::GraphicsWindow> gw;
+		if (_gw.lock(gw)) {
 			MyGUI::PointerManager& manager = MyGUI::PointerManager::getInstance();
 			manager.setVisible(false);
 			manager.eventChangeMousePointer += MyGUI::newDelegate(constMe, &MYGUIManager::notifyChangeMousePointer);
@@ -231,6 +231,9 @@ bool MYGUIManager::handleEvent(const osgGA::GUIEventAdapter& ea) const {
 	if (ea.getMouseYOrientation() == osgGA::GUIEventAdapter::Y_INCREASING_UPWARDS)
 		y = ea.getWindowHeight() - y;
 
+	x = int(floor(float(x) / _uiScale + 0.5f));
+	y = int(floor(float(y) / _uiScale + 0.5f));
+
 	switch (ea.getEventType())
 	{
 	case osgGA::GUIEventAdapter::PUSH:
@@ -261,7 +264,9 @@ bool MYGUIManager::handleEvent(const osgGA::GUIEventAdapter& ea) const {
 		return MyGUI::InputManager::getInstance().injectKeyRelease(convertKeyCode(key));
 		break;
 	case osgGA::GUIEventAdapter::RESIZE:
-		_platform->getRenderManagerPtr()->setViewSize(ea.getWindowWidth(), ea.getWindowHeight());
+		_platform->getRenderManagerPtr()->setViewSize(
+			int(floor(float(ea.getWindowWidth()) / _uiScale + 0.5f)),
+			int(floor(float(ea.getWindowHeight()) / _uiScale + 0.5f)));
 		break;
 	default:
 		break;
@@ -305,7 +310,6 @@ void MYGUIManager::setupResources()
             _platform->getDataManagerPtr()->addResourceLocation( node->getContent(), false );
         }
     }
-    _platform->getDataManagerPtr()->addResourceLocation( _rootMedia + "/Common/Base", false );
 }
 
 MyGUI::MouseButton MYGUIManager::convertMouseButton( int button ) const
