@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Resource" version="1.1">
+	<Resource type="ResourceImageSetPointer" name="arrow">
+		<Property key="Point" value="7 4"/>
+		<Property key="Size" value="24 24"/>
+		<Property key="Resource" value="ArrowPointerImage"/>
+	</Resource>
+	<Resource type="ResourceImageSetPointer" name="beam">
+		<Property key="Point" value="11 11"/>
+		<Property key="Size" value="24 24"/>
+		<Property key="Resource" value="BeamPointerImage"/>
+	</Resource>
+	<Resource type="ResourceImageSetPointer" name="size_left">
+		<Property key="Point" value="11 11"/>
+		<Property key="Size" value="24 24"/>
+		<Property key="Resource" value="SizeLeftPointerImage"/>
+	</Resource>
+	<Resource type="ResourceImageSetPointer" name="size_right">
+		<Property key="Point" value="11 11"/>
+		<Property key="Size" value="24 24"/>
+		<Property key="Resource" value="SizeRightPointerImage"/>
+	</Resource>
+	<Resource type="ResourceImageSetPointer" name="size_horz">
+		<Property key="Point" value="11 11"/>
+		<Property key="Size" value="24 24"/>
+		<Property key="Resource" value="SizeHorzPointerImage"/>
+	</Resource>
+	<Resource type="ResourceImageSetPointer" name="size_vert">
+		<Property key="Point" value="11 11"/>
+		<Property key="Size" value="24 24"/>
+		<Property key="Resource" value="SizeVertPointerImage"/>
+	</Resource>
+	<Resource type="ResourceImageSetPointer" name="hand">
+		<Property key="Point" value="12 7"/>
+		<Property key="Size" value="24 24"/>
+		<Property key="Resource" value="HandPointerImage"/>
+	</Resource>
+	<Resource type="ResourceImageSetPointer" name="link">
+		<Property key="Point" value="9 5"/>
+		<Property key="Size" value="24 24"/>
+		<Property key="Resource" value="LinkPointerImage"/>
+	</Resource>
+	<Resource type="ResourceImageSetPointer" name="TopSideCursor">
+		<Property key="Point" value="12 5"/>
+		<Property key="Size" value="24 24"/>
+		<Property key="Resource" value="TopSideCursorImage"/>
+	</Resource>
+	<Resource type="ResourceImageSetPointer" name="BottomSideCursor">
+		<Property key="Point" value="11 18"/>
+		<Property key="Size" value="24 24"/>
+		<Property key="Resource" value="BottomSideCursorImage"/>
+	</Resource>
+	<Resource type="ResourceImageSetPointer" name="LeftSideCursor">
+		<Property key="Point" value="7 13"/>
+		<Property key="Size" value="24 24"/>
+		<Property key="Resource" value="LeftSideCursorImage"/>
+	</Resource>
+	<Resource type="ResourceImageSetPointer" name="RightSideCursor">
+		<Property key="Point" value="20 13"/>
+		<Property key="Size" value="24 24"/>
+		<Property key="Resource" value="RightSideCursorImage"/>
+	</Resource>
+	<Resource type="ResourceImageSetPointer" name="TopLeftCorner">
+		<Property key="Point" value="5 5"/>
+		<Property key="Size" value="24 24"/>
+		<Property key="Resource" value="TopLeftCornerImage"/>
+	</Resource>
+	<Resource type="ResourceImageSetPointer" name="TopRightCorner">
+		<Property key="Point" value="18 5"/>
+		<Property key="Size" value="24 24"/>
+		<Property key="Resource" value="TopRightCornerImage"/>
+	</Resource>
+	<Resource type="ResourceImageSetPointer" name="BottomRightCorner">
+		<Property key="Point" value="20 20"/>
+		<Property key="Size" value="24 24"/>
+		<Property key="Resource" value="BottomRightCornerImage"/>
+	</Resource>
+	<Resource type="ResourceImageSetPointer" name="BottomLeftCorner">
+		<Property key="Point" value="4 20"/>
+		<Property key="Size" value="24 24"/>
+		<Property key="Resource" value="BottomLeftCornerImage"/>
+	</Resource>
+</MyGUI>

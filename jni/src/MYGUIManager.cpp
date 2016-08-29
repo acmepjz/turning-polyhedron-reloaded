@@ -317,13 +317,17 @@ void MYGUIManager::setupResources()
     {
         if ( node->getName()=="Path" )
         {
-            bool root = false;
-            if ( node->findAttribute("root")!="" )
+			bool root = false, recursive = false;
+			if (!node->findAttribute("root").empty())
             {
                 root = MyGUI::utility::parseBool( node->findAttribute("root") );
                 if ( root ) _rootMedia = node->getContent();
             }
-            _platform->getDataManagerPtr()->addResourceLocation( node->getContent(), false );
+			if (!node->findAttribute("recursive").empty())
+			{
+				recursive = MyGUI::utility::parseBool(node->findAttribute("recursive"));
+			}
+			_platform->getDataManagerPtr()->addResourceLocation(node->getContent(), recursive);
         }
     }
 }

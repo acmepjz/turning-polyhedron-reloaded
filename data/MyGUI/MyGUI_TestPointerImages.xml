@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Resource" version="1.1">
+	<Resource type="ResourceImageSet" name="ArrowPointerImage">
+		<Group name="Pointer" texture="DMZ-White.png" size="24 24">
+			<Index name="Pointer">
+				<Frame point="0 0"/>
+			</Index>
+		</Group>
+	</Resource>
+	<Resource type="ResourceImageSet" name="BeamPointerImage">
+		<Group name="Pointer" texture="DMZ-White.png" size="24 24">
+			<Index name="Pointer">
+				<Frame point="32 0"/>
+			</Index>
+		</Group>
+	</Resource>
+	<Resource type="ResourceImageSet" name="SizeLeftPointerImage">
+		<Group name="Pointer" texture="DMZ-White.png" size="24 24">
+			<Index name="Pointer">
+				<Frame point="0 32"/>
+			</Index>
+		</Group>
+	</Resource>
+	<Resource type="ResourceImageSet" name="SizeRightPointerImage">
+		<Group name="Pointer" texture="DMZ-White.png" size="24 24">
+			<Index name="Pointer">
+				<Frame point="32 32"/>
+			</Index>
+		</Group>
+	</Resource>
+	<Resource type="ResourceImageSet" name="SizeHorzPointerImage">
+		<Group name="Pointer" texture="DMZ-White.png" size="24 24">
+			<Index name="Pointer">
+				<Frame point="64 32"/>
+			</Index>
+		</Group>
+	</Resource>
+	<Resource type="ResourceImageSet" name="SizeVertPointerImage">
+		<Group name="Pointer" texture="DMZ-White.png" size="24 24">
+			<Index name="Pointer">
+				<Frame point="96 32"/>
+			</Index>
+		</Group>
+	</Resource>
+	<Resource type="ResourceImageSet" name="HandPointerImage">
+		<Group name="Pointer" texture="DMZ-White.png" size="24 24">
+			<Index name="Pointer">
+				<Frame point="64 0"/>
+			</Index>
+		</Group>
+	</Resource>
+	<Resource type="ResourceImageSet" name="LinkPointerImage">
+		<Group name="Pointer" texture="DMZ-White.png" size="24 24">
+			<Index name="Pointer">
+				<Frame point="96 0"/>
+			</Index>
+		</Group>
+	</Resource>
+	<Resource type="ResourceImageSet" name="TopSideCursorImage">
+		<Group name="Pointer" texture="DMZ-White.png" size="24 24">
+			<Index name="Pointer">
+				<Frame point="0 64"/>
+			</Index>
+		</Group>
+	</Resource>
+	<Resource type="ResourceImageSet" name="BottomSideCursorImage">
+		<Group name="Pointer" texture="DMZ-White.png" size="24 24">
+			<Index name="Pointer">
+				<Frame point="32 64"/>
+			</Index>
+		</Group>
+	</Resource>
+	<Resource type="ResourceImageSet" name="LeftSideCursorImage">
+		<Group name="Pointer" texture="DMZ-White.png" size="24 24">
+			<Index name="Pointer">
+				<Frame point="64 64"/>
+			</Index>
+		</Group>
+	</Resource>
+	<Resource type="ResourceImageSet" name="RightSideCursorImage">
+		<Group name="Pointer" texture="DMZ-White.png" size="24 24">
+			<Index name="Pointer">
+				<Frame point="96 64"/>
+			</Index>
+		</Group>
+	</Resource>
+	<Resource type="ResourceImageSet" name="TopLeftCornerImage">
+		<Group name="Pointer" texture="DMZ-White.png" size="24 24">
+			<Index name="Pointer">
+				<Frame point="0 96"/>
+			</Index>
+		</Group>
+	</Resource>
+	<Resource type="ResourceImageSet" name="TopRightCornerImage">
+		<Group name="Pointer" texture="DMZ-White.png" size="24 24">
+			<Index name="Pointer">
+				<Frame point="32 96"/>
+			</Index>
+		</Group>
+	</Resource>
+	<Resource type="ResourceImageSet" name="BottomRightCornerImage">
+		<Group name="Pointer" texture="DMZ-White.png" size="24 24">
+			<Index name="Pointer">
+				<Frame point="64 96"/>
+			</Index>
+		</Group>
+	</Resource>
+	<Resource type="ResourceImageSet" name="BottomLeftCornerImage">
+		<Group name="Pointer" texture="DMZ-White.png" size="24 24">
+			<Index name="Pointer">
+				<Frame point="96 96"/>
+			</Index>
+		</Group>
+	</Resource>
+</MyGUI>

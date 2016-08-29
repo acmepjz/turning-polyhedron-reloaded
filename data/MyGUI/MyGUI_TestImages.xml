@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Resource" version="1.1">
+	<Resource type="ResourceImageSet" name="MultiListButtonImage">
+		<Group name="Icons" texture="control1.png" size="16 16">
+			<Index name="None">
+				<Frame point="215 24"/>
+			</Index>
+			<Index name="Up">
+				<Frame point="160 368"/>
+			</Index>
+			<Index name="Down">
+				<Frame point="176 368"/>
+			</Index>
+		</Group>
+	</Resource>
+</MyGUI>
