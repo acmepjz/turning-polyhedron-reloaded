@@ -7,5 +7,5 @@
 	<List file="MyGUI_TestPointers.xml"/>
 	<List file="MyGUI_Layers.xml"/>
 	<List file="MyGUI_Settings.xml"/>
-	<List file="Common/MessageBox/MessageBoxResources.xml"/>
+	<List file="MessageBoxResources.xml"/>
 </MyGUI>

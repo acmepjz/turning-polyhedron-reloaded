@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MyGUI type="Resource" version="1.1">
 	<Resource type="ResourceTrueTypeFont" name="DejaVuSansFont_15">
-		<Property key="Source" value="DroidSans.ttf"/>
+		<Property key="Source" value="../font/DroidSans.ttf"/>
 		<Property key="Size" value="10"/>
 		<Property key="Hinting" value="use_native"/>
 		<Property key="Resolution" value="96"/>

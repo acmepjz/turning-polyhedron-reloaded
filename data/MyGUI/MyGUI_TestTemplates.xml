@@ -429,7 +429,7 @@
 		<Widget type="Widget" skin="PanelSkin" position="0 0 34 34" name="Root">
 			<Property key="MoveToClick" value="true"/>
 			<UserString key="LE_TargetWidgetType" value="ProgressBar"/>
-			<UserString key="TrackWidth" value="8"/>
+			<UserString key="TrackWidth" value="6"/>
 			<UserString key="TrackFill" value="false"/>
 			<UserString key="TrackSkin" value="SliderTrackHSkin"/>
 			<Widget type="Widget" skin="PanelEmpty" position="3 3 26 26" align="Stretch" name="TrackPlace">
@@ -444,7 +444,7 @@
 			<UserString key="LE_TargetWidgetType" value="ProgressBar"/>
 			<UserString key="TrackFill" value="true"/>
 			<UserString key="TrackSkin" value="ProgressBarTrackHSkin"/>
-			<UserString key="TrackWidth" value="8"/>
+			<UserString key="TrackWidth" value="1"/>
 			<Widget type="Widget" skin="PanelEmpty" position="3 3 26 26" align="Stretch" name="TrackPlace">
 				<Property key="NeedKey" value="false"/>
 				<Property key="InheritsPick" value="true"/>
@@ -456,7 +456,7 @@
 			<Property key="MoveToClick" value="true"/>
 			<Property key="FlowDirection" value="BottomToTop"/>
 			<UserString key="LE_TargetWidgetType" value="ProgressBar"/>
-			<UserString key="TrackWidth" value="8"/>
+			<UserString key="TrackWidth" value="6"/>
 			<UserString key="TrackFill" value="false"/>
 			<UserString key="TrackSkin" value="SliderTrackVSkin"/>
 			<Widget type="Widget" skin="PanelEmpty" position="3 3 26 26" align="Stretch" name="TrackPlace">
@@ -472,7 +472,7 @@
 			<UserString key="LE_TargetWidgetType" value="ProgressBar"/>
 			<UserString key="TrackFill" value="true"/>
 			<UserString key="TrackSkin" value="ProgressBarTrackVSkin"/>
-			<UserString key="TrackWidth" value="8"/>
+			<UserString key="TrackWidth" value="1"/>
 			<Widget type="Widget" skin="PanelEmpty" position="3 3 26 26" align="Stretch" name="TrackPlace">
 				<Property key="NeedKey" value="false"/>
 				<Property key="InheritsPick" value="true"/>
