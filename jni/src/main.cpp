@@ -29,6 +29,7 @@
 
 //======TEST
 #include "MYGUIManager.h"
+#include "MessageBox.h"
 
 // This class is modified from the Demo_Themes example of MyGUI
 class CustomMYGUIManager : public MYGUIManager
@@ -66,6 +67,9 @@ protected:
 		case 2:
 			setUIScale(2.0f);
 			break;
+		case 3:
+			MyGUI::Message::createMessageBox("Project1", "Hello, World!");
+			break;
 		}
 		if (_comboSkins) _comboSkins->setIndexSelected(index);
 	}
@@ -87,6 +91,7 @@ protected:
 			_comboSkins->addItem("1.0");
 			_comboSkins->addItem("1.5");
 			_comboSkins->addItem("2.0");
+			_comboSkins->addItem("MsgBox");
 			_comboSkins->setIndexSelected(0);
 			_comboSkins->eventComboAccept += MyGUI::newDelegate(this, &CustomMYGUIManager::notifyComboAccept);
 		}
