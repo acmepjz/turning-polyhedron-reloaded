@@ -61,12 +61,12 @@ protected:
     virtual ~MYGUIManager() {}
     
     virtual void updateEvents() const;
-	virtual bool handleEvent(const osgGA::GUIEventAdapter& ea) const;
+	virtual bool handleEvent(const osgGA::GUIEventAdapter& ea, bool async = false) const;
 	virtual void setupResources();
     virtual void initializeControls() {}
     
-    MyGUI::MouseButton convertMouseButton( int button ) const;
-    MyGUI::KeyCode convertKeyCode( int key ) const;
+    static MyGUI::MouseButton convertMouseButton( int button );
+    static MyGUI::KeyCode convertKeyCode( int key );
     
     std::queue< osg::ref_ptr<const osgGA::GUIEventAdapter> > _eventsToHandle;
     MyGUI::Gui* _gui;

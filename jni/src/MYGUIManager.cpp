@@ -8,9 +8,28 @@
 bool MYGUIHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa )
 {
 	// This only works under single-threaded mode
-	if (ea.getEventType() != osgGA::GUIEventAdapter::FRAME)
-		return _manager->handleEvent(ea);
-	return false;
+	switch (ea.getEventType()) {
+	case osgGA::GUIEventAdapter::PUSH:
+	case osgGA::GUIEventAdapter::RELEASE:
+	case osgGA::GUIEventAdapter::SCROLL:
+	case osgGA::GUIEventAdapter::DRAG:
+	case osgGA::GUIEventAdapter::MOVE:
+	case osgGA::GUIEventAdapter::KEYDOWN:
+	case osgGA::GUIEventAdapter::KEYUP:
+	{
+		// check if there are any model window
+		bool hasModal = false;
+		if (_manager->_initialized) {
+			hasModal = MyGUI::InputManager::getInstance().isModalAny();
+		}
+		return _manager->handleEvent(ea) || hasModal;
+	}
+	case osgGA::GUIEventAdapter::RESIZE:
+		_manager->handleEvent(ea, true);
+		return false;
+	default:
+		return false;
+	}
 }
 
 MYGUIManager::MYGUIManager()
@@ -236,8 +255,8 @@ void MYGUIManager::releaseGLObjects( osg::State* state ) const
     }
 }
 
-bool MYGUIManager::handleEvent(const osgGA::GUIEventAdapter& ea) const {
-	if (!_platform || !_initialized) {
+bool MYGUIManager::handleEvent(const osgGA::GUIEventAdapter& ea, bool async) const {
+	if (async || !_platform || !_initialized) {
 		const_cast<MYGUIManager*>(this)->pushEvent(&ea);
 		return false;
 	}
@@ -332,7 +351,7 @@ void MYGUIManager::setupResources()
     }
 }
 
-MyGUI::MouseButton MYGUIManager::convertMouseButton( int button ) const
+MyGUI::MouseButton MYGUIManager::convertMouseButton( int button )
 {
     switch ( button )
     {
@@ -347,7 +366,7 @@ MyGUI::MouseButton MYGUIManager::convertMouseButton( int button ) const
     return MyGUI::MouseButton::None;
 }
 
-MyGUI::KeyCode MYGUIManager::convertKeyCode( int key ) const
+MyGUI::KeyCode MYGUIManager::convertKeyCode( int key )
 {
     static std::map<int, MyGUI::KeyCode> s_keyCodeMap;
     if ( !s_keyCodeMap.size() )
