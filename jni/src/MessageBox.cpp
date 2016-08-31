@@ -10,42 +10,6 @@ namespace MyGUI {
 		return _stream;
 	}
 
-	// §Ó§à§Ù§Ó§â§Ñ§ë§Ñ§Ö§ä §Ú§ß§Õ§Ö§Ü§ã §Ú§Ü§à§ß§Ü§Ú
-	size_t MessageBoxStyle::getIconIndex()
-	{
-		size_t index = 0;
-		int num = mValue >> _IndexIcon1;
-
-		while (num != 0)
-		{
-			if ((num & 1) == 1)
-				return index;
-
-			++index;
-			num >>= 1;
-		}
-
-		return ITEM_NONE;
-	}
-
-	// §Ó§à§Ù§Ó§â§Ñ§ë§Ñ§Ö§ä §Ú§ß§Õ§Ö§Ü§ã §Ú§Ü§à§ß§Ü§Ú
-	size_t MessageBoxStyle::getButtonIndex()
-	{
-		size_t index = 0;
-		int num = mValue;
-
-		while (num != 0)
-		{
-			if ((num & 1) == 1)
-				return index;
-
-			++index;
-			num >>= 1;
-		}
-
-		return ITEM_NONE;
-	}
-
 	// §Ó§à§Ù§Ó§â§Ñ§ë§Ñ§Ö§ä §ã§á§Ú§ã§à§Ü §Ü§ß§à§á§à§Ü
 	std::vector<MessageBoxStyle> MessageBoxStyle::getButtons()
 	{
@@ -161,17 +125,19 @@ namespace MyGUI {
 	}
 
 	/** Set caption text*/
-	void Message::setCaption(const UString& _value)
+	Message* Message::setCaption(const UString& _value)
 	{
 		mMainWidget->castType<Window>()->setCaption(_value);
+		return this;
 	}
 
 	/** Set message text*/
-	void Message::setMessageText(const UString& _value)
+	Message* Message::setMessageText(const UString& _value)
 	{
 		if (mWidgetText != nullptr)
 			mWidgetText->setCaption(_value);
 		updateSize();
+		return this;
 	}
 
 	/** Create button with specific name*/
@@ -202,7 +168,7 @@ namespace MyGUI {
 	}
 
 	/** Set smooth message showing*/
-	void Message::setSmoothShow(bool _value)
+	Message* Message::setSmoothShow(bool _value)
 	{
 		mSmoothShow = _value;
 		if (mSmoothShow)
@@ -211,13 +177,14 @@ namespace MyGUI {
 			mMainWidget->setVisible(true);
 			mMainWidget->castType<Window>()->setVisibleSmooth(true);
 		}
+		return this;
 	}
 
 	/** Set message icon*/
-	void Message::setMessageIcon(MessageBoxStyle _value)
+	Message* Message::setMessageIcon(MessageBoxStyle _value)
 	{
 		if (nullptr == mIcon)
-			return;
+			return this;
 
 		if (mIcon->getItemResource() != nullptr)
 		{
@@ -228,6 +195,7 @@ namespace MyGUI {
 		}
 
 		updateSize();
+		return this;
 	}
 
 	void Message::endMessage(MessageBoxStyle _result)
@@ -241,7 +209,7 @@ namespace MyGUI {
 	}
 
 	/** Create button using MessageBoxStyle*/
-	void Message::setMessageButton(MessageBoxStyle _value)
+	Message* Message::setMessageButton(MessageBoxStyle _value)
 	{
 		clearButton();
 
@@ -266,25 +234,28 @@ namespace MyGUI {
 		}
 
 		updateSize();
+		return this;
 	}
 
 	/** Set message style (button and icon)*/
-	void Message::setMessageStyle(MessageBoxStyle _value)
+	Message* Message::setMessageStyle(MessageBoxStyle _value)
 	{
 		setMessageButton(_value);
 		setMessageIcon(_value);
+		return this;
 	}
 
-	void Message::setMessageModal(bool _value)
+	Message* Message::setMessageModal(bool _value)
 	{
 		if (_value)
 			InputManager::getInstance().addWidgetModal(mMainWidget);
 		else
 			InputManager::getInstance().removeWidgetModal(mMainWidget);
+		return this;
 	}
 
 	Message* Message::createMessageBox(
-		//const UString& _skinName,
+		const UString& _skinName,
 		const UString& _caption,
 		const UString& _message,
 		MessageBoxStyle _style,
@@ -295,7 +266,7 @@ namespace MyGUI {
 		const std::string& _button3,
 		const std::string& _button4)
 	{
-		Message* mess = new Message();
+		Message* mess = _skinName.empty() ? new Message() : new Message(_skinName);
 
 		mess->setCaption(_caption);
 		mess->setMessageText(_message);
@@ -313,6 +284,10 @@ namespace MyGUI {
 				if (!_button3.empty())
 				{
 					mess->addButtonName(_button3);
+					if (!_button4.empty())
+					{
+						mess->addButtonName(_button4);
+					}
 				}
 			}
 		}
@@ -399,7 +374,7 @@ namespace MyGUI {
 		delete this;
 	}
 
-	UString Message::getButtonName(MessageBoxStyle _style) const
+	UString Message::getButtonName(MessageBoxStyle _style)
 	{
 		size_t index = _style.getButtonIndex();
 		const char* tag = getButtonTag(index);
@@ -409,7 +384,7 @@ namespace MyGUI {
 		return result;
 	}
 
-	const char* Message::getIconName(size_t _index) const
+	const char* Message::getIconName(size_t _index)
 	{
 		static const size_t CountIcons = 4;
 		static const char* IconNames[CountIcons + 1] = { "Info", "Quest", "Error", "Warning", "" };
@@ -418,7 +393,7 @@ namespace MyGUI {
 		return IconNames[_index];
 	}
 
-	const char* Message::getButtonName(size_t _index) const
+	const char* Message::getButtonName(size_t _index)
 	{
 		static const size_t Count = 9;
 		static const char * Names[Count + 1] = { "Ok", "Yes", "No", "Abort", "Retry", "Ignore", "Cancel", "Try", "Continue", "" };
@@ -427,7 +402,7 @@ namespace MyGUI {
 		return Names[_index];
 	}
 
-	const char* Message::getButtonTag(size_t _index) const
+	const char* Message::getButtonTag(size_t _index)
 	{
 		static const size_t Count = 9;
 		static const char* Names[Count + 1] = { "MessageBox_Ok", "MessageBox_Yes", "MessageBox_No", "MessageBox_Abort", "MessageBox_Retry", "MessageBox_Ignore", "MessageBox_Cancel", "MessageBox_Try", "MessageBox_Continue", "" };

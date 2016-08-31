@@ -68,7 +68,9 @@ protected:
 			setUIScale(2.0f);
 			break;
 		case 3:
-			MyGUI::Message::createMessageBox("Project1", "Hello, World!");
+			(new MyGUI::Message())->setCaption("Project1")->setMessageText("Hello, World!")
+				->setMessageStyle(MyGUI::MessageBoxStyle::Ok | MyGUI::MessageBoxStyle::IconDefault)
+				->setMessageModal(true);
 			break;
 		}
 		if (_comboSkins) _comboSkins->setIndexSelected(index);

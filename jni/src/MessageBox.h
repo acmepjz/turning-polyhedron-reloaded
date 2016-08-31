@@ -27,6 +27,12 @@ namespace MyGUI
 			Try = MYGUI_FLAG(7),
 			Continue = MYGUI_FLAG(8),
 
+			OkCancel = Ok | Cancel,
+			YesNo = Yes | No,
+			YesNoCancel = Yes | No | Cancel,
+			RetryCancel = Retry | Cancel,
+			AbortRetryIgnore = Abort | Retry | Ignore,
+
 			_IndexUserButton1 = 9, // индекс первой кнопки юзера
 
 			Button1 = MYGUI_FLAG(_IndexUserButton1),
@@ -94,10 +100,40 @@ namespace MyGUI
 		friend std::istream& operator >> (std::istream& _stream, MessageBoxStyle&  _value);
 
 		// возвращает индекс иконки
-		size_t getIconIndex();
+		size_t getIconIndex()
+		{
+			size_t index = 0;
+			int num = mValue >> _IndexIcon1;
+
+			while (num != 0)
+			{
+				if ((num & 1) == 1)
+					return index;
+
+				++index;
+				num >>= 1;
+			}
+
+			return ITEM_NONE;
+		}
 
 		// возвращает индекс иконки
-		size_t getButtonIndex();
+		size_t getButtonIndex()
+		{
+			size_t index = 0;
+			int num = mValue;
+
+			while (num != 0)
+			{
+				if ((num & 1) == 1)
+					return index;
+
+				++index;
+				num >>= 1;
+			}
+
+			return ITEM_NONE;
+		}
 
 		// возвращает список кнопок
 		std::vector<MessageBoxStyle> getButtons();
@@ -107,7 +143,7 @@ namespace MyGUI
 		static MessageBoxStyle parse(const std::string& _value);
 
 	private:
-		const MapAlign& getValueNames();
+		static const MapAlign& getValueNames();
 
 	private:
 		Enum mValue;
@@ -128,31 +164,31 @@ namespace MyGUI
 		virtual ~Message();
 
 		/** Set caption text*/
-		void setCaption(const UString& _value);
+		Message* setCaption(const UString& _value);
 
 		/** Set message text*/
-		void setMessageText(const UString& _value);
+		Message* setMessageText(const UString& _value);
 
 		/** Create button with specific name*/
 		MessageBoxStyle addButtonName(const UString& _name);
 
 		/** Set smooth message showing*/
-		void setSmoothShow(bool _value);
+		Message* setSmoothShow(bool _value);
 
 		/** Set message icon*/
-		void setMessageIcon(MessageBoxStyle _value);
+		Message* setMessageIcon(MessageBoxStyle _value);
 
 		void endMessage(MessageBoxStyle _result);
 
 		void endMessage();
 
 		/** Create button using MessageBoxStyle*/
-		void setMessageButton(MessageBoxStyle _value);
+		Message* setMessageButton(MessageBoxStyle _value);
 
 		/** Set message style (button and icon)*/
-		void setMessageStyle(MessageBoxStyle _value);
+		Message* setMessageStyle(MessageBoxStyle _value);
 
-		void setMessageModal(bool _value);
+		Message* setMessageModal(bool _value);
 
 		/** Static method for creating message with one command
 			@param
@@ -163,9 +199,9 @@ namespace MyGUI
 				_button1 ... _button4 specific buttons names
 		*/
 		static Message* createMessageBox(
-			//const UString& _skinName,
-			const UString& _caption,
-			const UString& _message,
+			const UString& _skinName = "",
+			const UString& _caption = "",
+			const UString& _message = "",
 			MessageBoxStyle _style = MessageBoxStyle::Ok | MessageBoxStyle::IconDefault,
 			const std::string& _layer = "",
 			bool _modal = true,
@@ -194,13 +230,13 @@ namespace MyGUI
 
 		void _destroyMessage(MessageBoxStyle _result);
 
-		UString getButtonName(MessageBoxStyle _style) const;
+		static UString getButtonName(MessageBoxStyle _style);
 
-		const char* getIconName(size_t _index) const;
+		static const char* getIconName(size_t _index);
 
-		const char* getButtonName(size_t _index) const;
+		static const char* getButtonName(size_t _index);
 
-		const char* getButtonTag(size_t _index) const;
+		static const char* getButtonTag(size_t _index);
 
 	private:
 		void initialise();
