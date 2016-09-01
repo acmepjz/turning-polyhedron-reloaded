@@ -107,6 +107,13 @@
 			<UserString key="LE_TargetWidgetType" value="Button"/>
 		</Widget>
 	</Resource>
+	<Resource type="ResourceLayout" name="ButtonDefault" version="3.2.0">
+		<Widget type="Widget" skin="ButtonDefaultSkin" position="20 25 29 26" name="Root">
+			<Property key="FontName" value="Default"/>
+			<Property key="TextAlign" value="Center"/>
+			<UserString key="LE_TargetWidgetType" value="Button"/>
+		</Widget>
+	</Resource>
 	<Resource type="ResourceLayout" name="ButtonImage" version="3.2.0">
 		<Widget type="Widget" skin="ButtonEmptySkin" position="20 20 16 16" name="Root">
 			<Property key="TextAlign" value="Center"/>
