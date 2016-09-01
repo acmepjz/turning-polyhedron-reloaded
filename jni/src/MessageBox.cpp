@@ -312,7 +312,7 @@ namespace MyGUI {
 			size.width += mIcon->getSize().width;
 		}
 		size += mOffsetText;
-		size.width += 3;
+		size.width += 12;
 
 		int width = ((int)mVectorButton.size() * mButtonSize.width) + (((int)mVectorButton.size() + 1) * mButtonOffset.width);
 		if (size.width < width)
@@ -423,7 +423,7 @@ namespace MyGUI {
 		assignWidget(mIcon, "Icon", false);
 		if (mIcon != nullptr)
 		{
-			mLeftOffset2 = mIcon->getRight() + 3;
+			mLeftOffset2 = mIcon->getRight() + 8;
 		}
 
 		mButtonType = Button::getClassTypeName();
