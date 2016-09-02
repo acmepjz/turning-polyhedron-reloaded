@@ -178,6 +178,12 @@ namespace MyGUI
 		/** Set message icon*/
 		Message* setMessageIcon(MessageBoxStyle _value);
 
+		/** Set default button*/
+		Message* setDefaultButton(MessageBoxStyle _value);
+
+		/** Set cancel button*/
+		Message* setCancelButton(MessageBoxStyle _value);
+
 		void endMessage(MessageBoxStyle _result);
 
 		void endMessage();
@@ -203,7 +209,6 @@ namespace MyGUI
 			const UString& _caption = "",
 			const UString& _message = "",
 			MessageBoxStyle _style = MessageBoxStyle::Ok | MessageBoxStyle::IconDefault,
-			const std::string& _layer = "",
 			bool _modal = true,
 			const std::string& _button1 = "",
 			const std::string& _button2 = "",
@@ -226,7 +231,7 @@ namespace MyGUI
 
 		void clearButton();
 
-		/*void onKeyButtonPressed(KeyCode _key, Char _char);*/
+		void onKeyButtonPressed(Widget* _sender, KeyCode _key, Char _char);
 
 		void _destroyMessage(MessageBoxStyle _result);
 

@@ -151,11 +151,6 @@ namespace MyGUI {
 		// §Ò§Ú§ä, §ß§à§Þ§Ö§â §Ü§ß§à§á§Ü§Ú + §ã§Þ§Ö§ë§Ö§ß§Ú§Ö §Õ§à Button1
 		MessageBoxStyle info = MessageBoxStyle(MessageBoxStyle::Enum(MYGUI_FLAG(mVectorButton.size() + MessageBoxStyle::_IndexUserButton1)));
 
-		// §Ù§Ñ§á§à§Þ§Ú§ß§Ñ§Ö§Þ §Ü§ß§à§á§Ü§Ú §Õ§Ý§ñ §à§ä§Þ§Ö§ß§í §Ú §á§à§Õ§ä§Ó§Ö§â§Ø§Õ§Ö§ß§Ú§ñ
-		if (mVectorButton.empty())
-			mInfoOk = info;
-		mInfoCancel = info;
-
 		Widget* widget = mMainWidget->createWidgetT(mButtonType, mButtonSkin, IntCoord(), Align::Left | Align::Bottom);
 		Button* button = widget->castType<Button>();
 		button->eventMouseButtonClick += newDelegate(this, &Message::notifyButtonClick);
@@ -165,6 +160,16 @@ namespace MyGUI {
 
 		updateSize();
 		return info;
+	}
+
+	Message* Message::setDefaultButton(MessageBoxStyle _value) {
+		mInfoOk = _value;
+		return this;
+	}
+
+	Message* Message::setCancelButton(MessageBoxStyle _value) {
+		mInfoCancel = _value;
+		return this;
 	}
 
 	/** Set smooth message showing*/
@@ -205,7 +210,11 @@ namespace MyGUI {
 
 	void Message::endMessage()
 	{
-		_destroyMessage(mInfoCancel);
+		if (mVectorButton.size() == 1) {
+			_destroyMessage(*mVectorButton[0]->_getInternalData<MessageBoxStyle>());
+		} else {
+			_destroyMessage(mInfoCancel);
+		}
 	}
 
 	/** Create button using MessageBoxStyle*/
@@ -226,11 +235,10 @@ namespace MyGUI {
 			// §Ó§ß§å§ä§â§Ú §Ñ§Õ§Õ §ã§Ò§â§Ñ§ã§í§Ó§Ñ§Ö§ä§ã§ñ
 			mVectorButton.back()->_setInternalData(info);
 
-			// §á§Ö§â§Ó§Ñ§ñ §Ü§ß§à§á§Ü§Ñ
-			if (mVectorButton.size() == 1)
+			if (info == MessageBoxStyle::Ok)
 				mInfoOk = info;
-			// §á§à§ã§Ý§Ö§Õ§ß§ñ§ñ §Ü§ß§à§á§Ü§Ñ
-			mInfoCancel = info;
+			else if (info == MessageBoxStyle::Cancel)
+				mInfoCancel = info;
 		}
 
 		updateSize();
@@ -259,7 +267,6 @@ namespace MyGUI {
 		const UString& _caption,
 		const UString& _message,
 		MessageBoxStyle _style,
-		const std::string& _layer,
 		bool _modal,
 		const std::string& _button1,
 		const std::string& _button2,
@@ -357,15 +364,20 @@ namespace MyGUI {
 		mVectorButton.clear();
 	}
 
-	/*void Message::onKeyButtonPressed(KeyCode _key, Char _char)
+	void Message::onKeyButtonPressed(Widget* _sender, KeyCode _key, Char _char)
 	{
-	Base::onKeyButtonPressed(_key, _char);
-
-	if ((_key == KeyCode::Return) || (_key == KeyCode::NumpadEnter))
-	_destroyMessage(mInfoOk);
-	else if (_key == KeyCode::Escape)
-	_destroyMessage(mInfoCancel);
-	}*/
+		if ((_key == KeyCode::Return) || (_key == KeyCode::NumpadEnter)) {
+			if (mVectorButton.size() == 1) {
+				_destroyMessage(*mVectorButton[0]->_getInternalData<MessageBoxStyle>());
+			} else if (mInfoOk != MessageBoxStyle::None) {
+				_destroyMessage(mInfoOk);
+			}
+		} else if (_key == KeyCode::Escape) {
+			if (mVectorButton.size() == 1 || mInfoCancel != MessageBoxStyle::None) {
+				endMessage();
+			}
+		}
+	}
 
 	void Message::_destroyMessage(MessageBoxStyle _result)
 	{
@@ -446,14 +458,19 @@ namespace MyGUI {
 		}
 
 		Window* window = mMainWidget->castType<Window>(false);
-		if (window != nullptr)
+		if (window != nullptr) {
 			window->eventWindowButtonPressed += newDelegate(this, &Message::notifyWindowButtonPressed);
+			window->eventKeyButtonPressed += newDelegate(this, &Message::onKeyButtonPressed);
+		}
 	}
 
 	void Message::notifyWindowButtonPressed(MyGUI::Window* _sender, const std::string& _name)
 	{
-		if (_name == "close")
-			endMessage();
+		if (_name == "close") {
+			if (mVectorButton.size() == 1 || mInfoCancel != MessageBoxStyle::None) {
+				endMessage();
+			}
+		}
 	}
 
 }
