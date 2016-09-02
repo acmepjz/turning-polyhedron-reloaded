@@ -10,7 +10,7 @@ namespace MyGUI {
 		return _stream;
 	}
 
-	// �ӧ�٧ӧ�ѧ�ѧ֧� ���ڧ��� �ܧߧ����
+	// возвращает список кнопок
 	std::vector<MessageBoxStyle> MessageBoxStyle::getButtons()
 	{
 		std::vector<MessageBoxStyle> buttons;
@@ -148,7 +148,7 @@ namespace MyGUI {
 			MYGUI_LOG(Warning, "Too many buttons in message box, ignored");
 			return MessageBoxStyle::None;
 		}
-		// �ҧڧ�, �ߧ�ާ֧� �ܧߧ��ܧ� + ��ާ֧�֧ߧڧ� �է� Button1
+		// бит, номер кнопки + смещение до Button1
 		MessageBoxStyle info = MessageBoxStyle(MessageBoxStyle::Enum(MYGUI_FLAG(mVectorButton.size() + MessageBoxStyle::_IndexUserButton1)));
 
 		Widget* widget = mMainWidget->createWidgetT(mButtonType, mButtonSkin, IntCoord(), Align::Left | Align::Bottom);
@@ -226,13 +226,13 @@ namespace MyGUI {
 
 		for (size_t index = 0; index < buttons.size(); ++index)
 		{
-			// �ܧ���֧ܧ�ڧ��֧� �֧� �ߧ�ާ֧�
+			// корректируем ее номер
 			MessageBoxStyle info = buttons[index];
 
-			// �֧�ݧ� �ҧڧ� �֧��� ��� ���ѧӧڧ� �ܧߧ��ܧ�
+			// если бит есть то ставим кнопку
 			addButtonName(getButtonName(info));
 
-			// �ӧߧ���� �ѧէ� ��ҧ�ѧ���ӧѧ֧���
+			// внутри адд сбрасывается
 			mVectorButton.back()->_setInternalData(info);
 
 			if (info == MessageBoxStyle::Ok)
@@ -311,7 +311,7 @@ namespace MyGUI {
 		if (mWidgetText != nullptr)
 			text = mWidgetText->getSubWidgetText();
 		IntSize size = text == nullptr ? IntSize() : text->getTextSize();
-		// �ާڧߧڧާ�� �ӧ������ �ڧܧ�ߧܧ�
+		// минимум высота иконки
 		if ((nullptr != mIcon) && (mIcon->getImageIndex() != ITEM_NONE))
 		{
 			if (size.height < mIcon->getHeight())

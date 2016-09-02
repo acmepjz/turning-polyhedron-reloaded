@@ -19,7 +19,7 @@ namespace wraps {
 		const std::string MAIN_WINDOW2 = "Root";
 		mLayoutName = _layout;
 
-		// ��ҧ��ѧ�ڧӧѧ֧�
+		// оборачиваем
 		if (mLayoutName.empty())
 		{
 			mMainWidget = _parent;
@@ -29,7 +29,7 @@ namespace wraps {
 				mPrefix = FindParentPrefix(mMainWidget);
 			}
 		}
-		// �٧ѧԧ��اѧ֧� �ݧ֧ۧѧ�� �ߧ� �ӧڧէا֧�
+		// загружаем лейаут на виджет
 		else
 		{
 			mPrefix = MyGUI::utility::toString(this, "_");
@@ -63,12 +63,12 @@ namespace wraps {
 
 	void BaseLayout::shutdown()
 	{
-		// ��էѧݧ�֧� �ӧ�� �ܧݧѧ���
+		// удаляем все классы
 		for (VectorBasePtr::reverse_iterator iter = mListBase.rbegin(); iter != mListBase.rend(); ++iter)
 			delete (*iter);
 		mListBase.clear();
 
-		// ��էѧݧ�֧� �ӧ�� �����ӧ��� �ӧڧէا֧��
+		// удаляем все рутовые виджеты
 		if (!mLayoutName.empty())
 			MyGUI::LayoutManager::getInstance().unloadLayout(mListWindowRoot);
 		mListWindowRoot.clear();
