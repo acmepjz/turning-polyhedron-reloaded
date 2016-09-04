@@ -69,8 +69,14 @@ namespace wraps {
 		mListBase.clear();
 
 		// удаляем все рутовые виджеты
-		if (!mLayoutName.empty())
-			MyGUI::LayoutManager::getInstance().unloadLayout(mListWindowRoot);
+		for (MyGUI::VectorWidgetPtr::const_iterator iter = mListWindowRoot.begin(); iter != mListWindowRoot.end(); ++iter) {
+			MyGUI::Window *window = (*iter)->castType<MyGUI::Window>(false);
+			if (window) {
+				window->destroySmooth();
+			} else {
+				MyGUI::WidgetManager::getInstance().destroyWidget(*iter);
+			}
+		}
 		mListWindowRoot.clear();
 	}
 
