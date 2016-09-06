@@ -27,6 +27,8 @@
 #include "SimpleGeometry.h"
 #include "XMLReaderWriter.h"
 
+osgViewer::Viewer *theViewer = NULL;
+
 //======TEST
 #include "MYGUIManager.h"
 #include "MessageBox.h"
@@ -35,70 +37,51 @@
 class CustomMYGUIManager : public MYGUIManager
 {
 public:
-	CustomMYGUIManager() : _demoView(NULL), _comboSkins(NULL) {}
-protected:
+	CustomMYGUIManager() : _demoView(NULL), _menuBar(NULL) {}
+private:
 	virtual void setupResources()
 	{
 		MYGUIManager::setupResources();
-		_platform->getDataManagerPtr()->addResourceLocation(_rootMedia + "/Demos/Demo_Themes", false);
-		_platform->getDataManagerPtr()->addResourceLocation(_rootMedia + "/Common/Demos", false);
+		_platform->getDataManagerPtr()->addResourceLocation(_rootMedia + "/Layout", false);
 	}
 
 	virtual void initializeControls()
 	{
-		const MyGUI::VectorWidgetPtr& root = MyGUI::LayoutManager::getInstance().loadLayout("HelpPanel.layout");
-		if (root.size() == 1)
-		{
-			root.at(0)->findWidget("Text")->castType<MyGUI::TextBox>()->setCaption(
-				"Select skin theme in combobox to see default MyGUI themes.");
-		}
-		createDemo();
+		MyGUI::VectorWidgetPtr windows = MyGUI::LayoutManager::getInstance().loadLayout("GameScreen.layout");
+
+		_demoView = windows[0]->castType<MyGUI::Window>();
+		_menuBar = _demoView->findWidget("MenuBar")->castType<MyGUI::MenuBar>();
+
+		_menuBar->eventMenuCtrlAccept += MyGUI::newDelegate(this, &CustomMYGUIManager::notifyMenuItemClick);
 	}
 
-	void notifyComboAccept(MyGUI::ComboBox* sender, size_t index)
-	{
-		switch (index) {
-		case 0:
-			setUIScale(1.0f);
-			break;
-		case 1:
-			setUIScale(1.5f);
-			break;
-		case 2:
-			setUIScale(2.0f);
-			break;
-		case 3:
-			MyGUI::Message::createMessageBox("", "Project1", "Hello, World!");
-			break;
+	void notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem* item) {
+		const std::string& name = item->getName();
+		if (name == "mnuExit") {
+			theViewer->setDone(true);
+		} else if (name == "mnuUIScale") {
+			toggleRadio(item);
+			setUIScale(atof(item->getUserString("Tag").c_str()));
+		} else if (name == "mnuMsgBox") {
+			MyGUI::Message::createMessageBox("Project1", "Hello, World!");
 		}
-		if (_comboSkins) _comboSkins->setIndexSelected(index);
 	}
 
-	void createDemo()
-	{
-		MyGUI::VectorWidgetPtr windows = MyGUI::LayoutManager::getInstance().loadLayout("Themes.layout");
-		if (windows.size()<1)
-		{
-			OSG_WARN << "Error load layout" << std::endl;
-			return;
-		}
+	static void toggleCheck(MyGUI::MenuItem* current) {
+		current->setItemChecked(!current->getItemChecked());
+	}
 
-		_demoView = windows[0];
-		_comboSkins = MyGUI::Gui::getInstance().findWidget<MyGUI::ComboBox>("Combo");
-		if (_comboSkins)
-		{
-			_comboSkins->setComboModeDrop(true);
-			_comboSkins->addItem("1.0");
-			_comboSkins->addItem("1.5");
-			_comboSkins->addItem("2.0");
-			_comboSkins->addItem("MsgBox");
-			_comboSkins->setIndexSelected(0);
-			_comboSkins->eventComboAccept += MyGUI::newDelegate(this, &CustomMYGUIManager::notifyComboAccept);
+	void toggleRadio(MyGUI::MenuItem* current) {
+		MyGUI::VectorWidgetPtr widgets;
+		_menuBar->findWidgets(current->getName(), widgets);
+		for (size_t i = 0; i < widgets.size(); i++) {
+			MyGUI::MenuItem *item = widgets[i]->castType<MyGUI::MenuItem>();
+			item->setItemChecked(item == current);
 		}
 	}
 
 	MyGUI::Widget* _demoView;
-	MyGUI::ComboBox* _comboSkins;
+	MyGUI::MenuBar* _menuBar;
 };
 //========
 
@@ -281,6 +264,7 @@ public:
 
 int main(int argc, char** argv){
 	osgViewer::Viewer viewer;
+	theViewer = &viewer;
 
 	//create window traits
 	osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;

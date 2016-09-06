@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Window" skin="WindowEmpty" position="0 0 0 24" align="HStretch Top" layer="Overlapped" name="_Main">
+		<Widget type="MenuBar" skin="MenuBar" position="0 0 0 24" align="HStretch Top" name="MenuBar">
+			<Widget type="MenuItem">
+				<Property key="Caption" value="File"/>
+				<Property key="MenuItemType" value="Popup"/>
+				<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
+					<Widget type="MenuItem">
+						<Property key="Caption" value="New"/>
+					</Widget>
+					<Widget type="MenuItem">
+						<Property key="Caption" value="Open"/>
+					</Widget>
+					<Widget type="MenuItem">
+						<Property key="Caption" value="Save"/>
+					</Widget>
+					<Widget type="MenuItem">
+						<Property key="Caption" value="Save As"/>
+					</Widget>
+					<Widget type="MenuItem">
+						<Property key="MenuItemType" value="Separator"/>
+					</Widget>
+					<Widget type="MenuItem">
+						<Property key="Caption" value="Recent Files"/>
+						<Property key="MenuItemType" value="Popup"/>
+						<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
+							<Widget type="MenuItem">
+								<Property key="Caption" value="1.txt"/>
+							</Widget>
+							<Widget type="MenuItem">
+								<Property key="Caption" value="2.txt"/>
+							</Widget>
+						</Widget>
+					</Widget>
+					<Widget type="MenuItem">
+						<Property key="MenuItemType" value="Separator"/>
+					</Widget>
+					<Widget type="MenuItem" name="mnuExit">
+						<Property key="Caption" value="Exit"/>
+					</Widget>
+				</Widget>
+			</Widget>
+			<Widget type="MenuItem">
+				<Property key="Caption" value="Edit"/>
+				<Property key="MenuItemType" value="Popup"/>
+				<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
+					<Widget type="MenuItem">
+						<Property key="Caption" value="Undo"/>
+					</Widget>
+					<Widget type="MenuItem">
+						<Property key="Caption" value="Redo"/>
+					</Widget>
+					<Widget type="MenuItem">
+						<Property key="MenuItemType" value="Separator"/>
+					</Widget>
+					<Widget type="MenuItem">
+						<Property key="Caption" value="Cut"/>
+					</Widget>
+					<Widget type="MenuItem">
+						<Property key="Caption" value="Copy"/>
+					</Widget>
+					<Widget type="MenuItem">
+						<Property key="Caption" value="Paste"/>
+					</Widget>
+				</Widget>
+			</Widget>
+			<Widget type="MenuItem">
+				<Property key="MenuItemType" value="Separator"/>
+			</Widget>
+			<Widget type="MenuItem">
+				<Property key="Caption" value="Test"/>
+				<Property key="MenuItemType" value="Popup"/>
+				<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
+					<Widget type="MenuItem">
+						<Property key="Caption" value="UI Scale"/>
+						<Property key="MenuItemType" value="Popup"/>
+						<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
+							<Widget type="MenuItem" name="mnuUIScale">
+								<UserString key="Tag" value="1.0"/>
+								<Property key="Caption" value="1.0"/>
+                                <Property key="MenuItemChecked" value="true"/>
+							</Widget>
+							<Widget type="MenuItem" name="mnuUIScale">
+								<UserString key="Tag" value="1.5"/>
+								<Property key="Caption" value="1.5"/>
+							</Widget>
+							<Widget type="MenuItem" name="mnuUIScale">
+								<UserString key="Tag" value="2.0"/>
+								<Property key="Caption" value="2.0"/>
+							</Widget>
+						</Widget>
+					</Widget>
+					<Widget type="MenuItem">
+						<Property key="MenuItemType" value="Separator"/>
+					</Widget>
+					<Widget type="MenuItem" name="mnuMsgBox">
+						<Property key="Caption" value="MsgBox"/>
+					</Widget>
+				</Widget>
+			</Widget>
+		</Widget>
+    </Widget>
+    <CodeGeneratorSettings/>
+</MyGUI>
