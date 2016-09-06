@@ -32,6 +32,7 @@ SOURCE_GROUP("Header Files\\util" FILES
 	${PROJECT_SOURCE_DIR}/jni/src/Rect.h
 	${PROJECT_SOURCE_DIR}/jni/src/u8file.h
 	${PROJECT_SOURCE_DIR}/jni/src/util_err.h
+	${PROJECT_SOURCE_DIR}/jni/src/util_filesystem.h
 	${PROJECT_SOURCE_DIR}/jni/src/util_misc.h
 	${PROJECT_SOURCE_DIR}/jni/src/util_object.h
 	${PROJECT_SOURCE_DIR}/jni/src/XMLReaderWriter.h
@@ -40,6 +41,7 @@ SOURCE_GROUP("Header Files\\util" FILES
 SOURCE_GROUP("Source Files\\util" FILES
 	${PROJECT_SOURCE_DIR}/jni/src/LZSS.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/u8file.cpp
+	${PROJECT_SOURCE_DIR}/jni/src/util_filesystem.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/util_misc.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/XMLReaderWriter.cpp
 )
@@ -78,14 +80,12 @@ SOURCE_GROUP("Source Files\\game" FILES
 
 SOURCE_GROUP("Header Files\\mygui" FILES
 	${PROJECT_SOURCE_DIR}/jni/src/BaseLayout.h
-	${PROJECT_SOURCE_DIR}/jni/src/FileSystemInfo.h
 	${PROJECT_SOURCE_DIR}/jni/src/MessageBox.h
 	${PROJECT_SOURCE_DIR}/jni/src/MYGUIManager.h
 )
 
 SOURCE_GROUP("Source Files\\mygui" FILES
 	${PROJECT_SOURCE_DIR}/jni/src/BaseLayout.cpp
-	${PROJECT_SOURCE_DIR}/jni/src/FileSystemInfo.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/MessageBox.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/MYGUIManager.cpp
 )
