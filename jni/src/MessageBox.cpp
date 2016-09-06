@@ -263,7 +263,6 @@ namespace MyGUI {
 	}
 
 	Message* Message::createMessageBox(
-		const UString& _skinName,
 		const UString& _caption,
 		const UString& _message,
 		MessageBoxStyle _style,
@@ -273,7 +272,7 @@ namespace MyGUI {
 		const std::string& _button3,
 		const std::string& _button4)
 	{
-		Message* mess = _skinName.empty() ? new Message() : new Message(_skinName);
+		Message* mess = new Message();
 
 		mess->setCaption(_caption);
 		mess->setMessageText(_message);

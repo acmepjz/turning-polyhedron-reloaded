@@ -205,7 +205,6 @@ namespace MyGUI
 				_button1 ... _button4 specific buttons names
 		*/
 		static Message* createMessageBox(
-			const UString& _skinName = "",
 			const UString& _caption = "",
 			const UString& _message = "",
 			MessageBoxStyle _style = MessageBoxStyle::Ok | MessageBoxStyle::IconDefault,
