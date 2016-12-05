@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Window" skin="WindowCSX" position="0 0 656 520" layer="Overlapped" name="_Main">
+		<Widget type="Button" skin="ButtonDefault" align="Right Bottom" position="560 416 72 24" name="cmdOK">
+			<Property key="Caption" value="OK"/>
+		</Widget>
+		<Widget type="Button" skin="Button" align="Right Bottom" position="560 448 72 24" name="cmdCancel">
+			<Property key="Caption" value="Cancel"/>
+		</Widget>
+	</Widget>
+    <CodeGeneratorSettings/>
+</MyGUI>
