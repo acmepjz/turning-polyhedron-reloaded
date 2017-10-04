@@ -6,7 +6,16 @@ namespace MyGUI {
 		wraps::BaseLayout("FileDialog.layout"),
 		mSmoothShow(false)
 	{
-		initialise();
+		Window *window = dynamic_cast<Window*>(mMainWidget);
+
+		window->eventWindowButtonPressed += newDelegate(this, &FileDialog::notifyWindowButtonPressed);
+
+		for (int i = 0, m = window->getChildCount(); i < m; i++) {
+			Widget *widget = window->getChildAt(i);
+			if (widget->isType<Button>()) {
+				widget->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
+			}
+		}
 	}
 
 	FileDialog::~FileDialog() {
@@ -37,6 +46,26 @@ namespace MyGUI {
 
 	void FileDialog::endMessage() {
 		_destroy(false);
+	}
+
+	void FileDialog::notifyButtonClick(Widget* _sender) {
+		std::string _name = _sender->getName().substr(mPrefix.size()); // ???
+
+		if (_name == "cmdCancel") {
+			endMessage();
+		}
+	}
+
+	void FileDialog::notifyWindowButtonPressed(MyGUI::Window* _sender, const std::string& _name) {
+		if (_name == "close") {
+			endMessage();
+		}
+	}
+
+	void FileDialog::_destroy(bool _result) {
+		if (_result) eventFileDialogAccept(this);
+
+		delete this;
 	}
 
 }

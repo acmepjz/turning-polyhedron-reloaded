@@ -32,6 +32,7 @@ osgViewer::Viewer *theViewer = NULL;
 //======TEST
 #include "MYGUIManager.h"
 #include "MessageBox.h"
+#include "FileDialog.h"
 
 // This class is modified from the Demo_Themes example of MyGUI
 class CustomMYGUIManager : public MYGUIManager
@@ -55,10 +56,22 @@ private:
 		_menuBar->eventMenuCtrlAccept += MyGUI::newDelegate(this, &CustomMYGUIManager::notifyMenuItemClick);
 	}
 
+	void mnuExit_Click_2(MyGUI::Message* sender, MyGUI::MessageBoxStyle result) {
+		if (result == MyGUI::MessageBoxStyle::Yes) {
+			theViewer->setDone(true);
+		}
+	}
+
 	void notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem* item) {
 		const std::string& name = item->getName();
 		if (name == "mnuExit") {
-			theViewer->setDone(true);
+			MyGUI::Message *msgbox = MyGUI::Message::createMessageBox("Exit game", "Are you sure?",
+				MyGUI::MessageBoxStyle::YesNo | MyGUI::MessageBoxStyle::IconWarning);
+			msgbox->eventMessageBoxResult += MyGUI::newDelegate(this, &CustomMYGUIManager::mnuExit_Click_2);
+		} else if (name == "mnuOpen") {
+			MyGUI::FileDialog *window = new MyGUI::FileDialog();
+			window->setSmoothShow(true);
+			window->setMessageModal(true);
 		} else if (name == "mnuUIScale") {
 			toggleRadio(item);
 			setUIScale(atof(item->getUserString("Tag").c_str()));
@@ -93,7 +106,7 @@ game::Level* test(const char* filename, int levelIndex) {
 	osg::ref_ptr<game::Level> level = new game::Level;
 	level->name = "Unnamed level";
 
-	//TETS
+	//load default object and tile types
 	osg::ref_ptr<XMLNode> x = XMLReaderWriter::readFile(
 		std::ifstream("../data/DefaultObjectTypes.xml", std::ios::in | std::ios::binary));
 	if (x.valid()) level->getOrCreateObjectTypeMap()->load(x.get());
@@ -128,6 +141,8 @@ game::Level* test(const char* filename, int levelIndex) {
 			}
 		}
 	}
+
+	// create a default level
 
 	//some tile types
 	osg::ref_ptr<TileType> ground, ground2, wall, ex;

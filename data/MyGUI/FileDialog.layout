@@ -1,12 +1,39 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <MyGUI type="Layout" version="3.2.0">
-    <Widget type="Window" skin="WindowCSX" position="0 0 656 520" layer="Overlapped" name="_Main">
-		<Widget type="Button" skin="ButtonDefault" align="Right Bottom" position="560 416 72 24" name="cmdOK">
-			<Property key="Caption" value="OK"/>
+	<Widget type="Window" skin="WindowCSX" position="0 0 656 520" layer="Overlapped" name="_Main">
+		<Property key="Caption" value="Open"/>
+		<Widget type="Button" skin="ButtonLeftSkin" align="Left Top" position="8 8 24 24" name="cmdPrev"/>
+		<Widget type="Button" skin="ButtonRightSkin" align="Left Top" position="32 8 24 24" name="cmdNext"/>
+		<Widget type="Button" skin="ButtonUpSkin2" align="Left Top" position="56 8 24 24" name="cmdUp"/>
+		<Widget type="ComboBox" skin="ComboBox" align="HStretch Top" position="88 8 424 24" name="cmbFolder">
+			<Property key="AddItem" value="Hello"/>
+			<Property key="AddItem" value="World"/>
 		</Widget>
-		<Widget type="Button" skin="Button" align="Right Bottom" position="560 448 72 24" name="cmdCancel">
+		<Widget type="Button" skin="Button" align="Right Top" position="520 8 24 24" name="cmdFolderSwitch">
+			<Property key="Caption" value="..."/>
+		</Widget>
+		<Widget type="Button" skin="Button" align="Right Top" position="552 8 80 24" name="cmdNewFolder">
+			<Property key="Caption" value="New folder"/>
+		</Widget>
+		<Widget type="MultiListBox" skin="MultiListBox" align="Stretch" position="8 40 624 368" name="lstFile"/>
+		<Widget type="TextBox" skin="TextBox" align="Left Bottom" position="8 416 72 24" name="lblFileName">
+			<Property key="Caption" value="File name"/>
+		</Widget>
+		<Widget type="EditBox" skin="EditBox" align="HStretch Bottom" position="88 416 456 24" name="txtFileName"/>
+		<Widget type="TextBox" skin="TextBox" align="Left Bottom" position="8 448 72 24" name="lblFileType">
+			<Property key="Caption" value="File type"/>
+		</Widget>
+		<Widget type="ComboBox" skin="ComboBox" align="HStretch Bottom" position="88 448 456 24" name="cmbFileType">
+			<Property key="Static" value="true"/>
+			<Property key="AddItem" value="Hello"/>
+			<Property key="AddItem" value="World"/>
+		</Widget>
+		<Widget type="Button" skin="ButtonDefault" align="Right Bottom" position="552 416 80 24" name="cmdOK">
+			<Property key="Caption" value="Open"/>
+		</Widget>
+		<Widget type="Button" skin="Button" align="Right Bottom" position="552 448 80 24" name="cmdCancel">
 			<Property key="Caption" value="Cancel"/>
 		</Widget>
 	</Widget>
-    <CodeGeneratorSettings/>
+	<CodeGeneratorSettings/>
 </MyGUI>

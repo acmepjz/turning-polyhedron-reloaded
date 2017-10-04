@@ -268,9 +268,9 @@ namespace wraps
 
 	protected:
 		MyGUI::Widget* mMainWidget;
+		std::string mPrefix;
 
 	private:
-		std::string mPrefix;
 		std::string mLayoutName;
 		MyGUI::VectorWidgetPtr mListWindowRoot;
 		typedef std::vector<BaseLayout*> VectorBasePtr;

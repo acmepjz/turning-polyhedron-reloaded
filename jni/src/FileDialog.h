@@ -39,8 +39,6 @@ namespace MyGUI {
 		void _destroy(bool _result);
 
 	private:
-		void initialise();
-
 		void notifyWindowButtonPressed(MyGUI::Window* _sender, const std::string& _name);
 
 	private:
