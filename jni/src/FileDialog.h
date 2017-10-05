@@ -1,7 +1,11 @@
 #pragma once
 
+#include <vector>
+#include <string>
+
 #include <MyGUI/MyGUI.h>
 #include "BaseLayout.h"
+#include "util_filesystem.h"
 
 namespace MyGUI {
 
@@ -14,6 +18,9 @@ namespace MyGUI {
 		FileDialog();
 
 		virtual ~FileDialog();
+
+		/** must call this function before show */
+		void initialize();
 
 		/** Set smooth message showing*/
 		FileDialog* setSmoothShow(bool _value);
@@ -29,9 +36,15 @@ namespace MyGUI {
 		EventHandle_FileDialogPtrFileDialog
 			eventFileDialogAccept;
 
-	protected:
-		void updateSize();
+		std::string currentDirectory;
+		std::string rootDirectory;
+		std::string fileName;
+		std::vector<std::string> fileTypes;
+		std::vector<std::string> fileExtensions;
+		int selectedFileType;
+		bool isSaveDialog;
 
+	protected:
 		void notifyButtonClick(Widget* _sender);
 
 		void onKeyButtonPressed(Widget* _sender, KeyCode _key, Char _char);
@@ -41,8 +54,17 @@ namespace MyGUI {
 	private:
 		void notifyWindowButtonPressed(MyGUI::Window* _sender, const std::string& _name);
 
+		void refreshFileList();
+
 	private:
 		bool mSmoothShow;
+
+		Button *cmdPrev, *cmdNext, *cmdUp, *cmdFolder;
+		MultiListBox *lstFile;
+		EditBox *txtFileName;
+		ComboBox *cmbFileType;
+
+		std::vector<util::FileInfo> fileList;
 	};
 
 }

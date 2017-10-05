@@ -5,9 +5,8 @@
 		<Widget type="Button" skin="ButtonLeftSkin" align="Left Top" position="8 8 24 24" name="cmdPrev"/>
 		<Widget type="Button" skin="ButtonRightSkin" align="Left Top" position="32 8 24 24" name="cmdNext"/>
 		<Widget type="Button" skin="ButtonUpSkin2" align="Left Top" position="56 8 24 24" name="cmdUp"/>
-		<Widget type="ComboBox" skin="ComboBox" align="HStretch Top" position="88 8 424 24" name="cmbFolder">
-			<Property key="AddItem" value="Hello"/>
-			<Property key="AddItem" value="World"/>
+		<Widget type="Button" skin="Button" align="HStretch Top" position="88 8 424 24" name="cmdFolder">
+			<Property key="TextAlign" value="Left VCenter"/>
 		</Widget>
 		<Widget type="Button" skin="Button" align="Right Top" position="520 8 24 24" name="cmdFolderSwitch">
 			<Property key="Caption" value="..."/>
@@ -25,8 +24,6 @@
 		</Widget>
 		<Widget type="ComboBox" skin="ComboBox" align="HStretch Bottom" position="88 448 456 24" name="cmbFileType">
 			<Property key="Static" value="true"/>
-			<Property key="AddItem" value="Hello"/>
-			<Property key="AddItem" value="World"/>
 		</Widget>
 		<Widget type="Button" skin="ButtonDefault" align="Right Bottom" position="552 416 80 24" name="cmdOK">
 			<Property key="Caption" value="Open"/>

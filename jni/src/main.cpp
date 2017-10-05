@@ -72,6 +72,7 @@ private:
 			MyGUI::FileDialog *window = new MyGUI::FileDialog();
 			window->setSmoothShow(true);
 			window->setMessageModal(true);
+			window->initialize();
 		} else if (name == "mnuUIScale") {
 			toggleRadio(item);
 			setUIScale(atof(item->getUserString("Tag").c_str()));

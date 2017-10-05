@@ -37,7 +37,36 @@
 
 namespace util {
 
-	void enumAllFiles(std::vector<FileInfo> ret, std::string path, const char* extension, bool enumFile, bool enumDir, bool containsPath) {
+	int FileInfoComparer::compare(const FileInfo& f1, const FileInfo& f2) const {
+		int ret = (f1.isFolder ? 0 : 1) - (f2.isFolder ? 0 : 1);
+
+		if (ret == 0) {
+			switch (sortKey) {
+			case SortByExtension:
+				ret = strcmp(f1.ext.c_str(), f2.ext.c_str());
+				break;
+			case SortByTime:
+				ret = strcmp(f1.mtime.c_str(), f2.mtime.c_str());
+				break;
+			case SortBySize:
+				ret = (f1.size < f2.size) ? -1 : (f1.size > f2.size) ? 1 : 0;
+				break;
+			}
+		}
+
+		// default is sort by name (but using lower case)
+		if (ret == 0) {
+			std::string s1 = osgDB::convertToLowerCase(f1.name);
+			std::string s2 = osgDB::convertToLowerCase(f2.name);
+			ret = strcmp(s1.c_str(), s2.c_str());
+		}
+
+		return descending ? -ret : ret;
+	}
+
+	void enumAllFiles(std::vector<FileInfo>& ret, std::string path, const char* extension, bool enumFile, bool enumDir, bool containsPath) {
+		ret.clear();
+
 		// normalize path
 		if (!path.empty()){
 			char c = path[path.size() - 1];
@@ -56,13 +85,15 @@ namespace util {
 #ifdef WIN32
 		WIN32_FIND_DATAW f;
 
+		bool isExtensionFiltered = false;
 		HANDLE h = NULL;
 		{
 			std::string s1 = path;
-			if (extList.size() == 1) {
+			if (extList.size() == 1 && !enumDir) {
 				s1 += "*.";
 				s1 += extList[0];
-			} else{
+				isExtensionFiltered = true;
+			} else {
 				s1 += "*";
 			}
 			std::wstring s1b = osgDB::convertUTF8toUTF16(s1);
@@ -91,7 +122,7 @@ namespace util {
 				fi.ext = osgDB::getLowerCaseFileExtension(fi.name);
 
 				// skip if we don't want this extension
-				if (extList.size() >= 2) {
+				if (!isExtensionFiltered && extList.size() >= 1) {
 					bool b = true;
 					for (size_t i = 0; i < extList.size(); i++) {
 						if (fi.ext == extList[i]) {
