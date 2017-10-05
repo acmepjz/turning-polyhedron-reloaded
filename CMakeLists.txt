@@ -10,6 +10,8 @@ Find_Package (SDL2)
 Find_Package (OpenSceneGraph 3.4.0 REQUIRED
 	osg osgDB osgFX osgGA osgManipulator osgParticle osgShadow osgSim osgText osgUtil osgViewer osgWidget)
 Find_Package (OpenGL REQUIRED)
+
+# important note: we need to use a customized version of MyGUI: https://github.com/acmepjz/mygui/tree/experimental
 Find_Package (MyGUI REQUIRED)
 
 Set (MY_OPENGL_INCLUDE_DIR ${OPENGL_gl_INCLUDE_DIR})

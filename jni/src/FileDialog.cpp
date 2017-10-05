@@ -43,6 +43,12 @@ namespace MyGUI {
 		lstFile->setColumnResizingPolicyAt(1, ResizingPolicy::Fixed);
 		lstFile->setColumnResizingPolicyAt(2, ResizingPolicy::Fixed);
 		lstFile->setColumnResizingPolicyAt(3, ResizingPolicy::Fixed);
+		lstFile->setColumnSkinLineAt(0, "ListBoxItemL");
+		lstFile->setColumnSkinLineAt(1, "ListBoxItemM");
+		lstFile->setColumnSkinLineAt(2, "ListBoxItemM");
+		lstFile->setColumnSkinLineAt(3, "ListBoxItemR_Right");
+
+		lstFile->requestOperatorLess2 = newDelegate(this, &FileDialog::compareFileList);
 
 		assignWidget(txtFileName, "txtFileName", false);
 		txtFileName->setCaption(fileName);
@@ -83,7 +89,7 @@ namespace MyGUI {
 		const char* s1[] = { "B", "KiB", "MiB", "GiB", "TiB", "PiB", NULL };
 
 		for (int i = 0, m = fileList.size(); i < m; i++) {
-			lstFile->addItem(fileList[i].name, Any(i));
+			lstFile->addItem(fileList[i].name);
 			lstFile->setSubItemNameAt(1, i, fileList[i].mtime);
 			if (fileList[i].isFolder) {
 				lstFile->setSubItemNameAt(2, i, "Folder");
@@ -104,6 +110,23 @@ namespace MyGUI {
 					size = (size + 512) >> 10;
 				}
 			}
+		}
+	}
+
+	void FileDialog::compareFileList(MyGUI::MultiListBox* _sender, size_t _column, size_t _index1, size_t _index2, bool& _less) {
+		switch (_column) {
+		case 1: // sort by time
+			_less = util::FileInfoComparer::compare(util::FileInfoComparer::SortByTime, false, fileList[_index1], fileList[_index2]) < 0;
+			break;
+		case 2: // sort by extension
+			_less = util::FileInfoComparer::compare(util::FileInfoComparer::SortByExtension, false, fileList[_index1], fileList[_index2]) < 0;
+			break;
+		case 3: // sort by size
+			_less = util::FileInfoComparer::compare(util::FileInfoComparer::SortBySize, false, fileList[_index1], fileList[_index2]) < 0;
+			break;
+		default: // sort by name
+			_less = util::FileInfoComparer::compare(util::FileInfoComparer::SortByName, false, fileList[_index1], fileList[_index2]) < 0;
+			break;
 		}
 	}
 

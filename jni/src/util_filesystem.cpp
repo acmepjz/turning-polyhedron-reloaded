@@ -37,11 +37,11 @@
 
 namespace util {
 
-	int FileInfoComparer::compare(const FileInfo& f1, const FileInfo& f2) const {
+	int FileInfoComparer::compare(char sortKey_, bool descending_, const FileInfo& f1, const FileInfo& f2) {
 		int ret = (f1.isFolder ? 0 : 1) - (f2.isFolder ? 0 : 1);
 
 		if (ret == 0) {
-			switch (sortKey) {
+			switch (sortKey_) {
 			case SortByExtension:
 				ret = strcmp(f1.ext.c_str(), f2.ext.c_str());
 				break;
@@ -61,7 +61,7 @@ namespace util {
 			ret = strcmp(s1.c_str(), s2.c_str());
 		}
 
-		return descending ? -ret : ret;
+		return descending_ ? -ret : ret;
 	}
 
 	void enumAllFiles(std::vector<FileInfo>& ret, std::string path, const char* extension, bool enumFile, bool enumDir, bool containsPath) {

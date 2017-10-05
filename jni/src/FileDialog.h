@@ -56,6 +56,8 @@ namespace MyGUI {
 
 		void refreshFileList();
 
+		void compareFileList(MyGUI::MultiListBox* _sender, size_t _column, size_t _index1, size_t _index2, bool& _less);
+
 	private:
 		bool mSmoothShow;
 

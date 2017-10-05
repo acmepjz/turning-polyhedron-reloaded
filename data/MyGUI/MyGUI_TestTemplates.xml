@@ -504,6 +504,83 @@
 			<UserString key="LE_TargetWidgetType" value="Button"/>
 		</Widget>
 	</Resource>
+	<Resource type="ResourceLayout" name="ListBoxItemL" version="3.2.0">
+		<Widget type="Widget" skin="ListBoxItemSkinL" position="20 20 43 13" name="Root">
+			<Property key="FontName" value="Default"/>
+			<Property key="TextAlign" value="Left VCenter"/>
+			<UserString key="LE_TargetWidgetType" value="Button"/>
+		</Widget>
+	</Resource>
+	<Resource type="ResourceLayout" name="ListBoxItemM" version="3.2.0">
+		<Widget type="Widget" skin="ListBoxItemSkinM" position="20 20 43 13" name="Root">
+			<Property key="FontName" value="Default"/>
+			<Property key="TextAlign" value="Left VCenter"/>
+			<UserString key="LE_TargetWidgetType" value="Button"/>
+		</Widget>
+	</Resource>
+	<Resource type="ResourceLayout" name="ListBoxItemR" version="3.2.0">
+		<Widget type="Widget" skin="ListBoxItemSkinR" position="20 20 43 13" name="Root">
+			<Property key="FontName" value="Default"/>
+			<Property key="TextAlign" value="Left VCenter"/>
+			<UserString key="LE_TargetWidgetType" value="Button"/>
+		</Widget>
+	</Resource>
+	<Resource type="ResourceLayout" name="ListBoxItem_Center" version="3.2.0">
+		<Widget type="Widget" skin="ListBoxItemSkin" position="20 20 43 13" name="Root">
+			<Property key="FontName" value="Default"/>
+			<Property key="TextAlign" value="HCenter VCenter"/>
+			<UserString key="LE_TargetWidgetType" value="Button"/>
+		</Widget>
+	</Resource>
+	<Resource type="ResourceLayout" name="ListBoxItemL_Center" version="3.2.0">
+		<Widget type="Widget" skin="ListBoxItemSkinL" position="20 20 43 13" name="Root">
+			<Property key="FontName" value="Default"/>
+			<Property key="TextAlign" value="HCenter VCenter"/>
+			<UserString key="LE_TargetWidgetType" value="Button"/>
+		</Widget>
+	</Resource>
+	<Resource type="ResourceLayout" name="ListBoxItemM_Center" version="3.2.0">
+		<Widget type="Widget" skin="ListBoxItemSkinM" position="20 20 43 13" name="Root">
+			<Property key="FontName" value="Default"/>
+			<Property key="TextAlign" value="HCenter VCenter"/>
+			<UserString key="LE_TargetWidgetType" value="Button"/>
+		</Widget>
+	</Resource>
+	<Resource type="ResourceLayout" name="ListBoxItemR_Center" version="3.2.0">
+		<Widget type="Widget" skin="ListBoxItemSkinR" position="20 20 43 13" name="Root">
+			<Property key="FontName" value="Default"/>
+			<Property key="TextAlign" value="HCenter VCenter"/>
+			<UserString key="LE_TargetWidgetType" value="Button"/>
+		</Widget>
+	</Resource>
+	<Resource type="ResourceLayout" name="ListBoxItem_Right" version="3.2.0">
+		<Widget type="Widget" skin="ListBoxItemSkin" position="20 20 43 13" name="Root">
+			<Property key="FontName" value="Default"/>
+			<Property key="TextAlign" value="Right VCenter"/>
+			<UserString key="LE_TargetWidgetType" value="Button"/>
+		</Widget>
+	</Resource>
+	<Resource type="ResourceLayout" name="ListBoxItemL_Right" version="3.2.0">
+		<Widget type="Widget" skin="ListBoxItemSkinL" position="20 20 43 13" name="Root">
+			<Property key="FontName" value="Default"/>
+			<Property key="TextAlign" value="Right VCenter"/>
+			<UserString key="LE_TargetWidgetType" value="Button"/>
+		</Widget>
+	</Resource>
+	<Resource type="ResourceLayout" name="ListBoxItemM_Right" version="3.2.0">
+		<Widget type="Widget" skin="ListBoxItemSkinM" position="20 20 43 13" name="Root">
+			<Property key="FontName" value="Default"/>
+			<Property key="TextAlign" value="Right VCenter"/>
+			<UserString key="LE_TargetWidgetType" value="Button"/>
+		</Widget>
+	</Resource>
+	<Resource type="ResourceLayout" name="ListBoxItemR_Right" version="3.2.0">
+		<Widget type="Widget" skin="ListBoxItemSkinR" position="20 20 43 13" name="Root">
+			<Property key="FontName" value="Default"/>
+			<Property key="TextAlign" value="Right VCenter"/>
+			<UserString key="LE_TargetWidgetType" value="Button"/>
+		</Widget>
+	</Resource>
 	<Resource type="ResourceLayout" name="ListBox" version="3.2.0">
 		<Widget type="Widget" skin="EditBoxSkin" position="5 5 55 55" name="Root">
 			<UserString key="LE_TargetWidgetType" value="ListBox"/>

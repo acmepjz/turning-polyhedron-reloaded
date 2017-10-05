@@ -41,10 +41,17 @@ namespace util {
 		static int staticCompare(const void* f1, const void* f2) {
 			return staticComparer.compare(**(FileInfo**)f1, **(FileInfo**)f2);
 		}
+
+		//! generic compare function
+		int compare(const FileInfo& f1, const FileInfo& f2) const {
+			return compare(sortKey, descending, f1, f2);
+		}
+
+		//! generic compare function (static version)
+		static int compare(char sortKey_, bool descending_, const FileInfo& f1, const FileInfo& f2);
 	private:
 		char sortKey;
 		bool descending;
-		int compare(const FileInfo& f1, const FileInfo& f2) const;
 	};
 
 	/** Method that returns a list of all the files in a given directory.
