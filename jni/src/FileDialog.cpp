@@ -2,6 +2,8 @@
 #include "util_filesystem.h"
 
 #include <osgDB/FileUtils>
+#include <osgDB/FileNameUtils>
+#include <osgDB/XmlParser>
 
 #include <stdio.h>
 
@@ -28,11 +30,11 @@ namespace MyGUI {
 		cmdNext->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
 		assignWidget(cmdUp, "cmdUp", false);
 		cmdUp->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
-		assignWidget(cmdFolder, "cmdFolder", false);
-		cmdFolder->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
+
+		assignWidget(picFolder, "picFolder", false);
 
 		if (currentDirectory.empty()) currentDirectory = osgDB::getCurrentWorkingDirectory();
-		cmdFolder->setCaption(currentDirectory);
+		recreatePathInfo();
 
 		assignWidget(lstFile, "lstFile", false);
 		lstFile->addColumn("File name");
@@ -49,6 +51,8 @@ namespace MyGUI {
 		lstFile->setColumnSkinLineAt(3, "ListBoxItemR_Right");
 
 		lstFile->requestOperatorLess2 = newDelegate(this, &FileDialog::compareFileList);
+
+		lstFile->sortByColumn(0);
 
 		assignWidget(txtFileName, "txtFileName", false);
 		txtFileName->setCaption(fileName);
@@ -74,6 +78,103 @@ namespace MyGUI {
 		temp->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
 
 		refreshFileList();
+	}
+
+	void FileDialog::recreatePathInfo() {
+		for (int i = 0, m = pathInfo.size(); i < m; i++) {
+			Gui::getInstance().destroyWidget(pathInfo[i].cmb);
+		}
+
+		pathInfo.clear();
+
+		currentDirectory = osgDB::convertFileNameToNativeStyle(currentDirectory);
+		if (!osgDB::isAbsolutePath(currentDirectory)) {
+			currentDirectory = osgDB::concatPaths(osgDB::getCurrentWorkingDirectory(), currentDirectory);
+		}
+		currentDirectory = osgDB::convertFileNameToUnixStyle(currentDirectory);
+
+#ifdef WIN32
+		if (currentDirectory.size() < 3) {
+			currentDirectory = "C:/";
+		} else {
+			char c = currentDirectory[0];
+			if (c >= 'a' && c <= 'z') {
+				c += ('A' - 'a');
+				currentDirectory[0] = c;
+			}
+			if (c < 'A' || c > 'Z' || currentDirectory[1] != ':' || currentDirectory[2] != '/') {
+				currentDirectory = "C:/";
+			}
+		}
+#else
+		if (currentDirectory.empty() || currentDirectory[0] != '/') currentDirectory = "/";
+#endif
+
+		// currentDirectory = "/home/user/.turning-polyhedron-reloaded/"; // debug
+
+		std::vector<std::string> paths;
+		size_t lps = 0;
+		for (;;) {
+			size_t lpe = currentDirectory.find_first_of('/', lps);
+			std::string s = osgDB::trimEnclosingSpaces(currentDirectory.substr(lps, (lpe == std::string::npos) ? lpe : lpe - lps));
+			if (paths.empty()) {
+				paths.push_back(s);
+			} else if (!s.empty() && s != ".") {
+				if (s == "..") {
+					if (paths.size() > 1) paths.pop_back();
+				} else {
+					paths.push_back(s);
+				}
+			}
+			if (lpe == std::string::npos) break;
+			lps = lpe + 1;
+		}
+
+		const int m = paths.size();
+
+		pathInfo.resize(m + 1);
+
+		picFolder->setCanvasSize(IntSize((m + 1) * 128, 24));
+
+		std::string path;
+		for (int i = 0; i <= m; i++) {
+			if (i < m) pathInfo[i].name = paths[i];
+
+			if (i == 0) {
+				std::vector<util::DriverInfo> drivers;
+				util::enumAllDrivers(drivers);
+				const int n = drivers.size();
+				pathInfo[i].subFolders.resize(n);
+				for (int j = 0; j < n; j++) {
+					pathInfo[i].subFolders[j].name = drivers[j].name;
+					pathInfo[i].subFolders[j].mtime = drivers[j].displayName;
+				}
+			} else {
+				path += paths[i - 1] + "/";
+				util::enumAllFiles(pathInfo[i].subFolders, path, NULL, false, true, false);
+				for (int j = 0, n = pathInfo[i].subFolders.size(); j < n; j++) {
+					pathInfo[i].subFolders[j].mtime = pathInfo[i].subFolders[j].name;
+				}
+			}
+
+			ComboBox *cmb = picFolder->createWidgetT("ComboBox", "ComboBox_DropdownList", IntCoord(i * 128, 0, 128, 24), Align::Default)->castType<ComboBox>();
+			cmb->setComboModeDrop(true);
+			if (i < m) {
+#ifndef WIN32
+				if (i == 0) {
+					cmb->setCaption("/");
+				} else
+#endif
+				{
+					cmb->setCaption(paths[i]);
+				}
+			}
+			for (int j = 0, n = pathInfo[i].subFolders.size(); j < n; j++) {
+				cmb->addItem(pathInfo[i].subFolders[j].mtime);
+			}
+
+			pathInfo[i].cmb = cmb;
+		}
 	}
 
 	void FileDialog::refreshFileList() {

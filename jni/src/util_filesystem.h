@@ -64,4 +64,14 @@ namespace util {
 	*/
 	void enumAllFiles(std::vector<FileInfo>& ret, std::string path, const char* extension = NULL, bool enumFile = true, bool enumDir = false, bool containsPath = false);
 
+	struct DriverInfo {
+		std::string name; /**< the file name without path separator */
+		std::string displayName; /**< the display name */
+	};
+
+	/** Method that returns a list of all the drivers.
+	\param ret Return a vector containing the names of the drivers.
+	\note On non-Windows system it returns '/'.
+	*/
+	void enumAllDrivers(std::vector<DriverInfo>& ret);
 }

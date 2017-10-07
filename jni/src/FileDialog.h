@@ -58,15 +58,26 @@ namespace MyGUI {
 
 		void compareFileList(MyGUI::MultiListBox* _sender, size_t _column, size_t _index1, size_t _index2, bool& _less);
 
+		void recreatePathInfo();
+
 	private:
 		bool mSmoothShow;
 
-		Button *cmdPrev, *cmdNext, *cmdUp, *cmdFolder;
+		Button *cmdPrev, *cmdNext, *cmdUp;
+		ScrollView *picFolder;
 		MultiListBox *lstFile;
 		EditBox *txtFileName;
 		ComboBox *cmbFileType;
 
 		std::vector<util::FileInfo> fileList;
+
+		struct PathInfo {
+			std::string name; // withour path separator
+			std::vector<util::FileInfo> subFolders;
+			ComboBox *cmb;
+		};
+
+		std::vector<PathInfo> pathInfo;
 	};
 
 }

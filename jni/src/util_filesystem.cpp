@@ -279,4 +279,36 @@ namespace util {
 #endif
 	}
 
+	void enumAllDrivers(std::vector<DriverInfo>& ret) {
+		ret.clear();
+
+#ifdef WIN32
+
+		int d = GetLogicalDrives();
+		for (char c = 'A'; c <= 'Z'; c++) {
+			if (d & 1) {
+				ret.push_back(DriverInfo());
+				const int i = ret.size() - 1;
+				ret[i].name += c;
+				ret[i].name += ':';
+
+				wchar_t rootPathName[4] = { c, ':', '\\', 0 };
+				wchar_t volumeName[1024];
+				if (GetVolumeInformationW(rootPathName, volumeName, sizeof(volumeName) / sizeof(wchar_t), NULL, NULL, NULL, NULL, 0) && volumeName[0]) {
+					ret[i].displayName = osgDB::convertUTF16toUTF8(volumeName) + " ";
+				}
+				ret[i].displayName += std::string("(") + c + std::string(":)");
+			}
+			d >>= 1;
+		}
+
+#else
+
+		ret.push_back(DriverInfo());
+		ret[0].name = "/";
+		ret[0].displayName = "/";
+
+#endif
+	}
+
 }
