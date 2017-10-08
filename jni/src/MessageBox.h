@@ -1,10 +1,10 @@
-/*!
-	@file
-	@author		Albert Semenov
-	@date		12/2010
+/*
+* This file is modified from the source code of MyGUI <http://mygui.info/>
+* Distributed under the MIT License
+* (See accompanying file COPYING.MIT or copy at http://opensource.org/licenses/MIT)
 */
-#ifndef MESSAGE_BOX_H_
-#define MESSAGE_BOX_H_
+
+#pragma once
 
 #include <MyGUI/MyGUI.h>
 #include "BaseLayout.h"
@@ -268,5 +268,3 @@ namespace MyGUI
 	};
 
 } // namespace MyGUI
-
-#endif // MESSAGE_BOX_H_

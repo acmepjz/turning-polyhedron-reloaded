@@ -198,6 +198,20 @@
 			<Widget type="Button" skin="ButtonDownSkin2" position="79 2 17 20" align="Right VStretch" name="Button"/>
 		</Widget>
 	</Resource>
+	<Resource type="ResourceLayout" name="DropdownListButton" version="3.2.0">
+		<Widget type="Widget" skin="PanelEmpty" position="0 0 100 20" name="Root">
+			<Property key="MaxListLength" value="200"/>
+			<Property key="SmoothShow" value="true"/>
+			<UserString key="LE_TargetWidgetType" value="DropdownListButton"/>
+			<Widget type="Button" skin="Button" position="0 0 82 20" align="Stretch" name="Button0">
+				<Property key="TextAlign" value="Left VCenter"/>
+			</Widget>
+			<Widget type="ListBox" skin="ListBox" position="65 38 100 200" style="Popup" layer="Popup" name="List">
+				<Property key="Visible" value="false"/>
+			</Widget>
+			<Widget type="Button" skin="ButtonDownSkin2" position="82 0 18 20" align="Right VStretch" name="Button"/>
+		</Widget>
+	</Resource>
 	<Resource type="ResourceLayout" name="ComboBox_DropdownList" version="3.2.0">
 		<Widget type="Widget" skin="EditBoxSkin" position="65 10 100 26" name="Root">
 			<Property key="MaxListLength" value="200"/>

@@ -81,12 +81,14 @@ SOURCE_GROUP("Source Files\\game" FILES
 )
 
 SOURCE_GROUP("Header Files\\mygui" FILES
+	${PROJECT_SOURCE_DIR}/jni/src/DropdownListButton.h
 	${PROJECT_SOURCE_DIR}/jni/src/BaseLayout.h
 	${PROJECT_SOURCE_DIR}/jni/src/MessageBox.h
 	${PROJECT_SOURCE_DIR}/jni/src/MYGUIManager.h
 )
 
 SOURCE_GROUP("Source Files\\mygui" FILES
+	${PROJECT_SOURCE_DIR}/jni/src/DropdownListButton.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/BaseLayout.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/MessageBox.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/MYGUIManager.cpp

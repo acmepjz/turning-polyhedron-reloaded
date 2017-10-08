@@ -1,12 +1,10 @@
-/*!
-	@file
-	@author		Albert Semenov
-	@date		07/2008
-	@module
+/*
+* This file is modified from the source code of MyGUI <http://mygui.info/>
+* Distributed under the MIT License
+* (See accompanying file COPYING.MIT or copy at http://opensource.org/licenses/MIT)
 */
 
-#ifndef BASE_LAYOUT_H_
-#define BASE_LAYOUT_H_
+#pragma once
 
 #include <MyGUI/MyGUI.h>
 
@@ -278,5 +276,3 @@ namespace wraps
 	};
 
 } // namespace wraps
-
-#endif // BASE_LAYOUT_H_

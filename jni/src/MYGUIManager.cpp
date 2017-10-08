@@ -2,6 +2,7 @@
 // Warning: this version of osgMyGUI only works under single-threaded mode.
 
 #include "MYGUIManager.h"
+#include "DropdownListButton.h"
 #include <osgDB/ReadFile>
 #include <osgDB/WriteFile>
 
@@ -199,7 +200,14 @@ void MYGUIManager::drawImplementation( osg::RenderInfo& renderInfo ) const
         
         constMe->_gui = new MyGUI::Gui;
         constMe->_gui->initialise( _resourceCoreFile );
-        constMe->initializeControls();
+
+		// register custom widgets
+		MyGUI::FactoryManager& factory = MyGUI::FactoryManager::getInstance();
+		std::string widgetCategory = MyGUI::WidgetManager::getInstance().getCategoryName();
+		factory.registerFactory<MyGUI::DropdownListButton>(widgetCategory);
+
+		// create controls
+		constMe->initializeControls();
 
 		osg::ref_ptr<osgViewer::GraphicsWindow> gw;
 		if (_gw.lock(gw)) {

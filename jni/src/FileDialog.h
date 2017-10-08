@@ -9,6 +9,7 @@
 
 namespace MyGUI {
 
+	class DropdownListButton;
 	class FileDialog;
 
 	typedef delegates::CMultiDelegate1<FileDialog*> EventHandle_FileDialogPtrFileDialog;
@@ -53,12 +54,22 @@ namespace MyGUI {
 
 	private:
 		void notifyWindowButtonPressed(MyGUI::Window* _sender, const std::string& _name);
+		void notifyFolderButtonClick(Widget* _sender);
+		void notifyFolderComboAccept(DropdownListButton* _sender, size_t _index);
 
 		void refreshFileList();
 
 		void compareFileList(MyGUI::MultiListBox* _sender, size_t _column, size_t _index1, size_t _index2, bool& _less);
 
+		void selectLevel(int level);
+		void selectSubFolder(int level, std::string subFolder);
 		void recreatePathInfo();
+
+		void addHistory();
+		void prevHistory();
+		void nextHistory();
+
+		void updateButtonState();
 
 	private:
 		bool mSmoothShow;
@@ -72,12 +83,17 @@ namespace MyGUI {
 		std::vector<util::FileInfo> fileList;
 
 		struct PathInfo {
-			std::string name; // withour path separator
+			std::string name; // without path separator
 			std::vector<util::FileInfo> subFolders;
-			ComboBox *cmb;
+			DropdownListButton *cmb;
 		};
 
 		std::vector<PathInfo> pathInfo;
+		int selectedLevel;
+
+		std::vector<std::string> history;
+		int currentHistory;
+		bool lockHistory;
 	};
 
 }

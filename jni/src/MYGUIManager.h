@@ -1,8 +1,7 @@
 // osgMyGUI, modified from osgRecipe <https://github.com/xarray/osgRecipes>
 // Warning: this version of osgMyGUI only works under single-threaded mode.
 
-#ifndef H_MYGUIDRAWABLE
-#define H_MYGUIDRAWABLE
+#pragma once
 
 #include <MYGUI/MyGUI.h>
 #include <MYGUI/MyGUI_OpenGLPlatform.h>
@@ -85,5 +84,3 @@ private:
 
 	friend class MYGUIHandler;
 };
-
-#endif

@@ -1,5 +1,6 @@
 #include "FileDialog.h"
 #include "util_filesystem.h"
+#include "DropdownListButton.h"
 
 #include <osgDB/FileUtils>
 #include <osgDB/FileNameUtils>
@@ -13,6 +14,9 @@ namespace MyGUI {
 		wraps::BaseLayout("FileDialog.layout"),
 		mSmoothShow(false),
 		selectedFileType(-1),
+		selectedLevel(-1),
+		currentHistory(-1),
+		lockHistory(false),
 		isSaveDialog(false)
 	{
 	}
@@ -32,9 +36,6 @@ namespace MyGUI {
 		cmdUp->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
 
 		assignWidget(picFolder, "picFolder", false);
-
-		if (currentDirectory.empty()) currentDirectory = osgDB::getCurrentWorkingDirectory();
-		recreatePathInfo();
 
 		assignWidget(lstFile, "lstFile", false);
 		lstFile->addColumn("File name");
@@ -77,7 +78,47 @@ namespace MyGUI {
 		assignWidget(temp, "cmdCancel", false);
 		temp->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
 
-		refreshFileList();
+		if (currentDirectory.empty()) currentDirectory = osgDB::getCurrentWorkingDirectory();
+		recreatePathInfo();
+	}
+
+	void FileDialog::notifyFolderButtonClick(Widget* _sender) {
+		selectLevel(*_sender->getUserData<int>());
+	}
+
+	void FileDialog::selectLevel(int level) {
+		int m = pathInfo.size();
+
+		if (level >= 0 && level < m - 1 && level != selectedLevel) {
+			selectedLevel = level;
+
+			for (int i = 0; i < m; i++) {
+				pathInfo[i].cmb->setStateSelected(i == level);
+			}
+
+			currentDirectory.clear();
+			for (int i = 0; i <= level; i++) {
+				currentDirectory += pathInfo[i].name + "/";
+			}
+
+			addHistory();
+			refreshFileList();
+		}
+	}
+
+	void FileDialog::updateButtonState() {
+		cmdPrev->setEnabled(!history.empty() && currentHistory > 0);
+		cmdNext->setEnabled(!history.empty() && currentHistory < (int)history.size() - 1);
+		cmdUp->setEnabled(selectedLevel > 0);
+	}
+
+	void FileDialog::notifyFolderComboAccept(DropdownListButton* _sender, size_t _index) {
+		int level = *_sender->getUserData<int>();
+		if (level >= 0 && level < (int)pathInfo.size()) {
+			if (_index < pathInfo[level].subFolders.size()) {
+				selectSubFolder(level, pathInfo[level].subFolders[_index].name);
+			}
+		}
 	}
 
 	void FileDialog::recreatePathInfo() {
@@ -110,8 +151,6 @@ namespace MyGUI {
 		if (currentDirectory.empty() || currentDirectory[0] != '/') currentDirectory = "/";
 #endif
 
-		// currentDirectory = "/home/user/.turning-polyhedron-reloaded/"; // debug
-
 		std::vector<std::string> paths;
 		size_t lps = 0;
 		for (;;) {
@@ -131,14 +170,29 @@ namespace MyGUI {
 		}
 
 		const int m = paths.size();
+		selectedLevel = m - 1;
 
 		pathInfo.resize(m + 1);
 
-		picFolder->setCanvasSize(IntSize((m + 1) * 128, 24));
+		currentDirectory.clear();
+		int left = 0;
 
-		std::string path;
 		for (int i = 0; i <= m; i++) {
 			if (i < m) pathInfo[i].name = paths[i];
+
+			DropdownListButton *cmb = picFolder->createWidgetT("DropdownListButton", "DropdownListButton",
+				IntCoord(left, 0, 128, 24), Align::Default)->castType<DropdownListButton>();
+			cmb->setAutoCaption(false);
+			cmb->setAutoSize(true);
+			cmb->setListWidth(400);
+			cmb->setUserData(Any(i));
+			if (i >= m) {
+				cmb->setCaption("");
+			} else {
+				cmb->setCaption(paths[i]);
+				cmb->setStateSelected(i == selectedLevel);
+			}
+			left += cmb->getWidth();
 
 			if (i == 0) {
 				std::vector<util::DriverInfo> drivers;
@@ -147,33 +201,101 @@ namespace MyGUI {
 				pathInfo[i].subFolders.resize(n);
 				for (int j = 0; j < n; j++) {
 					pathInfo[i].subFolders[j].name = drivers[j].name;
-					pathInfo[i].subFolders[j].mtime = drivers[j].displayName;
+					cmb->addItem(drivers[j].displayName);
 				}
 			} else {
-				path += paths[i - 1] + "/";
-				util::enumAllFiles(pathInfo[i].subFolders, path, NULL, false, true, false);
+				currentDirectory += paths[i - 1] + "/";
+				util::enumAllFiles(pathInfo[i].subFolders, currentDirectory, NULL, false, true, false);
 				for (int j = 0, n = pathInfo[i].subFolders.size(); j < n; j++) {
-					pathInfo[i].subFolders[j].mtime = pathInfo[i].subFolders[j].name;
+					cmb->addItem(pathInfo[i].subFolders[j].name);
 				}
-			}
-
-			ComboBox *cmb = picFolder->createWidgetT("ComboBox", "ComboBox_DropdownList", IntCoord(i * 128, 0, 128, 24), Align::Default)->castType<ComboBox>();
-			cmb->setComboModeDrop(true);
-			if (i < m) {
-#ifndef WIN32
-				if (i == 0) {
-					cmb->setCaption("/");
-				} else
-#endif
-				{
-					cmb->setCaption(paths[i]);
-				}
-			}
-			for (int j = 0, n = pathInfo[i].subFolders.size(); j < n; j++) {
-				cmb->addItem(pathInfo[i].subFolders[j].mtime);
 			}
 
 			pathInfo[i].cmb = cmb;
+
+			cmb->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyFolderButtonClick);
+			cmb->eventComboAccept += newDelegate(this, &FileDialog::notifyFolderComboAccept);
+		}
+
+		picFolder->setCanvasSize(IntSize(left, 24));
+
+		addHistory();
+		refreshFileList();
+	}
+
+	void FileDialog::selectSubFolder(int level, std::string subFolder) {
+		while ((int)pathInfo.size() > level + 1) {
+			Gui::getInstance().destroyWidget(pathInfo.back().cmb);
+			pathInfo.pop_back();
+		}
+
+		pathInfo[level].name = subFolder;
+		pathInfo[level].cmb->setCaption(subFolder);
+
+		currentDirectory.clear();
+		for (int i = 0; i <= level; i++) {
+			currentDirectory += pathInfo[i].name + "/";
+			pathInfo[i].cmb->setStateSelected(i == level);
+		}
+
+		pathInfo.push_back(PathInfo());
+
+		int left = pathInfo[level].cmb->getRight();
+		DropdownListButton *cmb = picFolder->createWidgetT("DropdownListButton", "DropdownListButton",
+			IntCoord(left, 0, 128, 24), Align::Default)->castType<DropdownListButton>();
+		cmb->setAutoCaption(false);
+		cmb->setAutoSize(true);
+		cmb->setListWidth(400);
+		cmb->setUserData(Any(level + 1));
+		cmb->setCaption("");
+
+		util::enumAllFiles(pathInfo[level + 1].subFolders, currentDirectory, NULL, false, true, false);
+		for (int j = 0, n = pathInfo[level + 1].subFolders.size(); j < n; j++) {
+			cmb->addItem(pathInfo[level + 1].subFolders[j].name);
+		}
+
+		pathInfo[level + 1].cmb = cmb;
+
+		cmb->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyFolderButtonClick);
+		cmb->eventComboAccept += newDelegate(this, &FileDialog::notifyFolderComboAccept);
+
+		picFolder->setCanvasSize(IntSize(left + cmb->getWidth(), 24));
+
+		selectedLevel = level;
+
+		addHistory();
+		refreshFileList();
+	}
+
+	void FileDialog::addHistory() {
+		if (!lockHistory) {
+			while ((int)history.size() > currentHistory + 1) {
+				history.pop_back();
+			}
+			history.push_back(currentDirectory);
+			currentHistory = history.size() - 1;
+		}
+
+		updateButtonState();
+	}
+
+	void FileDialog::prevHistory() {
+		if (currentHistory > 0 && currentHistory < (int)history.size()) {
+			lockHistory = true;
+			currentHistory--;
+			currentDirectory = history[currentHistory];
+			recreatePathInfo();
+			lockHistory = false;
+		}
+	}
+
+	void FileDialog::nextHistory() {
+		if (currentHistory >= 0 && currentHistory < (int)history.size() - 1) {
+			lockHistory = true;
+			currentHistory++;
+			currentDirectory = history[currentHistory];
+			recreatePathInfo();
+			lockHistory = false;
 		}
 	}
 
@@ -264,6 +386,12 @@ namespace MyGUI {
 
 		if (_name == "cmdCancel") {
 			endMessage();
+		} else if (_name == "cmdPrev") {
+			prevHistory();
+		} else if (_name == "cmdNext") {
+			nextHistory();
+		} else if (_name == "cmdUp") {
+			selectLevel(selectedLevel - 1);
 		}
 	}
 
