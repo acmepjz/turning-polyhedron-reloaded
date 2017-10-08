@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+	<Widget type="Window" skin="WindowCSX" position="0 0 556 144" layer="Overlapped" name="_Main">
+        <UserString key="SnapTo" value="Center"/>
+		<Widget type="TextBox" skin="TextBox" position="8 8 436 56" align="HStretch Top" name="lblMessage"/>
+		<Widget type="EditBox" skin="EditBox" position="8 72 524 24" align="Stretch" name="txtText"/>
+		<Widget type="Button" skin="ButtonDefault" position="452 8 80 24" align="Right Top" name="cmdOK">
+			<Property key="Caption" value="OK"/>
+		</Widget>
+		<Widget type="Button" skin="Button" position="452 40 80 24" align="Right Top" name="cmdCancel">
+			<Property key="Caption" value="Cancel"/>
+		</Widget>
+	</Widget>
+	<CodeGeneratorSettings/>
+</MyGUI>

@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <MyGUI type="Layout" version="3.2.0">
 	<Widget type="Window" skin="WindowCSX" position="0 0 656 520" layer="Overlapped" name="_Main">
+        <UserString key="SnapTo" value="Center"/>
 		<Property key="Caption" value="Open"/>
 		<Widget type="Button" skin="ButtonLeftSkin" position="8 8 24 24" align="Left Top" name="cmdPrev"/>
 		<Widget type="Button" skin="ButtonRightSkin" position="32 8 24 24" align="Left Top" name="cmdNext"/>

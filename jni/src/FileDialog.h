@@ -12,6 +12,7 @@ namespace MyGUI {
 
 	class DropdownListButton;
 	class FileDialog;
+	class InputBox;
 
 	typedef delegates::CMultiDelegate1<FileDialog*> EventHandle_FileDialogPtrFileDialog;
 
@@ -39,7 +40,7 @@ namespace MyGUI {
 			eventFileDialogAccept;
 
 		std::string currentDirectory;
-		std::string rootDirectory;
+		std::string rootDirectory; // still unimplemented
 		std::string fileName;
 		std::vector<std::string> fileTypes;
 		std::vector<std::string> fileExtensions;
@@ -70,6 +71,8 @@ namespace MyGUI {
 		void notifyListMouseItemActivate(MultiListBox* _sender, size_t _position);
 		void notifyFilterComboAccept(ComboBox* _sender, size_t _index);
 		void notifyOverwritePrompt(Message* sender, MessageBoxStyle result);
+		void notifyInputFolder(InputBox* _sender);
+		void notifyNewFolder(InputBox* _sender);
 
 		void cmdOK_Click();
 

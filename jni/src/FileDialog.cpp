@@ -1,6 +1,8 @@
 #include "FileDialog.h"
 #include "util_filesystem.h"
 #include "DropdownListButton.h"
+#include "MessageBox.h"
+#include "InputBox.h"
 
 #include <osgDB/FileUtils>
 #include <osgDB/FileNameUtils>
@@ -78,6 +80,8 @@ namespace MyGUI {
 
 		{
 			Button *temp;
+			assignWidget(temp, "cmdFolderSwitch", false);
+			temp->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
 			assignWidget(temp, "cmdNewFolder", false);
 			temp->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
 			assignWidget(temp, "cmdOK", false);
@@ -401,8 +405,34 @@ namespace MyGUI {
 			nextHistory();
 		} else if (_name == "cmdUp") {
 			selectLevel(selectedLevel - 1);
+		} else if (_name == "cmdFolderSwitch") {
+			InputBox::createInputBox("Input path", "Input path",
+				currentDirectory)->eventInputBoxAccept += newDelegate(this, &FileDialog::notifyInputFolder);
+		} else if (_name == "cmdNewFolder") {
+			InputBox::createInputBox("New folder", "Input the name of the new folder")->eventInputBoxAccept += newDelegate(this, &FileDialog::notifyNewFolder);
 		} else if (_name == "cmdOK") {
 			cmdOK_Click();
+		}
+	}
+
+	void FileDialog::notifyInputFolder(InputBox* _sender) {
+		std::string s = osgDB::trimEnclosingSpaces(_sender->getText());
+		if (!s.empty()) {
+			currentDirectory = s;
+			recreatePathInfo();
+		}
+	}
+
+	void FileDialog::notifyNewFolder(InputBox* _sender) {
+		std::string s = osgDB::trimEnclosingSpaces(_sender->getText());
+		if (!s.empty()) {
+			if (osgDB::makeDirectory(currentDirectory + s)) {
+				refreshFileList();
+			} else {
+				Message::createMessageBox("Error",
+					"Failed to create folder '" + s + "'.",
+					MessageBoxStyle::IconWarning | MessageBoxStyle::Ok);
+			}
 		}
 	}
 
@@ -444,7 +474,7 @@ namespace MyGUI {
 			if (isSaveDialog) {
 				Message::createMessageBox("Save as",
 					"The file '" + fileName + "' already exists. Do you want to overwrite it?",
-					MessageBoxStyle::IconWarning | MessageBoxStyle::YesNo)->eventMessageBoxResult += newDelegate(this, &FileDialog::notifyOverwritePrompt);
+					MessageBoxStyle::IconWarning | MessageBoxStyle::YesNo)->setCancelButton(MessageBoxStyle::No)->eventMessageBoxResult += newDelegate(this, &FileDialog::notifyOverwritePrompt);
 			} else {
 				_destroy(true);
 			}
@@ -495,7 +525,6 @@ namespace MyGUI {
 
 	void FileDialog::_destroy(bool _result) {
 		if (_result) {
-			printf("%s%s\n", currentDirectory.c_str(), fileName.c_str()); // debug
 			eventFileDialogAccept(this);
 		}
 
