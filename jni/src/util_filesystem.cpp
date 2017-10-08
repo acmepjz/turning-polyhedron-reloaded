@@ -76,8 +76,12 @@ namespace util {
 
 		// check file extension
 		osgDB::StringList extList;
-		if (extension)
+		if (extension) {
 			osgDB::split(osgDB::convertToLowerCase(extension), extList);
+			for (int i = 0, m = extList.size(); i < m; i++) {
+				extList[i] = "." + extList[i];
+			}
+		}
 
 		FileInfo fi;
 		char mtime[128];
@@ -125,7 +129,8 @@ namespace util {
 				if (!isExtensionFiltered && extList.size() >= 1) {
 					bool b = true;
 					for (size_t i = 0; i < extList.size(); i++) {
-						if (fi.ext == extList[i]) {
+						if (fi.name.size() >= extList[i].size() &&
+							osgDB::convertToLowerCase(fi.name.substr(fi.name.size() - extList[i].size())) == extList[i]) {
 							b = false;
 							break;
 						}
@@ -198,7 +203,8 @@ namespace util {
 						if (extList.size() >= 1) {
 							bool b = true;
 							for (size_t i = 0; i < extList.size(); i++) {
-								if (fi.ext == extList[i]) {
+								if (fi.name.size() >= extList[i].size() &&
+									osgDB::convertToLowerCase(fi.name.substr(fi.name.size() - extList[i].size())) == extList[i]) {
 									b = false;
 									break;
 								}
@@ -251,7 +257,8 @@ namespace util {
 				if (extList.size() >= 1) {
 					bool b = true;
 					for (size_t i = 0; i < extList.size(); i++) {
-						if (fi.ext == extList[i]) {
+						if (fi.name.size() >= extList[i].size() &&
+							osgDB::convertToLowerCase(fi.name.substr(fi.name.size() - extList[i].size())) == extList[i]) {
 							b = false;
 							break;
 						}

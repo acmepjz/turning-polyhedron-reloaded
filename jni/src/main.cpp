@@ -68,8 +68,11 @@ private:
 			MyGUI::Message *msgbox = MyGUI::Message::createMessageBox("Exit game", "Are you sure?",
 				MyGUI::MessageBoxStyle::YesNo | MyGUI::MessageBoxStyle::IconWarning);
 			msgbox->eventMessageBoxResult += MyGUI::newDelegate(this, &CustomMYGUIManager::mnuExit_Click_2);
-		} else if (name == "mnuOpen") {
+		} else if (name == "mnuOpen" || name == "mnuSaveAs") {
 			MyGUI::FileDialog *window = new MyGUI::FileDialog();
+			window->isSaveDialog = name == "mnuSaveAs";
+			window->addFileType("XML level file", "xml xml.lzma box");
+			window->addFileType("All files", "");
 			window->setSmoothShow(true);
 			window->setMessageModal(true);
 			window->initialize();

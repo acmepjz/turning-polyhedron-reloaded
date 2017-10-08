@@ -13,7 +13,7 @@ namespace MyGUI {
 	FileDialog::FileDialog() :
 		wraps::BaseLayout("FileDialog.layout"),
 		mSmoothShow(false),
-		selectedFileType(-1),
+		selectedFileType(0),
 		selectedLevel(-1),
 		currentHistory(-1),
 		lockHistory(false),
@@ -24,9 +24,10 @@ namespace MyGUI {
 	void FileDialog::initialize() {
 		Window *window = dynamic_cast<Window*>(mMainWidget);
 
-		window->eventWindowButtonPressed += newDelegate(this, &FileDialog::notifyWindowButtonPressed);
+		if (isSaveDialog) window->setCaption("Save as");
+		else window->setCaption("Open");
 
-		Widget *temp;
+		window->eventWindowButtonPressed += newDelegate(this, &FileDialog::notifyWindowButtonPressed);
 
 		assignWidget(cmdPrev, "cmdPrev", false);
 		cmdPrev->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
@@ -55,8 +56,11 @@ namespace MyGUI {
 
 		lstFile->sortByColumn(0);
 
+		lstFile->eventListMouseItemActivate += newDelegate(this, &FileDialog::notifyListMouseItemActivate);
+		lstFile->eventListSelectAccept += newDelegate(this, &FileDialog::notifyListSelectAccept);
+
 		assignWidget(txtFileName, "txtFileName", false);
-		txtFileName->setCaption(fileName);
+		txtFileName->setOnlyText(fileName);
 
 		assignWidget(cmbFileType, "cmbFileType", false);
 		{
@@ -70,13 +74,18 @@ namespace MyGUI {
 				selectedFileType = -1;
 			}
 		}
+		cmbFileType->eventComboAccept += newDelegate(this, &FileDialog::notifyFilterComboAccept);
 
-		assignWidget(temp, "cmdNewFolder", false);
-		temp->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
-		assignWidget(temp, "cmdOK", false);
-		temp->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
-		assignWidget(temp, "cmdCancel", false);
-		temp->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
+		{
+			Button *temp;
+			assignWidget(temp, "cmdNewFolder", false);
+			temp->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
+			assignWidget(temp, "cmdOK", false);
+			if (isSaveDialog) temp->setCaption("Save"); else temp->setCaption("Open");
+			temp->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
+			assignWidget(temp, "cmdCancel", false);
+			temp->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
+		}
 
 		if (currentDirectory.empty()) currentDirectory = osgDB::getCurrentWorkingDirectory();
 		recreatePathInfo();
@@ -392,6 +401,69 @@ namespace MyGUI {
 			nextHistory();
 		} else if (_name == "cmdUp") {
 			selectLevel(selectedLevel - 1);
+		} else if (_name == "cmdOK") {
+			cmdOK_Click();
+		}
+	}
+
+	void FileDialog::cmdOK_Click() {
+		fileName = osgDB::trimEnclosingSpaces(txtFileName->getOnlyText());
+
+		if (fileName.empty() || fileName == ".") return;
+		if (fileName == "..") {
+			selectLevel(selectedLevel - 1);
+			return;
+		}
+
+		// check if it is a directory
+		osgDB::FileType type = osgDB::fileType(currentDirectory + fileName);
+		if (type == osgDB::DIRECTORY) {
+			selectSubFolder(selectedLevel + 1, fileName);
+			return;
+		}
+
+		// add default extension
+		if ((isSaveDialog || type == osgDB::FILE_NOT_FOUND) && fileName.find_first_of('.') == std::string::npos) {
+			if (selectedFileType >= 0 && selectedFileType < (int)fileExtensions.size()) {
+				std::string s = osgDB::trimEnclosingSpaces(fileExtensions[selectedFileType]);
+				s = s.substr(0, s.find_first_of(' '));
+				if (!s.empty()) {
+					fileName += "." + s;
+					txtFileName->setOnlyText(fileName);
+					type = osgDB::fileType(currentDirectory + fileName);
+					if (type == osgDB::DIRECTORY) {
+						selectSubFolder(selectedLevel + 1, fileName);
+						return;
+					}
+				}
+			}
+		}
+
+		// check if it already exists
+		if (type == osgDB::REGULAR_FILE) {
+			if (isSaveDialog) {
+				Message::createMessageBox("Save as",
+					"The file '" + fileName + "' already exists. Do you want to overwrite it?",
+					MessageBoxStyle::IconWarning | MessageBoxStyle::YesNo)->eventMessageBoxResult += newDelegate(this, &FileDialog::notifyOverwritePrompt);
+			} else {
+				_destroy(true);
+			}
+			return;
+		}
+
+		// file not found
+		if (isSaveDialog) {
+			_destroy(true);
+		} else {
+			Message::createMessageBox("Open",
+				"File '" + fileName + "' not found.",
+				MessageBoxStyle::IconWarning | MessageBoxStyle::Ok);
+		}
+	}
+
+	void FileDialog::notifyOverwritePrompt(Message* sender, MessageBoxStyle result) {
+		if (result == MessageBoxStyle::Yes) {
+			_destroy(true);
 		}
 	}
 
@@ -401,8 +473,31 @@ namespace MyGUI {
 		}
 	}
 
+	void FileDialog::notifyListSelectAccept(MultiListBox* _sender, size_t _position) {
+		if (_position < fileList.size()) {
+			txtFileName->setOnlyText(fileList[_position].name);
+			cmdOK_Click();
+		}
+	}
+
+	void FileDialog::notifyListMouseItemActivate(MultiListBox* _sender, size_t _position) {
+		if (_position < fileList.size()) {
+			txtFileName->setOnlyText(fileList[_position].name);
+		}
+	}
+
+	void FileDialog::notifyFilterComboAccept(ComboBox* _sender, size_t _index) {
+		if (selectedFileType != _index) {
+			selectedFileType = _index;
+			refreshFileList();
+		}
+	}
+
 	void FileDialog::_destroy(bool _result) {
-		if (_result) eventFileDialogAccept(this);
+		if (_result) {
+			printf("%s%s\n", currentDirectory.c_str(), fileName.c_str()); // debug
+			eventFileDialogAccept(this);
+		}
 
 		delete this;
 	}

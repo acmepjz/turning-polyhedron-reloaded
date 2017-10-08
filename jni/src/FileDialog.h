@@ -5,6 +5,7 @@
 
 #include <MyGUI/MyGUI.h>
 #include "BaseLayout.h"
+#include "MessageBox.h"
 #include "util_filesystem.h"
 
 namespace MyGUI {
@@ -45,6 +46,15 @@ namespace MyGUI {
 		int selectedFileType;
 		bool isSaveDialog;
 
+		/** add a file type
+		\param type a string description of the file type
+		\param extension the extensions of the file type, separated by space and omit the first dot, e.g. "zip tar.gz"
+		*/
+		void addFileType(const std::string& type, const std::string& extension) {
+			fileTypes.push_back(type);
+			fileExtensions.push_back(extension);
+		}
+
 	protected:
 		void notifyButtonClick(Widget* _sender);
 
@@ -56,6 +66,12 @@ namespace MyGUI {
 		void notifyWindowButtonPressed(MyGUI::Window* _sender, const std::string& _name);
 		void notifyFolderButtonClick(Widget* _sender);
 		void notifyFolderComboAccept(DropdownListButton* _sender, size_t _index);
+		void notifyListSelectAccept(MultiListBox* _sender, size_t _position);
+		void notifyListMouseItemActivate(MultiListBox* _sender, size_t _position);
+		void notifyFilterComboAccept(ComboBox* _sender, size_t _index);
+		void notifyOverwritePrompt(Message* sender, MessageBoxStyle result);
+
+		void cmdOK_Click();
 
 		void refreshFileList();
 

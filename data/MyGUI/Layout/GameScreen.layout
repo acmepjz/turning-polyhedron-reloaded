@@ -6,8 +6,20 @@
 				<Property key="Caption" value="File"/>
 				<Property key="MenuItemType" value="Popup"/>
 				<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
+					<Widget type="MenuItem" name="mnuNew">
+						<Property key="Caption" value="New"/>
+					</Widget>
 					<Widget type="MenuItem" name="mnuOpen">
 						<Property key="Caption" value="Open"/>
+					</Widget>
+					<Widget type="MenuItem">
+						<Property key="MenuItemType" value="Separator"/>
+					</Widget>
+					<Widget type="MenuItem" name="mnuSave">
+						<Property key="Caption" value="Save"/>
+					</Widget>
+					<Widget type="MenuItem" name="mnuSaveAs">
+						<Property key="Caption" value="Save as"/>
 					</Widget>
 					<Widget type="MenuItem">
 						<Property key="MenuItemType" value="Separator"/>
