@@ -21,6 +21,10 @@
 #include <osgShadow/ShadowedScene>
 #include <osgShadow/ShadowMap>
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
 #include "TileType.h"
 #include "MapData.h"
 #include "LevelCollection.h"
@@ -56,9 +60,11 @@ private:
 		_menuBar->eventMenuCtrlAccept += MyGUI::newDelegate(this, &CustomMYGUIManager::notifyMenuItemClick);
 	}
 
-	void mnuExit_Click_2(MyGUI::Message* sender, MyGUI::MessageBoxStyle result) {
-		if (result == MyGUI::MessageBoxStyle::Yes) {
-			theViewer->setDone(true);
+	void notifyMessageBoxResult(MyGUI::Message* sender, MyGUI::MessageBoxStyle result) {
+		if (sender->mTag == "mnuExit") {
+			if (result == MyGUI::MessageBoxStyle::Yes) {
+				theViewer->setDone(true);
+			}
 		}
 	}
 
@@ -67,7 +73,8 @@ private:
 		if (name == "mnuExit") {
 			MyGUI::Message *msgbox = MyGUI::Message::createMessageBox("Exit game", "Are you sure?",
 				MyGUI::MessageBoxStyle::YesNo | MyGUI::MessageBoxStyle::IconWarning);
-			msgbox->eventMessageBoxResult += MyGUI::newDelegate(this, &CustomMYGUIManager::mnuExit_Click_2);
+			msgbox->mTag = name;
+			msgbox->eventMessageBoxResult += MyGUI::newDelegate(this, &CustomMYGUIManager::notifyMessageBoxResult);
 		} else if (name == "mnuOpen" || name == "mnuSaveAs") {
 			MyGUI::FileDialog *window = new MyGUI::FileDialog();
 			window->isSaveDialog = name == "mnuSaveAs";
