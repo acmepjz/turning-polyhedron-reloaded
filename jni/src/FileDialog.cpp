@@ -445,6 +445,14 @@ namespace MyGUI {
 			return;
 		}
 
+		// check if the file name is valid
+		if (fileName.find_first_of("/\\:*?\"<>|") != std::string::npos) {
+			Message::createMessageBox(mMainWidget->castType<Window>()->getCaption(),
+				"The file name is invalid.",
+				MessageBoxStyle::IconWarning | MessageBoxStyle::Ok);
+			return;
+		}
+
 		// check if it is a directory
 		osgDB::FileType type = osgDB::fileType(currentDirectory + fileName);
 		if (type == osgDB::DIRECTORY) {
