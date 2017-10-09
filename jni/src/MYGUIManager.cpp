@@ -269,7 +269,7 @@ bool MYGUIManager::handleEvent(const osgGA::GUIEventAdapter& ea, bool async) con
 		return false;
 	}
 
-	int x = ea.getX(), y = ea.getY(), key = ea.getKey();
+	int x = ea.getX(), y = ea.getY();
 	static int z = 0;
 	if (ea.getMouseYOrientation() == osgGA::GUIEventAdapter::Y_INCREASING_UPWARDS)
 		y = ea.getWindowHeight() - y;
@@ -298,13 +298,13 @@ bool MYGUIManager::handleEvent(const osgGA::GUIEventAdapter& ea, bool async) con
 		return MyGUI::InputManager::getInstance().injectMouseMove(x, y, z);
 		break;
 	case osgGA::GUIEventAdapter::KEYDOWN:
-		if (key<127)
-			return MyGUI::InputManager::getInstance().injectKeyPress(convertKeyCode(key), (char)key);
-		else
-			return MyGUI::InputManager::getInstance().injectKeyPress(convertKeyCode(key));
+		x = ea.getKey();
+		if (x < 0 || x >= 127) x = 0; // ??? TODO: IME
+		printf("%d %c\n", ea.getUnmodifiedKey(), x); // debug
+		return MyGUI::InputManager::getInstance().injectKeyPress(convertKeyCode(ea.getUnmodifiedKey()), x);
 		break;
 	case osgGA::GUIEventAdapter::KEYUP:
-		return MyGUI::InputManager::getInstance().injectKeyRelease(convertKeyCode(key));
+		return MyGUI::InputManager::getInstance().injectKeyRelease(convertKeyCode(ea.getUnmodifiedKey()));
 		break;
 	case osgGA::GUIEventAdapter::RESIZE:
 		_platform->getRenderManagerPtr()->setViewSize(
@@ -374,48 +374,54 @@ MyGUI::MouseButton MYGUIManager::convertMouseButton( int button )
     return MyGUI::MouseButton::None;
 }
 
-MyGUI::KeyCode MYGUIManager::convertKeyCode( int key )
+MyGUI::KeyCode MYGUIManager::convertKeyCode(int key)
 {
-    static std::map<int, MyGUI::KeyCode> s_keyCodeMap;
-    if ( !s_keyCodeMap.size() )
-    {
-        #define ADD_CHAR_PAIR(c, k) s_keyCodeMap[c] = MyGUI::KeyCode::##k
-        #define ADD_KEY_PAIR(k) s_keyCodeMap[osgGA::GUIEventAdapter::KEY_##k] = MyGUI::KeyCode::##k
-        #define ADD_KEY_PAIR2(k1, k2) s_keyCodeMap[osgGA::GUIEventAdapter::KEY_##k1] = MyGUI::KeyCode::##k2
-        
-        ADD_CHAR_PAIR('1', One); ADD_CHAR_PAIR('2', Two); ADD_CHAR_PAIR('3', Three); ADD_CHAR_PAIR('4', Four);
-        ADD_CHAR_PAIR('5', Five); ADD_CHAR_PAIR('6', Six); ADD_CHAR_PAIR('7', Seven); ADD_CHAR_PAIR('8', Eight);
-        ADD_CHAR_PAIR('9', Nine); ADD_CHAR_PAIR('0', Zero);
-        ADD_CHAR_PAIR('a', A); ADD_CHAR_PAIR('b', B); ADD_CHAR_PAIR('c', C); ADD_CHAR_PAIR('d', D);
-        ADD_CHAR_PAIR('e', E); ADD_CHAR_PAIR('f', F); ADD_CHAR_PAIR('g', G); ADD_CHAR_PAIR('h', H);
-        ADD_CHAR_PAIR('i', I); ADD_CHAR_PAIR('j', J); ADD_CHAR_PAIR('k', K); ADD_CHAR_PAIR('l', L);
-        ADD_CHAR_PAIR('m', M); ADD_CHAR_PAIR('n', N); ADD_CHAR_PAIR('o', O); ADD_CHAR_PAIR('p', P);
-        ADD_CHAR_PAIR('q', Q); ADD_CHAR_PAIR('r', R); ADD_CHAR_PAIR('S', S); ADD_CHAR_PAIR('t', T);
-        ADD_CHAR_PAIR('u', U); ADD_CHAR_PAIR('v', V); ADD_CHAR_PAIR('w', W); ADD_CHAR_PAIR('x', X);
-        ADD_CHAR_PAIR('y', Y); ADD_CHAR_PAIR('z', Z);
-        
-        ADD_KEY_PAIR(F1); ADD_KEY_PAIR(F2); ADD_KEY_PAIR(F3); ADD_KEY_PAIR(F4); ADD_KEY_PAIR(F5);
-        ADD_KEY_PAIR(F6); ADD_KEY_PAIR(F7); ADD_KEY_PAIR(F8); ADD_KEY_PAIR(F9); ADD_KEY_PAIR(F10);
-        ADD_KEY_PAIR(Escape); ADD_KEY_PAIR(Tab); ADD_KEY_PAIR(Return); ADD_KEY_PAIR(Space);
-        ADD_KEY_PAIR(Minus); ADD_KEY_PAIR(Equals); ADD_KEY_PAIR(Backslash); ADD_KEY_PAIR(Slash);
-        ADD_KEY_PAIR(Semicolon); ADD_KEY_PAIR(Equals); ADD_KEY_PAIR(Comma); ADD_KEY_PAIR(Period);
-        ADD_KEY_PAIR(Insert); ADD_KEY_PAIR(Delete); ADD_KEY_PAIR(Home); ADD_KEY_PAIR(End);
-        
-        ADD_KEY_PAIR2(Num_Lock, NumLock); ADD_KEY_PAIR2(Scroll_Lock, ScrollLock); ADD_KEY_PAIR2(Caps_Lock, Capital);
-        ADD_KEY_PAIR2(BackSpace, Backspace); ADD_KEY_PAIR2(Page_Down, PageDown); ADD_KEY_PAIR2(Page_Up, PageUp);
-        ADD_KEY_PAIR2(Leftbracket, LeftBracket); ADD_KEY_PAIR2(Rightbracket, RightBracket); ADD_KEY_PAIR2(Quotedbl, Apostrophe);
-        ADD_KEY_PAIR2(Left, ArrowLeft); ADD_KEY_PAIR2(Right, ArrowRight);
-        ADD_KEY_PAIR2(Up, ArrowUp); ADD_KEY_PAIR2(Down, ArrowDown);
-        ADD_KEY_PAIR2(KP_1, Numpad1); ADD_KEY_PAIR2(KP_2, Numpad2); ADD_KEY_PAIR2(KP_3, Numpad3);
-        ADD_KEY_PAIR2(KP_4, Numpad4); ADD_KEY_PAIR2(KP_5, Numpad5); ADD_KEY_PAIR2(KP_6, Numpad6);
-        ADD_KEY_PAIR2(KP_7, Numpad7); ADD_KEY_PAIR2(KP_8, Numpad8); ADD_KEY_PAIR2(KP_9, Numpad9);
-        ADD_KEY_PAIR2(KP_0, Numpad0); ADD_KEY_PAIR2(KP_Enter, NumpadEnter);
-        ADD_KEY_PAIR2(Control_L, LeftControl); ADD_KEY_PAIR2(Control_R, RightControl);
-        ADD_KEY_PAIR2(Alt_L, LeftAlt); ADD_KEY_PAIR2(Alt_R, RightAlt);
-        ADD_KEY_PAIR2(Shift_L, LeftShift); ADD_KEY_PAIR2(Shift_R, RightShift);
-    }
-    
-    std::map<int, MyGUI::KeyCode>::iterator itr = s_keyCodeMap.find(key);
-    if ( itr!=s_keyCodeMap.end() ) return itr->second;
-    return MyGUI::KeyCode::None;
+	static std::map<int, MyGUI::KeyCode> s_keyCodeMap;
+	if (!s_keyCodeMap.size())
+	{
+#define ADD_KEY_PAIR(k) s_keyCodeMap[osgGA::GUIEventAdapter::KEY_##k] = MyGUI::KeyCode::##k
+#define ADD_KEY_PAIR2(k1, k2) s_keyCodeMap[osgGA::GUIEventAdapter::KEY_##k1] = MyGUI::KeyCode::##k2
+
+		ADD_KEY_PAIR2(1, One); ADD_KEY_PAIR2(2, Two); ADD_KEY_PAIR2(3, Three); ADD_KEY_PAIR2(4, Four);
+		ADD_KEY_PAIR2(5, Five); ADD_KEY_PAIR2(6, Six); ADD_KEY_PAIR2(7, Seven); ADD_KEY_PAIR2(8, Eight);
+		ADD_KEY_PAIR2(9, Nine); ADD_KEY_PAIR2(0, Zero);
+		ADD_KEY_PAIR(A); ADD_KEY_PAIR(B); ADD_KEY_PAIR(C); ADD_KEY_PAIR(D);
+		ADD_KEY_PAIR(E); ADD_KEY_PAIR(F); ADD_KEY_PAIR(G); ADD_KEY_PAIR(H);
+		ADD_KEY_PAIR(I); ADD_KEY_PAIR(J); ADD_KEY_PAIR(K); ADD_KEY_PAIR(L);
+		ADD_KEY_PAIR(M); ADD_KEY_PAIR(N); ADD_KEY_PAIR(O); ADD_KEY_PAIR(P);
+		ADD_KEY_PAIR(Q); ADD_KEY_PAIR(R); ADD_KEY_PAIR(S); ADD_KEY_PAIR(T);
+		ADD_KEY_PAIR(U); ADD_KEY_PAIR(V); ADD_KEY_PAIR(W); ADD_KEY_PAIR(X);
+		ADD_KEY_PAIR(Y); ADD_KEY_PAIR(Z);
+
+		ADD_KEY_PAIR(Minus); ADD_KEY_PAIR(Equals); ADD_KEY_PAIR(Backslash); ADD_KEY_PAIR(Slash);
+		ADD_KEY_PAIR(Semicolon); ADD_KEY_PAIR(Comma); ADD_KEY_PAIR(Period);
+		ADD_KEY_PAIR2(Leftbracket, LeftBracket); ADD_KEY_PAIR2(Rightbracket, RightBracket); ADD_KEY_PAIR2(Quote, Apostrophe); ADD_KEY_PAIR2(Backquote, Grave);
+
+		ADD_KEY_PAIR(F1); ADD_KEY_PAIR(F2); ADD_KEY_PAIR(F3); ADD_KEY_PAIR(F4); ADD_KEY_PAIR(F5);
+		ADD_KEY_PAIR(F6); ADD_KEY_PAIR(F7); ADD_KEY_PAIR(F8); ADD_KEY_PAIR(F9); ADD_KEY_PAIR(F10);
+		ADD_KEY_PAIR(F11); ADD_KEY_PAIR(F12); ADD_KEY_PAIR(F13); ADD_KEY_PAIR(F14); ADD_KEY_PAIR(F15);
+
+		ADD_KEY_PAIR(Escape); ADD_KEY_PAIR(Tab); ADD_KEY_PAIR(Return); ADD_KEY_PAIR(Space);
+		ADD_KEY_PAIR(Insert); ADD_KEY_PAIR(Delete); ADD_KEY_PAIR(Home); ADD_KEY_PAIR(End);
+		ADD_KEY_PAIR2(Num_Lock, NumLock); ADD_KEY_PAIR2(Scroll_Lock, ScrollLock); ADD_KEY_PAIR2(Caps_Lock, Capital);
+		ADD_KEY_PAIR2(BackSpace, Backspace); ADD_KEY_PAIR2(Page_Down, PageDown); ADD_KEY_PAIR2(Page_Up, PageUp);
+		ADD_KEY_PAIR2(Left, ArrowLeft); ADD_KEY_PAIR2(Right, ArrowRight);
+		ADD_KEY_PAIR2(Up, ArrowUp); ADD_KEY_PAIR2(Down, ArrowDown);
+
+		ADD_KEY_PAIR2(KP_1, Numpad1); ADD_KEY_PAIR2(KP_2, Numpad2); ADD_KEY_PAIR2(KP_3, Numpad3);
+		ADD_KEY_PAIR2(KP_4, Numpad4); ADD_KEY_PAIR2(KP_5, Numpad5); ADD_KEY_PAIR2(KP_6, Numpad6);
+		ADD_KEY_PAIR2(KP_7, Numpad7); ADD_KEY_PAIR2(KP_8, Numpad8); ADD_KEY_PAIR2(KP_9, Numpad9);
+		ADD_KEY_PAIR2(KP_0, Numpad0); ADD_KEY_PAIR2(KP_Enter, NumpadEnter);
+		ADD_KEY_PAIR2(KP_Add, Add); ADD_KEY_PAIR2(KP_Subtract, Subtract);
+		ADD_KEY_PAIR2(KP_Multiply, Multiply); ADD_KEY_PAIR2(KP_Divide, Divide);
+		ADD_KEY_PAIR2(KP_Decimal, Decimal); ADD_KEY_PAIR2(KP_Separator, NumpadComma);
+
+		ADD_KEY_PAIR2(Control_L, LeftControl); ADD_KEY_PAIR2(Control_R, RightControl);
+		ADD_KEY_PAIR2(Alt_L, LeftAlt); ADD_KEY_PAIR2(Alt_R, RightAlt);
+		ADD_KEY_PAIR2(Shift_L, LeftShift); ADD_KEY_PAIR2(Shift_R, RightShift);
+	}
+
+	std::map<int, MyGUI::KeyCode>::iterator itr = s_keyCodeMap.find(key);
+	if (itr != s_keyCodeMap.end()) return itr->second;
+	return MyGUI::KeyCode::None;
 }
