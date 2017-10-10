@@ -300,7 +300,6 @@ bool MYGUIManager::handleEvent(const osgGA::GUIEventAdapter& ea, bool async) con
 	case osgGA::GUIEventAdapter::KEYDOWN:
 		x = ea.getKey();
 		if (x < 0 || x >= 127) x = 0; // ??? TODO: IME
-		printf("%d %c\n", ea.getUnmodifiedKey(), x); // debug
 		return MyGUI::InputManager::getInstance().injectKeyPress(convertKeyCode(ea.getUnmodifiedKey()), x);
 		break;
 	case osgGA::GUIEventAdapter::KEYUP:

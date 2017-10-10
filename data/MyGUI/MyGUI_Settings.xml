@@ -2,6 +2,8 @@
 <MyGUI>
 	<MyGUI type="Font">
 		<Property key="Default" value="DejaVuSansFont_15"/>
+		<Property key="InvertSelected" value="false"/>
+		<Property key="SelectedColour" value="1 0 0"/>
 	</MyGUI>
 	<MyGUI type="Pointer">
 		<Property key="Default" value="arrow"/>
