@@ -30,19 +30,130 @@
 #include "LevelCollection.h"
 #include "SimpleGeometry.h"
 #include "XMLReaderWriter.h"
+#include "util_err.h"
 
-osgViewer::Viewer *theViewer = NULL;
-
-//======TEST
 #include "MYGUIManager.h"
 #include "MessageBox.h"
 #include "FileDialog.h"
+
+using namespace game;
+using namespace gfx;
+
+class GameManager : public osg::Referenced {
+protected:
+	virtual ~GameManager() {}
+public:
+	GameManager() {}
+
+	void loadDefaults();
+	game::Level* loadLevel(const char* filename, int levelIndex);
+	game::Level* loadOrCreateLevel(const char* filename, int levelIndex);
+
+public:
+	osg::ref_ptr<game::ObjectTypeMap> defaultObjectTypeMap;
+	osg::ref_ptr<game::TileTypeMap> defaultTileTypeMap;
+};
+
+class TestController : public osgGA::GUIEventHandler {
+public:
+	TestController(game::Level* lv = NULL)
+		: level(lv)
+	{
+
+	}
+
+	virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa) {
+		if (!level.valid()) return false;
+		if (MyGUI::InputManager::getInstancePtr() && MyGUI::InputManager::getInstancePtr()->isModalAny()) return false;
+
+		game::Polyhedron *poly = level->getSelectedPolyhedron();
+		int dir = -1;
+
+		switch (ea.getEventType()) {
+		case osgGA::GUIEventAdapter::FRAME:
+			level->update();
+			return false;
+		case osgGA::GUIEventAdapter::KEYDOWN:
+			switch (ea.getKey()) {
+			case osgGA::GUIEventAdapter::KEY_Up:
+				dir = 0; break;
+			case osgGA::GUIEventAdapter::KEY_Left:
+				dir = 1; break;
+			case osgGA::GUIEventAdapter::KEY_Down:
+				dir = 2; break;
+			case osgGA::GUIEventAdapter::KEY_Right:
+				dir = 3; break;
+			case osgGA::GUIEventAdapter::KEY_Space:
+				if (!level->isAnimating()) level->switchToNextPolyhedron();
+				break;
+			default:
+				return false;
+			}
+			if (dir >= 0) {
+				osgViewer::Viewer* viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
+				osg::Camera* camera = viewer ? viewer->getCamera() : NULL;
+				if (camera) {
+					osg::Vec3 eye, center, up;
+					camera->getViewMatrixAsLookAt(eye, center, up);
+					eye = (eye - center) ^ up;
+					if (eye.x() < eye.y()) {
+						if (eye.x() + eye.y() > 0) dir += 3;
+					} else if (eye.x() + eye.y() > 0) dir += 2;
+					else dir += 1;
+				}
+				const game::MoveDirection dirs[4] = { MOVE_UP, MOVE_LEFT, MOVE_DOWN, MOVE_RIGHT };
+				if (!level->isAnimating() && poly) poly->move(level.get(), dirs[dir & 3]);
+			}
+			break;
+		default:
+			return false;
+		}
+		return true;
+	}
+public:
+	osg::ref_ptr<game::Level> level;
+};
 
 // This class is modified from the Demo_Themes example of MyGUI
 class CustomMYGUIManager : public MYGUIManager
 {
 public:
-	CustomMYGUIManager() : _demoView(NULL), _menuBar(NULL) {}
+	CustomMYGUIManager()
+		: theViewer(NULL)
+		, _demoView(NULL)
+		, _menuBar(NULL)
+	{}
+
+	void setLevel(Level* level_) {
+		// reset controller
+		if (!levelController.valid()) {
+			levelController = new TestController;
+			theViewer->addEventHandler(levelController.get());
+		}
+		levelController->level = NULL;
+
+		// init level
+		level = level_;
+		level->init();
+		level->createInstance();
+		levelController->level = level;
+
+		// add to scene graph
+		levelRoot->removeChildren(0, levelRoot->getNumChildren());
+		levelRoot->addChild(level->_appearance.get());
+
+		// add camera controller
+		if (!cameraController.valid()) cameraController = new osgGA::OrbitManipulator;
+		theViewer->setCameraManipulator(cameraController.get());
+
+		levelRoot->computeBound();
+		osg::BoundingSphere bs = levelRoot->getBound();
+		osg::Vec3 c = bs.center();
+		c.z() = 0.0f;
+		osg::Vec3 e = c + osg::Vec3(-1, -3, 2) * bs.radius();
+
+		cameraController->setTransformation(e, c, osg::Vec3d(1, 1, 1));
+	}
 private:
 	virtual void setupResources()
 	{
@@ -68,6 +179,18 @@ private:
 		}
 	}
 
+	void notifyFileDialogAccept(MyGUI::FileDialog* sender) {
+		if (sender->mTag == "mnuOpen") {
+			Level *newLevel = gameMgr->loadLevel((sender->currentDirectory + sender->fileName).c_str(), 0);
+			if (newLevel) setLevel(newLevel);
+			else {
+				MyGUI::Message::createMessageBox("Error",
+					"Failed to load level file '" + sender->fileName + "'.",
+					MyGUI::MessageBoxStyle::Ok | MyGUI::MessageBoxStyle::IconWarning);
+			}
+		}
+	}
+
 	void notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem* item) {
 		const std::string& name = item->getName();
 		if (name == "mnuExit") {
@@ -82,6 +205,8 @@ private:
 			window->addFileType("All files", "");
 			window->setSmoothShow(true);
 			window->setMessageModal(true);
+			window->mTag = name;
+			window->eventFileDialogAccept += MyGUI::newDelegate(this, &CustomMYGUIManager::notifyFileDialogAccept);
 			window->initialize();
 		} else if (name == "mnuUIScale") {
 			toggleRadio(item);
@@ -104,56 +229,77 @@ private:
 		}
 	}
 
+public:
+	osgViewer::Viewer *theViewer;
+	osg::ref_ptr<GameManager> gameMgr;
+	osg::ref_ptr<osg::Group> levelRoot;
+
+private:
+	osg::ref_ptr<Level> level;
+	osg::ref_ptr<osgGA::OrbitManipulator> cameraController;
+	osg::ref_ptr<TestController> levelController;
+
+private:
 	MyGUI::Widget* _demoView;
 	MyGUI::MenuBar* _menuBar;
 };
-//========
 
-using namespace game;
-using namespace gfx;
-
-game::Level* test(const char* filename, int levelIndex) {
-	//create a level
-	osg::ref_ptr<game::Level> level = new game::Level;
-	level->name = "Unnamed level";
-
-	//load default object and tile types
+void GameManager::loadDefaults() {
+	defaultObjectTypeMap = new ObjectTypeMap;
 	osg::ref_ptr<XMLNode> x = XMLReaderWriter::readFile(
 		std::ifstream("../data/DefaultObjectTypes.xml", std::ios::in | std::ios::binary));
-	if (x.valid()) level->getOrCreateObjectTypeMap()->load(x.get());
+	if (x.valid()) defaultObjectTypeMap->load(x.get());
+	else UTIL_WARN "Failed to load default object types" << std::endl;
+
+	defaultTileTypeMap = new TileTypeMap;
 	x = XMLReaderWriter::readFile(
 		std::ifstream("../data/DefaultTileTypes.xml", std::ios::in | std::ios::binary));
-	if (x.valid()) level->getOrCreateTileTypeMap()->load(x.get());
+	if (x.valid()) defaultTileTypeMap->load(x.get());
+	else UTIL_WARN "Failed to load default tile types" << std::endl;
+}
 
-	//try to load a level
+game::Level* GameManager::loadLevel(const char* filename, int levelIndex) {
+	if (!filename) return NULL;
 	if (filename) {
-		x = XMLReaderWriter::readFile(std::ifstream(filename, std::ios::in | std::ios::binary));
+		osg::ref_ptr<XMLNode> x = XMLReaderWriter::readFile(std::ifstream(filename, std::ios::in | std::ios::binary));
 		if (x.valid()) {
 			osg::ref_ptr<osg::Object> obj = LevelCollection::loadLevelOrCollection(x.get(),
-				level->getOrCreateObjectTypeMap(), level->getOrCreateTileTypeMap());
-			//check if it is level collection
+				defaultObjectTypeMap, defaultTileTypeMap);
+			// check if it is level collection
 			{
 				LevelCollection *lc = dynamic_cast<LevelCollection*>(obj.get());
 				if (lc) {
 					if (levelIndex < 0 || levelIndex >= (int)lc->levels.size()) levelIndex = 0;
-					level = lc->levels[levelIndex];
+					osg::ref_ptr<game::Level> level = lc->levels[levelIndex];
 					obj = NULL;
 					return level.release();
 				}
 			}
-			//check if it is level
+			// check if it is level
 			{
 				Level *lv = dynamic_cast<Level*>(obj.get());
 				if (lv) {
-					level = lv;
+					osg::ref_ptr<game::Level> level = lv;
 					obj = NULL;
 					return level.release();
 				}
 			}
 		}
 	}
+	UTIL_ERR "Failed to load level '" << filename << "'" << std::endl;
+	return NULL;
+}
+
+Level* GameManager::loadOrCreateLevel(const char* filename, int levelIndex) {
+	// try to load a level
+	Level *ptr = loadLevel(filename, levelIndex);
+	if (ptr) return ptr;
 
 	// create a default level
+	osg::ref_ptr<game::Level> level = new game::Level;
+	level->name = "Unnamed level";
+	level->objectTypeMap = new ObjectTypeMap(*defaultObjectTypeMap);
+	level->tileTypeMap = new TileTypeMap(*defaultTileTypeMap);
 
 	//some tile types
 	osg::ref_ptr<TileType> ground, ground2, wall, ex;
@@ -206,7 +352,7 @@ game::Level* test(const char* filename, int levelIndex) {
 #endif
 	level->addPolyhedron(poly.get());
 
-	{
+	/*{
 		//create a level collection
 		osg::ref_ptr<game::LevelCollection> lvs = new game::LevelCollection;
 		lvs->name = "Unnamed level pack";
@@ -214,7 +360,7 @@ game::Level* test(const char* filename, int levelIndex) {
 
 		//test!!!
 		osgDB::writeObjectFile(*lvs, "out.osgt");
-	}
+	}*/
 
 	return level.release();
 }
@@ -229,68 +375,8 @@ game::Level* test2(){
 	return level.release();
 }
 
-class TestController : public osgGA::GUIEventHandler {
-public:
-	TestController(game::Level* lv)
-		: level(lv)
-	{
-
-	}
-
-	virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa) {
-		if (!level.valid()) return false;
-
-		game::Polyhedron *poly = level->getSelectedPolyhedron();
-		int dir = -1;
-
-		switch (ea.getEventType()) {
-		case osgGA::GUIEventAdapter::FRAME:
-			level->update();
-			return false;
-		case osgGA::GUIEventAdapter::KEYDOWN:
-			switch (ea.getKey()) {
-			case osgGA::GUIEventAdapter::KEY_Up:
-				dir = 0; break;
-			case osgGA::GUIEventAdapter::KEY_Left:
-				dir = 1; break;
-			case osgGA::GUIEventAdapter::KEY_Down:
-				dir = 2; break;
-			case osgGA::GUIEventAdapter::KEY_Right:
-				dir = 3; break;
-			case osgGA::GUIEventAdapter::KEY_Space:
-				if (!level->isAnimating()) level->switchToNextPolyhedron();
-				break;
-			default:
-				return false;
-			}
-			if (dir >= 0) {
-				osgViewer::Viewer* viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
-				osg::Camera* camera = viewer ? viewer->getCamera() : NULL;
-				if (camera) {
-					osg::Vec3 eye, center, up;
-					camera->getViewMatrixAsLookAt(eye, center, up);
-					eye = (eye - center) ^ up;
-					if (eye.x() < eye.y()) {
-						if (eye.x() + eye.y() > 0) dir += 3;
-					} else if (eye.x() + eye.y() > 0) dir += 2;
-					else dir += 1;
-				}
-				const game::MoveDirection dirs[4] = { MOVE_UP, MOVE_LEFT, MOVE_DOWN, MOVE_RIGHT };
-				if (!level->isAnimating() && poly) poly->move(level.get(), dirs[dir & 3]);
-			}
-			break;
-		default:
-			return false;
-		}
-		return true;
-	}
-public:
-	osg::ref_ptr<game::Level> level;
-};
-
 int main(int argc, char** argv){
 	osgViewer::Viewer viewer;
-	theViewer = &viewer;
 
 	//create window traits
 	osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
@@ -311,16 +397,9 @@ int main(int argc, char** argv){
 	camera->setClearColor(osg::Vec4f(0.2f, 0.2f, 0.4f, 1.0f));
 	camera->getOrCreateStateSet()->setAttributeAndModes(new osg::Depth());
 
-	//test: create a level
-	int levelIndex = 0;
-	if (argc >= 3) {
-		sscanf(argv[2], "%d", &levelIndex);
-		levelIndex--;
-	}
-	osg::ref_ptr<game::Level> level = test(argc >= 2 ? argv[1] : NULL, levelIndex);
-	level->init();
-	level->createInstance();
-	osg::ref_ptr<osg::Node> node = level->_appearance;
+	//load defaults
+	osg::ref_ptr<GameManager> gameMgr = new GameManager();
+	gameMgr->loadDefaults();
 
 	//osg::ref_ptr<osg::Material> mat = new osg::Material;
 	//mat->setAmbient(osg::Material::FRONT_AND_BACK, osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
@@ -330,7 +409,6 @@ int main(int argc, char** argv){
 	//node->getOrCreateStateSet()->setAttributeAndModes(mat.get());
 
 	osg::ref_ptr<osg::MatrixTransform> mirror = new osg::MatrixTransform(osg::Matrix::scale(1.0f, -1.0f, 1.0f));
-	mirror->addChild(node);
 
 	osg::ref_ptr<osgShadow::ShadowedScene> shadowedScene = new osgShadow::ShadowedScene(/*new osgShadow::ShadowMap*/);
 	shadowedScene->addChild(mirror);
@@ -341,6 +419,9 @@ int main(int argc, char** argv){
 
 	//test: GUI
 	osg::ref_ptr<CustomMYGUIManager> mygui = new CustomMYGUIManager;
+	mygui->theViewer = &viewer;
+	mygui->gameMgr = gameMgr;
+	mygui->levelRoot = mirror;
 
 	osg::ref_ptr<osg::Geode> ui_geode = new osg::Geode;
 	ui_geode->setCullingActive(false);
@@ -364,18 +445,13 @@ int main(int argc, char** argv){
 	viewer.getLight()->setDiffuse(osg::Vec4(0.5f, 0.5f, 0.5f, 1.0f));
 	viewer.getLight()->setPosition(osg::Vec4(3.0f, 4.0f, 5.0f, 0.0f));
 
-	{
-		osgGA::OrbitManipulator *om = new osgGA::OrbitManipulator;
-		viewer.setCameraManipulator(om);
-
-		mirror->computeBound();
-		osg::BoundingSphere bs = mirror->getBound();
-		osg::Vec3 c = bs.center();
-		c.z() = 0.0f;
-		osg::Vec3 e = c + osg::Vec3(-1, -3, 2) * bs.radius();
-
-		om->setTransformation(e, c, osg::Vec3d(1, 1, 1));
+	// try to load a level
+	int levelIndex = 0;
+	if (argc >= 3) {
+		sscanf(argv[2], "%d", &levelIndex);
+		levelIndex--;
 	}
+	mygui->setLevel(gameMgr->loadOrCreateLevel(argc >= 2 ? argv[1] : NULL, levelIndex));
 
 	viewer.setThreadingModel(osgViewer::ViewerBase::SingleThreaded); //otherwise it randomly crashes
 	viewer.setRunMaxFrameRate(30.0);
@@ -383,7 +459,6 @@ int main(int argc, char** argv){
 	//viewer.addEventHandler(new osgViewer::WindowSizeHandler);
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 	//viewer.addEventHandler(new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()));
-	viewer.addEventHandler(new TestController(level.get()));
 
 	viewer.realize();
 
