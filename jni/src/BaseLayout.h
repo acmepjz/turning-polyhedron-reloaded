@@ -248,6 +248,9 @@ namespace wraps
 			}
 		}
 
+		const std::string& getPrefix() const { return mPrefix; }
+		std::string removePrefix(const std::string& s) const;
+
 	private:
 		std::string FindParentPrefix(MyGUI::Widget* _parent);
 
@@ -269,9 +272,9 @@ namespace wraps
 
 	protected:
 		MyGUI::Widget* mMainWidget;
-		std::string mPrefix;
 
 	private:
+		std::string mPrefix;
 		std::string mLayoutName;
 		MyGUI::VectorWidgetPtr mListWindowRoot;
 		typedef std::vector<BaseLayout*> VectorBasePtr;

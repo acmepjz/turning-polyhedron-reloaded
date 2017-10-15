@@ -1,5 +1,7 @@
 #include "BaseLayout.h"
 
+#include <string.h>
+
 namespace wraps {
 
 	BaseLayout::BaseLayout() :
@@ -145,6 +147,14 @@ namespace wraps {
 	BaseLayout::~BaseLayout()
 	{
 		shutdown();
+	}
+
+	std::string BaseLayout::removePrefix(const std::string& s) const {
+		if (s.size() >= mPrefix.size() && (mPrefix.empty() || memcmp(s.c_str(), mPrefix.c_str(), mPrefix.size()) == 0)) {
+			if (s.size() > mPrefix.size()) return s.substr(mPrefix.size());
+			return std::string();
+		}
+		return s;
 	}
 
 }

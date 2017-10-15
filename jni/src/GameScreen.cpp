@@ -82,7 +82,7 @@ void GameScreen::notifyFileDialogAccept(MyGUI::FileDialog* sender) {
 }
 
 void GameScreen::notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem* item) {
-	std::string name = item->getName().substr(mPrefix.size()); // ???
+	std::string name = removePrefix(item->getName());
 
 	if (name == "mnuExit") {
 		MyGUI::Message *msgbox = MyGUI::Message::createMessageBox("Exit game", "Are you sure?",

@@ -47,7 +47,7 @@ namespace MyGUI {
 	}
 
 	void InputBox::notifyButtonClick(Widget* _sender) {
-		std::string _name = _sender->getName().substr(mPrefix.size()); // ???
+		std::string _name = removePrefix(_sender->getName());
 
 		if (_name == "cmdCancel") {
 			endMessage();
