@@ -23,3 +23,6 @@ namespace osg {
 	class Group;
 }
 extern osg::Group *levelRoot; // TODO: remove this ad-hoc thing
+
+class ConfigManager;
+extern ConfigManager *cfgMgr;

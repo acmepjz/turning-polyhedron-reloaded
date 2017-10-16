@@ -26,3 +26,5 @@ public:
 	osg::ref_ptr<game::ObjectTypeMap> defaultObjectTypeMap;
 	osg::ref_ptr<game::TileTypeMap> defaultTileTypeMap;
 };
+
+extern GameManager* gameMgr;

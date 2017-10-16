@@ -29,6 +29,7 @@
 #include "TileType.h"
 #include "MapData.h"
 #include "GameManager.h"
+#include "ConfigManager.h"
 #include "LevelController.h"
 #include "LevelCollection.h"
 #include "util_err.h"
@@ -68,6 +69,11 @@ int main(int argc, char** argv){
 	g_argc = argc;
 	g_argv = argv;
 
+	//load config
+	osg::ref_ptr<ConfigManager> cfg = new ConfigManager("config.xml");
+	cfgMgr = cfg.get();
+
+	//create viewer
 	osgViewer::Viewer viewer;
 	theViewer = &viewer;
 

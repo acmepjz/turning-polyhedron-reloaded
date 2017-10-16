@@ -5,6 +5,7 @@
 #include "globals.h"
 #include "Level.h"
 #include "GameManager.h"
+#include "ConfigManager.h"
 #include "MYGUIManager.h"
 
 #include <osgViewer/Viewer>
@@ -12,14 +13,22 @@
 GameScreen::GameScreen() :
 	wraps::BaseLayout("GameScreen.layout"),
 	mSmoothShow(false),
+	mFrameAdvise(false),
 	_demoView(NULL),
-	_menuBar(NULL)
+	_menuBar(NULL),
+	_recentFiles(NULL),
+	_recentFolders(NULL)
 {
 	_demoView = dynamic_cast<MyGUI::Window*>(mMainWidget);
 
 	assignWidget(_menuBar, "MenuBar");
 
 	_menuBar->eventMenuCtrlAccept += MyGUI::newDelegate(this, &GameScreen::notifyMenuItemClick);
+
+	assignWidget(_recentFiles, "RecentFiles");
+	assignWidget(_recentFolders, "RecentFolders");
+
+	frameAdvise(true);
 
 	// test: try to load a level
 	int levelIndex = 0;
@@ -71,14 +80,64 @@ void GameScreen::notifyMessageBoxResult(MyGUI::Message* sender, MyGUI::MessageBo
 
 void GameScreen::notifyFileDialogAccept(MyGUI::FileDialog* sender) {
 	if (sender->mTag == "mnuOpen") {
-		game::Level *newLevel = gameMgr->loadLevel((sender->currentDirectory + sender->fileName).c_str(), 0);
-		if (newLevel) setLevel(newLevel);
-		else {
-			MyGUI::Message::createMessageBox("Error",
-				"Failed to load level file '" + sender->fileName + "'.",
-				MyGUI::MessageBoxStyle::Ok | MyGUI::MessageBoxStyle::IconWarning);
+		std::string fullName = sender->currentDirectory + sender->fileName;
+		loadFile(fullName, sender->currentDirectory);
+	}
+}
+
+bool GameScreen::loadFile(const std::string& fullName, const std::string& directory) {
+	game::Level *newLevel = gameMgr->loadLevel(fullName.c_str(), 0);
+	if (newLevel) {
+		if (cfgMgr->recentFiles.add(fullName)) frameAdvise(true);
+		if (!directory.empty() && cfgMgr->recentFolders.add(directory)) frameAdvise(true);
+
+		setLevel(newLevel);
+
+		return true;
+	} else {
+		if (cfgMgr->recentFiles.remove(fullName)) frameAdvise(true);
+
+		MyGUI::Message::createMessageBox("Error",
+			"Failed to load level file '" + fullName + "'.",
+			MyGUI::MessageBoxStyle::Ok | MyGUI::MessageBoxStyle::IconWarning);
+
+		return false;
+	}
+}
+
+void GameScreen::frameEntered(float _frame) {
+	cfgMgr->recentFiles.updateMenu(_recentFiles, "mnuRecentFile");
+	cfgMgr->recentFolders.updateMenu(_recentFolders, "mnuRecentFolder");
+
+	frameAdvise(false);
+}
+
+void GameScreen::frameAdvise(bool _advise) {
+	if (_advise) {
+		if (!mFrameAdvise) {
+			MyGUI::Gui::getInstance().eventFrameStart += MyGUI::newDelegate(this, &GameScreen::frameEntered);
+			mFrameAdvise = true;
+		}
+	} else {
+		if (mFrameAdvise) {
+			MyGUI::Gui::getInstance().eventFrameStart -= MyGUI::newDelegate(this, &GameScreen::frameEntered);
+			mFrameAdvise = false;
 		}
 	}
+}
+
+void GameScreen::showFileDialog(const std::string& name, const std::string& currentDirectory, const std::string& fileName) {
+	MyGUI::FileDialog *window = new MyGUI::FileDialog();
+	window->isSaveDialog = name == "mnuSaveAs";
+	window->currentDirectory = currentDirectory;
+	window->fileName = fileName;
+	window->addFileType("XML level file", "xml xml.lzma box");
+	window->addFileType("All files", "");
+	window->setSmoothShow(true);
+	window->setMessageModal(true);
+	window->mTag = name;
+	window->eventFileDialogAccept += MyGUI::newDelegate(this, &GameScreen::notifyFileDialogAccept);
+	window->initialize();
 }
 
 void GameScreen::notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem* item) {
@@ -90,15 +149,11 @@ void GameScreen::notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem
 		msgbox->mTag = name;
 		msgbox->eventMessageBoxResult += MyGUI::newDelegate(this, &GameScreen::notifyMessageBoxResult);
 	} else if (name == "mnuOpen" || name == "mnuSaveAs") {
-		MyGUI::FileDialog *window = new MyGUI::FileDialog();
-		window->isSaveDialog = name == "mnuSaveAs";
-		window->addFileType("XML level file", "xml xml.lzma box");
-		window->addFileType("All files", "");
-		window->setSmoothShow(true);
-		window->setMessageModal(true);
-		window->mTag = name;
-		window->eventFileDialogAccept += MyGUI::newDelegate(this, &GameScreen::notifyFileDialogAccept);
-		window->initialize();
+		showFileDialog(name, "", "");
+	} else if (name == "mnuRecentFile") {
+		loadFile(item->getUserString("Tag"), "");
+	} else if (name == "mnuRecentFolder") {
+		showFileDialog("mnuOpen", item->getUserString("Tag"), "");
 	} else if (name == "mnuUIScale") {
 		toggleRadio(item);
 		myguiMgr->setUIScale(atof(item->getUserString("Tag").c_str()));

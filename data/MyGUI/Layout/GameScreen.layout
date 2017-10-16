@@ -7,16 +7,16 @@
 				<Property key="MenuItemType" value="Popup"/>
 				<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
 					<Widget type="MenuItem" name="mnuNew">
-						<Property key="Caption" value="New"/>
+						<Property key="Caption" value="New&#9;Ctrl+N"/>
 					</Widget>
 					<Widget type="MenuItem" name="mnuOpen">
-						<Property key="Caption" value="Open"/>
+						<Property key="Caption" value="Open&#9;Ctrl+O"/>
 					</Widget>
 					<Widget type="MenuItem">
 						<Property key="MenuItemType" value="Separator"/>
 					</Widget>
 					<Widget type="MenuItem" name="mnuSave">
-						<Property key="Caption" value="Save"/>
+						<Property key="Caption" value="Save&#9;Ctrl+S"/>
 					</Widget>
 					<Widget type="MenuItem" name="mnuSaveAs">
 						<Property key="Caption" value="Save as"/>
@@ -27,20 +27,18 @@
 					<Widget type="MenuItem">
 						<Property key="Caption" value="Recent Files"/>
 						<Property key="MenuItemType" value="Popup"/>
-						<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
-							<Widget type="MenuItem">
-								<Property key="Caption" value="1.txt"/>
-							</Widget>
-							<Widget type="MenuItem">
-								<Property key="Caption" value="2.txt"/>
-							</Widget>
-						</Widget>
+						<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup" name="RecentFiles"/>
+					</Widget>
+					<Widget type="MenuItem">
+						<Property key="Caption" value="Recent Folders"/>
+						<Property key="MenuItemType" value="Popup"/>
+						<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup" name="RecentFolders"/>
 					</Widget>
 					<Widget type="MenuItem">
 						<Property key="MenuItemType" value="Separator"/>
 					</Widget>
 					<Widget type="MenuItem" name="mnuExit">
-						<Property key="Caption" value="Exit"/>
+						<Property key="Caption" value="Exit&#9;Ctrl+Q"/>
 					</Widget>
 				</Widget>
 			</Widget>
@@ -79,16 +77,17 @@
 						<Property key="Caption" value="UI Scale"/>
 						<Property key="MenuItemType" value="Popup"/>
 						<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
-							<Widget type="MenuItem" name="mnuUIScale">
+							<Property key="ManualSkin" value="true"/>
+							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuUIScale">
 								<UserString key="Tag" value="1.0"/>
 								<Property key="Caption" value="1.0"/>
                                 <Property key="MenuItemChecked" value="true"/>
 							</Widget>
-							<Widget type="MenuItem" name="mnuUIScale">
+							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuUIScale">
 								<UserString key="Tag" value="1.5"/>
 								<Property key="Caption" value="1.5"/>
 							</Widget>
-							<Widget type="MenuItem" name="mnuUIScale">
+							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuUIScale">
 								<UserString key="Tag" value="2.0"/>
 								<Property key="Caption" value="2.0"/>
 							</Widget>
