@@ -29,6 +29,7 @@
 #include "TileType.h"
 #include "MapData.h"
 #include "GameManager.h"
+#include "CompressionManager.h"
 #include "ConfigManager.h"
 #include "LevelController.h"
 #include "LevelCollection.h"
@@ -68,6 +69,10 @@ private:
 int main(int argc, char** argv){
 	g_argc = argc;
 	g_argv = argv;
+
+	//init compression manager
+	osg::ref_ptr<CompressionManager> compressionManager = new CompressionManager();
+	compMgr = compressionManager.get();
 
 	//load config
 	osg::ref_ptr<ConfigManager> cfg = new ConfigManager("config.xml");

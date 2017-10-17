@@ -1,4 +1,5 @@
 #include "GameManager.h"
+#include "CompressionManager.h"
 #include "LevelCollection.h"
 #include "XMLReaderWriter.h"
 #include "util_err.h"
@@ -26,32 +27,35 @@ void GameManager::loadDefaults() {
 
 game::Level* GameManager::loadLevel(const char* filename, int levelIndex) {
 	if (!filename) return NULL;
-	if (filename) {
-		osg::ref_ptr<XMLNode> x = XMLReaderWriter::readFile(std::ifstream(filename, std::ios::in | std::ios::binary));
+
+	std::istream *fin = compMgr->openFileForRead(filename);
+	if (fin) {
+		osg::ref_ptr<XMLNode> x = XMLReaderWriter::readFile(*fin);
+		delete fin;
+
 		if (x.valid()) {
 			osg::ref_ptr<osg::Object> obj = LevelCollection::loadLevelOrCollection(x.get(),
 				defaultObjectTypeMap, defaultTileTypeMap);
+
 			// check if it is level collection
-			{
-				LevelCollection *lc = dynamic_cast<LevelCollection*>(obj.get());
-				if (lc) {
-					if (levelIndex < 0 || levelIndex >= (int)lc->levels.size()) levelIndex = 0;
-					osg::ref_ptr<game::Level> level = lc->levels[levelIndex];
-					obj = NULL;
-					return level.release();
-				}
+			LevelCollection *lc = dynamic_cast<LevelCollection*>(obj.get());
+			if (lc) {
+				if (levelIndex < 0 || levelIndex >= (int)lc->levels.size()) levelIndex = 0;
+				osg::ref_ptr<game::Level> level = lc->levels[levelIndex];
+				obj = NULL;
+				return level.release();
 			}
+
 			// check if it is level
-			{
-				Level *lv = dynamic_cast<Level*>(obj.get());
-				if (lv) {
-					osg::ref_ptr<game::Level> level = lv;
-					obj = NULL;
-					return level.release();
-				}
+			Level *lv = dynamic_cast<Level*>(obj.get());
+			if (lv) {
+				osg::ref_ptr<game::Level> level = lv;
+				obj = NULL;
+				return level.release();
 			}
 		}
 	}
+
 	UTIL_ERR "Failed to load level '" << filename << "'" << std::endl;
 	return NULL;
 }

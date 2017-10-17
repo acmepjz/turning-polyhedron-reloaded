@@ -26,3 +26,6 @@ extern osg::Group *levelRoot; // TODO: remove this ad-hoc thing
 
 class ConfigManager;
 extern ConfigManager *cfgMgr;
+
+class CompressionManager;
+extern CompressionManager *compMgr;
