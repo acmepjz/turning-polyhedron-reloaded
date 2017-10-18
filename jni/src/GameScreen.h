@@ -38,6 +38,7 @@ private:
 	void toggleRadio(MyGUI::MenuItem* current);
 
 	void showFileDialog(const std::string& name, const std::string& currentDirectory, const std::string& fileName);
+	void newFile();
 	bool loadFile(const std::string& fullName, const std::string& directory);
 
 	void frameEntered(float _frame);

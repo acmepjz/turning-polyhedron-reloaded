@@ -105,6 +105,11 @@ bool GameScreen::loadFile(const std::string& fullName, const std::string& direct
 	}
 }
 
+void GameScreen::newFile() {
+	game::Level *newLevel = gameMgr->loadLevel(NULL, 0);
+	setLevel(newLevel);
+}
+
 void GameScreen::frameEntered(float _frame) {
 	cfgMgr->recentFiles.updateMenu(_recentFiles, "mnuRecentFile");
 	cfgMgr->recentFolders.updateMenu(_recentFolders, "mnuRecentFolder");
@@ -148,6 +153,8 @@ void GameScreen::notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem
 			MyGUI::MessageBoxStyle::YesNo | MyGUI::MessageBoxStyle::IconWarning);
 		msgbox->mTag = name;
 		msgbox->eventMessageBoxResult += MyGUI::newDelegate(this, &GameScreen::notifyMessageBoxResult);
+	} else if (name == "mnuNew") {
+		newFile();
 	} else if (name == "mnuOpen" || name == "mnuSaveAs") {
 		showFileDialog(name, "", "");
 	} else if (name == "mnuRecentFile") {
