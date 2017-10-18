@@ -4,6 +4,7 @@
 #include <osg/MatrixTransform>
 #include <osg/Vec3i>
 #include <string>
+#include "Appearance.h"
 #include "MapData.h"
 #include "util_object.h"
 
@@ -272,7 +273,7 @@ namespace game {
 		void resize(const osg::Vec3i& lbound_, const osg::Vec3i& size_, bool customShape_, bool preserved);
 
 		///test only
-		void createInstance();
+		void createInstance(bool isEditMode);
 
 		///update transform according to \ref pos.
 		void updateTransform();
@@ -332,6 +333,14 @@ namespace game {
 		bool customShapeEnabled; //!< use custom shape. if it is true then \ref customShape is used, otherwise the polyhedron is a solid cuboid (only \ref customShape[0] is used).
 		std::vector<unsigned char> customShape; //!< the custom shape. \sa PolyhedronCell
 
+		/** The appearance map.
+		Some predefined appearance id:
+		- "" a fixed mesh
+		- "solid" will instantiated at every solid block
+		- "antenna" unimplemented...
+		*/
+		gfx::AppearanceMap appearanceMap;
+
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, id);
 		UTIL_ADD_BYVAL_GETTER_SETTER(int, shape);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, objType);
@@ -343,6 +352,7 @@ namespace game {
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3i, size);
 		UTIL_ADD_BYVAL_GETTER_SETTER(bool, customShapeEnabled);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<unsigned char>, customShape);
+		UTIL_ADD_BYREF_GETTER_SETTER(gfx::AppearanceMap, appearanceMap);
 
 	public:
 		//the following properties don't save to file and is generated at runtime

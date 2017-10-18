@@ -316,7 +316,10 @@ namespace gfx {
 		return node.release();
 	}
 
-	bool Appearance::load(const XMLNode* node){
+	bool Appearance::load(const XMLNode* node, AppearanceMap* _map, const char* _defaultId, const osg::Vec3& _defaultSize){
+		// get node id first
+		std::string _id = node->getAttr("id", std::string(_defaultId ? _defaultId : ""));
+
 		//check node type
 		for (;;) {
 			if (node->name == "appearance") type = APPEARANCE;
@@ -369,7 +372,7 @@ namespace gfx {
 
 			pos = node->getAttrOsgVec("p", osg::Vec3());
 			rot = node->getAttrOsgVec("r", osg::Vec3());
-			scale = node->getAttrOsgVec("s", osg::Vec3(1, 1, 1));
+			scale = node->getAttrOsgVec("s", _defaultSize);
 			scale2 = node->getAttrOsgVec("s2", osg::Vec3(1, 1, 1));
 			angles = node->getAttrOsgVec("a", osg::Vec2(1, 1));
 			center = node->getAttrOsgVec("c", osg::Vec3());
@@ -435,7 +438,7 @@ namespace gfx {
 			//load subnodes, although sometimes these nodes are ignored
 			for (size_t i = 0; i < node->subNodes.size(); i++) {
 				osg::ref_ptr<Appearance> a = new Appearance;
-				if (a->load(node->subNodes[i].get())) {
+				if (a->load(node->subNodes[i].get(), NULL, NULL, _defaultSize)) {
 					subNodes.push_back(a);
 				}
 			}
@@ -454,6 +457,15 @@ namespace gfx {
 				_vertices[i + 1] = v.y();
 				_vertices[i + 2] = v.z();
 			}
+		}
+
+		// add to appearance map
+		if (_map) {
+			AppearanceMap::const_iterator it = _map->find(_id);
+			if (it != _map->end()) {
+				UTIL_WARN "object id '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
+			}
+			(*_map)[_id] = this;
 		}
 
 		return true;

@@ -38,6 +38,9 @@ namespace game {
 
 		bool load(const XMLNode* node); //!< load from XML node, assume the node is called `tileType`
 
+		/** (test only) */
+		osg::Node* getOrCreateInstance(int shape, bool isEditMode);
+
 	public:
 		std::string id; //!< id, used to find this tile type
 		int index; //!< the (permanent) index (optional), used to find this tile type, 0 = no index
@@ -54,7 +57,13 @@ namespace game {
 		std::string name; //!< the gettext'ed object name
 		std::string desc; //!< the gettext'ed object description
 
-		osg::ref_ptr<gfx::Appearance> appearance; //!< the appearance
+		/** The appearance map.
+		Some predefined appearance id:
+		- "" showed in both game and edit (but only showed in edit mode if invisibleAtRuntime=true)
+		- "game" only showed in game
+		- "edit" only showed in edit
+		*/
+		gfx::AppearanceMap appearanceMap;
 
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, id);
 		UTIL_ADD_BYVAL_GETTER_SETTER(int, index);
@@ -63,11 +72,14 @@ namespace game {
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec2i, blockedArea);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, name);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, desc);
-		UTIL_ADD_OBJ_GETTER_SETTER(gfx::Appearance, appearance);
+		UTIL_ADD_BYREF_GETTER_SETTER(gfx::AppearanceMap, appearanceMap);
 
 	public:
 		//the following properties don't save to file and is generated at runtime
 		ObjectType* _objType;
+		osg::ref_ptr<osg::Node> _appearance; //!< the appearance
+		int _lastShape; //!< shape (last time)
+		bool _isEditMode; //!< is edit mode (last time)
 	};
 
 	/// A map used to look up tile type

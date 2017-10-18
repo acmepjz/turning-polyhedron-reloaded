@@ -132,8 +132,8 @@ namespace game {
 			applyTransform(ret);
 		}
 
-		///test only
-		void createInstance();
+		/// creates \ref _appearance (test only)
+		void createInstance(bool isEditMode);
 
 		void init(Level* parent);
 

@@ -62,15 +62,15 @@ namespace game {
 		return true;
 	}
 
-	void Level::createInstance(){
+	void Level::createInstance(bool isEditMode){
 		osg::ref_ptr<osg::Group> gp = new osg::Group;
 		for (MapDataMap::iterator it = maps.begin(); it != maps.end(); ++it) {
-			it->second->createInstance();
+			it->second->createInstance(isEditMode);
 			gp->addChild(it->second->_appearance);
 		}
 		for (int i = 0, m = polyhedra.size(); i < m; i++) {
 			Polyhedron *poly = polyhedra[i].get();
-			poly->createInstance();
+			poly->createInstance(isEditMode);
 			if (i == _currentPolyhedron) poly->setSelected(true);
 			poly->updateTransform();
 			gp->addChild(poly->_trans);

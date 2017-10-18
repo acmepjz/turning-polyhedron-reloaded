@@ -27,7 +27,7 @@ namespace game {
 		Level(const Level& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
 		///test only
-		void createInstance();
+		void createInstance(bool isEditMode);
 
 		bool addMapData(MapData* obj); //!< Add a map (which must has a valid id).
 		bool addPolyhedron(Polyhedron* obj); //!< Add a polyhedron (possibly no id).

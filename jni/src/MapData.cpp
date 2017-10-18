@@ -122,7 +122,7 @@ namespace game {
 		size = size_;
 	}
 
-	void MapData::createInstance() {
+	void MapData::createInstance(bool isEditMode) {
 		osg::ref_ptr<osg::Group> group = new osg::Group;
 
 #define SX(X) s##X = lbound.X()
@@ -136,14 +136,15 @@ namespace game {
 			for (int y = sy; y < ey; y++) {
 				for (int x = sx; x < ex; x++) {
 					TileType *tile = tiles[idx].get();
-					if (tile && tile->appearance) {
+					osg::Node *node = tile ? tile->getOrCreateInstance(shape, isEditMode) : NULL;
+					if (node) {
 						osg::Matrix mat;
 						mat.makeTranslate(step.x()*x, step.y()*y, step.z()*z);
 						applyTransform(mat);
 
 						osg::MatrixTransform *trans = new osg::MatrixTransform;
 						trans->setMatrix(mat);
-						trans->addChild(tile->appearance->getOrCreateInstance(shape));
+						trans->addChild(node);
 						group->addChild(trans);
 					}
 					idx++;

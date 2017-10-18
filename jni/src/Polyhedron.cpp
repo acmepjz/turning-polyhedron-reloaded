@@ -314,7 +314,7 @@ namespace game {
 		, _objType(NULL)
 		, _currentAnimation(0)
 	{
-
+		util::copyMap(appearanceMap, other.appearanceMap, copyop);
 	}
 
 	Polyhedron::~Polyhedron()
@@ -381,12 +381,26 @@ namespace game {
 		size = size_;
 	}
 
-	void Polyhedron::createInstance(){
-		osg::ref_ptr<osg::Geode> geode = new osg::Geode;
-		
-		switch (shape) {
-		case CUBOID:
-			if (customShapeEnabled) {
+	void Polyhedron::createInstance(bool isEditMode){
+		MapData::MapShape mapShape = MapData::RECTANGULAR; //TODO:
+
+		osg::ref_ptr<osg::Group> group = new osg::Group;
+
+		osg::Matrix mat;
+		osg::ref_ptr<osg::MatrixTransform> trans;
+
+		gfx::AppearanceMap::iterator it = appearanceMap.find("");
+		if (it != appearanceMap.end()) {
+			mat.makeTranslate(lbound.x(), lbound.y(), lbound.z());
+			trans = new osg::MatrixTransform;
+			trans->setMatrix(mat);
+			trans->addChild(it->second->getOrCreateInstance(mapShape));
+			group->addChild(trans);
+		}
+
+		it = appearanceMap.find("solid");
+		if (it != appearanceMap.end()) {
+			if (shape == CUBOID) {
 				int idx = 0;
 
 				for (int z = lbound.z(); z < lbound.z() + size.z(); z++) {
@@ -397,46 +411,26 @@ namespace game {
 							//TODO: block type
 							switch (c) {
 							case SOLID:
-								//test only
-								geode->addDrawable(gfx::createCube(
-									osg::Vec3(x, y, z),
-									osg::Vec3(x + 1, y + 1, z + 1),
-									false,
-									0.05f,
-									osg::Vec3(0.3f, 0.3f, 0.3f)
-									));
+								mat.makeTranslate(x, y, z);
+								trans = new osg::MatrixTransform;
+								trans->setMatrix(mat);
+								trans->addChild(it->second->getOrCreateInstance(mapShape));
+								group->addChild(trans);
 								break;
 							}
 
-							idx++;
+							if (customShapeEnabled) idx++;
 						}
 					}
 				}
-			} else {
-				unsigned char c = customShape[0];
-
-				//TODO: block type
-				switch (c) {
-				case SOLID:
-					//test only
-					geode->addDrawable(gfx::createCube(
-						osg::Vec3(lbound.x(), lbound.y(), lbound.z()),
-						osg::Vec3(lbound.x() + size.x(), lbound.y() + size.y(), lbound.z() + size.z()),
-						false,
-						0.05f,
-						osg::Vec3(0.3f, 0.3f, 0.3f)
-						));
-					break;
-				}
 			}
-			break;
 		}
 
 		osg::ref_ptr<osgFX::Outline> outline = new osgFX::Outline;
 		outline->setEnabled(false);
 		outline->setColor(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		outline->setWidth(4.0f);
-		outline->addChild(geode);
+		outline->addChild(group);
 
 		_appearance = outline.get();
 
@@ -993,6 +987,10 @@ namespace game {
 		//movement
 		movement = node->getAttr("movement", ROLLING_ALL);
 
+		// auto size
+		osg::Vec3 _defaultSize(1, 1, 1);
+		if (node->getAttr("autoSize", false)) _defaultSize.set(size.x(), size.y(), size.z());
+
 		//load subnodes
 		for (size_t i = 0; i < node->subNodes.size(); i++) {
 			const XMLNode* subnode = node->subNodes[i].get();
@@ -1056,6 +1054,9 @@ namespace game {
 						break;
 					}
 				}
+			} else if (subnode->name == "appearance") {
+				osg::ref_ptr<gfx::Appearance> a = new gfx::Appearance;
+				a->load(subnode, &appearanceMap, NULL, _defaultSize);
 			} else {
 				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
 			}
@@ -1077,6 +1078,7 @@ namespace game {
 		ADD_VEC3I_SERIALIZER(size, osg::Vec3i(1, 1, 2));
 		ADD_BOOL_SERIALIZER(customShapeEnabled, false);
 		ADD_VECTOR_SERIALIZER(customShape, std::vector<unsigned char>, osgDB::BaseSerializer::RW_UCHAR, -1);
+		ADD_MAP_SERIALIZER(appearanceMap, gfx::AppearanceMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);
 	}
 
 }

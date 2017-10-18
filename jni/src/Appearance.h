@@ -2,6 +2,7 @@
 
 #include <osg/Node>
 #include <osg/StateSet>
+#include <osg/Vec3>
 #include "util_object.h"
 
 class XMLNode;
@@ -10,6 +11,12 @@ namespace gfx {
 
 	class SimpleGeometry;
 	class Triangulation;
+	class Appearance;
+
+	/** The appearance map.\n
+	\sa game::TileType::appearanceMap, game::Polyhedron::appearanceMap
+	*/
+	typedef std::map<std::string, osg::ref_ptr<Appearance> > AppearanceMap;
 
 	/// The appearance node (experimental)
 
@@ -61,7 +68,13 @@ namespace gfx {
 		*/
 		osg::Node* getOrCreateInstance(int shape);
 
-		bool load(const XMLNode* node); //!< load from XML node
+		/** load from XML node.
+		\param node The node to be loaded, whose name should be `appearance`, `shader`, `transform` or `mesh`.
+		\param[optional] _map Add this node to the appearance map.
+		\param[optional] _defaultId The default id.
+		\param[optional] _defaultSize The default size, which is used in Polyhedron autoSize=true.
+		*/
+		bool load(const XMLNode* node, AppearanceMap* _map = NULL, const char* _defaultId = NULL, const osg::Vec3& _defaultSize = osg::Vec3(1, 1, 1));
 
 		void loadVertices(const XMLNode* node); //!< (internal function) load vertices, assume the node name is `vertices`.
 		void loadFaces(const XMLNode* node); //!< (internal function) load faces, assume the node name is `faces`.

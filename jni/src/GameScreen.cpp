@@ -50,7 +50,7 @@ void GameScreen::setLevel(game::Level* level_) {
 	// init level
 	level = level_;
 	level->init();
-	level->createInstance();
+	level->createInstance(false);
 	levelController->level = level;
 
 	// add to scene graph
