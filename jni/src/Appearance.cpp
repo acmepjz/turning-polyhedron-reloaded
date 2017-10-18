@@ -373,8 +373,14 @@ namespace gfx {
 			scale2 = node->getAttrOsgVec("s2", osg::Vec3(1, 1, 1));
 			angles = node->getAttrOsgVec("a", osg::Vec2(1, 1));
 			center = node->getAttrOsgVec("c", osg::Vec3());
-			bevel = node->getAttr("bevel", 0.0f);
 			segments = node->getAttr("segments", 1);
+
+			// backward compatibility
+			bevel = 0.0f;
+			s = node->getAttr("bevel", std::string());
+			size_t lps = s.find_first_of(';');
+			if (lps != std::string::npos) s = s.substr(lps + 1);
+			if (!s.empty()) bevel = atof(s.c_str());
 
 			if (node->getAttr("solidAndWireframe", false)) {
 				solid = true;
