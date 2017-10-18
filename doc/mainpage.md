@@ -3,6 +3,7 @@ Turning Polyhedron Reloaded
 
 Hello turning-polyhedron-reloaded
 
+* [TurningSquare file format](turningsquare.md)
 * [Game Logic Document](gamelogic.md)
 * Blah
 
