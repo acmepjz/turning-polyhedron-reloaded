@@ -280,7 +280,7 @@ namespace gfx {
 		}
 		case MESH:
 		{
-			osg::ref_ptr<osg::Geode> geode;
+			// osg::ref_ptr<osg::Geode> geode;
 
 			if (hasLOD()) {
 				osg::ref_ptr<osg::LOD> lodNode = new osg::LOD;

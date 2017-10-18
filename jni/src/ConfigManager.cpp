@@ -19,7 +19,7 @@ bool RecentFiles::add(const std::string& _fileName) {
 
 			if (owner) owner->dirty = true;
 
-			for (; i > 0; i--) files[i - 1] = files[i];
+			for (; i > 0; i--) files[i] = files[i - 1];
 			files[0] = _fileName;
 
 			return true;
