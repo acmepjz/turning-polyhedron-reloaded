@@ -268,7 +268,7 @@ namespace wraps
 		virtual ~BaseLayout();
 
 	public:
-		std::string mTag; //! tag to store user data inside widget
+		std::string mTag; //!< tag to store user data inside widget
 
 	protected:
 		MyGUI::Widget* mMainWidget;

@@ -17,6 +17,8 @@ namespace util {
 	void setAttrToString(std::string& s, int value);
 	void setAttrToString(std::string& s, double value);
 
+	/** parse osgVector from string (using "," as delimiter)
+	*/
 	template <class T>
 	T getAttrFromStringOsgVec(const std::string& s, const T& default) {
 		T ret = default;
@@ -30,6 +32,8 @@ namespace util {
 		return ret;
 	}
 
+	/** convert osgVector to string (using "," as delimiter)
+	*/
 	template <class T>
 	T setAttrToStringOsgVec(std::string& s, const T& value) {
 		for (int i = 0; i < T::num_components; i++) {
@@ -82,12 +86,16 @@ public:
 		std::string s; util::setAttrToString(s, value); attributes[name] = value;
 	}
 
+	/** parse osgVector from an attribute (using "," as delimiter)
+	*/
 	template<class T>
 	T getAttrOsgVec(const std::string& name, const T& default) const {
 		std::map<std::string, std::string>::const_iterator it = attributes.find(name);
 		return (it == attributes.end()) ? default: util::getAttrFromStringOsgVec(it->second.c_str(), default);
 	}
 
+	/** save osgVector to an attribute (using "," as delimiter)
+	*/
 	template<class T>
 	void setAttrOsgVec(const std::string& name, const T& value) {
 		std::string s; util::setAttrToStringOsgVec(s, value); attributes[name] = value;

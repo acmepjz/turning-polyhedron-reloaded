@@ -200,7 +200,7 @@ namespace MyGUI
 			@param
 				_modal if true all other GUI elements will be blocked untill message is closed
 			@param
-				_style any combination of flags from ViewValueInfo
+				_style any combination of flags from MessageBoxStyle
 			@param
 				_button1 ... _button4 specific buttons names
 		*/

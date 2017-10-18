@@ -70,18 +70,26 @@ namespace game {
 			set(p.x(), p.y(), p.z(), t);
 		}
 
-		///get or set tile at specified position
+		/** get or set tile at specified position
+		\warning no array bounds check
+		*/
 		osg::ref_ptr<TileType>& operator()(int x, int y, int z);
 
-		///get or set tile at specified position
+		/** get or set tile at specified position
+		\warning no array bounds check
+		*/
 		osg::ref_ptr<TileType>& operator()(const osg::Vec3i& p) {
 			return operator()(p.x(), p.y(), p.z());
 		}
 
-		///get or set tile at specified position
+		/** get tile at specified position
+		\warning no array bounds check
+		*/
 		const osg::ref_ptr<TileType>& operator()(int x, int y, int z) const;
 
-		///get or set tile at specified position
+		/** get tile at specified position
+		\warning no array bounds check
+		*/
 		const osg::ref_ptr<TileType>& operator()(const osg::Vec3i& p) const {
 			return operator()(p.x(), p.y(), p.z());
 		}
