@@ -921,17 +921,17 @@ namespace game {
 			bool isVec3i = true;
 			for (size_t i = 0; i < s.size(); i++) {
 				char c = s[i];
-				if ((c >= '0' && c <= '9') || c == ',') {
-					//do nothing
-				} else if (c == 'X' || c == 'x') {
-					s[i] = ',';
-				} else {
-					isVec3i = false;
-					break;
-				}
+				if ((c >= '0' && c <= '9') || c == ',' || c == 'X' || c == 'x') continue;
+				isVec3i = false;
+				break;
 			}
 
 			if (isVec3i) {
+				for (size_t i = 0; i < s.size(); i++) {
+					char c = s[i];
+					if (c == 'X' || c == 'x') s[i] = ',';
+				}
+
 				shape = CUBOID;
 				size = util::getAttrFromStringOsgVec(s, osg::Vec3i(1, 1, 1));
 			} else if (s == "cube") {
