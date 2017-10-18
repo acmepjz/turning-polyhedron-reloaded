@@ -1,14 +1,36 @@
-Game Logic Document
-===================
+Game Logic XML Reference
+========================
+
+[objectTypes]: #objectTypes
+[objectType]: #objectType
+[tileTypes]: #tileTypes
+[tileType]: #tileType
+[level]: #level
+[levelCollection]: #levelCollection
 
 [TOC]
 
-Blah blah blah...
+These are some game logic XML node specification implemented in Turning Polyhedron Reloaded
+as well as some unimplemented one used in TurningPolyhedron.
 
-TurningPolyhedron {#a3}
+File Structure {#FileStructure}
+==============
+
+File | Root node
+-----|-----------
+DefaultObjectTypes.xml | [objectTypes]
+DefaultTileTypes.xml | [tileTypes]
+level file | [level] or [levelCollection]
+
+XML Nodes {#a3}
 =================
 
-Object types {#a3b}
+objectTypes XML node {#objectTypes}
+------------
+
+This node only contains [objectType] subnode.
+
+objectType XML node {#objectType}
 ------------
 
 Object type is extensible but almost nothing implemented. (???)
@@ -55,8 +77,14 @@ superSlippery  | Slip when object completely on 'slippery' block or any part of 
 blocked        | ???
 game-over      | Various sub-types, e.g. meltihg, burn, etc. Not necessarily game over, though; it just destroys coressponding object.
 
-Tiles {#a3c}
------
+
+tileTypes XML node {#tileTypes}
+------------
+
+This node only contains [tileType] subnode.
+
+tileType XML node {#tileType}
+------------
 
 Tile types in TurningPolyhedron are extensible.
 
