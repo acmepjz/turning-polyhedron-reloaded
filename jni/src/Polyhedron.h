@@ -238,18 +238,18 @@ namespace game {
 			return isValidPosition(pos.x(), pos.y(), pos.z());
 		}
 
-		///get or set \ref customShape at specified position (<font color="red">without</font> bounds check)
+		///get or set \ref customShape at specified position (**without** bounds check)
 		unsigned char& operator()(int x, int y, int z);
 
-		///get or set \ref customShape at specified position (<font color="red">without</font> bounds check)
+		///get or set \ref customShape at specified position (**without** bounds check)
 		unsigned char& operator()(const osg::Vec3i& p) {
 			return operator()(p.x(), p.y(), p.z());
 		}
 
-		///get or set \ref customShape at specified position (<font color="red">without</font> bounds check)
+		///get or set \ref customShape at specified position (**without** bounds check)
 		unsigned char operator()(int x, int y, int z) const;
 
-		///get or set \ref customShape at specified position (<font color="red">without</font> bounds check)
+		///get or set \ref customShape at specified position (**without** bounds check)
 		unsigned char operator()(const osg::Vec3i& p) const {
 			return operator()(p.x(), p.y(), p.z());
 		}

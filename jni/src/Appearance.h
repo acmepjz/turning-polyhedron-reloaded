@@ -70,9 +70,9 @@ namespace gfx {
 
 		/** load from XML node.
 		\param node The node to be loaded, whose name should be `appearance`, `shader`, `transform` or `mesh`.
-		\param[optional] _map Add this node to the appearance map.
-		\param[optional] _defaultId The default id.
-		\param[optional] _defaultSize The default size, which is used in Polyhedron autoSize=true.
+		\param _map Add this node to the appearance map.
+		\param _defaultId The default id.
+		\param _defaultSize The default size, which is used in Polyhedron autoSize=true.
 		*/
 		bool load(const XMLNode* node, AppearanceMap* _map = NULL, const char* _defaultId = NULL, const osg::Vec3& _defaultSize = osg::Vec3(1, 1, 1));
 
