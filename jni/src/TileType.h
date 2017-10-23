@@ -5,6 +5,7 @@
 #include <string>
 #include "ObjectType.h"
 #include "Appearance.h"
+#include "EventHandler.h"
 #include "util_object.h"
 
 namespace game {
@@ -65,6 +66,8 @@ namespace game {
 		*/
 		gfx::AppearanceMap appearanceMap;
 
+		std::vector<osg::ref_ptr<EventHandler> > events; //!< the events
+
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, id);
 		UTIL_ADD_BYVAL_GETTER_SETTER(int, index);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, objType);
@@ -73,6 +76,7 @@ namespace game {
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, name);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, desc);
 		UTIL_ADD_BYREF_GETTER_SETTER(gfx::AppearanceMap, appearanceMap);
+		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<EventHandler> >, events);
 
 	public:
 		//the following properties don't save to file and is generated at runtime

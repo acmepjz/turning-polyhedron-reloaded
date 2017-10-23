@@ -33,6 +33,7 @@ namespace game {
 		, _isEditMode(false)
 	{
 		util::copyMap(appearanceMap, other.appearanceMap, copyop);
+		util::copyVector(events, other.events, copyop, true);
 	}
 
 	TileType::~TileType()
@@ -111,8 +112,16 @@ namespace game {
 				osg::ref_ptr<gfx::Appearance> a = new gfx::Appearance;
 				a->load(subnode, &appearanceMap, _defaultId.c_str());
 			} else {
-				//TODO: events
-				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
+				int _eventType = EventHandler::convertToEventType(subnode->name);
+
+				if (_eventType >= 0) {
+					osg::ref_ptr<EventHandler> handler = new EventHandler;
+					if (handler->load(subnode, _eventType)) {
+						events.push_back(handler);
+					}
+				} else {
+					UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
+				}
 			}
 		}
 
@@ -259,6 +268,7 @@ namespace game {
 		ADD_STRING_SERIALIZER(name, "");
 		ADD_STRING_SERIALIZER(desc, "");
 		ADD_MAP_SERIALIZER(appearanceMap, gfx::AppearanceMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);
+		ADD_VECTOR_SERIALIZER(events, std::vector<osg::ref_ptr<EventHandler> >, osgDB::BaseSerializer::RW_OBJECT, -1);
 	}
 #undef MyClass
 #define MyClass MyClass_TileTypeMap

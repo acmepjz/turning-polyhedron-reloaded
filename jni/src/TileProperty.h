@@ -1,6 +1,8 @@
 #pragma once
 
+#include "EventHandler.h"
 #include "util_object.h"
+#include <vector>
 #include <set>
 
 class XMLNode;
@@ -47,8 +49,11 @@ namespace game {
 
 		bool load(const XMLNode* node); //!< load from XML node, assume the node is called `property`
 
+		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<EventHandler> >, events);
+
 	public:
 		std::set<std::string> tags; //!< the tags (can have multiple)
+		std::vector<osg::ref_ptr<EventHandler> > events; //!< the events
 
 	public:
 		//the following properties don't save to file and is generated at runtime

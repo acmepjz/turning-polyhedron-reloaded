@@ -66,6 +66,8 @@ SOURCE_GROUP("Source Files\\gfx" FILES
 )
 
 SOURCE_GROUP("Header Files\\game" FILES
+	${PROJECT_SOURCE_DIR}/jni/src/EventAction.h
+	${PROJECT_SOURCE_DIR}/jni/src/EventHandler.h
 	${PROJECT_SOURCE_DIR}/jni/src/Interaction.h
 	${PROJECT_SOURCE_DIR}/jni/src/Level.h
 	${PROJECT_SOURCE_DIR}/jni/src/LevelCollection.h
@@ -77,6 +79,8 @@ SOURCE_GROUP("Header Files\\game" FILES
 )
 
 SOURCE_GROUP("Source Files\\game" FILES
+	${PROJECT_SOURCE_DIR}/jni/src/EventAction.cpp
+	${PROJECT_SOURCE_DIR}/jni/src/EventHandler.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/Interaction.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/Level.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/LevelCollection.cpp

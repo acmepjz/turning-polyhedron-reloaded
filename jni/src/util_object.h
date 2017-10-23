@@ -4,6 +4,7 @@
 #include <osg/CopyOp>
 #include <osg/ref_ptr>
 #include <vector>
+#include <string>
 #include <map>
 
 #define UTIL_ADD_CONST_GETTER(TYPE,VARNAME,PROPNAME) \
@@ -40,6 +41,8 @@
         #PROP, DEF, &MyClass::get##PROP, &MyClass::set##PROP), osgDB::BaseSerializer::RW_USER )
 
 namespace util {
+
+	typedef std::map<std::string, std::string> StringStringMap;
 
 	template <class T>
 	inline T* copyObj(const T* src, const osg::CopyOp& copyop) {

@@ -13,9 +13,11 @@ namespace game {
 	{
 	}
 
-	//TODO: copy constructor
 	TileProperty::TileProperty(const TileProperty& other, const osg::CopyOp& copyop)
+		: osg::Object(other, copyop)
+		, tags(other.tags)
 	{
+		util::copyVector(events, other.events, copyop, true);
 	}
 
 	const std::string& TileProperty::getTags() const {
@@ -57,9 +59,14 @@ namespace game {
 		for (size_t i = 0; i < node->subNodes.size(); i++) {
 			const XMLNode* subnode = node->subNodes[i].get();
 
-			if (false) {
+			int _eventType = EventHandler::convertToEventType(subnode->name);
+
+			if (_eventType >= 0) {
+				osg::ref_ptr<EventHandler> handler = new EventHandler;
+				if (handler->load(subnode, _eventType)) {
+					events.push_back(handler);
+				}
 			} else {
-				//TODO: events
 				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
 			}
 		}
@@ -70,6 +77,7 @@ namespace game {
 	REG_OBJ_WRAPPER(game, TileProperty, "")
 	{
 		ADD_STRING_SERIALIZER(Tags, "");
+		ADD_VECTOR_SERIALIZER(events, std::vector<osg::ref_ptr<EventHandler> >, osgDB::BaseSerializer::RW_OBJECT, -1);
 	}
 
 }

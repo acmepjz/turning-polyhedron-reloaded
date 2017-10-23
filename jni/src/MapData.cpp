@@ -30,7 +30,7 @@ namespace game {
 		, step(other.step)
 	{
 		util::copyVector(tiles, other.tiles, copyop);
-		util::copyVector(tileProperties, other.tileProperties, copyop);
+		util::copyVector(tileProperties, other.tileProperties, copyop, true);
 	}
 
 	MapData::~MapData()
