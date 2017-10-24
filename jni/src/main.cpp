@@ -70,6 +70,9 @@ int main(int argc, char** argv){
 	g_argc = argc;
 	g_argv = argv;
 
+	// set notify level
+	//osg::setNotifyLevel(osg::NotifySeverity::WARN);
+
 	//init compression manager
 	osg::ref_ptr<CompressionManager> compressionManager = new CompressionManager();
 	compMgr = compressionManager.get();

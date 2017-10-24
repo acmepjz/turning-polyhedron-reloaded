@@ -28,6 +28,8 @@ void GameManager::loadDefaults() {
 game::Level* GameManager::loadLevel(const char* filename, int levelIndex) {
 	if (!filename) return NULL;
 
+	UTIL_NOTICE "Loading level '" << filename << "'" << std::endl;
+
 	std::istream *fin = compMgr->openFileForRead(filename);
 	if (fin) {
 		osg::ref_ptr<XMLNode> x = XMLReaderWriter::readFile(*fin);
@@ -64,6 +66,8 @@ Level* GameManager::loadOrCreateLevel(const char* filename, int levelIndex) {
 	// try to load a level
 	Level *ptr = loadLevel(filename, levelIndex);
 	if (ptr) return ptr;
+
+	UTIL_NOTICE "Creating a default level" << std::endl;
 
 	// create a default level
 	osg::ref_ptr<game::Level> level = new game::Level;

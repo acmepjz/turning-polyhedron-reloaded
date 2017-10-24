@@ -195,7 +195,11 @@ void MYGUIManager::drawImplementation( osg::RenderInfo& renderInfo ) const
     {
         MYGUIManager* constMe = const_cast<MYGUIManager*>(this);
         constMe->_platform = new MyGUI::OpenGLPlatform;
-        constMe->_platform->initialise( constMe );
+
+		// set notify level
+		MyGUI::LogManager::getInstance().setLoggingLevel(MyGUI::LogLevel::Warning);
+
+		constMe->_platform->initialise( constMe );
         constMe->setupResources();
         
         constMe->_gui = new MyGUI::Gui;
