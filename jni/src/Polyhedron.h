@@ -224,6 +224,14 @@ namespace game {
 			SOLID, //!< solid block
 			ANTENNA, //!< antenna, don't need to be supported
 		};
+
+		struct PolyhedronFlagsAndNames {
+			const char* name;
+			bool defaultValue;
+			int flags;
+		};
+
+		static const PolyhedronFlagsAndNames polyhedronFlagsAndNames[]; //!< a non-exhaustive list of available polyhedron flags and their names
 	protected:
 		virtual ~Polyhedron();
 	public:

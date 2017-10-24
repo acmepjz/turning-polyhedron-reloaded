@@ -51,6 +51,23 @@ static void set_difference2(const std::map<K, T>& setA,
 
 namespace game {
 
+	const Polyhedron::PolyhedronFlagsAndNames Polyhedron::polyhedronFlagsAndNames[] =
+	{
+		{ "discardable", false, DISCARDABLE },
+		{ "main", true, MAIN },
+		{ "fragile", true, FRAGILE },
+		{ "partialFloating", false, PARTIAL_FLOATING },
+		{ "supporter", true, SUPPORTER },
+		{ "tiltable", true, TILTABLE },
+		{ "tiltSupporter", true, TILT_SUPPORTER },
+		{ "spannable", true, SPANNABLE },
+		{ "visible", true, VISIBLE },
+		{ "floating", false, FLOATING },
+		{ "targetBlock", false, TARGET },
+		{ "exitBlock", false, EXIT },
+		{ NULL, false, 0 },
+	};
+
 	void PolyhedronPosition::init(Level* parent){
 		MapPosition::init(parent);
 	}
@@ -1152,18 +1169,12 @@ namespace game {
 
 		//flags
 #define GETFLAGS(NAME,DEFAULT,FLAGS) (node->getAttr(NAME, DEFAULT) ? FLAGS : 0)
-		flags = GETFLAGS("discardable", false, DISCARDABLE)
-			| GETFLAGS("main", true, MAIN)
-			| GETFLAGS("fragile", true, FRAGILE)
-			| GETFLAGS("partialFloating", false, PARTIAL_FLOATING)
-			| GETFLAGS("supporter", true, SUPPORTER)
-			| GETFLAGS("tiltable", true, TILTABLE)
-			| GETFLAGS("tilt-supporter", true, TILT_SUPPORTER)
-			| GETFLAGS("spannable", true, SPANNABLE)
-			| GETFLAGS("visible", true, VISIBLE)
-			| GETFLAGS("floating", false, FLOATING)
-			| GETFLAGS("targetBlock", false, TARGET)
-			| GETFLAGS("exitBlock", false, EXIT);
+		flags = 0;
+		for (int i = 0; polyhedronFlagsAndNames[i].name; i++) {
+			flags |= GETFLAGS(polyhedronFlagsAndNames[i].name,
+				polyhedronFlagsAndNames[i].defaultValue,
+				polyhedronFlagsAndNames[i].flags);
+		}
 		flags |= GETFLAGS("continuousHittest", (flags & TILTABLE) ? true : false, CONTINUOUS_HITTEST);
 #undef GETFLAGS
 
