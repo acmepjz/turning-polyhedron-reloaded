@@ -7,6 +7,7 @@
 
 namespace gfx {
 
+#if 0
 	osg::Geometry* createCube(const osg::Vec3& p1, const osg::Vec3& p2, bool wireframe, float bevel, const osg::Vec3& color) {
 #if 1
 		// test only
@@ -103,6 +104,7 @@ namespace gfx {
 		return geom.release();
 #endif
 	}
+#endif
 
 	void SimpleGeometry::addCube(const osg::Vec3& p1, const osg::Vec3& p2, float bevel) {
 		osg::Vec3 p[2] = { p1, p2 };

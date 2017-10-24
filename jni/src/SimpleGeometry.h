@@ -8,6 +8,7 @@ class XMLNode;
 
 namespace gfx {
 
+#if 0
 	/** create a cube (ad-hoc)
 	\param p1 A corner
 	\param p2 Another corner
@@ -16,6 +17,7 @@ namespace gfx {
 	\param color The color
 	*/
 	osg::Geometry* createCube(const osg::Vec3& p1, const osg::Vec3& p2, bool wireframe, float bevel, const osg::Vec3& color);
+#endif
 
 	class Triangulation;
 
