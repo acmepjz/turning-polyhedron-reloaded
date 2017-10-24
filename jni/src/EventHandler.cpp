@@ -15,6 +15,22 @@ static const char* eventNames[game::EventHandler::TYPE_MAX] = {
 
 namespace game {
 
+	EventDescription::EventDescription()
+		: type(EventHandler::INVALID)
+		, _map(NULL)
+		, onGroundCount(0)
+		, weight(0)
+		, tileTypeCount(0)
+		, objectTypeCount(0)
+		, polyhedron(NULL)
+	{
+
+	}
+
+	EventDescription::~EventDescription() {
+
+	}
+
 	EventHandler::EventHandler()
 		: type(INVALID)
 	{
@@ -29,7 +45,7 @@ namespace game {
 		util::copyVector(actions, other.actions, copyop, true);
 	}
 
-	EventHandler::~EventHandler(){
+	EventHandler::~EventHandler() {
 
 	}
 
@@ -63,6 +79,19 @@ namespace game {
 	const char* EventHandler::convertToEventName(int type) {
 		if (type >= 0 && type < TYPE_MAX) return eventNames[type];
 		return NULL;
+	}
+
+	void EventHandler::processEvent(Level* parent, EventDescription* evt) {
+		if (type != evt->type) return;
+
+		// debug only
+		UTIL_INFO "event=" << convertToEventName(type)
+			<< ", map=0x" << std::hex << intptr_t(evt->_map) << std::dec
+			<< ", pos=(" << evt->position[0] << "," << evt->position[1] << "," << evt->position[2] << ")" << std::endl;
+
+		for (util::StringStringMap::const_iterator it = conditions.begin(); it != conditions.end(); ++it) {
+			//...
+		}
 	}
 
 	REG_OBJ_WRAPPER(game, EventHandler, "")

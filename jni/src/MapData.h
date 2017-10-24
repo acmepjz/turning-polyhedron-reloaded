@@ -34,6 +34,7 @@ namespace game {
 	};
 
 	class Level;
+	class EventDescription;
 
 	/// represents a block of map data in a map.
 
@@ -158,6 +159,8 @@ namespace game {
 		*/
 		bool findTag(const std::string& tag, osg::Vec3i& ret) const;
 
+		void processEvent(Level* parent, EventDescription* evt);
+
 	public:
 		std::string id; //!< id, used to find this block
 		int shape; //!< map shape. \sa MapShape
@@ -219,6 +222,7 @@ namespace game {
 		bool valid() const;
 
 		bool load(const std::string& data, Level* parent, MapData* mapData); //!< load from a string in XML node,
+
 	public:
 		std::string map;
 		osg::Vec3i pos;

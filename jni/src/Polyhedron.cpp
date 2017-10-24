@@ -15,6 +15,40 @@
 #include <string.h>
 #include <algorithm>
 
+template <class K, class T>
+static void set_difference2(const std::map<K, T>& setA,
+	const std::map<K, T>& setB,
+	std::map<K, T>* setA_minus_setB,
+	std::map<K, T>* setB_minus_setA)
+{
+	std::map<K, T>::const_iterator first1 = setA.begin(), last1 = setA.end(), first2 = setB.begin(), last2 = setB.end();
+
+	while (first1 != last1 && first2 != last2) {
+		if (*first1 < *first2) {
+			if (setA_minus_setB) setA_minus_setB->insert(*first1);
+			++first1;
+		} else if (*first2 < *first1) {
+			if (setB_minus_setA) setB_minus_setA->insert(*first2);
+			++first2;
+		} else {
+			++first1; ++first2;
+		}
+	}
+
+	if (setA_minus_setB) {
+		while (first1 != last1) {
+			setA_minus_setB->insert(*first1);
+			++first1;
+		}
+	}
+	if (setB_minus_setA) {
+		while (first2 != last2) {
+			setB_minus_setA->insert(*first2);
+			++first2;
+		}
+	}
+}
+
 namespace game {
 
 	void PolyhedronPosition::init(Level* parent){
@@ -562,24 +596,151 @@ namespace game {
 			if (!isRollable(parent, dir)) return false;
 		}
 
-		//check if the end position is valid
-		if (valid(parent, newPos)) {
-			pos = newPos;
-			_animations.push_back(new PolyhedronAnimation(this, dir, moveType));
-			return true;
+		HitTestResult oldHitTestResult, newHitTestResult;
+
+		//check if the start position is valid
+		if (!valid(parent, pos, &oldHitTestResult)) {
+			UTIL_WARN "The current position is invalid. Some bug happens." << std::endl;
+			return false;
 		}
 
-		return false;
+		//check if the end position is valid
+		if (!valid(parent, newPos, &newHitTestResult)) return false;
+
+		//--- yes we are going to move
+
+		// calculate the places of onLeave, onEnter, onHitTest
+		std::map<HitTestResult::Position, osg::Object*> onLeavePosition, onEnterPosition;
+		std::map<HitTestResult::Position, TileType*> onHitTestPosition;
+
+		set_difference2<HitTestResult::Position, osg::Object*>(oldHitTestResult.supporterPosition, newHitTestResult.supporterPosition, &onLeavePosition, &onEnterPosition);
+		set_difference2<HitTestResult::Position, TileType*>(oldHitTestResult.hitTestPosition, newHitTestResult.hitTestPosition, NULL, &onHitTestPosition);
+
+		// raise event onLeave
+		const int wt = weight();
+
+		std::set<TileType*> _tileTypes;
+		std::set<ObjectType*> _objTypes;
+
+		for (std::map<HitTestResult::Position, osg::Object*>::iterator it = oldHitTestResult.supporterPosition.begin();
+			it != oldHitTestResult.supporterPosition.end(); ++it) {
+			TileType *tt = dynamic_cast<TileType*>(it->second);
+			if (tt) {
+				_tileTypes.insert(tt);
+				_objTypes.insert(tt->_objType);
+			}
+		}
+
+		for (std::map<HitTestResult::Position, osg::Object*>::iterator it = onLeavePosition.begin();
+			it != onLeavePosition.end(); ++it) {
+			TileType *tt = dynamic_cast<TileType*>(it->second);
+			if (!tt) continue;
+
+			osg::ref_ptr<EventDescription> evt = new EventDescription();
+			evt->type = EventHandler::ON_LEAVE;
+			evt->_map = it->first._map;
+			evt->position = it->first.position;
+			evt->onGroundCount = oldHitTestResult.supporterPosition.size();
+			evt->weight = wt;
+			evt->tileTypeCount = _tileTypes.size();
+			evt->objectTypeCount = _objTypes.size();
+			evt->polyhedron = this;
+			parent->_eventQueue.push_back(evt);
+
+			osg::ref_ptr<EventDescription> evt2 = new EventDescription(*evt);
+			evt2->type = EventHandler::ON_MOVE_LEAVE;
+			parent->_eventQueue.push_back(evt2);
+		}
+
+		parent->processEvent();
+
+		// the actual move
+		pos = newPos;
+		osg::ref_ptr<PolyhedronAnimation> anim = new PolyhedronAnimation(this, dir, moveType);
+		_animations.push_back(anim);
+
+		// raise event onEnter
+		_tileTypes.clear();
+		_objTypes.clear();
+
+		for (std::map<HitTestResult::Position, osg::Object*>::iterator it = newHitTestResult.supporterPosition.begin();
+			it != newHitTestResult.supporterPosition.end(); ++it) {
+			TileType *tt = dynamic_cast<TileType*>(it->second);
+			if (tt) {
+				_tileTypes.insert(tt);
+				_objTypes.insert(tt->_objType);
+			}
+		}
+
+		for (std::map<HitTestResult::Position, osg::Object*>::iterator it = onEnterPosition.begin();
+			it != onEnterPosition.end(); ++it) {
+			TileType *tt = dynamic_cast<TileType*>(it->second);
+			if (!tt) continue;
+
+			osg::ref_ptr<EventDescription> evt = new EventDescription();
+			evt->type = EventHandler::ON_ENTER;
+			evt->_map = it->first._map;
+			evt->position = it->first.position;
+			evt->onGroundCount = newHitTestResult.supporterPosition.size();
+			evt->weight = wt;
+			evt->tileTypeCount = _tileTypes.size();
+			evt->objectTypeCount = _objTypes.size();
+			evt->polyhedron = this;
+			anim->_eventWhenAninationFinished.push_back(evt);
+
+			osg::ref_ptr<EventDescription> evt2 = new EventDescription(*evt);
+			evt2->type = EventHandler::ON_MOVE_ENTER;
+			anim->_eventWhenAninationFinished.push_back(evt2);
+		}
+
+		// raise event onHitTest
+		for (std::map<HitTestResult::Position, TileType*>::iterator it = onHitTestPosition.begin();
+			it != onHitTestPosition.end(); ++it) {
+			osg::ref_ptr<EventDescription> evt = new EventDescription();
+			evt->type = EventHandler::ON_HIT_TEST;
+			evt->_map = it->first._map;
+			evt->position = it->first.position;
+			evt->onGroundCount = newHitTestResult.supporterPosition.size();
+			evt->weight = wt;
+			evt->tileTypeCount = _tileTypes.size();
+			evt->objectTypeCount = _objTypes.size();
+			evt->polyhedron = this;
+			anim->_eventWhenAninationFinished.push_back(evt);
+		}
+
+		// over
+		return true;
 	}
 
-	bool Polyhedron::update() {
+	int Polyhedron::weight() const {
+		int m = size.x()*size.y()*size.z();
+
+		if (customShapeEnabled) {
+			int ret = 0;
+			for (int i = 0; i < m; i++) {
+				if (customShape[i]) ret++;
+			}
+			return ret;
+		} else {
+			return m;
+		}
+	}
+
+	bool Polyhedron::update(Level* parent) {
 		const int m = _animations.size();
 		if (m == 0) {
 			_currentAnimation = 0;
 			return false;
 		}
 
-		if (_currentAnimation < m && !_animations[_currentAnimation]->update()) _currentAnimation++;
+		if (_currentAnimation < m && !_animations[_currentAnimation]->update()) {
+			parent->addEvent(_animations[_currentAnimation]->_eventWhenAninationFinished);
+			_animations[_currentAnimation]->_eventWhenAninationFinished.clear();
+			parent->processEvent();
+
+			_currentAnimation++;
+		}
+
 		if (_currentAnimation >= m) {
 			_animations.clear();
 			_currentAnimation = 0;
@@ -745,7 +906,7 @@ namespace game {
 		return true;
 	}
 
-	bool Polyhedron::valid(const Level* parent, const PolyhedronPosition& pos) const {
+	bool Polyhedron::valid(const Level* parent, const PolyhedronPosition& pos, HitTestResult* hitTestResult) const {
 		//get current position
 		PolyhedronPosition::Idx iii;
 		pos.getCurrentPos(this, iii);
@@ -811,6 +972,18 @@ namespace game {
 								if (other->customShape[idx2] == SOLID) {
 									//it is supported
 									supported = true;
+
+									// record the result
+									if (hitTestResult) {
+										Polyhedron *const_other = const_cast<Polyhedron*>(other);
+
+										HitTestResult::Position p;
+										p._map = pos._map;
+										p.position.set(xx, yy, pos.pos.z()); // FIXME: the z-coord is not exactly
+
+										hitTestResult->supporterPosition[p] = const_other;
+										hitTestResult->supporterPolyhedron.insert(const_other);
+									}
 								}
 							}
 
@@ -843,6 +1016,15 @@ namespace game {
 							if (needSupport && (t->flags & TileType::SUPPORTER) && e == 0) {
 								//it is supported
 								supported = true;
+
+								// record the result
+								if (hitTestResult) {
+									HitTestResult::Position p;
+									p._map = pos._map;
+									p.position.set(xx, yy, zz);
+
+									hitTestResult->supporterPosition[p] = t;
+								}
 							}
 
 							//check if some blocks is blocked
@@ -853,6 +1035,15 @@ namespace game {
 									//it is blocked
 									return false;
 								}
+							}
+
+							// record hit test area FIXME: it is not exact
+							if (hitTestResult && zz >= pos.pos.z() && zz < pos.pos.z() + iii.size.z()) {
+								HitTestResult::Position p;
+								p._map = pos._map;
+								p.position.set(xx, yy, zz);
+
+								hitTestResult->hitTestPosition[p] = t;
 							}
 						}
 					}

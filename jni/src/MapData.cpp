@@ -206,6 +206,13 @@ namespace game {
 		return false;
 	}
 
+	void MapData::processEvent(Level* parent, EventDescription* evt) {
+		TileType *tt = get(evt->position);
+		if (tt) tt->processEvent(parent, evt);
+		TileProperty *prop = getProp(evt->position);
+		if (prop) prop->processEvent(parent, evt);
+	}
+
 	struct MapDataItem {
 		osg::Vec3i pos;
 		int count;

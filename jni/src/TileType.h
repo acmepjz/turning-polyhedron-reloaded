@@ -10,6 +10,7 @@
 
 namespace game {
 
+	class Level;
 	class ObjectTypeMap;
 	class TileTypeMap;
 
@@ -41,6 +42,12 @@ namespace game {
 
 		/** (test only) */
 		osg::Node* getOrCreateInstance(int shape, bool isEditMode);
+
+		void processEvent(Level* parent, EventDescription* evt) {
+			for (size_t i = 0; i < events.size(); i++) {
+				events[i]->processEvent(parent, evt);
+			}
+		}
 
 	public:
 		std::string id; //!< id, used to find this tile type

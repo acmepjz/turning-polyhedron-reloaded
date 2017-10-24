@@ -9,6 +9,8 @@ class XMLNode;
 
 namespace game {
 
+	class Level;
+
 	/// The tile property (tags, events, etc.) in map data
 
 	class TileProperty :
@@ -48,6 +50,12 @@ namespace game {
 		void modifyTags(const std::string& s, bool isRemove = false);
 
 		bool load(const XMLNode* node); //!< load from XML node, assume the node is called `property`
+
+		void processEvent(Level* parent, EventDescription* evt) {
+			for (size_t i = 0; i < events.size(); i++) {
+				events[i]->processEvent(parent, evt);
+			}
+		}
 
 		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<EventHandler> >, events);
 

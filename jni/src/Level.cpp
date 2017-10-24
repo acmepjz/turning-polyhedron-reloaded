@@ -159,9 +159,21 @@ namespace game {
 	bool Level::update() {
 		_isAnimating = false;
 		for (int i = 0, m = polyhedra.size(); i < m; i++) {
-			if (polyhedra[i]->update()) _isAnimating = true;
+			if (polyhedra[i]->update(this)) _isAnimating = true;
 		}
 		return _isAnimating;
+	}
+
+	void Level::processEvent() {
+		while (!_eventQueue.empty()) {
+			std::vector<osg::ref_ptr<EventDescription> > q;
+			std::swap(_eventQueue, q);
+
+			for (size_t i = 0; i < q.size(); i++) {
+				EventDescription *evt = q[i];
+				evt->_map->processEvent(this, evt);
+			}
+		}
 	}
 
 	REG_OBJ_WRAPPER(game, Level, "")

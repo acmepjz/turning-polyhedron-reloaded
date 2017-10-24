@@ -3,9 +3,13 @@
 #include <osg/Node>
 #include <osg/MatrixTransform>
 #include <osg/Vec3i>
+#include <vector>
 #include <string>
+#include <map>
+#include <set>
 #include "Appearance.h"
 #include "MapData.h"
+#include "EventHandler.h"
 #include "util_object.h"
 
 namespace osgDB {
@@ -143,6 +147,8 @@ namespace game {
 		int _t; //!< the animation time
 		int _maxt; //!< the max animation time
 		AnimationType _type; //!< the \ref AnimationType
+
+		std::vector<osg::ref_ptr<EventDescription> > _eventWhenAninationFinished;
 	};
 
 	/** Represents a polyhedron.
@@ -301,12 +307,50 @@ namespace game {
 			return isRollable(parent, pos, dir);
 		}
 
-		///check if it is stable and not blocked at given position. (experimental, only works for cuboid polyhedron)
-		bool valid(const Level* parent, const PolyhedronPosition& pos) const;
+		struct HitTestResult {
+			struct Position {
+				MapData *_map;
+				osg::Vec3i position;
 
-		///check if it is stable and not blocked at current position. (experimental, only works for cuboid polyhedron)
-		bool valid(const Level* parent) const {
-			return valid(parent, pos);
+				bool operator<(const Position& other) const {
+					if (_map < other._map) return true;
+					if (_map > other._map) return false;
+
+					if (position[0] < other.position[0]) return true;
+					if (position[0] > other.position[0]) return false;
+
+					if (position[1] < other.position[1]) return true;
+					if (position[1] > other.position[1]) return false;
+
+					if (position[2] < other.position[2]) return true;
+					return false;
+				}
+
+				bool operator==(const Position& other) const {
+					return _map == other._map && position == other.position;
+				}
+			};
+
+			std::map<Position, osg::Object*> supporterPosition; //!< the tiles which support this polyhedron, can be \ref TileType or \ref Polyhedron (which can be duplicated).
+			std::set<Polyhedron*> supporterPolyhedron; //!< the polyhedra which support this polyhedron.
+			std::map<Position, TileType*> hitTestPosition; //!< the hit-tested tiles.
+		};
+
+		/** check if it is stable and not blocked at given position. (experimental, only works for cuboid polyhedron)
+		\param parent The parent
+		\param pos The position
+		\param[out] hitTestResult (optional) the hit test result.
+		NOTE: this is valid only when the return value is true.
+		*/
+		bool valid(const Level* parent, const PolyhedronPosition& pos, HitTestResult* hitTestResult = 0) const;
+
+		/** check if it is stable and not blocked at current position. (experimental, only works for cuboid polyhedron)
+		\param parent The parent
+		\param[out] hitTestResult (optional) the hit test result.
+		NOTE: this is valid only when the return value is true.
+		*/
+		bool valid(const Level* parent, HitTestResult* hitTestResult = 0) const {
+			return valid(parent, pos, hitTestResult);
 		}
 
 		void init(Level* parent);
@@ -315,7 +359,12 @@ namespace game {
 
 		void setSelected(bool selected);
 
-		bool update(); //!< update animation
+		int weight() const; //!< get the weight of polyhedron. NOTE: anything non EMPTY gets a weight 1.
+
+		bool update(Level* parent); //!< update animation
+
+	private:
+		//void raiseOnEnterOrOnLeave(int wt, HitTestResult& hitTestResult);
 
 	public:
 		std::string id; //!< the polyhedron id

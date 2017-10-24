@@ -8,6 +8,7 @@
 #include "Polyhedron.h"
 #include "TileType.h"
 #include "ObjectType.h"
+#include "EventHandler.h"
 
 class XMLNode;
 
@@ -77,6 +78,14 @@ namespace game {
 			return _isAnimating;
 		}
 
+		void addEvent(EventDescription* _event) {
+			_eventQueue.push_back(_event);
+		}
+		void addEvent(std::vector<osg::ref_ptr<EventDescription> >& _events) {
+			_eventQueue.insert(_eventQueue.end(), _events.begin(), _events.end());
+		}
+		void processEvent();
+
 	public:
 		std::string name; //!< level name
 		std::string solution; //!< solution include in level file, for reference only
@@ -107,6 +116,8 @@ namespace game {
 		int _currentPolyhedron; //!< current polyhedron
 
 		bool _isAnimating; //!< is animating, updated when \ref update() is called
+
+		std::vector<osg::ref_ptr<EventDescription> > _eventQueue;
 	};
 
 }
