@@ -7,6 +7,12 @@
 #include <osg/MatrixTransform>
 #include <osgDB/ObjectWrapper>
 
+#define SX(X) s##X = lbound.X()
+#define EX(X) e##X = lbound.X() + size.X()
+#define SXRESIZE(X) s##X = lbound.X() > lbound_.X() ? lbound.X() : lbound_.X()
+#define EXRESIZE(X) e##X = (lbound.X() + size.X() < lbound_.X() + size_.X()) ? \
+	(lbound.X() + size.X()) : (lbound_.X() + size_.X())
+
 namespace game {
 
 	MapData::MapData()
@@ -100,12 +106,7 @@ namespace game {
 		tiles.resize(size_.x()*size_.y()*size_.z());
 		tileProperties.resize(size_.x()*size_.y()*size_.z());
 
-#define SX(X) s##X = lbound.X() > lbound_.X() ? lbound.X() : lbound_.X()
-#define EX(X) e##X = (lbound.X() + size.X() < lbound_.X() + size_.X()) ? \
-	(lbound.X() + size.X()) : (lbound_.X() + size_.X())
-		const int SX(x), EX(x), SX(y), EX(y), SX(z), EX(z);
-#undef SX
-#undef EX
+		const int SXRESIZE(x), EXRESIZE(x), SXRESIZE(y), EXRESIZE(y), SXRESIZE(z), EXRESIZE(z);
 
 		for (int z = sz; z < ez; z++) {
 			for (int y = sy; y < ey; y++) {
@@ -125,11 +126,7 @@ namespace game {
 	void MapData::createInstance(bool isEditMode) {
 		osg::ref_ptr<osg::Group> group = new osg::Group;
 
-#define SX(X) s##X = lbound.X()
-#define EX(X) e##X = lbound.X() + size.X()
 		const int SX(x), EX(x), SX(y), EX(y), SX(z), EX(z);
-#undef SX
-#undef EX
 
 		int idx = 0;
 		for (int z = sz; z < ez; z++) {
@@ -183,11 +180,7 @@ namespace game {
 	}
 
 	bool MapData::findTag(const std::string& tag, osg::Vec3i& ret) const {
-#define SX(X) s##X = lbound.X()
-#define EX(X) e##X = lbound.X() + size.X()
 		const int SX(x), EX(x), SX(y), EX(y), SX(z), EX(z);
-#undef SX
-#undef EX
 
 		int idx = 0;
 		for (int z = sz; z < ez; z++) {
@@ -204,6 +197,23 @@ namespace game {
 		}
 
 		return false;
+	}
+
+	void MapData::findAllTags(const std::string& tag, std::vector<osg::Vec3i>& ret) const {
+		const int SX(x), EX(x), SX(y), EX(y), SX(z), EX(z);
+
+		int idx = 0;
+		for (int z = sz; z < ez; z++) {
+			for (int y = sy; y < ey; y++) {
+				for (int x = sx; x < ex; x++) {
+					TileProperty *prop = tileProperties[idx].get();
+					if (prop && prop->tags.find(tag) != prop->tags.end()) {
+						ret.push_back(osg::Vec3i(x, y, z));
+					}
+					idx++;
+				}
+			}
+		}
 	}
 
 	void MapData::processEvent(Level* parent, EventDescription* evt) {

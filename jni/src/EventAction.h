@@ -6,6 +6,9 @@ class XMLNode;
 
 namespace game {
 
+	class Level;
+	class EventDescription;
+
 	class EventAction : public osg::Object {
 	public:
 		enum Type {
@@ -29,6 +32,8 @@ namespace game {
 
 		static int convertToActionType(const std::string& name); //!< convert a node name to \ref Type.
 		static const char* convertToActionName(int type); //!< get the node name of \ref Type.
+
+		void processEvent(Level* parent, EventDescription* evt);
 
 		UTIL_ADD_BYVAL_GETTER_SETTER(int, type);
 		UTIL_ADD_BYREF_GETTER_SETTER(util::StringStringMap, arguments);

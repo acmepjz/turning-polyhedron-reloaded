@@ -6,8 +6,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include <osgDB/FileUtils>
-#include <osgDB/FileNameUtils>
 #include <osgDB/XmlParser>
 #include <osgDB/ObjectWrapper>
 
@@ -311,6 +309,11 @@ namespace game {
 
 		// debug only
 		UTIL_INFO << "Condition satisfied" << std::endl;
+
+		// raise events
+		for (size_t i = 0; i < actions.size(); i++) {
+			actions[i]->processEvent(parent, evt);
+		}
 	}
 
 	REG_OBJ_WRAPPER(game, EventHandler, "")

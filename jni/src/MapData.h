@@ -159,6 +159,12 @@ namespace game {
 		*/
 		bool findTag(const std::string& tag, osg::Vec3i& ret) const;
 
+		/** find all tiles with specified tag.
+		\param[in] tag The tag.
+		\param[out] ret The result position.
+		*/
+		void findAllTags(const std::string& tag, std::vector<osg::Vec3i>& ret) const;
+
 		void processEvent(Level* parent, EventDescription* evt);
 
 	public:

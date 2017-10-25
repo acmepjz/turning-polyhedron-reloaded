@@ -30,7 +30,7 @@
       </shader>
     </appearance>
     <onEnter>
-		<raiseEvent name="pressed" target="this"/>
+		<raiseEvent type="pressed" target="this"/>
 	</onEnter>
   </tileType>
   <tileType id="hard-button" index="3">
@@ -64,7 +64,7 @@
       </shader>
     </appearance>
     <onEnter presseure="2~">
-		<raiseEvent name="pressed" target="this"/>
+		<raiseEvent type="pressed" target="this"/>
 	</onEnter>
   </tileType>
   <tileType id="teleporter" index="4">
@@ -81,7 +81,7 @@
       </shader>
     </appearance>
     <onMoveEnter onGroundCount="1" main="true">
-		<raiseEvent name="pressed" target="this"/><!-- ??? -->
+		<raiseEvent type="pressed" target="this"/><!-- ??? -->
 	</onMoveEnter>
   </tileType>
   <tileType id="thin-ground" index="5">
