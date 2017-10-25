@@ -371,6 +371,8 @@ namespace game {
 
 		bool update(Level* parent); //!< update animation
 
+		void updateVisible(); //!< call this when the VISIBLE flags changed
+
 	private:
 		//void raiseOnEnterOrOnLeave(int wt, HitTestResult& hitTestResult);
 

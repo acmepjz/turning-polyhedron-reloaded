@@ -487,6 +487,7 @@ namespace game {
 
 		_trans = new osg::MatrixTransform;
 		_trans->addChild(_appearance.get());
+		_trans->setNodeMask((flags & VISIBLE) != 0 ? -1 : 0);
 	}
 
 	void Polyhedron::setSelected(bool selected){
@@ -503,6 +504,12 @@ namespace game {
 		pos.applyTransform(this, mat);
 
 		_trans->setMatrix(mat);
+	}
+
+	void Polyhedron::updateVisible() {
+		if (!_trans.valid()) return;
+
+		_trans->setNodeMask((flags & VISIBLE) != 0 ? -1 : 0);
 	}
 
 	const Polyhedron* Polyhedron::isSupportingOtherPolyhedron(const Level* parent) const {
