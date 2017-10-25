@@ -164,6 +164,25 @@ void GameScreen::notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem
 	} else if (name == "mnuUIScale") {
 		toggleRadio(item);
 		myguiMgr->setUIScale(atof(item->getUserString("Tag").c_str()));
+	} else if (name == "mnuLogLevel") {
+		toggleRadio(item);
+		const std::string& tag = item->getUserString("Tag");
+		if (tag == "Debug") {
+			MyGUI::LogManager::getInstance().setLoggingLevel(MyGUI::LogLevel::Info);
+			osg::setNotifyLevel(osg::NotifySeverity::DEBUG_INFO);
+		} else if (tag == "Info") {
+			MyGUI::LogManager::getInstance().setLoggingLevel(MyGUI::LogLevel::Info);
+			osg::setNotifyLevel(osg::NotifySeverity::INFO);
+		} else if (tag == "Notice") {
+			MyGUI::LogManager::getInstance().setLoggingLevel(MyGUI::LogLevel::Warning);
+			osg::setNotifyLevel(osg::NotifySeverity::NOTICE);
+		} else if (tag == "Warning") {
+			MyGUI::LogManager::getInstance().setLoggingLevel(MyGUI::LogLevel::Warning);
+			osg::setNotifyLevel(osg::NotifySeverity::WARN);
+		} else if (tag == "Error") {
+			MyGUI::LogManager::getInstance().setLoggingLevel(MyGUI::LogLevel::Error);
+			osg::setNotifyLevel(osg::NotifySeverity::FATAL);
+		}
 	} else if (name == "mnuMsgBox") {
 		MyGUI::Message::createMessageBox("Project1", "Hello, World!");
 	}

@@ -47,22 +47,22 @@
 				<Property key="MenuItemType" value="Popup"/>
 				<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
 					<Widget type="MenuItem">
-						<Property key="Caption" value="Undo"/>
+						<Property key="Caption" value="Undo&#9;Ctrl+Z"/>
 					</Widget>
 					<Widget type="MenuItem">
-						<Property key="Caption" value="Redo"/>
+						<Property key="Caption" value="Redo&#9;Ctrl+Y"/>
 					</Widget>
 					<Widget type="MenuItem">
 						<Property key="MenuItemType" value="Separator"/>
 					</Widget>
 					<Widget type="MenuItem">
-						<Property key="Caption" value="Cut"/>
+						<Property key="Caption" value="Cut&#9;Ctrl+X"/>
 					</Widget>
 					<Widget type="MenuItem">
-						<Property key="Caption" value="Copy"/>
+						<Property key="Caption" value="Copy&#9;Ctrl+C"/>
 					</Widget>
 					<Widget type="MenuItem">
-						<Property key="Caption" value="Paste"/>
+						<Property key="Caption" value="Paste&#9;Ctrl+V"/>
 					</Widget>
 				</Widget>
 			</Widget>
@@ -70,11 +70,11 @@
 				<Property key="MenuItemType" value="Separator"/>
 			</Widget>
 			<Widget type="MenuItem">
-				<Property key="Caption" value="Test"/>
+				<Property key="Caption" value="Options"/>
 				<Property key="MenuItemType" value="Popup"/>
 				<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
 					<Widget type="MenuItem">
-						<Property key="Caption" value="UI Scale"/>
+						<Property key="Caption" value="UI scale"/>
 						<Property key="MenuItemType" value="Popup"/>
 						<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
 							<Property key="ManualSkin" value="true"/>
@@ -84,12 +84,48 @@
                                 <Property key="MenuItemChecked" value="true"/>
 							</Widget>
 							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuUIScale">
+								<UserString key="Tag" value="1.25"/>
+								<Property key="Caption" value="1.25"/>
+							</Widget>
+							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuUIScale">
 								<UserString key="Tag" value="1.5"/>
 								<Property key="Caption" value="1.5"/>
 							</Widget>
 							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuUIScale">
+								<UserString key="Tag" value="1.75"/>
+								<Property key="Caption" value="1.75"/>
+							</Widget>
+							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuUIScale">
 								<UserString key="Tag" value="2.0"/>
 								<Property key="Caption" value="2.0"/>
+							</Widget>
+						</Widget>
+					</Widget>
+					<Widget type="MenuItem">
+						<Property key="Caption" value="Log level"/>
+						<Property key="MenuItemType" value="Popup"/>
+						<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
+							<Property key="ManualSkin" value="true"/>
+							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuLogLevel">
+								<UserString key="Tag" value="Debug"/>
+								<Property key="Caption" value="Debug"/>
+							</Widget>
+							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuLogLevel">
+								<UserString key="Tag" value="Info"/>
+								<Property key="Caption" value="Info"/>
+							</Widget>
+							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuLogLevel">
+								<UserString key="Tag" value="Notice"/>
+								<Property key="Caption" value="Notice"/>
+                                <Property key="MenuItemChecked" value="true"/>
+							</Widget>
+							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuLogLevel">
+								<UserString key="Tag" value="Warning"/>
+								<Property key="Caption" value="Warning"/>
+							</Widget>
+							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuLogLevel">
+								<UserString key="Tag" value="Error"/>
+								<Property key="Caption" value="Error"/>
 							</Widget>
 						</Widget>
 					</Widget>
