@@ -28,7 +28,7 @@ static const char* actionNames[game::EventAction::TYPE_MAX] =
 
 static const char* actionArgRaiseEvent[] = { "target", "type", NULL };
 static const char* actionArgRemoveItem[] = { NULL }; // TODO:
-static const char* actionArgConvertTo[] = { NULL }; // TODO:
+static const char* actionArgConvertTo[] = { "target", "value" };
 static const char* actionArgCheckpoint[] = { NULL }; // TODO:
 static const char* actionArgMovePolyhedron[] = { NULL }; // TODO:
 
@@ -200,7 +200,17 @@ namespace game {
 			// TODO:
 			break;
 		case CONVERT_TO:
-			// TODO:
+		{
+			// TODO: ask all polyhedra to check stability again
+			osg::ref_ptr<TileType> newTileType = parent->getOrCreateTileTypeMap()->lookup(osgDB::trimEnclosingSpaces(arguments["value"]));
+
+			std::vector<Polyhedron::HitTestResult::Position> ps;
+			findTargets(parent, evt, arguments["target"], ps);
+
+			for (size_t i = 0; i < ps.size(); i++) {
+				ps[i]._map->substituteTileType(ps[i].position[0], ps[i].position[1], ps[i].position[2], newTileType.get());
+			}
+		}
 			break;
 		case CHECKPOINT:
 			// TODO:

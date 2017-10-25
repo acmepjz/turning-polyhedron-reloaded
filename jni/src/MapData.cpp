@@ -72,6 +72,50 @@ namespace game {
 		}
 	}
 
+	// TODO: animation
+	void MapData::substituteTileType(int x, int y, int z, TileType* t) {
+		int idx = 0;
+		TileType *old = NULL;
+		if (isValidPosition(x, y, z) &&
+			((old = tiles[idx = ((z - lbound.z())*size.y() + y - lbound.y())*size.x() + x - lbound.x()].get()) != t)) {
+
+			osg::Group *group = dynamic_cast<osg::Group*>(_appearance.get());
+			if (group) {
+				osg::MatrixTransform *trans = NULL;
+				int apprIndex = _apprIndex[idx];
+				if (apprIndex >= 0) trans = dynamic_cast<osg::MatrixTransform*>(group->getChild(apprIndex));
+
+				// if new is NULL then hide the old one
+				if (t == NULL) {
+					if (trans) trans->setNodeMask(0);
+				} else {
+					if (trans) {
+						trans->setNodeMask(-1);
+					} else {
+						// if old is NULL or something goes wrong we create a new MatrixTransform
+						osg::Matrix mat;
+						mat.makeTranslate(step.x()*x, step.y()*y, step.z()*z);
+						applyTransform(mat);
+
+						trans = new osg::MatrixTransform;
+						trans->setMatrix(mat);
+
+						_apprIndex[idx] = group->getNumChildren();
+						group->addChild(trans);
+					}
+					trans->removeChildren(0, trans->getNumChildren());
+					trans->addChild(t->getOrCreateInstance(shape, false)); // FIXME: assume it is not edit mode
+				}
+			}
+
+			// finally update it
+			tiles[idx] = t;
+		} else {
+			//prevent memory leak
+			osg::ref_ptr<TileType> tmp = t;
+		}
+	}
+
 	TileProperty* MapData::getProp(int x, int y, int z) {
 		if (isValidPosition(x, y, z)) {
 			int idx = ((z - lbound.z())*size.y() + y - lbound.y())*size.x() + x - lbound.x();
@@ -101,8 +145,10 @@ namespace game {
 			return;
 		}
 
-		std::vector<osg::ref_ptr<TileType> > tmp = tiles;
-		std::vector<osg::ref_ptr<TileProperty> > tmp2 = tileProperties;
+		std::vector<osg::ref_ptr<TileType> > tmp;
+		std::vector<osg::ref_ptr<TileProperty> > tmp2;
+		std::swap(tmp, tiles);
+		std::swap(tmp2, tileProperties);
 		tiles.resize(size_.x()*size_.y()*size_.z());
 		tileProperties.resize(size_.x()*size_.y()*size_.z());
 
@@ -126,6 +172,9 @@ namespace game {
 	void MapData::createInstance(bool isEditMode) {
 		osg::ref_ptr<osg::Group> group = new osg::Group;
 
+		_apprIndex.clear();
+		_apprIndex.resize(size.x()*size.y()*size.z(), -1);
+
 		const int SX(x), EX(x), SX(y), EX(y), SX(z), EX(z);
 
 		int idx = 0;
@@ -142,6 +191,8 @@ namespace game {
 						osg::MatrixTransform *trans = new osg::MatrixTransform;
 						trans->setMatrix(mat);
 						trans->addChild(node);
+
+						_apprIndex[idx] = group->getNumChildren();
 						group->addChild(trans);
 					}
 					idx++;

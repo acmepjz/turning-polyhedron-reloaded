@@ -71,6 +71,11 @@ namespace game {
 			set(p.x(), p.y(), p.z(), t);
 		}
 
+		/** set tile at specified position (with bounds check) and update the graphics instance
+		\note Only call this function when the graphics instance is created
+		*/
+		void substituteTileType(int x, int y, int z, TileType* t);
+
 		/** get or set tile at specified position
 		\warning no array bounds check
 		*/
@@ -196,6 +201,8 @@ namespace game {
 		//the following properties don't save to file and is generated at runtime
 		osg::ref_ptr<osg::Node> _appearance; //!< the appearance
 		osg::Matrix _transform; //!< the transform
+
+		std::vector<int> _apprIndex;
 	};
 
 	/// represents a position in a map.
