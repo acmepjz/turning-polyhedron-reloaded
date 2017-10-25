@@ -116,8 +116,12 @@ namespace game {
 		int _currentPolyhedron; //!< current polyhedron
 
 		bool _isAnimating; //!< is animating, updated when \ref update() is called
+		bool _isGameOver;
 
 		std::vector<osg::ref_ptr<EventDescription> > _eventQueue;
+
+		int _checkpointCount;
+		int _mainPolyhedronCount;
 	};
 
 }

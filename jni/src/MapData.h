@@ -203,6 +203,8 @@ namespace game {
 		osg::Matrix _transform; //!< the transform
 
 		std::vector<int> _apprIndex;
+
+		int _checkpointCount; //!< the checkpoint count. NOTE: this is reliable only after init() and before the game starts
 	};
 
 	/// represents a position in a map.

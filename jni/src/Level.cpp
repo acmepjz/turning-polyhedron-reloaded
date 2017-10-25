@@ -79,6 +79,10 @@ namespace game {
 	}
 
 	void Level::initMaps(){
+		_checkpointCount = 0;
+		_mainPolyhedronCount = 0;
+		_isGameOver = false;
+
 		_polyhedra.clear();
 		for (Polyhedra::iterator it = polyhedra.begin(); it != polyhedra.end(); ++it) {
 			if (!(*it)->id.empty()) {
@@ -88,9 +92,14 @@ namespace game {
 
 		for (MapDataMap::iterator it = maps.begin(); it != maps.end(); ++it) {
 			it->second->init(this);
+			_checkpointCount += it->second->_checkpointCount;
 		}
+
 		for (Polyhedra::iterator it = polyhedra.begin(); it != polyhedra.end(); ++it) {
 			(*it)->init(this);
+			if ((*it)->flags & Polyhedron::PolyhedronFlags::MAIN) {
+				_mainPolyhedronCount++;
+			}
 		}
 
 		switchToFirstPolyhedron();

@@ -210,22 +210,30 @@ namespace game {
 	}
 
 	void MapData::init(Level* parent){
+		_checkpointCount = 0;
+
 		computeTransform();
 
 		//check map data size
-		{
-			const size_t n = size.x()*size.y()*size.z();
-			size_t m = tiles.size();
-			if (m < n) {
-				UTIL_WARN "tile data size mismatch, expected: " << n << ", actual: " << m << std::endl;
-				tiles.reserve(n);
-				for (; m < n; m++) tiles.push_back(NULL);
-			}
-			m = tileProperties.size();
-			if (m < n) {
-				UTIL_WARN "tile property data size mismatch, expected: " << n << ", actual: " << m << std::endl;
-				tileProperties.reserve(n);
-				for (; m < n; m++) tileProperties.push_back(NULL);
+		const size_t n = size.x()*size.y()*size.z();
+		size_t m = tiles.size();
+		if (m < n) {
+			UTIL_WARN "tile data size mismatch, expected: " << n << ", actual: " << m << std::endl;
+			tiles.reserve(n);
+			for (; m < n; m++) tiles.push_back(NULL);
+		}
+
+		m = tileProperties.size();
+		if (m < n) {
+			UTIL_WARN "tile property data size mismatch, expected: " << n << ", actual: " << m << std::endl;
+			tileProperties.reserve(n);
+			for (; m < n; m++) tileProperties.push_back(NULL);
+		}
+
+		// calculate checkpoint count
+		for (size_t i = 0; i < n; i++) {
+			if (tiles[i].valid() && (tiles[i]->flags & TileType::TileFlags::CHECKPOINT) != 0) {
+				_checkpointCount++;
 			}
 		}
 	}
