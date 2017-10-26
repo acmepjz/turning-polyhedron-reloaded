@@ -39,7 +39,9 @@ GameScreen::GameScreen() :
 	setLevel(gameMgr->loadOrCreateLevel(g_argc >= 2 ? g_argv[1] : NULL, levelIndex));
 }
 
-void GameScreen::setLevel(game::Level* level_) {
+void GameScreen::restartLevel() {
+	if (!levelTemplate.valid()) return;
+
 	// reset controller
 	if (!levelController.valid()) {
 		levelController = new LevelController;
@@ -48,7 +50,7 @@ void GameScreen::setLevel(game::Level* level_) {
 	levelController->level = NULL;
 
 	// init level
-	level = level_;
+	level = new game::Level(*levelTemplate.get());
 	level->init();
 	level->createInstance(false);
 	levelController->level = level;
@@ -68,6 +70,12 @@ void GameScreen::setLevel(game::Level* level_) {
 	osg::Vec3 e = c + osg::Vec3(-1, -3, 2) * bs.radius();
 
 	cameraController->setTransformation(e, c, osg::Vec3d(1, 1, 1));
+}
+
+void GameScreen::setLevel(game::Level* level_) {
+	// init level
+	levelTemplate = level_;
+	restartLevel();
 }
 
 void GameScreen::notifyMessageBoxResult(MyGUI::Message* sender, MyGUI::MessageBoxStyle result) {
@@ -161,6 +169,8 @@ void GameScreen::notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem
 		loadFile(item->getUserString("Tag"), "");
 	} else if (name == "mnuRecentFolder") {
 		showFileDialog("mnuOpen", item->getUserString("Tag"), "");
+	} else if (name == "mnuRestart") {
+		restartLevel();
 	} else if (name == "mnuUIScale") {
 		toggleRadio(item);
 		myguiMgr->setUIScale(atof(item->getUserString("Tag").c_str()));

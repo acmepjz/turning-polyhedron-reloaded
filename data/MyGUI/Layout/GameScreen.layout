@@ -67,6 +67,15 @@
 				</Widget>
 			</Widget>
 			<Widget type="MenuItem">
+				<Property key="Caption" value="Game"/>
+				<Property key="MenuItemType" value="Popup"/>
+				<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
+					<Widget type="MenuItem" name="mnuRestart">
+						<Property key="Caption" value="Restart&#9;Ctrl+R"/>
+					</Widget>
+				</Widget>
+			</Widget>
+			<Widget type="MenuItem">
 				<Property key="MenuItemType" value="Separator"/>
 			</Widget>
 			<Widget type="MenuItem">

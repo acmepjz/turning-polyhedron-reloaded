@@ -29,6 +29,7 @@ public:
 	void endMessage();
 
 	void setLevel(game::Level* level_);
+	void restartLevel();
 
 private:
 	void notifyMessageBoxResult(MyGUI::Message* sender, MyGUI::MessageBoxStyle result);
@@ -49,6 +50,7 @@ private:
 	bool mFrameAdvise;
 
 private:
+	osg::ref_ptr<game::Level> levelTemplate;
 	osg::ref_ptr<game::Level> level;
 	osg::ref_ptr<osgGA::OrbitManipulator> cameraController;
 	osg::ref_ptr<LevelController> levelController;
