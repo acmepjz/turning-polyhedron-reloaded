@@ -28,7 +28,7 @@ static const char* actionNames[game::EventAction::TYPE_MAX] =
 
 static const char* actionArgRaiseEvent[] = { "target", "type", NULL };
 static const char* actionArgRemoveObject[] = { "target", "type", NULL };
-static const char* actionArgConvertTo[] = { "target", "value" };
+static const char* actionArgConvertTo[] = { "target", "value", NULL };
 static const char* actionArgCheckpoint[] = { NULL }; // TODO:
 static const char* actionArgMovePolyhedron[] = { NULL }; // TODO:
 
@@ -103,7 +103,7 @@ namespace game {
 		return NULL;
 	}
 
-	static void findTargets(Level* parent, EventDescription* evt, const std::string& _targets, std::vector<Polyhedron::HitTestResult::Position>& ret) {
+	static void findTargets(Level* parent, EventDescription* evt, const std::string& _targets, std::vector<Polyhedron::HitTestResult::Position>& ret, std::vector<Polyhedron*>* retPolyhedron) {
 		osgDB::StringList targets;
 		osgDB::split(osgDB::trimEnclosingSpaces(_targets), targets);
 
@@ -135,6 +135,16 @@ namespace game {
 				p._map = evt->_map;
 				p.position = evt->position;
 				ret.push_back(p);
+			} else if (retPolyhedron && target == "polyhedron") {
+				if (evt->polyhedron) {
+					retPolyhedron->push_back(evt->polyhedron);
+				} else {
+					UTIL_ERR "Polyhedron is NULL when requiring it" << std::endl;
+				}
+			} else if (retPolyhedron && target == "allPolyhedron") {
+				for (Level::Polyhedra::iterator it = parent->polyhedra.begin(); it != parent->polyhedra.end(); ++it) {
+					retPolyhedron->push_back(*it);
+				}
 			} else {
 				size_t lps = target.find_first_of('.');
 				if (lps != std::string::npos) {
@@ -172,6 +182,11 @@ namespace game {
 							ret.push_back(p);
 						}
 					}
+					if (retPolyhedron) {
+						for (Level::Polyhedra::iterator it = parent->polyhedra.begin(); it != parent->polyhedra.end(); ++it) {
+							if ((*it)->id == target) retPolyhedron->push_back(*it);
+						}
+					}
 				}
 			}
 		}
@@ -184,7 +199,7 @@ namespace game {
 			std::string eventType = osgDB::trimEnclosingSpaces(arguments["type"]);
 
 			std::vector<Polyhedron::HitTestResult::Position> ps;
-			findTargets(parent, evt, arguments["target"], ps);
+			findTargets(parent, evt, arguments["target"], ps, NULL); // TODO: can send event to polyhedron?
 
 			for (size_t i = 0; i < ps.size(); i++) {
 				osg::ref_ptr<EventDescription> evt2 = new EventDescription(*evt);
@@ -201,22 +216,17 @@ namespace game {
 			std::string type = osgDB::trimEnclosingSpaces(arguments["type"]);
 			std::string target = osgDB::trimEnclosingSpaces(arguments["target"]);
 
-			if (target == "polyhedron") {
-				// remove current polyhedron
-				if (evt->polyhedron) {
-					evt->polyhedron->onRemove(parent, type);
-				} else {
-					UTIL_ERR "Polyhedron is NULL when removing it" << std::endl;
-				}
-			} else {
-				// TODO: check if the target is the id of polyhedron
-				std::vector<Polyhedron::HitTestResult::Position> ps;
-				findTargets(parent, evt, target, ps);
+			std::vector<Polyhedron::HitTestResult::Position> ps;
+			std::vector<Polyhedron*> polys;
+			findTargets(parent, evt, target, ps, &polys);
 
-				for (size_t i = 0; i < ps.size(); i++) {
-					// TODO: animation (now it is simply convertTo 0)
-					ps[i]._map->substituteTile(parent, ps[i].position[0], ps[i].position[1], ps[i].position[2], NULL);
-				}
+			for (size_t i = 0; i < ps.size(); i++) {
+				// TODO: animation (now it is simply convertTo 0)
+				ps[i]._map->substituteTile(parent, ps[i].position[0], ps[i].position[1], ps[i].position[2], NULL);
+			}
+
+			for (size_t i = 0; i < polys.size(); i++) {
+				polys[i]->onRemove(parent, type);
 			}
 		}
 			break;
@@ -225,7 +235,7 @@ namespace game {
 			osg::ref_ptr<TileType> newTileType = parent->getOrCreateTileTypeMap()->lookup(osgDB::trimEnclosingSpaces(arguments["value"]));
 
 			std::vector<Polyhedron::HitTestResult::Position> ps;
-			findTargets(parent, evt, arguments["target"], ps);
+			findTargets(parent, evt, arguments["target"], ps, NULL);
 
 			for (size_t i = 0; i < ps.size(); i++) {
 				ps[i]._map->substituteTile(parent, ps[i].position[0], ps[i].position[1], ps[i].position[2], newTileType.get());
