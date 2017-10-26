@@ -445,7 +445,7 @@
 		</Widget>
 	</Resource>
 	<Resource type="ResourceLayout" name="PopupMenuNormal" version="3.2.0">
-		<Widget type="Widget" skin="MenuItemNormalSkin" position="0 0 64 16" name="Root">
+		<Widget type="Widget" skin="MenuItemNormalSkin2" position="0 0 64 16" name="Root">
 			<Property key="FontName" value="Default"/>
 			<Property key="TextAlign" value="Left VCenter"/>
 			<UserString key="LE_TargetWidgetType" value="Button"/>
@@ -456,7 +456,7 @@
 		</Widget>
 	</Resource>
 	<Resource type="ResourceLayout" name="PopupMenuRadio" version="3.2.0">
-		<Widget type="Widget" skin="MenuItemNormalSkin" position="0 0 64 16" name="Root">
+		<Widget type="Widget" skin="MenuItemNormalSkin2" position="0 0 64 16" name="Root">
 			<Property key="FontName" value="Default"/>
 			<Property key="TextAlign" value="Left VCenter"/>
 			<UserString key="LE_TargetWidgetType" value="Button"/>
