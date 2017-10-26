@@ -27,7 +27,7 @@ static const char* actionNames[game::EventAction::TYPE_MAX] =
 // NOTE: the items in each array should be sorted
 
 static const char* actionArgRaiseEvent[] = { "target", "type", NULL };
-static const char* actionArgRemoveItem[] = { NULL }; // TODO:
+static const char* actionArgRemoveObject[] = { "target", "type", NULL };
 static const char* actionArgConvertTo[] = { "target", "value" };
 static const char* actionArgCheckpoint[] = { NULL }; // TODO:
 static const char* actionArgMovePolyhedron[] = { NULL }; // TODO:
@@ -35,7 +35,7 @@ static const char* actionArgMovePolyhedron[] = { NULL }; // TODO:
 static const char** actionArguments[game::EventAction::TYPE_MAX] =
 {
 	actionArgRaiseEvent,
-	actionArgRemoveItem,
+	actionArgRemoveObject,
 	actionArgConvertTo,
 	actionArgCheckpoint,
 	actionArgMovePolyhedron,
@@ -197,18 +197,38 @@ namespace game {
 		}
 			break;
 		case REMOVE_OBJECT:
-			// TODO:
+		{
+			std::string type = osgDB::trimEnclosingSpaces(arguments["type"]);
+			std::string target = osgDB::trimEnclosingSpaces(arguments["target"]);
+
+			if (target == "polyhedron") {
+				// remove current polyhedron
+				if (evt->polyhedron) {
+					evt->polyhedron->onRemove(parent, type);
+				} else {
+					UTIL_ERR "Polyhedron is NULL when removing it" << std::endl;
+				}
+			} else {
+				// TODO: check if the target is the id of polyhedron
+				std::vector<Polyhedron::HitTestResult::Position> ps;
+				findTargets(parent, evt, target, ps);
+
+				for (size_t i = 0; i < ps.size(); i++) {
+					// TODO: animation (now it is simply convertTo 0)
+					ps[i]._map->substituteTile(parent, ps[i].position[0], ps[i].position[1], ps[i].position[2], NULL);
+				}
+			}
+		}
 			break;
 		case CONVERT_TO:
 		{
-			// TODO: ask all polyhedra to check stability again
 			osg::ref_ptr<TileType> newTileType = parent->getOrCreateTileTypeMap()->lookup(osgDB::trimEnclosingSpaces(arguments["value"]));
 
 			std::vector<Polyhedron::HitTestResult::Position> ps;
 			findTargets(parent, evt, arguments["target"], ps);
 
 			for (size_t i = 0; i < ps.size(); i++) {
-				ps[i]._map->substituteTileType(ps[i].position[0], ps[i].position[1], ps[i].position[2], newTileType.get());
+				ps[i]._map->substituteTile(parent, ps[i].position[0], ps[i].position[1], ps[i].position[2], newTileType.get());
 			}
 		}
 			break;

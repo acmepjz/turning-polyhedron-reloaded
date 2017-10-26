@@ -344,21 +344,27 @@ namespace game {
 			std::map<Position, TileType*> hitTestPosition; //!< the hit-tested tiles.
 		};
 
+		enum HitTestReason {
+			HITTEST_VALID,
+			HITTEST_FALL,
+			HITTEST_BLOCKED,
+		};
+
 		/** check if it is stable and not blocked at given position. (experimental, only works for cuboid polyhedron)
 		\param parent The parent
 		\param pos The position
-		\param[out] hitTestResult (optional) the hit test result.
-		NOTE: this is valid only when the return value is true.
+		\param[out] hitTestResult (optional) the hit test result. NOTE: this is valid only when the return value is true.
+		\param[out] reason (optional) the reason why it is invalid
 		*/
-		bool valid(const Level* parent, const PolyhedronPosition& pos, HitTestResult* hitTestResult = 0) const;
+		bool valid(const Level* parent, const PolyhedronPosition& pos, HitTestResult* hitTestResult = 0, HitTestReason* reason = 0) const;
 
 		/** check if it is stable and not blocked at current position. (experimental, only works for cuboid polyhedron)
 		\param parent The parent
-		\param[out] hitTestResult (optional) the hit test result.
-		NOTE: this is valid only when the return value is true.
+		\param[out] hitTestResult (optional) the hit test result. NOTE: this is valid only when the return value is true.
+		\param[out] reason (optional) the reason why it is invalid
 		*/
-		bool valid(const Level* parent, HitTestResult* hitTestResult = 0) const {
-			return valid(parent, pos, hitTestResult);
+		bool valid(const Level* parent, HitTestResult* hitTestResult = 0, HitTestReason* reason = 0) const {
+			return valid(parent, pos, hitTestResult, reason);
 		}
 
 		void init(Level* parent);
@@ -369,7 +375,22 @@ namespace game {
 
 		int weight() const; //!< get the weight of polyhedron. NOTE: anything non EMPTY gets a weight 1.
 
-		bool update(Level* parent); //!< update animation
+		/** update animation
+		\return if it is animating
+		*/
+		bool update(Level* parent);
+
+		/** call when the tile changed
+		\return if it is animating
+		*/
+		bool onTileDirty(Level* parent);
+
+		/** call when the polyhedron is removed
+		\param parent the level
+		\param type the type, e.g. "breakdown", "fall"
+		\return if it is animating
+		*/
+		bool onRemove(Level* parent, const std::string& type);
 
 		void updateVisible(); //!< call this when the VISIBLE flags changed
 

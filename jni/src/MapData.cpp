@@ -73,7 +73,7 @@ namespace game {
 	}
 
 	// TODO: animation
-	void MapData::substituteTileType(int x, int y, int z, TileType* t) {
+	void MapData::substituteTile(Level* parent, int x, int y, int z, TileType* t) {
 		int idx = 0;
 		TileType *old = NULL;
 		if (isValidPosition(x, y, z) &&
@@ -110,6 +110,7 @@ namespace game {
 
 			// finally update it
 			tiles[idx] = t;
+			parent->_isTileDirty = true;
 		} else {
 			//prevent memory leak
 			osg::ref_ptr<TileType> tmp = t;

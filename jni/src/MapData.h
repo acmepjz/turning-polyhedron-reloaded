@@ -74,7 +74,7 @@ namespace game {
 		/** set tile at specified position (with bounds check) and update the graphics instance
 		\note Only call this function when the graphics instance is created
 		*/
-		void substituteTileType(int x, int y, int z, TileType* t);
+		void substituteTile(Level* parent, int x, int y, int z, TileType* t);
 
 		/** get or set tile at specified position
 		\warning no array bounds check

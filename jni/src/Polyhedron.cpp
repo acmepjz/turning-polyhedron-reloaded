@@ -629,6 +629,7 @@ namespace game {
 		}
 
 		//check if the end position is valid
+		// TODO: if it is not FRAGILE then falling is allowed
 		if (!valid(parent, newPos, &newHitTestResult)) return false;
 
 		//--- yes we are going to move
@@ -772,6 +773,49 @@ namespace game {
 		}
 
 		return true;
+	}
+
+	bool Polyhedron::onTileDirty(Level* parent) {
+		//check if the current position is valid
+		// TODO: if it is not FRAGILE then falling is allowed
+		if (!valid(parent)) {
+			return onRemove(parent, "fall");
+		}
+
+		return false;
+	}
+
+	// TODO: (different types of) animation
+	bool Polyhedron::onRemove(Level* parent, const std::string& type) {
+		bool isGameFinished = false;
+		bool isGameOver = true;
+
+		if (type == "breakdown") {
+		} else if (type == "gameFinished") {
+			isGameFinished = true;
+		} else if (type == "teleport") { // internal
+			isGameOver = false;
+		} else {
+			if (!type.empty() && type != "fall") {
+				UTIL_WARN "Unknown type '" << type << "', default to 'fall'" << std::endl;
+			}
+		}
+
+		if (isGameFinished) {
+			if (flags & MAIN) {
+				parent->_mainPolyhedronCount--;
+			}
+		} else if (isGameOver) {
+			if ((flags & DISCARDABLE) == 0) {
+				parent->_isGameOver = true;
+			}
+		}
+
+		flags &= ~VISIBLE;
+		updateVisible();
+		if (parent->getSelectedPolyhedron() == this) parent->switchToNextPolyhedron();
+
+		return false;
 	}
 
 	bool Polyhedron::isRollable(const Level* parent, const PolyhedronPosition& pos, MoveDirection dir) const {
@@ -930,7 +974,9 @@ namespace game {
 		return true;
 	}
 
-	bool Polyhedron::valid(const Level* parent, const PolyhedronPosition& pos, HitTestResult* hitTestResult) const {
+	bool Polyhedron::valid(const Level* parent, const PolyhedronPosition& pos, HitTestResult* hitTestResult, HitTestReason* reason) const {
+		if (reason) *reason = HITTEST_VALID;
+
 		//get current position
 		PolyhedronPosition::Idx iii;
 		pos.getCurrentPos(this, iii);
@@ -1021,6 +1067,7 @@ namespace game {
 									const int z = zz - pos.pos.z();
 									if (zBlocks[z] && other->customShape[idx2]) {
 										//it is blocked
+										if (reason) *reason = HITTEST_BLOCKED;
 										return false;
 									}
 								}
@@ -1057,6 +1104,7 @@ namespace game {
 							for (; z < e; z++) {
 								if (zBlocks[z]) {
 									//it is blocked
+									if (reason) *reason = HITTEST_BLOCKED;
 									return false;
 								}
 							}
@@ -1102,6 +1150,7 @@ namespace game {
 			if (suppCount >= blockCount) return true;
 		}
 
+		if (reason) *reason = HITTEST_FALL;
 		return false;
 	}
 

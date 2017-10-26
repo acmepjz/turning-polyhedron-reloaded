@@ -117,6 +117,7 @@ namespace game {
 
 		bool _isAnimating; //!< is animating, updated when \ref update() is called
 		bool _isGameOver;
+		bool _isTileDirty;
 
 		std::vector<osg::ref_ptr<EventDescription> > _eventQueue;
 

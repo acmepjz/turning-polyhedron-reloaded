@@ -82,6 +82,7 @@ namespace game {
 		_checkpointCount = 0;
 		_mainPolyhedronCount = 0;
 		_isGameOver = false;
+		_isTileDirty = false;
 
 		_polyhedra.clear();
 		for (Polyhedra::iterator it = polyhedra.begin(); it != polyhedra.end(); ++it) {
@@ -167,9 +168,30 @@ namespace game {
 
 	bool Level::update() {
 		_isAnimating = false;
+
 		for (int i = 0, m = polyhedra.size(); i < m; i++) {
 			if (polyhedra[i]->update(this)) _isAnimating = true;
 		}
+
+		while (_isTileDirty) {
+			_isTileDirty = false;
+			for (int i = 0, m = polyhedra.size(); i < m; i++) {
+				if (polyhedra[i]->onTileDirty(this)) _isAnimating = true;
+			}
+		}
+
+		// debug
+		static int _test = 0;
+		if (_isGameOver) {
+			if (_test != 1) UTIL_NOTICE "*** GAME OVER ***" << std::endl;
+			_test = 1;
+		} else if (_mainPolyhedronCount <= 0) {
+			if (_test != 2) UTIL_NOTICE "*** GAME FINISHED ***" << std::endl;
+			_test = 2;
+		} else {
+			_test = 0;
+		}
+
 		return _isAnimating;
 	}
 
