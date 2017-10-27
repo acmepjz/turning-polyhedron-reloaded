@@ -12,6 +12,8 @@ namespace MyGUI {
 	class FileDialog;
 }
 
+class LevelListScreen;
+
 #include <osg/Group>
 #include <osgGA/OrbitManipulator>
 #include "Level.h"
@@ -28,12 +30,13 @@ public:
 
 	void endMessage();
 
-	void setLevel(game::Level* level_);
+	void setLevelOrCollection(osg::Object* level_);
 	void restartLevel();
 
 private:
 	void notifyMessageBoxResult(MyGUI::Message* sender, MyGUI::MessageBoxStyle result);
 	void notifyFileDialogAccept(MyGUI::FileDialog* sender);
+	void notifyLevelListAccept(LevelListScreen* sender);
 	void notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem* item);
 	static void toggleCheck(MyGUI::MenuItem* current);
 	void toggleRadio(MyGUI::MenuItem* current);
@@ -50,8 +53,9 @@ private:
 	bool mFrameAdvise;
 
 private:
-	osg::ref_ptr<game::Level> levelTemplate;
-	osg::ref_ptr<game::Level> level;
+	osg::ref_ptr<osg::Object> levelTemplate; // level or level collection (template)
+	osg::ref_ptr<game::Level> level; // the level (copy constructed from template)
+	int selectedLevel; // selected level
 	osg::ref_ptr<osgGA::OrbitManipulator> cameraController;
 	osg::ref_ptr<LevelController> levelController;
 

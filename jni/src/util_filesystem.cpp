@@ -59,6 +59,7 @@ namespace util {
 			std::string s1 = osgDB::convertToLowerCase(f1.name);
 			std::string s2 = osgDB::convertToLowerCase(f2.name);
 			ret = strcmp(s1.c_str(), s2.c_str());
+			if (ret == 0) ret = strcmp(f1.name.c_str(), f2.name.c_str());
 		}
 
 		return descending_ ? -ret : ret;

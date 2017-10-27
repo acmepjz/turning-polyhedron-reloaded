@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+	<Widget type="Window" skin="WindowCSX" position="0 0 656 520" layer="Overlapped" name="_Main">
+        <UserString key="SnapTo" value="Center"/>
+		<Property key="Caption" value="Level list"/>
+		<Widget type="MultiListBox" skin="MultiListBox" position="8 8 624 432" align="Stretch" name="lstLevel"/>
+		<Widget type="Button" skin="ButtonDefault" position="464 448 80 24" align="Right Bottom" name="cmdOK">
+			<Property key="Caption" value="OK"/>
+		</Widget>
+		<Widget type="Button" skin="Button" position="552 448 80 24" align="Right Bottom" name="cmdCancel">
+			<Property key="Caption" value="Cancel"/>
+		</Widget>
+	</Widget>
+	<CodeGeneratorSettings/>
+</MyGUI>

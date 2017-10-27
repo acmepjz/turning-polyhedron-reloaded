@@ -62,6 +62,27 @@ game::Level* GameManager::loadLevel(const char* filename, int levelIndex) {
 	return NULL;
 }
 
+osg::Object* GameManager::loadLevelOrCollection(const char* filename) {
+	if (!filename) return NULL;
+
+	UTIL_NOTICE "Loading file '" << filename << "'" << std::endl;
+
+	std::istream *fin = compMgr->openFileForRead(filename);
+	if (fin) {
+		osg::ref_ptr<XMLNode> x = XMLReaderWriter::readFile(*fin);
+		delete fin;
+
+		if (x.valid()) {
+			osg::ref_ptr<osg::Object> obj = LevelCollection::loadLevelOrCollection(x.get(),
+				defaultObjectTypeMap, defaultTileTypeMap);
+			if (obj.valid()) return obj.release();
+		}
+	}
+
+	UTIL_ERR "Failed to load file '" << filename << "'" << std::endl;
+	return NULL;
+}
+
 Level* GameManager::loadOrCreateLevel(const char* filename, int levelIndex) {
 	// try to load a level
 	Level *ptr = loadLevel(filename, levelIndex);

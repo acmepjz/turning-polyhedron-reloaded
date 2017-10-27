@@ -1,12 +1,14 @@
 #include "GameScreen.h"
 #include "MessageBox.h"
 #include "FileDialog.h"
-
+#include "LevelListScreen.h"
 #include "globals.h"
 #include "Level.h"
+#include "LevelCollection.h"
 #include "GameManager.h"
 #include "ConfigManager.h"
 #include "MYGUIManager.h"
+#include "util_err.h"
 
 #include <osgViewer/Viewer>
 
@@ -14,6 +16,7 @@ GameScreen::GameScreen() :
 	wraps::BaseLayout("GameScreen.layout"),
 	mSmoothShow(false),
 	mFrameAdvise(false),
+	selectedLevel(0),
 	_demoView(NULL),
 	_menuBar(NULL),
 	_recentFiles(NULL),
@@ -36,7 +39,7 @@ GameScreen::GameScreen() :
 		sscanf(g_argv[2], "%d", &levelIndex);
 		levelIndex--;
 	}
-	setLevel(gameMgr->loadOrCreateLevel(g_argc >= 2 ? g_argv[1] : NULL, levelIndex));
+	setLevelOrCollection(gameMgr->loadOrCreateLevel(g_argc >= 2 ? g_argv[1] : NULL, levelIndex));
 }
 
 void GameScreen::restartLevel() {
@@ -49,8 +52,25 @@ void GameScreen::restartLevel() {
 	}
 	levelController->level = NULL;
 
+	// load level from level collection
+	game::LevelCollection *lc = dynamic_cast<game::LevelCollection*>(levelTemplate.get());
+	if (lc) {
+		if (selectedLevel < 0 || selectedLevel >= (int)lc->levels.size()) {
+			selectedLevel = 0;
+		}
+		level = new game::Level(*(lc->levels[selectedLevel].get()));
+	} else {
+		game::Level *lv = dynamic_cast<game::Level*>(levelTemplate.get());
+		if (lv) {
+			level = new game::Level(*lv);
+		} else {
+			UTIL_ERR "Invalid level template" << std::endl;
+			// create a placeholder level
+			level = gameMgr->loadOrCreateLevel(NULL, 0);
+		}
+	}
+
 	// init level
-	level = new game::Level(*levelTemplate.get());
 	level->init();
 	level->createInstance(false);
 	levelController->level = level;
@@ -72,9 +92,10 @@ void GameScreen::restartLevel() {
 	cameraController->setTransformation(e, c, osg::Vec3d(1, 1, 1));
 }
 
-void GameScreen::setLevel(game::Level* level_) {
+void GameScreen::setLevelOrCollection(osg::Object* level_) {
 	// init level
 	levelTemplate = level_;
+	selectedLevel = 0;
 	restartLevel();
 }
 
@@ -93,13 +114,18 @@ void GameScreen::notifyFileDialogAccept(MyGUI::FileDialog* sender) {
 	}
 }
 
+void GameScreen::notifyLevelListAccept(LevelListScreen* sender) {
+	selectedLevel = sender->selectedLevel;
+	restartLevel();
+}
+
 bool GameScreen::loadFile(const std::string& fullName, const std::string& directory) {
-	game::Level *newLevel = gameMgr->loadLevel(fullName.c_str(), 0);
+	osg::Object *newLevel = gameMgr->loadLevelOrCollection(fullName.c_str());
 	if (newLevel) {
 		if (cfgMgr->recentFiles.add(fullName)) frameAdvise(true);
 		if (!directory.empty() && cfgMgr->recentFolders.add(directory)) frameAdvise(true);
 
-		setLevel(newLevel);
+		setLevelOrCollection(newLevel);
 
 		return true;
 	} else {
@@ -115,7 +141,7 @@ bool GameScreen::loadFile(const std::string& fullName, const std::string& direct
 
 void GameScreen::newFile() {
 	game::Level *newLevel = gameMgr->loadLevel(NULL, 0);
-	setLevel(newLevel);
+	setLevelOrCollection(newLevel);
 }
 
 void GameScreen::frameEntered(float _frame) {
@@ -171,6 +197,14 @@ void GameScreen::notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem
 		showFileDialog("mnuOpen", item->getUserString("Tag"), "");
 	} else if (name == "mnuRestart") {
 		restartLevel();
+	} else if (name == "mnuLevelList") {
+		LevelListScreen *window = new LevelListScreen();
+		window->levelOrLevelCollection = levelTemplate;
+		window->selectedLevel = selectedLevel;
+		window->setSmoothShow(true);
+		window->setMessageModal(true);
+		window->eventLevelListScreenAccept += MyGUI::newDelegate(this, &GameScreen::notifyLevelListAccept);
+		window->initialize();
 	} else if (name == "mnuUIScale") {
 		toggleRadio(item);
 		myguiMgr->setUIScale(atof(item->getUserString("Tag").c_str()));

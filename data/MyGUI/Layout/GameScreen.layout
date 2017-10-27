@@ -73,6 +73,12 @@
 					<Widget type="MenuItem" name="mnuRestart">
 						<Property key="Caption" value="Restart&#9;Ctrl+R"/>
 					</Widget>
+					<Widget type="MenuItem">
+						<Property key="MenuItemType" value="Separator"/>
+					</Widget>
+					<Widget type="MenuItem" name="mnuLevelList">
+						<Property key="Caption" value="Level list&#9;Ctrl+L"/>
+					</Widget>
 				</Widget>
 			</Widget>
 			<Widget type="MenuItem">

@@ -16,10 +16,16 @@ protected:
 public:
 	GameManager() {}
 
+	/** load default object and tile type map, etc. */
 	void loadDefaults();
+
+	/** load a level or a level in a level collection */
 	game::Level* loadLevel(const char* filename, int levelIndex);
 
-	//! this is test only
+	/** load a level or a level collection */
+	osg::Object* loadLevelOrCollection(const char* filename);
+
+	/** this is test only */
 	game::Level* loadOrCreateLevel(const char* filename, int levelIndex);
 
 public:
