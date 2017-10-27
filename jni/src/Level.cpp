@@ -103,6 +103,9 @@ namespace game {
 			}
 		}
 
+		// debug
+		UTIL_INFO "checkpoint count: " << _checkpointCount << ", main polyhedron count: " << _mainPolyhedronCount << std::endl;
+
 		switchToFirstPolyhedron();
 	}
 
@@ -185,7 +188,7 @@ namespace game {
 		if (_isGameOver) {
 			if (_test != 1) UTIL_NOTICE "*** GAME OVER ***" << std::endl;
 			_test = 1;
-		} else if (_mainPolyhedronCount <= 0) {
+		} else if (_checkpointCount <= 0 && _mainPolyhedronCount <= 0) {
 			if (_test != 2) UTIL_NOTICE "*** GAME FINISHED ***" << std::endl;
 			_test = 2;
 		} else {

@@ -29,7 +29,7 @@ static const char* actionNames[game::EventAction::TYPE_MAX] =
 static const char* actionArgRaiseEvent[] = { "target", "type", NULL };
 static const char* actionArgRemoveObject[] = { "target", "type", NULL };
 static const char* actionArgConvertTo[] = { "target", "value", NULL };
-static const char* actionArgCheckpoint[] = { NULL }; // TODO:
+static const char* actionArgCheckpoint[] = { NULL };
 static const char* actionArgMovePolyhedron[] = { NULL }; // TODO:
 
 static const char** actionArguments[game::EventAction::TYPE_MAX] =
@@ -243,7 +243,14 @@ namespace game {
 		}
 			break;
 		case CHECKPOINT:
-			// TODO:
+		{
+			TileType *tt = evt->_map->get(evt->position);
+			if (tt && (tt->flags & TileType::TileFlags::CHECKPOINT) != 0) {
+				parent->_checkpointCount--;
+			} else {
+				UTIL_WARN "Invalid use of checkpoint event" << std::endl;
+			}
+		}
 			break;
 		case MOVE_POLYHEDRON:
 			// TODO:
