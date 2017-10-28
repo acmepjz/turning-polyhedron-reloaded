@@ -1110,7 +1110,10 @@ namespace game {
 							}
 
 							// record hit test area FIXME: it is not exact
-							if (hitTestResult && zz > pos.pos.z() && zz <= pos.pos.z() + iii.size.z()) {
+							if (hitTestResult
+								&& zz > pos.pos.z()
+								&& zz <= pos.pos.z() + iii.size.z()
+								&& zBlocks[zz - pos.pos.z() - 1]) {
 								HitTestResult::Position p;
 								p._map = pos._map;
 								p.position.set(xx, yy, zz);
