@@ -1,0 +1,5717 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<levelCollection>
+<name>IcePrincess levels</name>
+<tileMapping id="one-time" index="-1"/>
+<tileMapping id="tricky" index="-2"/>
+<tileMapping id="floating-checkpoint" index="-3"/>
+<level>
+	<solution><![CDATA[RDRRRRUR]]></solution>
+	<name><![CDATA[How to move]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="14,5,2">
+		<typeArray><![CDATA[1,1,1,1,1,,,,,,1,1,,,
+1,1,1,1,1,,,,,1,1,1,1,1,
+1,1,1,1,1,,,,1,1,1,8,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,,
+1,1,1,1,1,1,1,1,1,,,1,1,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="2,2" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RUURRUURURDRR]]></solution>
+	<name><![CDATA[Test your skill]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="12,8,2">
+		<typeArray><![CDATA[,,,,,,,1,1,,,,
+,,,,,,,1,1,,,,
+,,,,,1,1,1,1,1,1,8,
+,,,,,1,1,,,,,,
+,,1,1,1,1,1,,,,,,
+1,1,1,1,,,,,,,,,
+1,1,1,1,,,,,,,,,
+1,1,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,6" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RUURURRDRRRUUR]]></solution>
+	<name><![CDATA[Take your angel]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="12,5,2">
+		<typeArray><![CDATA[,,,1,1,1,,,,1,1,8,
+,,,1,1,1,,,,1,1,,
+,1,1,1,,1,1,1,1,1,1,,
+,1,1,,,,1,1,1,,,,
+1,1,1,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,4" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[UUUUURDRRRR]]></solution>
+	<name><![CDATA[The well is deep]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="10,10,2">
+		<typeArray><![CDATA[,,1,1,,,1,1,,,
+,,1,1,,,1,1,,,
+,,1,1,1,1,1,1,1,8,
+,1,1,1,1,,,,,,
+,1,1,,1,,,,,,
+,,1,,1,,,,,,
+,1,1,1,1,,,,,,
+1,1,1,1,1,,,,,,
+1,1,1,1,,,,,,,
+,1,1,1,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="2,8" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRUURDRRRRDDR]]></solution>
+	<name><![CDATA[Tutorial,how to move]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="13,6,2">
+		<typeArray><![CDATA[,,,,,,,,1,1,,,,
+,,,1,1,1,,,1,1,,,,
+,,,1,1,1,1,1,1,1,1,1,,
+,,,1,,,,,,,1,1,,
+1,1,1,1,,,,,,,1,1,8,
+,,,1,1,1,1,1,1,1,1,1,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,4" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRRDRULDRRRUURRR]]></solution>
+	<name><![CDATA[How to move on a square]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,4,2">
+		<typeArray><![CDATA[,,,,,1,1,1,,1,1,1,1,1,8,
+1,1,1,1,1,1,1,1,,1,1,,,,,
+,1,1,1,1,1,1,1,1,1,1,,,,,
+,1,1,1,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,1" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[ULLDRRRRRRUUUURRULDRR]]></solution>
+	<name><![CDATA[Find the right way]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,9,2">
+		<typeArray><![CDATA[,,,,,,,,,,,1,1,,,
+,,,,,,,,,,,1,1,,,
+,,,,,,,,,1,1,1,1,1,8,
+,,,,,1,1,1,,1,,,,,,
+,,,,,1,1,1,,1,,,,,,
+,,1,1,1,1,,1,,1,,,,,,
+1,1,1,,,,,1,,1,,,,,,
+1,1,1,,,,,1,1,1,,,,,,
+1,1,1,1,1,1,1,1,1,1,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="2,8" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRRRDRRURRULULULLLUDRRRRRRRR]]></solution>
+	<name><![CDATA[Collecting crystals]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="17,9,2">
+		<typeArray><![CDATA[,,,1,1,1,,,,,,,,,,,,
+,,,1,1,1,,,,,,,,,,,,
+,,,1,1,1,1,1,1,1,1,1,1,1,1,1,8,
+,,,1,,,,,1,1,1,,,,,,,
+,,,1,,,,,,,1,1,,,,,,
+,,,1,,,,,,,1,1,,,,,,
+1,1,1,1,1,1,1,,1,1,1,1,,,,,,
+,,,,,,1,1,1,,,,,,,,,
+,,,,,,1,1,1,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,-3,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,-3,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,-3,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,6" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRDRURRUURRULLDLLULRDRRURRDLLDDLLDLURRRRRRRR]]></solution>
+	<name><![CDATA[The miraculous valley]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,8,2">
+		<typeArray><![CDATA[,,,,1,1,,,1,1,1,,,,,,
+,,,,1,1,,,1,1,1,,,,,,
+,,,,,1,1,1,1,1,1,,,,,,
+,,,,,,,1,,,,,,,,,
+,,,,,,,1,,,,,,,,,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,8,
+,,,1,1,,,,,,,,,,,,
+,,,1,1,,,,,,,,,,,,
+,,,,-3,,,,,,-3,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,5" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRUURURRLLDLDDRRRRUURRDLDRULUUDDRRRUUUR]]></solution>
+	<name><![CDATA[Village is close]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="18,5,2">
+		<typeArray><![CDATA[,,,,1,1,1,1,1,1,,1,,,,1,1,8,
+,,,1,1,1,,,,1,1,1,1,,,1,1,,
+,,,1,,,,,,1,,1,1,1,,1,1,,
+,,,1,,,,,,1,,1,1,1,1,1,1,,
+1,1,1,1,1,1,1,1,1,1,,1,1,1,,,,,
+,,,,,,,-3,,,,-3,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,-3,,,,-3,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,4" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RDRRURDLLURRUURRDRULDRRR]]></solution>
+	<name><![CDATA[You are almost there]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,6,2">
+		<typeArray><![CDATA[,,,,,,,1,1,1,1,1,,,,
+,,,,,,,1,,1,1,1,1,1,8,
+,,,,,,,1,,1,1,1,,1,,
+1,1,1,,1,1,1,1,,,,,,1,,
+,1,1,1,1,1,1,,1,1,1,1,1,1,,
+,,,,1,1,1,1,1,1,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,3" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[DLDRRUUUURDDLURUDLDDDRRRUURULDDDRRUURRULLDRR]]></solution>
+	<name><![CDATA[Welcome in the village]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,8,2">
+		<typeArray><![CDATA[,,,,1,,,,,,,,,,,,
+,,,1,1,1,,,1,1,1,,,,,,
+,,,1,1,1,,,1,1,1,,1,1,1,,
+,,,1,1,1,,,1,1,,,1,1,1,,
+,1,,1,,,,1,1,1,,1,1,1,1,8,
+1,1,,1,,,,1,1,1,,1,,,,,
+1,1,,1,1,1,1,1,1,,,1,,,,,
+1,1,1,1,,,,1,1,1,1,1,,,,,
+,,,,-3,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,-3,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,4" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[LURDLLURDRRRURRRDRR]]></solution>
+	<name><![CDATA[Find a place where to stay at night]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="13,4,2">
+		<typeArray><![CDATA[,,,,,,5,5,5,5,,,,
+1,1,1,,,,5,5,5,5,,,,
+1,1,1,1,5,5,1,,,1,1,1,8,
+1,1,1,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="2,2" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[LDRULURRURRRRDDLDRRURRU]]></solution>
+	<name><![CDATA[Try to get in but be carefull]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="13,6,2">
+		<typeArray><![CDATA[,,,,5,5,5,5,5,,,,,
+,,,,5,5,5,5,5,,,,,
+,1,1,1,1,,,,1,,,,8,
+1,1,1,1,1,,,5,5,,1,1,1,
+1,1,1,,,,,5,5,,1,1,1,
+1,1,1,,,,,1,5,5,1,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="2,4" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[LDRURRRRRURUUUUURDRDDDRR]]></solution>
+	<name><![CDATA[Is somebody in here]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,9,2">
+		<typeArray><![CDATA[,,,,,,,5,5,5,1,5,1,,,,
+,,,,,,,5,5,5,5,1,5,,,,
+,,,,,,,1,5,5,1,5,1,,,,
+,,,,,,,,5,5,,1,,,,,
+,,,,,,,,5,5,,5,,,,,
+,,,,,,,1,1,1,,5,,1,1,1,
+1,1,1,5,5,5,1,5,1,1,1,1,1,5,8,1,
+1,1,1,5,5,5,1,5,,,,,,1,1,1,
+1,1,1,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="2,7" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RULDLURRUURRDRURUUUURUULLULDRUULLLDDLULDRURDL]]></solution>
+	<name><![CDATA[You should check upstairs for sure]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="11,15,2">
+		<typeArray><![CDATA[,,,1,1,1,1,1,1,,,
+,,,1,,,1,1,1,,,
+1,1,1,1,,,1,1,1,1,1,
+1,8,1,1,,,,,,,1,
+1,1,1,,,,,,,,1,
+,,,,,,,,5,5,1,
+,,,,,,,,5,5,,
+,,,,,,,,5,5,,
+,,,,,,,,5,5,,
+,,,1,1,1,1,1,5,5,,
+,,,1,,,1,1,,,,
+,,,1,,,1,1,,,,
+1,1,1,1,,,,,,,,
+1,1,1,1,,,,,,,,
+1,1,1,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,13" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[URDLDRULURRURRRRDDRURDDRURDRUURRURRDR]]></solution>
+	<name><![CDATA[Teleport will get you there]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,17,2">
+		<typeArray><![CDATA[,,,,,4[1],1,5,5,5,5,5,5,4[4],,
+,,,,,1,5,5,5,5,5,5,5,,,
+,,,,,1,5,5,5,1,1,5,5,1,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,5,5,5,5,5,,,,,,,
+,,,,5,5,5,5,5,,,,,,,
+,1,1,1,1,,,,4[2],,,5,,,,
+1,1,1,1,1,,,,,,5,5,5,,,
+1,1,1,,,,,,,5,5,1,5,5,,
+1,1,1,,,,,,4[3],1,1,5,1,1,8,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,-3,,,,-3,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,15" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="3" tag="tele_2">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="4" tag="tele_3">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRULURRULDLDDDLLRRUUURURDLLDRURUUURRDDDDDDRURRUDLLDLUUUUUULDLDRRLLURUDRRURR]]></solution>
+	<name><![CDATA[New day is starting]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="17,7,2">
+		<typeArray><![CDATA[,,,,,1,1,4[1],,,,4[2],1,1,5,5,8,
+,,,,,1,1,,,,5,1,1,1,,,,
+,,,,,1,1,,,,5,1,1,1,,,,
+,,,1,1,1,1,,4[3],,,,5,5,,,1,
+,,,1,1,,,5,5,,,,5,5,1,5,1,
+,,,1,1,,,5,5,,,,5,5,5,5,1,
+1,1,1,5,1,,,1,5,5,1,,1,5,1,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,-3,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+-3,,,,,,,,,,-3,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,6" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+		<property index="3" tag="tele_2">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RDLULDRUULURDLURDLLURDLDRURDDLURDLUR]]></solution>
+	<name><![CDATA[Sun is rising]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="12,12,2">
+		<typeArray><![CDATA[,,4[6],1,1,,,,,,,,
+,,1,4[7],1,,,,,,,,
+,,1,1,1,,,,,,,,
+,,5,5,,,,,,,,,
+,,,,,,5,5,,,,,
+,,,,,4[5],1,1,,,,,
+,,,,,1,4[3],1,,,,,
+,,,,,1,1,1,,,,,
+4[4],1,1,,,,,,,,,,
+1,1,1,5,,,,,,4[8],1,1,
+1,1,4[1],5,,,,,5,1,8,4[2],
+,,,,,,,,5,1,1,1,
+,,,,-3,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,-3,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,9" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="3" tag="tele_2">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="4" tag="tele_3">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+		<property index="5" tag="tele_4">
+			<onEvent type="pressed"><teleport dest="m.tele_5"/></onEvent>
+		</property>
+		<property index="6" tag="tele_5">
+			<onEvent type="pressed"><teleport dest="m.tele_4"/></onEvent>
+		</property>
+		<property index="7" tag="tele_6">
+			<onEvent type="pressed"><teleport dest="m.tele_7"/></onEvent>
+		</property>
+		<property index="8" tag="tele_7">
+			<onEvent type="pressed"><teleport dest="m.tele_6"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[URUDDDDUULUURRRRURLDLLLDLLDRRRRRRULDRURURRULRDLURR]]></solution>
+	<name><![CDATA[Open the bridge and get out of the forest]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="17,7,2">
+		<typeArray><![CDATA[,,,2[64],,,,5,1,1,,,5,1,1,1,8,
+1,1,1,1,6,1,1,5,5,,,,1,1,1,,,
+1,1,1,1,,,,,,1,1,,1,1,1,,,
+1,1,1,1,,,,,,1,1,1,1,,,,,
+1,1,1,5,6,5,5,1,1,1,1,1,,,,,,
+1,1,1,1,,,,,,,,,,,,,,
+,,,2[65],,,,,,,,,,,,,,
+,,,,,,,-3,,-3,,,-3,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="2,3" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,4)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,1)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RUULRRRRURRDRRUURDUDDUULDDLLULLDDDRLUUURRDRRURURR]]></solution>
+	<name><![CDATA[Put the switch on and take your crystal]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,15,2">
+		<typeArray><![CDATA[,,,,,,,,4[2],1,5,,,,,,
+,,,,,,,,,2[65],1,,,,,,
+,,,,,,,,,1,5,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,4[1],1,1,1,8,
+,,,,,,1,5,1,,,1,1,,,,
+,,,,,,1,5,1,,,1,1,,,,
+2[64],1,5,6,1,1,1,,1,1,1,1,,,,,
+1,1,1,,,,1,,,,,,,,,,
+1,1,1,,,,6,,,,,,,,,,
+,,,,,,1,5,5,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,-3,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,-3,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,13" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,11)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,13)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRUURULDLURRLDDDRLUUULDRURDLUDDDRRRRUULDRURLUDDLURDDRRRUUUUR]]></solution>
+	<name><![CDATA[Switch and hurry up]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="20,19,2">
+		<typeArray><![CDATA[,,,,,,,,,,,,,,,,4[2],5,5,1,
+,,,,,,,,,,,,,,,,,5,5,,
+,,,,,,,,,,,,,,,,,5,5,,
+,,,,,,,,,,,,,,,,,5,5,2[66],
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,2[64],,,,,,2[65],,,,,,,,,,,
+,,4[1],1,1,5,,,1,1,1,,,1,6,8,,,,,
+,,1,1,1,5,,5,1,1,1,,,5,5,,,,,,
+,,1,1,1,,,5,1,1,1,,,5,5,,,,,,
+,,,1,,,,,,1,,,,5,5,,,,,,
+1,1,1,1,5,6,1,5,5,1,5,6,1,5,5,,,,,,
+,,,,,,,,,,,,,,,,,,,-3,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,-3,,,,,,,,,,
+,,,-3,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,18" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,18)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,18)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(14,14)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRURURRDRDLRLURRRUURRULDDDRLUUULUULUDRDDDRUR]]></solution>
+	<name><![CDATA[Switch on but off too]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,11,2">
+		<typeArray><![CDATA[,,,,,,,,,,,1,1,1,,,
+,,,,,,,,,,,1,1,1,,,
+,,,,,,,,,,,1,1,1,,,
+,,,,,,,,,,,,6,,,,
+,,,,,,,,,,,,1,1,1,,
+,,,,,,,,,,,,1,1,1,8,
+,,,,,,,,,,,1,1,1,2[66],,
+,,,,2[64],6,6,1,,,,1,,5,,,
+,,,1,1,,,1,5,,,1,,5,,,
+,,,1,1,,5,1,1,7,7,1,,1,1,1,
+1,1,1,1,,,2[65],5,1,,,,,,,,
+,,,,,,,,,,,-3,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,-3,
+,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,10" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,7) m(6,7)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,9) m(10,9)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,3)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[DRRURRDDDLDRULURDDUUUUURRRRDULLLLDDDDDUULDRDLURUUUUUUUUDDLDRULURDDDDDDDDUUUUURRRRUURDDLURDRR]]></solution>
+	<name><![CDATA[Mysterious valley]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,16,2">
+		<typeArray><![CDATA[,,,,,5,,,,,,,,,,,
+,,,,,6,,,,,,,,,,,
+,,,,1,1,1,,,,,,,,,,
+,,,,1,1,1,,,,,,,,,,
+,,,,1,1,1,,,,,1,1,1,,,
+,,,,1,1,1,,,,,1,1,1,,,
+,,,,,7,,,,,,1,1,1,1,8,
+1,1,1,,,1,1,1,6,6,1,1,,,,,
+1,1,1,5,5,1,,,,,,5,,,,,
+1,1,1,,,1,,,,,,2[65],,,,,
+1,1,1,,,1,,,,,,,,,,,
+,,,,1,1,1,,,,,,,,,,
+,,,,1,1,1,,,,,,,,,,
+,,,,1,1,1,,,,,,,,,,
+,,,,1,1,1,,,,,,,,,,
+,,,,,2[64],,,,,,,,,,,
+,,,,,-3,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,-3,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,8" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,6) m(8,7) m(9,7)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,1)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[URDLURDLLURUURRRRRRRDDDLLLLLDDDLURDUUUUUUUUULULLDLRURUUDDRDRDDDDDDDDDULDRUUURRRRRUUULLLLLLLDDDDLURRDDDDLULDR]]></solution>
+	<name><![CDATA[Keep moving night is comming]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="14,19,2">
+		<typeArray><![CDATA[,,,,,1,,,,,,,,,
+,,,,,1,,,,,,,,,
+,,,,,5,,,,,,,,,
+,,,1,1,1,5,5,1,,,,,,
+,,2[65],1,1,5,5,5,1,,,,,,
+,,,1,1,1,,,1,,,,,,
+,,,,,,,,6,,,,,,
+,,,,,,,,6,,,,,,
+,,1,1,1,1,5,1,1,1,1,5,1,1,
+,,1,1,1,,,,6,,,,,1,
+,1,1,1,,,,,6,,,,,1,
+,1,1,1,,,,,1,,,,,1,
+,1,1,1,,,,,1,1,1,1,1,1,
+,,,6,,,,,1,1,1,1,1,1,
+,,,6,,,,,1,,,,,,
+7,1,1,1,,,,,1,,,,,,
+7,1,8,1,,,1,1,1,,,,,,
+,1,1,1,,,1,1,1,,,,,,
+,,,,,,,,2[64],,,,,,
+,,,,,-3,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="2,11" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,6) m(8,7) m(8,9) m(8,10) m(0,15) m(0,16)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,13) m(3,14)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[DRDRRUUDDLLRLURDDRDDDRDRRRULDRLURDLLDLDDRURR]]></solution>
+	<name><![CDATA[Sunset]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="11,16,2">
+		<typeArray><![CDATA[1,,,,1,,,,,,,
+1,1,1,,6,,,,,,,
+1,1,1,,1,,,,,,,
+,1,2[64],1,1,,,,,,,
+,,1,1,,,,,,,,
+,,1,1,1,1,,,,,,
+,,,1,1,1,,,,,,
+,,,5,,,,,,,,
+,,,7,,,,,1,1,,
+,,,1,1,1,1,,1,1,,
+,,,1,1,5,1,1,1,1,5,
+,,,1,1,1,1,,,,,
+,,,,1,1,1,,,,,
+,,,,,1,1,1,1,8,,
+,,,,,1,1,,,,,
+,,,,,5,1,,,,,
+,,,,-3,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,-3,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,-3,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,0" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,1) m(3,8)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRDRURURUULLDRLURRLRDDRRRURUUDDLDRDRU]]></solution>
+	<name><![CDATA[Illusion or reality]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,8,2">
+		<typeArray><![CDATA[,,,,,,,,,,,1,1,1,,
+,,,,1,1,1,2[64],,,1,1,,1,,
+,,,,5,5,,1,1,,1,1,,1,,
+,,,,5,5,,1,1,6,1,5,1,1,,
+,1,1,1,,5,-2,1,1,6,1,5,1,-2,8,
+1,1,1,1,1,1,-2,1,1,6,1,,,5,5,
+,,,1,1,1,,,,,,,,5,5,
+,,,-2,-2,-2,,,,,,,,,,
+,,,,,,,,,,,,,-3,,
+,,,,,,,,,,,,,,,
+,,,,,-3,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,5" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,3) m(9,4) m(9,5)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RDDRRRUUUUUDDDDDRULUUUUUDUDDDDDRRLDLLLULDLUULLLDLRRDDUULURRRDR]]></solution>
+	<name><![CDATA[Inside the gourd]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,13,2">
+		<typeArray><![CDATA[,,,,,,,,,,,5,,,,
+,,,,,,,,,,,2[65],,,,
+,,,,,,,,,,1,1,1,,,
+,,,,,,,,,,1,1,1,,,
+,,,,,,,,,,1,1,1,,,
+,,,,,,,,,,,1,,,,
+,,,,,,,,,,,1,,,,
+1,1,5,1,1,1,1,1,1,,1,-2,1,,,
+2[64],1,1,,,6,1,8,1,,1,1,1,6,2[66],
+1,1,6,,,6,1,1,1,7,5,1,1,6,,
+,,1,,,,,,,,,,,,,
+,,1,,,,,,,,,,,,,
+,,5,,,,,,,,,,,,,
+,,,,,,,,,,,-3,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,-3,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="5,7" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(2,9) m(9,9)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(13,8) m(13,9)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,8) m(5,9)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRRRRURDLLURDLLLLLLLLLDRUUDRRRRRRRRUUUUUULLLLLL]]></solution>
+	<name><![CDATA[Think and then move]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,14,2">
+		<typeArray><![CDATA[,,,,6,6,,,,,,,,1,1,2[64],
+,,,,1,1,1,,,,,,,1,1,1,
+,,,,1,8,1,-2,-2,-2,-2,-2,-2,1,1,1,
+,,,,1,1,1,,,,,,,,-2,,
+,,,,,,,,,,,,,,-2,,
+,,,,,,,,,,,,,,-2,,
+,,,,,,,,,,,,,,-2,,
+,,,,,,,,,,,,,,-2,,
+,,,,,,,,,,,,,,-2,,
+,,1,,,,,,,,,,,,-2,,
+,1,1,,,,,,,,,,,1,1,1,
+1,1,1,5,-2,-2,1,-2,-2,-2,-2,-2,-2,1,1,1,
+1,1,1,,,,,,,,,,,1,1,1,
+1,1,1,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,-3,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,-3,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="6,11" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,0) m(5,0)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRRRRRRUULDRUUUUUUUURRDLULLLLLDLLURDLDDDDDDDLLD]]></solution>
+	<name><![CDATA[Around the bed]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="14,15,2">
+		<typeArray><![CDATA[,,,,,,,,,,,1,1,2[66],
+,,1,1,1,-2,-2,6,5,-2,-2,1,1,1,
+,,1,1,1,,,,,,,1,1,1,
+,,1,1,1,,,,,,,-2,,,
+,,5,,,,,,,,,-2,,,
+,,2[65],,,,,,,,,-2,,,
+,,-2,,,,,,,,,6,,,
+,,-2,,,,,,,,,-2,,,
+,,6,,,,,,,,,-2,,,
+,,-2,,,,,,,,,-2,,,
+,,-2,,,,,,,,,5,,,
+,,-2,,,,,,,,1,1,1,,
+1,1,1,,,,,,,,1,1,1,,
+1,1,1,-2,-2,-2,-2,-2,-2,-2,1,1,2[64],,
+8,1,1,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,-3,,,,,,,,,,,,
+,,,,,,,,,,,,,-3,
+,,,,-3,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,-3,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,13" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,6)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(2,8)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,1)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[UDRRRRRRRULDRRUUUUUUUULRDDDLLLLLLRRRURDLLULDDURUUUULL]]></solution>
+	<name><![CDATA[Treasure in the middle]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="14,16,2">
+		<typeArray><![CDATA[,,,1,1,1,,,,,,,,,
+,,,1,8,1,-2,1,-2,-2,1,1,1,1,
+,,,1,1,1,,-2,,,,1,1,1,
+,,,-2,,,,-2,,,,2[64],1,1,
+,,,-2,,,,-2,,,,,-2,,
+,,,-2,,,,-2,,,,,-2,,
+,,,-2,,-2,1,6,1,-2,,,-2,,
+,,,-2,-2,-2,6,1,6,-2,-2,-2,-2,,
+,,,-2,,-2,1,6,1,-2,,,-2,,
+,,,-2,,,,-2,,,,,-2,,
+,,,-2,,,,-2,,,,,-2,,
+,-2,-2,-2,,,,-2,,,,,-2,,
+,-2,-2,,,,,-2,,,,,-2,,
+1,2[66],1,,,,,-2,,,1,1,1,,
+1,1,1,-2,-2,-2,-2,-2,-2,-2,1,1,1,,
+1,1,1,,,,,,,,2[65],1,1,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,-3,,-3,,,,,,
+,,,-3,,,,,,,,,,,
+,,,,,-3,,,,-3,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,14" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,7) m(7,8)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,6)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,7)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[LDLURRDRRRUUUUULDRUUURDLDRUDLURULDDLDRRDRRR]]></solution>
+	<name><![CDATA[Get out someone is comming]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,15,2">
+		<typeArray><![CDATA[,,,,,,,,,,,1,1,1,,
+,,,,,,,,,,,1,3[65],1,,
+,,,,,,,,,,,1,1,1,,
+,,,,,,,,,,,4[1],1,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,1,1,,,,,,,,
+,,,,,1,1,4[2],1,,,,,,,
+,,,,,1,1,1,1,1,,,1,1,1,
+,1,1,,,,1,5,1,1,6,6,1,8,1,
+1,1,1,1,,,,1,1,,,,1,1,1,
+1,1,1,1,1,,,5,5,,,,,5,5,
+,1,1,3[64],1,6,6,1,1,,,,,,,
+,,1,1,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="4,12" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,13) m(6,13)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,10) m(11,10)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[DDRDLURDDDDLURDDLURRDLUURDLUUUURURRUURULUUDDRDDRDRRDLUURDLDDDDDLULRRDD]]></solution>
+	<name><![CDATA[Long night is waiting for you]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="12,18,2">
+		<typeArray><![CDATA[,,,,,,3[67],,,,,,
+,,,,,,1,,,,,,
+,,,,,,1,,,,,,
+,,,,,,1,1,1,,,,
+,,,,,,1,1,1,,,,
+,,,,,,1,1,1,6,,,
+,1,,,,,1,,,1,1,1,
+,1,6,1,6,6,6,,,1,1,1,
+,1,1,1,,,,,,5,5,1,
+,1,1,1,,,,,,,1,,
+,1,-2,1,,,,,,,1,,
+,,5,,,,,,,,1,,
+,,-2,,,,,,,,1,,
+2[68],1,1,3[66],,,,,,,1,,
+,1,1,1,,,,1,1,1,1,,
+,3[65],1,3[64],,,,,1,1,1,,
+,,,,,,,,,,1,,
+,,,,,,,,,,8,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,-3,,,,,-3,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,6" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,7)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,7)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,7)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,5)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(2,7)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRUUUULDRDDLDRUUULURUURLDDLDRDDDLDRULLDRRRRULUURRDRRDLDRULUUURUULUUULDURDRDDDRRULDDDRUR]]></solution>
+	<name><![CDATA[Moon is on your side]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="17,15,2">
+		<typeArray><![CDATA[,,,,,,,,1,1,1,1,,,,,,
+,,,,,,,,2[66],1,1,1,,,,,,
+,,,,,,,,,,1,1,1,,,,,
+,,,,,,,,,,1,1,1,,,,,
+,,,1,1,3[65],,,,,1,1,,1,1,,,
+,,,1,1,,,,,,1,1,,1,1,,,
+,-2,1,5,1,,,,,,,1,6,1,1,,,
+,1,2[64],1,,,,,,,1,1,,1,,,,
+,-2,1,1,,,1,5,1,,1,1,,1,1,1,8,
+,,,1,,,1,1,5,,1,,,1,1,1,,
+,,,1,,,1,,1,6,1,1,,,,,,
+,5,1,1,,1,5,1,,,1,1,1,,,,,
+,5,6,1,,1,1,1,,,1,1,1,,,,,
+1,1,1,1,1,5,5,1,,,1,1,1,,,,,
+,,,,,5,5,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,-3,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,-3,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,13" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(2,12)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,10)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,6)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[DLURURLLDRRURRURRDDDUUULLDLLDLLDRRDDRURURURRRDLURDURDLUR]]></solution>
+	<name><![CDATA[Way in to the mountains]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="13,9,2">
+		<typeArray><![CDATA[,,,,,1,1,1,,,,,,
+,,,,,1,1,1,,,,,,
+1,1,1,3[64],1,1,,1,,,,,,
+1,1,1,,,,,1,,,1,1,6,
+1,1,6,,,,,1,1,1,1,2[66],8,
+1,1,1,1,,,1,3[65],1,,1,3[67],6,
+,,,1,,,1,1,,,1,1,,
+,,,1,1,1,1,,,,,,,
+,,,6,1,1,,,,,,,,
+,,,,,,-3,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,-3,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,3" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(2,4)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,8)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,5)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,3)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRULLDRRRDDDDRDRRULDRDLUDRULURDLLULUUUURRRDLURRUULUURDLULDRLURDRULDDRDDLLDRULLLDDDDRDRRULDRDLUDRULURDLLULUULLLDRULDDRDDDRRDLUURDRDRR]]></solution>
+	<name><![CDATA[The path is dangerous]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="14,17,2">
+		<typeArray><![CDATA[,,,,,,,,,6,1,1,1,,
+,,,,,,,,,6,1,3[64],1,,
+,,,,,,,,,,1,1,1,,
+,1,1,1,,,,,,,,,1,,
+,1,1,1,,,,,,,,,1,,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+,,,,,5,5,,,1,1,,,,
+1,1,1,6,6,5,5,,,1,1,,,,
+1,1,1,,,5,5,,,,,,,,
+1,1,1,,,5,5,1,1,1,,,,,
+,,7,,,,,1,3[65],1,,,,,
+,,7,,,,,1,1,1,,,,,
+,,1,,,,,,1,1,,,,,
+,,5,1,1,,,,,,,,,,
+,,1,1,5,1,,,,,,,,,
+,,1,1,1,1,,,,,,,,,
+,,,,,1,1,1,8,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,5" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,7) m(4,7)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,0) m(9,1) m(2,10) m(2,11)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRRRRRRURDLULDLLLUUURRURDLURUULURDDLURDDDUUULDRUULDRDDLDDLLDDDDDRRUUURRRRUUU]]></solution>
+	<name><![CDATA[You are on the good way to pass]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="14,16,2">
+		<typeArray><![CDATA[,,,,,,1,3[65],1,1,,,,,
+,,,,,,1,1,1,1,,,,,
+,,,,,,,1,1,6,,,,,
+,,,,,,,,1,,,,,,
+,,,,,,,1,1,1,,,,,
+,,,,,,,1,3[64],1,,1,1,1,
+,,,,,5,5,1,1,1,,1,8,1,
+,,,,,1,1,1,,,,1,1,1,
+,,,,,1,5,6,,,,,1,6,
+,,,,,1,,,,,,,1,,
+,,,,,1,,,6,5,5,-2,1,,
+1,1,1,1,1,1,1,1,1,1,1,1,1,,
+,,,,,1,,,3[66],,,-2,5,,
+,,,,,1,,,1,,,,,,
+,,,,,1,,,1,,,,,,
+,,,,,1,1,1,1,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,11" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,8) m(13,8)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,2)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,10)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRDLURDRDDRRUUDDLLUULLURRDLURUUDDLDRULLDRRDDRRUUUUUURDLURRDULLDRULDDDDDDLLUULLURRDLURUULLUUUDDDRRDDLDRULLDRRDDRRUUUUUURULDRRDDRRDLUR]]></solution>
+	<name><![CDATA[The Last hill]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="13,13,2">
+		<typeArray><![CDATA[1,1,1,,,,,,,,,,,
+1,5,1,,,,,,,,,,,
+1,1,1,,,,,,1,1,1,,,
+,6,,,,,,1,1,1,1,,,
+,6,,,,,,1,1,1,3[66],,,
+1,1,1,1,3[65],,,,1,,1,5,,
+1,,,,6,,,,6,,1,1,1,
+1,,1,1,1,,,,6,,1,1,8,
+1,1,1,1,1,,,,1,1,1,1,1,
+,,1,1,1,1,,,2[64],,,,,
+,,1,1,,1,,,1,,,,,
+,,,,,1,,,1,,,,,
+,,,,,1,1,1,1,,,,,
+,,,,,,,,,,,,,
+,-3,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,-3,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,8" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,6)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,6) m(8,7)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,3) m(1,4)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRRRULLDRRRRUUUULLLUURDRURRRR]]></solution>
+	<name><![CDATA[Beware, ice is too thin !]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,10,2">
+		<typeArray><![CDATA[,,,,,,,,,,,,,1,1,1,
+,,,,,1,1,1,1,-1,-1,-1,-1,-1,8,1,
+,,,,,1,1,1,1,,,,,1,1,1,
+,,,,,1,1,1,1,1,-1,,,,,,
+,,,,,,,,,,1,,,,,,
+,,,,,,,,,,1,,,,,,
+,,,,,,,,,,1,,,,,,
+,,,,-1,-1,-1,,,,1,,,,,,
+,,,,-1,-1,-1,,,,1,,,,,,
+1,-1,-1,-1,1,1,1,-1,1,1,1,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,-3,,,,,,,,,
+,,,,,-3,,,,,,,,,,,
+,,,,,,,-3,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,9" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRUDDLLURRRDDDUURRUURUURUUULLLLDURRRRDRDLLURDR]]></solution>
+	<name><![CDATA[Who can live on a place like this]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,11,2">
+		<typeArray><![CDATA[,,,,,1,1,1,5,5,-1,1,1,,,
+,,,,,1,1,1,,,,1,1,1,,
+,,,,,3[64],1,1,,,5,1,1,1,8,
+,,,,,5,,6,,1,1,1,1,1,,
+,,,,,5,,3[65],,1,1,1,,,,
+,1,1,1,,-1,,,,1,1,1,,,,
+,1,1,1,,6,6,1,1,-2,1,5,,,,
+1,1,1,-1,1,1,1,1,1,1,,,,,,
+,1,1,1,,-1,3[67],6,1,1,,,,,,
+,1,1,1,,5,-1,,,,,,,,,
+,,,,,5,2[66],,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,-3,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,-3,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,-3,,,,,,,,,,,,
+,,,,,-3,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,7" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,3)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,6)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,8)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,6)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRDDDDURRULUUULUUURRULDDLRRULLDRRLUULDDDDRRRRUURUUDDLDDRRDDLURDLLURUUR]]></solution>
+	<name><![CDATA[Looks abandoned]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="13,13,2">
+		<typeArray><![CDATA[,,1,1,1,,,,,,,,,
+,,1,1,1,,,,1,1,1,,,
+,1,1,1,1,1,,,1,1,1,,,
+,,1,,,,,,1,1,1,,,
+,,1,,,,,,1,,,,,
+,,1,,,,,,6,,,,,
+1,1,1,1,1,1,1,1,1,1,1,1,8,
+,,,5,5,,,,,,1,1,,
+,,,5,5,,,,,1,1,1,,
+,,,-2,5,1,,,,1,1,1,,
+,,,-1,5,5,,,,1,1,1,,
+,,,-1,5,5,,,,,,,,
+,,,3[64],-1,-1,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,-3,,,
+,-3,,,,-3,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,6" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,5)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[DRRULDRRRUUUUURUUURDRUDDULLDDDLDDDRDDRRRRRUUDDLLLLLLDDRDDRRR]]></solution>
+	<name><![CDATA[No fire in the fireplace]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,21,2">
+		<typeArray><![CDATA[,,,,,,,,,5,,,,,,
+,,,,,,1,1,1,5,,,,,,
+,,,,,,1,1,1,6,,,,,,
+,,,,,,1,,-2,1,1,,,,,
+,,,,,1,1,,1,1,1,,,,,
+,,,,,1,1,,1,1,1,1,,,,
+,,,,,1,1,1,,,,1,,,,
+,,,,,3[64],1,1,,,,1,1,1,,
+,,,,,1,,,,,,1,1,1,,
+,,,,,1,,,,,,1,1,,,
+,,,,,1,,,,,,,1,1,1,
+,,,,,1,1,1,,,,,,1,1,
+1,1,1,,,1,1,1,,1,1,1,,1,1,
+1,1,1,1,1,1,5,1,1,1,1,1,1,1,1,
+1,1,1,,,1,1,1,,1,1,1,,,,
+,,,,,1,,,,,,,,,,
+,,,,,1,1,1,,,,,,,,
+,,,,,,1,1,,,,,,,,
+,,,,,1,1,1,1,1,1,8,,,,
+,,,,,1,1,1,1,,,,,,,
+,,,,,1,1,1,1,,,,,,,
+,,,,,,,,,-3,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,-3,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,-3,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,-3,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,12" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,2)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRRRRRUUUUUUUULLLLLLDDDDDDRRLLUULDRRRRRRUULURUUUUULLDDLDDRULDRUDLULDRULLRRULDRUURDRRURRRDRULDRUDLURDLULLLULUULDDLL]]></solution>
+	<name><![CDATA[Next door upstairs]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="17,24,2">
+		<typeArray><![CDATA[,,,,,,,,-1,5,5,,,,,,,
+,,,,,,,,5,5,5,,,,,,,
+,,,,,,,,5,5,5,6,,,,,,
+,,,,,8,5,5,-2,,,5,5,5,1,1,1,
+,,,,,,,5,5,,,5,5,5,3[68],3[69],1,
+,,,,,,,4[6],1,5,5,-1,,,1,1,1,
+,,,,,,,,,,,,,,6,5,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,1,1,1,1,1,1,1,1,1,1,,,,,,
+,,1,,,,,,-1,5,6,3[66],,,,,,
+,,1,,,,,,5,,,1,,,,,,
+,,1,,,,,,5,,,1,,,,,,
+,,1,,,,1,4[5],-2,,,1,,,,,,
+,,1,,-2,5,1,1,1,5,,1,,,,,,
+5,6,1,,,,1,3[67],1,6,,1,,,,,,
+5,6,4[3],,,,,,,,,1,,,,,,
+,,1,,,,,,,,5,1,,,,,,
+,,4[1],,,,,,,,5,1,,,,,,
+,,,,,,,,,,6,1,5,,,,,
+,,,,,,,,,,,1,5,,,,,
+,,1,4[2],4[4],-2,3[64],1,1,1,3[65],1,6,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,-3,,,,,-3,,,,,,,,
+,,,,,,,,,,,,,,,,,
+-3,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,-3,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="2,23" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="3" tag="tele_2">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="4" tag="tele_3">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+		<property index="5" tag="tele_4">
+			<onEvent type="pressed"><teleport dest="m.tele_5"/></onEvent>
+		</property>
+		<property index="6" tag="tele_5">
+			<onEvent type="pressed"><teleport dest="m.tele_4"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,17) m(1,18) m(12,23)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,21)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,12)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,17)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(14,6)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,2)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[UURRDDRDLURDULDRULUURRRRULDDDRRRDLULLLUURURRDRULLLDDLLLLLUUURDRULRDLULDDDRRRRRUURRRDLULLDLDDRRRDRULLLUUURDLLUUUUUURRDRRULDRLULLLLLDRULDRLURDLURRRRRDDRRDDR]]></solution>
+	<name><![CDATA[Is it realy backery]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,16,2">
+		<typeArray><![CDATA[,1,1,1,1,6,1,1,1,-2,-2,1,,,,
+,1,1,3[64],1,,-1,,,1,1,3[66],,,,
+,5,5,5,5,,-1,,,5,5,-2,6,1,,
+,,,,,,-1,,,,,,1,1,1,
+,5,5,-1,6,,-1,,,,,,1,1,8,
+,1,3[65],1,6,,-1,,,,,,,1,1,
+,1,1,-2,6,,1,,,,,,,,,
+,1,,,,,1,,1,1,1,5,1,1,,
+,1,,,,,6,,5,1,,,5,5,,
+1,1,1,1,1,1,1,1,1,1,,,-2,5,,
+1,,,1,,,,,1,,,,,,,
+1,,,5,1,-1,,,1,5,5,1,,,,
+1,,,1,1,5,,,1,1,1,1,5,5,,
+,,,1,3[67],5,,,,,,1,5,5,,
+,,,-1,-2,-2,,,,,,,,,,
+,,,-1,-1,5,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,12" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,2)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,8)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,0)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,4) m(4,5) m(4,6)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[LDRURURULDRURURRRDDDLURUUULLLRRRDDDLDRURDLURUURUDLLDDDRULUULLLDDLRUURRRDRDLDDLLDDLLLDDLURULDURDLDRUURRRUURRURULUUUUUURRRRRDRDLURDDDDLDURUUUULDRULULLLLLULLDRULDDLDLLDURRURUURDLURRDDDDDRDDDLDLLDDRRRDLURDLDRU]]></solution>
+	<name><![CDATA[In the store]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="18,22,2">
+		<typeArray><![CDATA[,,,,,,1,1,1,7,1,,,,,,,,
+,,,,,,1,5,1,,1,5,5,5,5,5,,,
+,,,,1,1,6,5,1,,1,5,5,5,5,5,-2,-2,
+,,,1,1,1,,,,,1,,,,,1,1,1,
+,,,1,1,1,,,,,1,,,,,1,3[69],1,
+,,,3[67],-2,,,,,,1,,,,,-2,5,1,
+,,,,,,,,,,6,,3[65],,,,1,,
+,,,,,5,5,5,,,1,1,1,,,,1,,
+,,,,,1,3[71],-2,1,1,1,1,6,,6,6,1,,
+,,,-2,1,1,1,5,,,1,1,,,1,1,1,,
+,,,1,3[66],1,6,,,,1,1,,,1,3[68],1,,
+,-1,1,1,-1,-1,,,,1,1,1,1,,5,5,,,
+-1,-1,1,1,,,,,,1,1,1,1,,-2,5,,,
+-1,-1,-2,1,,,1,1,1,1,1,,,,,,,,
+,,,,,1,1,1,,,,,,,,,,,
+,-2,1,-2,6,1,1,1,1,6,7,1,-1,,,,,,
+-1,-2,1,-1,,,5,5,,,1,8,-1,,,,,,
+5,3[70],1,,,,5,5,,,1,-2,-1,,,,,,
+5,5,1,,,1,5,5,,,1,-2,-1,,,,,,
+,,,,,5,5,,,,,5,5,,,,,,
+,,,,,5,5,,,,,,,,,,,,
+,,,,,,3[64],,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="2,12" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,15)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,10)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,15)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,15)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,2)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,0)"/></onEvent>
+		</property>
+		<property index="70">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,6)"/></onEvent>
+		</property>
+		<property index="71">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,8) m(14,8) m(15,8)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRRDRRRULUUURRDRDRULDDUDDDUUURURUUR]]></solution>
+	<name><![CDATA[Behind the hut]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="19,15,2">
+		<typeArray><![CDATA[,,,,,,,,,,,,,,,,1,1,6,
+,,,,,,,,,,,,,,,1,1,1,6,
+,,,,,,,,,,,,,,,4[2],1,1,6,
+,,,,,,,,,,,,,,,3[65],1,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,1,1,1,2[64],,,1,1,8,,,
+,,,,,,,1,1,1,1,1,3[69],,6,6,,,,
+,,,,,,,6,6,,,1,1,1,1,1,,,,
+,,,,4[4],,,1,1,1,,,1,1,4[3],,,,,
+,,,1,1,,,,1,1,,,1,1,,,,,,
+1,1,1,1,1,1,,,1,1,,,3[67],,,,,,,
+,,,6,1,1,2[66],1,1,7,,,4[1],,,,,,,
+,,,,1,1,,5,5,,,,-1,,,,,,,
+,,,,1,1,,5,5,1,6,6,3[68],,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,11" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="3" tag="tele_2">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="4" tag="tele_3">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,12)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,14) m(11,14)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,8) m(8,8)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(15,7)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(14,7)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(18,0) m(18,1) m(18,2) m(9,12)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRRRRDDRLUULLLURDDDUUULDRRRDDRLUULUUUULDRRRRDRRUURDLURDLRULDRULDDLLULLLLURDLULDRLURDRDDDRDDRLUULLLURDRRRRRR]]></solution>
+	<name><![CDATA[A next day of your adveture]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="17,10,2">
+		<typeArray><![CDATA[,,,6,1,1,1,,,,,,,1,1,1,-2,
+,,,6,1,3[65],1,6,6,1,-2,-2,,1,3[66],1,-2,
+,,,,1,1,1,,,,-2,-2,1,1,1,1,,
+,,,,,,1,,,,,,,,,,,
+,,,6,6,,7,,,,,,,,,,,
+,,,1,1,,7,,,,,,,,,,,
+1,1,1,1,1,1,1,1,1,1,6,6,1,8,,,,
+,,,,1,,,-2,-2,,,,,,,,,
+,,,,1,,,-2,-2,3[64],,,,,,,,
+,,,,3[67],,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,6" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,4) m(4,4) m(6,4) m(6,5)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,6) m(11,6)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,0) m(3,1)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,1) m(8,1)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRURURLDDRDRULDURUDDRURUUUURUUURRRUULUDRDDDDLDDUURUULLLDDDLDLURRULUUDRRRR]]></solution>
+	<name><![CDATA[Sun is your friend too]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="18,18,2">
+		<typeArray><![CDATA[,,,,,,,,,,,,,,2[67],-1,-1,,
+,,,,,,,,,,,,,,-1,-1,-1,,
+,,,,,,,,,,,,,,4[2],1,1,,
+,,,,,,,,,,,5,,,,,5,,
+,,,,,,,,,,,6,,,,,-1,,
+,,,,,,,,,,,1,1,1,1,1,1,8,
+,,,,,,,,,,,1,1,,,,-1,,
+,,,,,,,,,,,1,1,,,,5,,
+,,,,,,,,,1,1,1,1,6,1,1,1,,
+,,,,,,,,,1,1,,,,1,3[65],1,1,
+,,,,,,,,,1,1,,,,1,1,3[66],,
+,,,1,1,1,1,,,,1,,,,6,6,,,
+,,,1,1,,1,1,,,1,,,,,,,,
+,,,1,1,,1,1,,,1,,,,,,,,
+1,1,1,1,1,1,5,5,1,1,1,,,,,,,,
+,1,6,,,1,3[64],1,1,1,,,,,,,,,
+,1,6,,,,,,,,,,,,,,,,
+,,4[1],,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,-3,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,-3,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,-3,,,,
+,,,,,,-3,,,,,,,,,,,,
+,,,,,,,-3,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,14" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,4)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(13,8)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(14,11) m(15,11)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(2,15) m(2,16)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRRRURDRRRRLLLLULUUUUUUURRRRDDDDLLULUDDULLLULDDLULDRRDDRDDRLUULURUUUURRRRDDD]]></solution>
+	<name><![CDATA[Can you see the way]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="14,15,2">
+		<typeArray><![CDATA[,,,,,,1,1,1,1,1,1,2[64],,
+,,,,,,1,,,,,,1,,
+,,,,,,1,,,,,,1,,
+,5,5,5,5,-1,1,,1,5,5,,1,,
+,5,5,5,5,5,5,6,5,1,1,,1,,
+,4[1],-1,5,5,5,5,6,5,1,1,,1,,
+,,,,,,1,,3[66],1,1,6,1,,
+,,,,,,1,,,,1,,1,,
+,,,,,,1,,,,1,,1,,
+,,4[2],2[67],1,6,1,,,,8,,1,,
+,,,,,6,5,5,,,,,1,,
+,,,,,5,-2,5,,,,,1,,
+1,1,1,1,1,1,1,1,1,1,1,1,1,3[65],
+,,,,,,5,5,,,,,,,
+,,,,,,5,5,-2,,,,,,
+,,,,,,,,,,-3,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,-3,,,,,,-3,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,-3,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,12" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,10)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,6)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,4) m(7,5)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,9)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RUURURURLRRRURURULDRULDRRDDUULLURDLURDLUDRULDRURDLLRRULDLURDDULUDDLDLLLDDLLDRURUULLRRDDLDLURRUURRRURURULDRRRRUUR]]></solution>
+	<name><![CDATA[Among trees]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="19,17,2">
+		<typeArray><![CDATA[,,,,,,,,,,,,,,6,6,,,,
+,,,,,,,,,,,,,,1,1,,,,
+,,,,,,,,,,,,5,4[1],1,1,6,,,
+,,,,,,,,,,,,3[65],1,1,1,6,,,
+,,,,,,,,,,,,,1,1,,,,,
+,,,,,,,,,,,,,,3[70],,,,,
+,,,,,,,,,,,5,5,,,,6,6,8,
+,,,,,,,,,,1,4[2],1,,,,1,1,,
+,,,,,,,,,,1,1,1,7,1,7,-1,-1,,
+,,,,,,,,,,,1,1,,1,,,,,
+,,,,,,,,,1,1,1,,,1,,,,,
+,,,,,2[67],5,5,1,1,1,5,,,3[66],,,,,
+,-1,5,6,1,1,,,,,,,,,,,,,,
+,,,,1,1,,,,,,,,,,,,,,
+2[64],6,1,1,1,1,6,5,2[69],,,,,,,,,,,
+,,1,1,,,,,,,,,,,,,,,,
+,1,1,1,3[68],,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,-3,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,16" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(14,0) m(15,0)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(16,6)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,12) m(6,14)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(15,8)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(16,2) m(16,3) m(13,8)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,14)"/></onEvent>
+		</property>
+		<property index="70">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(17,6)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RURRRRULDRRULDRLURDLLURDLLLLDLURUUUULDRUULDRUDLURDDLURDDDDRDLULLLRRRURDLDDDDLURDDLURDULDRUULDRUUUULULDL]]></solution>
+	<name><![CDATA[On the bridge]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="13,15,2">
+		<typeArray><![CDATA[,,,,1,3[64],1,,,,,,,
+,,,,5,1,5,,,,,,,
+,,,,1,1,1,,,,,,,
+,,,,,1,,,,,,,,
+,,,,,5,,,,,,,,
+,,,,,1,,,,,,,,
+,,6,6,1,5,1,,,,1,5,1,
+1,8,5,1,5,1,5,1,5,1,1,1,3[65],
+,,,,1,5,1,,,,1,5,1,
+,,,,,6,,,,,,,,
+,,,,,5,,,,,,,,
+,,,,,1,,,,,,,,
+,,,,1,1,1,,,,,,,
+,,,,5,1,5,,,,,,,
+,,,,1,3[66],1,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,-3,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+-3,,,,,,,,,-3,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,-3,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="4,8" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,9)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(2,6)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,6)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRDDDDRRRRRRUUUUUUUULLLLULDRLDDDDLLLLRRRRUUUUURRDULDRRRRDDDDDDDDLUULURUDLDRDDRUUUUUUUULLLLULDDDDDLLUULDRULDRUULDRUUDDLURDDLURDLURDDRRUUUURUULDRRUUULRRLDDLRDULDDRULDRRRRDDDDDDDDLLLLLLUUUURRRR]]></solution>
+	<name><![CDATA[In the half of yourney]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="18,20,2">
+		<typeArray><![CDATA[,,,,,,,,,,,,,1,6,1,6,1,
+,,,,,,,,,,,,,1,1,1,1,1,
+,,,,,,,,,,,,,1,,6,,1,
+,,,,,,,,,,,,,1,,4[2],,1,
+,,,,,,,,,,,,,1,,6,,1,
+,,,,,,3[68],1,4[1],,,,,1,1,1,1,1,
+,,,,,,1,1,1,,,,,,,,,,
+,,,5,,,3[65],1,3[67],1,1,1,1,1,,,,,
+,,,1,,,1,,,,,,,1,,,,,
+,,1,1,1,,1,,,,,,,1,,,,,
+,5,1,1,1,,1,,,,,,,1,,,,,
+,5,1,1,1,,1,,,,,,,1,,,,,
+,,,6,,,1,,,,,,,1,,,,,
+3[64],1,1,1,1,1,1,1,1,1,8,,,1,,,,,
+,,,,1,,,,,,,3[66],,1,,,,,
+,,,,1,,,,,,5,5,,1,,,,,
+,,,,1,,,,,,5,5,,1,,,,,
+,,,,1,,,,,,6,5,5,1,,,,,
+,,,,1,,,,,,,5,5,1,,,,,
+,,,,1,1,1,1,1,1,1,1,1,1,,,,,
+,,,,,,,,,,,,,-3,,,,-3,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,-3,,,
+,,,,,,,,,,,,,,,,,,
+,,,-3,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,13" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,17)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(14,0) m(16,0)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,12)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(15,4)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(15,2)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRRRURDLLLLLRRRRRULLDLLLLRLUUUUUULURDLLURRRRRRDDDDUUUURRULDLLRRRUULDRUDLURDDLLLLLDDRLDDUUUULLDLURRRR]]></solution>
+	<name><![CDATA[Waste]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="14,13,2">
+		<typeArray><![CDATA[,,,,,,,,,,,1,3[67],1,
+,,,,,,,,,,,1,1,6,
+6,1,3[65],1,1,1,1,8,3[68],-2,6,1,1,1,
+1,1,1,,,6,,,,1,,,,,
+1,1,1,,,1,,,,1,,,,,
+,,1,,,1,1,1,,1,,,,,
+,,1,,,1,1,1,,1,,,,,
+,,1,,,1,1,1,,1,,,,,
+,,1,,,1,1,1,,3[64],,,,,
+,,1,,,,,,,1,6,,,,
+,,1,,,,,,1,1,1,,,,
+,,1,,,,,,6,1,1,,,,
+,,2[66],1,1,1,1,1,1,1,1,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,-3,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,-3,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="3,12" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,2)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,9)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(0,2) m(8,11)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,3)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(13,1)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RULDRURRDRDRDLLLDDRRDDRLURRDLRLURRRULUUURDLURUURURLULUDRDDLLULURLDRDRRUULULLLULDRRU]]></solution>
+	<name><![CDATA[Wrong way]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,17,2">
+		<typeArray><![CDATA[,,,,,1,1,8,1,,1,,,,,
+,,,,,1,1,1,1,1,1,3[64],,,,
+,,,,,1,6,1,,,,1,1,,,
+,,,,,,,,6,1,3[68],1,1,,,
+,,,,,,,,1,1,1,,1,1,1,
+,,,,,,,,,,1,1,1,,,
+1,1,1,5,5,-2,,,,,6,1,6,,,
+1,1,1,5,5,5,1,,,,,1,,,,
+1,1,1,,,1,1,1,,,1,1,,,,
+,,,,,,1,1,1,,3[67],1,1,,,
+,,,1,1,1,1,1,1,,1,1,1,,,
+,,,1,1,,,,2[65],,1,,,,,
+,,,1,1,,,,,,1,,,,,
+,,,1,1,1,1,6,,,1,1,,,,
+,,,,,,1,1,6,,1,1,,,,
+,,,,,,1,1,1,1,1,6,,,,
+,,,,,,-1,-1,2[66],,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,-3,,,,,,-3,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,7" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,3)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,13)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,14) m(11,15)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,6) m(12,6)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,2)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRULLRDDDRULDLURDDLURDDUURDLUURDLUUURRRULDRRULDRRLLDRULLDRULLLUUULDRUULDRUUDDRULDDRULDDDLLLL]]></solution>
+	<name><![CDATA[Go back and try the other way]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="14,15,2">
+		<typeArray><![CDATA[,,,,,,5,,,,,,,,
+,,,,,,1,,,,,,,,
+,,,,,1,1,3[70],,,,,,,
+,,,,5,1,1,1,,,,,,,
+,,,,5,1,6,1,,,,,,,
+,,,,,,5,,,5,5,,,,
+,,,,,2[64],1,2[66],,1,1,1,,,
+8,6,6,6,6,5,1,1,5,6,1,1,1,5,
+,,,,1,2[65],1,2[68],,1,1,3[67],,,
+,,,,,,5,,,,,,,,
+,,,,,1,6,1,5,,,,,,
+,,,,,1,1,1,5,,,,,,
+,,,,,3[69],1,1,,,,,,,
+,,,,,,1,,,,,,,,
+,,,,,,5,,,,,,,,
+,,,,,,-3,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,-3,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,-3,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="4,8" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,7)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,10)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,4)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,7)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,7)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,7)"/></onEvent>
+		</property>
+		<property index="70">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(2,7)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRURRURDLLDDDRDDLDRDDLLRRUULURUULUUURRURRUURDDULLURDLURDULDRDLURRDLLLDLLDDDRDDLDRRLRDLDDRRURLRURDDLURDLURLDRULDRUULDLDLLUURULLURUULUURURRDDUULLDLURRURRUURRLLDDLLDLLDDDRDDLDRRDLDDRRURURDR]]></solution>
+	<name><![CDATA[Two ways]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="14,16,2">
+		<typeArray><![CDATA[,,,,,,,,,6,6,,,,
+,,,,,,,,,1,1,1,6,5,
+,,,,,,,,,1,3[66],1,,,
+,,,,,1,1,1,6,1,1,1,,,
+,,,1,1,1,1,1,,,,2[67],,,
+,,,1,1,1,,6,,,,,,,
+1,1,1,1,1,,,6,,,,,,,
+,,,1,1,1,,1,,,,,,,
+,,,,,7,,,,,,,,,
+,,,,,1,,,,,,,,,
+,,,2[64],1,1,,,,,,,,,
+,,,1,1,1,1,2[65],,,,,,,
+,,,,,1,1,1,,1,1,1,,,
+,,,,,7,,,2[69],1,3[70],1,8,,
+,,3[68],1,1,1,,,1,1,1,1,,,
+,,,,,1,6,6,1,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,-3,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,-3,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,6" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,8)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,13)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,15) m(7,15)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,0) m(10,0)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,3)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,1)"/></onEvent>
+		</property>
+		<property index="70">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,5) m(7,6)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRUURRDRURRUURDDLUULLURURRLLDDRRDRDLUUULLLDDDDDDRRRRURRUUU]]></solution>
+	<name><![CDATA[What is hiding in the forest]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,13,2">
+		<typeArray><![CDATA[,,,,,,,1,1,1,1,1,1,1,1,
+,,,,,,,1,1,,,,,1,1,
+,,,,,,,1,1,,1,1,1,1,1,
+,,,,,,1,3[64],1,1,1,1,,,,
+,,,,,,5,,,,1,1,5,,,
+,,,,,,5,,,,1,1,1,,,
+,,,,,,6,,,,1,1,1,,8,
+,,1,1,1,1,1,1,1,1,1,,,,1,
+,,1,1,,1,1,1,,,,,,,1,
+,,1,1,,5,1,5,,,,,,,1,
+1,1,1,1,,,1,,,,,,1,1,1,
+,,,,,,1,,,,,,1,1,1,
+,,,,,,1,1,1,1,1,1,1,,,
+,,,,,,,,,,,-3,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,-3,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,10" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,6)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRDDDLDDUUULLUURRUUUULLLLDDDDDRULLLRRRDLDLLDDDDRRLLUU]]></solution>
+	<name><![CDATA[A boot]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="12,16,2">
+		<typeArray><![CDATA[,,,,1,1,1,1,1,1,1,,
+,,,,1,,,,,,1,,
+,,,,1,,1,1,1,1,1,,
+,,,,1,,1,,,,1,,
+,,,,1,1,1,1,,,1,,
+,,,,1,,,1,,,1,,
+1,2[64],1,1,1,6,,1,1,1,1,1,
+1,,,,1,1,,1,,,,1,
+1,,,,1,1,,1,,,,1,
+1,1,1,1,1,1,6,1,3[65],1,1,1,
+,1,,,1,,,1,,1,1,2[66],
+,1,,,1,1,1,1,,1,1,1,
+,8,,,,1,,,,,1,,
+,1,,,,1,,,,,1,,
+,1,,,,1,1,1,1,1,1,,
+,1,1,1,1,1,6,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,-3,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+-3,,,,,,,,,,,,
+,,,,-3,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+,,,,,,,,,,-3,,
+,,,,-3,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="8,6" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,15)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,9)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,6)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[DDDLURDLURUUULLLLLURDLLURDRRRRRLRUURDRRURDLLURDLLLLULDDUUUURULDRU]]></solution>
+	<name><![CDATA[No boot but house]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,15,2">
+		<typeArray><![CDATA[,,,,,,,1,8,1,,,,,,,
+,,,,,,,1,6,1,,,,,,,
+,,,,,,,1,1,1,,,,,,,
+,,,,,,,1,,,,,,,,,
+,,,,,,,6,1,7,1,1,,1,1,1,
+,,,,,,,1,1,1,3[65],1,1,1,1,1,
+1,1,1,,,,,1,,1,,,,1,1,1,
+1,1,1,1,1,1,1,3[66],1,3[64],,,,,,,
+1,1,1,,,,,,1,,,,,,,,
+,,,,,,,,1,,,,,,,,
+,,,,,,,,1,,,,,,,,
+,,,,,,,1,1,,,,,,,,
+,,,,,,,1,1,1,,,,,,,
+,,,,,,,1,1,1,,,,,,,
+,,,,,,,1,1,1,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,-3,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,-3,
+,,,,,,,,,,,,,,,,
+-3,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,-3,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="8,9" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,4)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,4)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,1)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[UULRUURRRRRRULDRULDDRDULLLLDULUUURRURRRDDDDRULDRRUUUU]]></solution>
+	<name><![CDATA[The grate]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,17,2">
+		<typeArray><![CDATA[,,,,,,,,,,,,,,3[66],,
+,,,,,,,,,,,,,,1,,
+,,,,,,1,,1,,1,,1,,1,,
+,,,,,3[64],1,1,1,1,1,1,1,1,8,1,
+,,,,1,,1,,1,,1,,1,,1,,
+,,,1,1,5,1,1,1,1,1,5,1,1,1,1,
+,,,,5,1,5,,1,,5,1,5,,1,,
+,,,1,1,5,1,1,1,1,1,5,1,1,1,1,
+,,1,,1,6,1,,1,,1,6,1,,1,,
+,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+,,1,,1,,1,,1,,1,,1,,1,,
+,,1,1,1,5,1,1,1,1,1,5,1,1,1,1,
+2[67],1,1,,5,1,5,,1,,5,1,5,,1,,
+,,1,1,1,5,1,1,1,1,1,5,1,1,,,
+,,1,,1,6,1,,1,,1,6,1,,,,
+,1,1,1,1,1,1,1,1,1,1,1,1,1,3[65],,
+,,1,,1,,1,,1,,1,,1,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,-3,,,,,,-3,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,-3,,,,,,-3,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="2,15" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,14)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,8)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,14)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,8)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[LURDLLURDDLURUUUUURULDRRURRRUULRDDLLLLDDRULDLLRRULDRUULDDDDDDLRUUUUURRURRURUUUURRULDDRULDRRRRDLUDRRULDDRULDDDDDLUURDLLDDLLDRUULLLLDRLDRULDDDDLDLDLRRRDRUURLDDLULLLRLDRRURRRR]]></solution>
+	<name><![CDATA[Around the room]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="17,22,2">
+		<typeArray><![CDATA[,,,,,,,,5,1,1,,,,,,,
+,,,,,,,,1,1,1,,,,,,,
+,,,,,,,,1,1,1,5,1,5,3[67],1,1,
+,,,,,,,,1,,,,,,1,1,1,
+,,,,,,,,5,,,,,,5,1,1,
+,,,,,,,,5,,,,,,,5,,
+,,,,,,,,6,,,,,,,5,,
+,,,4[4],5,2[71],6,3[65],1,-2,,,,,,6,,
+,,,,,,,1,1,1,,,,1,1,1,,
+,,1,1,1,5,1,-2,1,1,,,,1,1,1,,
+,,1,1,1,,,,,,,,,5,1,1,,
+3[66],6,1,1,3[64],,,,,,,,,3[68],,,,
+,,1,,,,5,5,1,5,5,1,1,5,,,,
+,,1,,,,1,1,3[69],,,1,1,6,,,,
+,,1,,,,5,6,1,,,1,1,1,,,,
+,,1,,,,,5,,,,,,,,,,
+,,1,,,,,5,,,,4[3],,,,,,
+,1,5,-2,,,,1,,,,-1,,,,,,
+6,1,1,1,,4[2],1,1,1,1,1,5,5,8,,,,
+,1,5,5,,6,1,1,,5,1,3[70],,,,,,
+,,,,-1,5,1,6,,,,,,,,,,
+,,,4[1],-1,-1,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+-3,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="3,18" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="3" tag="tele_2">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="4" tag="tele_3">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(0,18)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,11)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,6)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(15,7)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(13,13)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,14)"/></onEvent>
+		</property>
+		<property index="70">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,7)"/></onEvent>
+		</property>
+		<property index="71">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,19) m(7,20)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRRRRRRRULRLDLLLLLLUUULUDRRUDLDDDRRRRRRURURDLDLURRRRRRUUUUURULDDRLUURDLDDDDDLLLLLLDRURULDDLLUUURURRULDLDLRURURDLLDLDDDRRULRLDLLLLLLUUULURDDLURDLURUURDDRDLURDDULUU]]></solution>
+	<name><![CDATA[Bedroom in the boot]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="17,17,2">
+		<typeArray><![CDATA[,,,,,,,,,,4[2],1,8,,,,,
+,,,,,,,,,,,1,1,,,,,
+,,,,,,,,,,,1,1,1,4[5],,,
+,,,,,,,,,,,,1,1,1,,,
+,,,,,,,,,,,,1,1,1,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,1,1,1,,,,,,,
+,,,,4[1],,,,1,1,1,,,,1,6,,
+,,,,6,,,,1,1,3[68],,,,1,6,,
+,,,3[65],1,3[66],,,,6,,,1,1,1,6,,
+,,5,1,1,1,,,,6,,3[67],1,1,,,,
+,,5,1,1,1,,,,1,,1,1,,1,1,,
+,,,,1,,,,,1,,1,,,1,1,1,
+,,,,5,,,,,6,,5,,4[4],2[64],1,1,
+,,,,5,,,,,6,,5,,1,1,,,
+4[3],1,1,1,1,1,1,7,1,1,1,1,7,1,1,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,-3,,-3,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,-3,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="2,16" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+		<property index="3" tag="tele_2">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="4" tag="tele_3">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+		<property index="5" tag="tele_4">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,16) m(12,16)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,10) m(9,11)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,14) m(9,15)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,9)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(15,8) m(15,9) m(15,10)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[DRDDRRURRDRRRRUDLLLLULLLDDLURRRRRRUUURRRURDDDLLDLDRUURDLDLLLLULLDLLULDLURUDLDRURDRRULDDLURRRRRRRULUUURRRURULLLUUUUDDDDLLDL]]></solution>
+	<name><![CDATA[Move on, here is nothing more to see]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="18,20,2">
+		<typeArray><![CDATA[,,,,,1,1,,,,,,,,3[67],1,1,,
+,,,5,1,3[65],1,6,5,1,1,,,,1,3[68],1,,
+,,,5,1,1,1,,1,1,5,6,5,5,3[66],1,1,,
+,,,,,,,,1,1,3[64],,,,,5,,,
+,,,,,,,,1,,,,,,,1,,,
+,,,,,,,,1,,6,1,1,1,1,1,,,
+,,,,,,,,1,-1,1,6,1,1,1,3[69],5,5,
+,,,,,,,,1,-1,1,6,6,,,6,5,5,
+,,,,,,,,5,5,1,,,,,,,,
+,,,,,,,,5,5,,,,,,,,,
+,,,1,1,1,1,1,5,5,1,1,1,1,,,,,
+,,,1,8,1,1,,,,,,5,1,,,,,
+,,,1,1,1,,,,,,,5,1,3[71],,,,
+,,,,,,,5,1,1,7,7,1,1,1,,,,
+,,1,,,,,5,5,,,,,,1,,,,
+,3[72],1,5,,,,5,5,,,,,,-1,,,,
+5,5,5,5,,,,1,1,6,,,6,1,1,,,,
+5,5,5,1,5,1,5,5,1,5,,,3[70],1,6,,,,
+1,5,5,5,5,5,5,5,5,5,5,5,1,,,,,,
+,5,1,5,5,5,,,5,5,5,5,1,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,-3,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="2,14" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,1)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,2)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,6) m(11,7)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(15,7)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,7)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,5)"/></onEvent>
+		</property>
+		<property index="70">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(14,17)"/></onEvent>
+		</property>
+		<property index="71">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,13) m(11,13) m(9,16) m(12,16)"/></onEvent>
+		</property>
+		<property index="72">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,13) m(11,13)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[DDLLLDRULULULDDUURDRLRLLLUUURLDDLLLLULDLDDRDULUURRRULDLDDUURDLDLDRRRRRULDURDLLLLLURURULDDUURRRRRRULDLLUULLLUR]]></solution>
+	<name><![CDATA[You spent a lot time in the boot, it is already night]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="19,16,2">
+		<typeArray><![CDATA[,,,,,,,,,,,,,,,,1,1,1,
+,,,,,,,,,,,,,,,7,4[2],8,1,
+,,,,,,,,,,,,,,,1,2[67],4[4],,
+,,,4[3],6,6,1,,,,4[9],1,,,,,,,,
+,,4[6],,,,5,,,1,1,3[66],,,,,,,,
+,,1,1,1,,5,,,2[64],1,,,,,,,,,
+,1,1,1,1,7,1,6,6,1,1,,,,,,,,,
+,1,1,1,4[7],,,,,5,1,1,1,1,4[8],,,,,
+1,1,,,,,,,,1,,,,,,,,,,
+1,3[65],1,,,,,,,1,5,5,,,,,,,,
+7,1,1,1,6,6,4[1],,,1,5,5,,,,,,,,
+,,3[68],1,,,,,,1,,,,,,,,,,
+,,,,,,7,7,,1,,,,,,,,,,
+,,,,,1,1,4[5],1,1,,,,,,,,,,
+,,,,,1,2[69],1,1,,,,,,,,,,,
+,,,,,,1,1,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="6,3" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="3" tag="tele_2">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="4" tag="tele_3">
+			<onEvent type="pressed"><teleport dest="m.tele_4"/></onEvent>
+		</property>
+		<property index="5" tag="tele_4">
+			<onEvent type="pressed"><teleport dest="m.tele_7"/></onEvent>
+		</property>
+		<property index="6" tag="tele_5">
+			<onEvent type="pressed"><teleport dest="m.tele_6"/></onEvent>
+		</property>
+		<property index="7" tag="tele_6">
+			<onEvent type="pressed"><teleport dest="m.tele_4"/></onEvent>
+		</property>
+		<property index="8" tag="tele_7">
+			<onEvent type="pressed"><teleport dest="m.tele_4"/></onEvent>
+		</property>
+		<property index="9" tag="tele_8">
+			<onEvent type="pressed"><teleport dest="m.tele_5"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,6)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,6) m(8,6) m(0,10)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,10)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(15,1) m(4,3) m(5,3)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,10)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,12) m(7,12)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[DLURRRRRDRLULLLLLDRDRDRRRUURDLURUURRRDRDDRULLDURRDLUULULLLDDLDRULDDLLLULURULUDDLRURRRUUURURULDRDLURULDURDLDRULURDLDLDDDLLDLDRDRRRUURDLURUURRRDRRUUDDLLULLLDDLDRULDDLLLULURURRUUURRURRLLDLLDDDLLDLDRDRRRUURDLURUURRRDRDRDLU]]></solution>
+	<name><![CDATA[Last look on the strange house]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,12,2">
+		<typeArray><![CDATA[,,,,,,,1,1,1,,,,,,,
+,,,,,,,1,1,1,6,2[68],,,,,
+,,,,,,1,3[66],1,,,,,,,,
+,,,,,,1,1,1,,,,,,,2[67],
+,,,,,,1,,,1,1,1,1,,,5,
+,,,,,,5,,,1,1,1,1,,,6,
+,1,1,1,,,6,,,1,,,1,1,1,1,
+,1,1,1,1,1,1,1,1,1,,,,1,8,1,
+2[69],1,1,1,,,,,1,1,3[64],,,3[65],1,1,
+,1,1,1,,,,,1,1,1,,,,6,6,
+,,1,1,6,,,,1,,,,,,,,
+,,,1,1,1,1,1,1,,,,,,,,
+,,,,,,,,,-3,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,-3,,,,,,,,,,,,,,,
+,,,,,,,,-3,,,,,,,-3,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="2,7" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,10)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,6)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(15,5)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,1)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(15,9)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(14,9)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[UULLLDLLLDRURRRULUUURUURDRRRRRDLDDDDUUDDLLULLULLDRDLURDDDRDRUL]]></solution>
+	<name><![CDATA[In the neighbourhood]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,15,2">
+		<typeArray><![CDATA[,,,,,,1,1,1,,,,,,,,
+,,,,,,1,1,1,,,,,,,,
+,,,,,,1,1,5,5,3[65],1,1,1,1,1,
+,,,,,5,5,,,,,,,1,1,1,
+,,,,,5,5,,,,,,,1,1,,
+,,,,,7,,,,,,,,6,,,
+,,,,,1,1,1,1,,,,,4[1],,,
+,,,,,1,1,,1,1,1,,,-1,,,
+,,,,1,2[64],1,1,1,1,1,,,1,,,
+1,1,6,6,1,1,1,1,,,1,1,1,1,,,
+1,4[2],1,6,,,1,,,,1,1,,,,,
+1,1,1,,,,1,,,,1,,,,,,
+,1,,,,,1,1,1,,,,,,,,
+,3[66],,,,,1,8,1,6,,,,,,,
+,,,,,,1,1,1,6,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,-3,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="10,11" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,5) m(2,9) m(3,9)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(13,5) m(9,14)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,10) m(9,13)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRURURULDRDLURULDURRRRLDDRURRDDLDRLULDRUDLUULUDDDDRURURDLULDRURDLRUURURLLDDLURURLULLLDRURURDDDRLUULD]]></solution>
+	<name><![CDATA[Nothing interesting iside]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,15,2">
+		<typeArray><![CDATA[,,,,,,,,,,1,1,1,3[67],,
+,,1,1,5,6,1,,3[65],1,1,1,1,1,,
+,,1,1,5,6,1,,1,1,1,6,1,1,4[12],
+,1,3[64],1,,4[7],,,1,1,,8,6,,,
+,1,1,1,,,4[1],,1,1,1,6,1,2[66],,
+,4[6],,,,,1,,1,1,1,,1,1,,
+,,,,,,1,,,,,,,,,
+,,,4[2],1,1,1,1,1,4[5],,1,1,1,,
+,,,,,,1,,,,,6,6,4[11],,
+4[8],1,1,4[9],1,,1,,,,1,1,1,,,
+1,1,,,1,,4[3],,1,1,1,1,1,,,
+1,1,1,1,1,,,,1,3[70],1,1,,,,
+4[10],6,3[68],1,-1,,,4[4],1,1,,,,,,
+1,1,1,1,3[69],,,,,,,,,,,
+,-1,-1,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,-3,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,-3,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,-3,,,,,,,-3,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,-3,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="6,7" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+		<property index="3" tag="tele_2">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="4" tag="tele_3">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="5" tag="tele_4">
+			<onEvent type="pressed"><teleport dest="m.tele_5"/></onEvent>
+		</property>
+		<property index="6" tag="tele_5">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+		<property index="7" tag="tele_6">
+			<onEvent type="pressed"><teleport dest="m.tele_7"/></onEvent>
+		</property>
+		<property index="8" tag="tele_7">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="9" tag="tele_8">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="10" tag="tele_9">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="11" tag="tele_10">
+			<onEvent type="pressed"><teleport dest="m.tele_11"/></onEvent>
+		</property>
+		<property index="12" tag="tele_11">
+			<onEvent type="pressed"><teleport dest="m.tele_10"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,1) m(5,2)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,3)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,2)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,4)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,8)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,12)"/></onEvent>
+		</property>
+		<property index="70">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,8)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[DDDLLDRUULDDLLLLULLURDRRDRULURDLRULDRDLULLDLUULLRLRRDDRURRDRULURDLDRUUU]]></solution>
+	<name><![CDATA[On the conor]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,9,2">
+		<typeArray><![CDATA[,4[6],5,5,4[4],,,,,,,,,,,,
+,5,,,,,4[10],-1,-1,4[13],-1,-1,4[12],,8,,
+,5,,4[5],,,,,,,,,,,1,,
+,4[2],,7,,4[9],6,6,-1,,4[8],,,1,1,1,
+,,,7,,,,,1,1,1,,,3[67],2[66],1,
+4[3],1,2[64],1,7,7,4[1],,5,1,1,7,1,1,1,,
+,,,2[65],,,,,1,1,1,,1,1,1,,
+,,,1,,4[11],7,7,-1,,4[14],,,,,,
+,,,4[7],,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,-3,,,,-3,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="3,5" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="3" tag="tele_2">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="4" tag="tele_3">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+		<property index="5" tag="tele_4">
+			<onEvent type="pressed"><teleport dest="m.tele_5"/></onEvent>
+		</property>
+		<property index="6" tag="tele_5">
+			<onEvent type="pressed"><teleport dest="m.tele_4"/></onEvent>
+		</property>
+		<property index="7" tag="tele_6">
+			<onEvent type="pressed"><teleport dest="m.tele_7"/></onEvent>
+		</property>
+		<property index="8" tag="tele_7">
+			<onEvent type="pressed"><teleport dest="m.tele_6"/></onEvent>
+		</property>
+		<property index="9" tag="tele_8">
+			<onEvent type="pressed"><teleport dest="m.tele_9"/></onEvent>
+		</property>
+		<property index="10" tag="tele_9">
+			<onEvent type="pressed"><teleport dest="m.tele_8"/></onEvent>
+		</property>
+		<property index="11" tag="tele_10">
+			<onEvent type="pressed"><teleport dest="m.tele_11"/></onEvent>
+		</property>
+		<property index="12" tag="tele_11">
+			<onEvent type="pressed"><teleport dest="m.tele_10"/></onEvent>
+		</property>
+		<property index="13" tag="tele_12">
+			<onEvent type="pressed"><teleport dest="m.tele_13"/></onEvent>
+		</property>
+		<property index="14" tag="tele_13">
+			<onEvent type="pressed"><teleport dest="m.tele_4"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,5) m(5,5)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,3) m(3,4)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,5)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,3) m(7,3) m(6,7) m(7,7)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[UULDRURURDLRULDLDLURDLURURURDLLDLDDDLLULDRRRUUUUURURRUDLLDLDDDDDLLLLLLURRRLDRRRRUUUUURURRUDLLDLDDDDDLLLURDRRURUUURRULDLDLDRULLULLLLDLDRULLDRUURRUULUUUUDDDDDLLD]]></solution>
+	<name><![CDATA[A little miracle]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="14,15,2">
+		<typeArray><![CDATA[,,,,1,1,3[68],,,,,,,,
+,,,,1,1,1,,,,,,,,
+,,,,1,1,1,,,,,,,,
+,,,,-1,,6,,,,,,,,
+,,,,5,,5,,,,,,,,
+,,,,5,,1,,,,,,,,
+,,,,6,5,1,,,,,,1,3[65],
+,,1,1,7,7,1,1,,,,1,1,1,
+,1,1,1,6,6,1,1,,,1,3[67],1,1,
+,1,8,1,,,,1,1,1,1,1,,,
+,3[66],1,1,,,,,1,1,1,,,,
+,,,,,,,,,1,1,,,,
+,,,,1,1,1,,,1,1,,,,
+1,1,6,6,1,3[64],1,,,1,1,,,,
+1,1,6,6,1,1,1,1,1,1,1,,,,
+,,,,-3,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+-3,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="10,12" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,8) m(5,8)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,7) m(5,7) m(2,13) m(3,13)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,6)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(2,14) m(3,14)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,3) m(4,7) m(5,7) m(4,8) m(5,8)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RDLULDRURRURRRULDDDUUURDLLLDLLDLURDRULDRULDRDDRDDRRRUURLRRRURLDLLLDRURRRDLRULLLDDLLDDLLLURDLLURRRRDRDLLLDLLDLUUDRDRULDRULDRDDRDDRULDRRRUUURRR]]></solution>
+	<name><![CDATA[The Well of life]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,15,2">
+		<typeArray><![CDATA[,,4[1],1,1,1,1,-1,6,,,,,,,
+,,,,,,,,1,1,,,,,,
+6,,,,,,,1,1,1,,,,,,
+1,1,,,1,1,1,1,1,1,,,,,,
+1,1,1,1,1,1,,,1,,,,,,,
+1,1,1,1,,,,,1,,,,,,,
+,1,1,,,,,,3[66],1,,,5,1,3[64],
+,,1,,,,,,3[67],1,1,1,1,8,5,
+,,1,1,1,6,,,1,1,,,3[65],5,5,
+,,,1,1,1,,,1,1,,,,,,
+,,,6,1,1,1,1,1,1,,,,,,
+,,,,,,6,,,,,,,,,
+,4[2],1,3[68],,,5,,,,,,,,,
+,1,1,1,1,1,1,,,,,,,,,
+,1,1,1,,,,,,,,,,,,
+,,,,,-3,,,,,,,,,,
+,,,,,,,,,,,,,,,
+-3,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,4" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,0)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,11)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,10)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,8)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(0,2)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[ULDLURDLURURRRRRRRDDRDLURULRLUURLDDRDLDRULUULLLLLLLDLDRULDRURUUURDLDDRRDDDLURDDLURUUUDDDLDRUULDRUUULLDLLLRRURRRRUURULDRRURRLUULRRLDDLDLLURDLDDLLLLDRUUURULDDDLDLURLRDLURURRRRRRRDDRDLURULUURLDDRDLDRULUULLLLLLLDLDRULDRURUUURDLDDRRDDDLURDDLURDLUR]]></solution>
+	<name><![CDATA[Say goodbye to the moon]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,12,2">
+		<typeArray><![CDATA[,,,,,,,,,,-1,1,1,-1,,,
+,,,,,,,,,,,1,1,,,,
+,,,1,1,1,,,-2,-2,1,1,1,-1,,,
+,,,1,1,1,,,1,1,6,,,,,,
+,,,6,,,,,1,1,6,,,,,,
+,,,6,,,2[68],,6,,,,5,5,2[69],,
+,,1,1,1,7,1,1,1,1,1,5,5,1,,,
+2[65],1,1,1,,,7,,,1,,,1,1,3[66],,
+1,1,1,1,,,7,,,1,,,1,2[64],1,,
+,7,7,,,1,1,1,,2[67],,,,1,1,1,
+,,,,7,1,8,1,,,,,,1,1,1,
+,,,,7,1,1,1,,,,,,,1,,
+,,,,,,,,,,-3,,,-3,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,-3,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="3,8" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,6)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,5) m(6,7) m(6,8)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,4) m(3,5)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,9) m(2,9)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,3)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,4) m(4,10) m(4,11)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[ULDRULDRRULUULLLLLLLDDDRULDRDDRDDRURRRRRUDLLLLLDLUULUULURDLUUURRRRRRRDDRDLUUUUURRLLDDDDDRULUULLLLLLLDLDDDDLLDRUULDRULDRLRRLLURDRUUURULDRRULUUURRRUUULDRUULRDDLURDLURLDRDDLLLDDDRDLUUURRRRRRRDDRDLUUUUURRUUDDLLDDDDDRULUULLLLLLLDDDRULDRDDRDDRURRRRRULDLUU]]></solution>
+	<name><![CDATA[Behind seven mountains]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="19,17,2">
+		<typeArray><![CDATA[,,,,,,,,,,,,,,,,,,3[65],
+,,,,,,,,,,,,,,,,,,5,
+,,,,,,,3[70],1,1,,,,,,,,,6,
+,,,,,,6,1,3[69],1,,,,,,1,1,1,3[66],
+,,,,,,6,1,1,1,,,,,,5,,,,
+,,,,,,,,5,,,,,,,5,,,,
+,,,,,,,,6,,,,,,,6,,,,
+,,,1,1,1,5,1,1,1,1,5,1,1,1,1,,,,
+,,,1,1,,,,,,,,,1,1,1,,,,
+,,,1,1,,,,,,,,,,1,1,1,,,
+,,,1,1,1,,,,,,,,,1,1,1,,,
+,,,1,1,1,5,5,5,,8,,,,1,1,1,,,
+,,,1,1,1,,,5,,6,,,,1,,,,,
+,,,6,,1,,,5,5,5,5,5,3[64],1,,,,,
+6,1,1,1,,1,1,1,5,5,1,5,5,5,,,,,,
+6,1,3[67],1,5,,1,1,5,5,5,5,5,5,,,,,,
+,3[68],1,1,,,1,1,1,,,1,1,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,-3,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,-3,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="15,10" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(15,6)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,12)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,13)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,6)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(0,14) m(0,15)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(18,2)"/></onEvent>
+		</property>
+		<property index="70">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,3) m(6,4)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[URDLDDLLLDRULDDRLUURRRRRRDDRLUURDLULLLDDDDDLDRUURDLDLDLLULRDRRURURULDDLURUUUUUUURULDDLURUULLLULDRRRRRRRUULUURLRUDLDDRDDLLLLLLLURDRRRUUUUUUDDDDDDDDLDRU]]></solution>
+	<name><![CDATA[The Mount of moonlight]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="14,20,2">
+		<typeArray><![CDATA[,,,,,,1,1,1,,,,,,
+,,,,,,1,1,1,,,1,1,1,
+,,,,,,1,1,1,,,1,1,2[68],
+,,,,,,,6,6,,,1,,,
+,,,,,,,5,5,,,1,,,
+,,1,1,1,,,5,5,,,1,1,1,
+,,1,1,1,,,5,5,,,,1,1,
+,,1,1,1,6,6,7,7,6,6,1,1,1,
+,,,,,,,2[67],1,,,,,,
+,,,,,,2[64],8,2[66],,,,,,
+,,,,,,1,2[65],,,,,,,
+,1,1,1,6,6,7,7,6,6,1,1,1,,
+,1,1,1,,,5,5,,,1,1,1,,
+,1,1,3[70],,,5,5,,,1,1,3[69],,
+,,,,,,5,5,,,,,,,
+,,,,,,6,6,,,,,,,
+,,,,,1,1,3[71],,,,,,,
+1,6,1,,1,1,1,1,,,,,,,
+,,1,1,1,1,1,,,,,,,,
+,,1,1,1,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,-3,,,,,,-3,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,-3,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,-3,,,,,,,,,-3,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+-3,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="7,9" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,7) m(10,7)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,7) m(6,7)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,11) m(9,11)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,11) m(5,11)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,3) m(8,3)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,15)"/></onEvent>
+		</property>
+		<property index="70">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,15)"/></onEvent>
+		</property>
+		<property index="71">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,7) m(8,7) m(6,11) m(7,11) m(1,17)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRRDUDDRRRULDLLULDRRRUURUULLLDLLLRRRULDDDRULLLLLRRRRRDLULLDDLDDRULDLUR]]></solution>
+	<name><![CDATA[Allmost at the end]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="14,12,2">
+		<typeArray><![CDATA[,,,,,,,,,,,6,,,
+,,,,,,,,,,,6,,,
+,,,,,,,,,,1,1,1,,
+,,,,,,,1,1,1,1,2[67],1,1,
+,3[69],5,5,1,5,5,2[66],1,1,1,,,1,
+,,,,,,,1,,,,,,1,
+5,5,3[65],1,1,1,1,1,1,,,1,1,1,
+,,,,1,,,1,2[64],,,1,2[68],,
+,,,,1,,,1,1,1,1,1,1,,
+,,1,1,1,,,,,,,,,,
+,6,1,8,1,,,,,,,,,,
+,6,1,1,1,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,-3,,,,,,,,,-3,
+,,,,,,,,,,,,,-3,
+-3,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="3,6" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,10)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,11)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,10)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,10) m(1,11)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,10) m(1,11)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,0) m(11,1) m(1,10) m(1,11)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[ULUUURUDRRRRDRRRLLLULLLLLDRRDDDRRRURRRRULRLDRUDLURDLLLLDLLLUURRRLLLUURRRDRRRURUDLDLLLULLLDLLDDDRRRRRURRR]]></solution>
+	<name><![CDATA[Find your Princess]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="14,10,2">
+		<typeArray><![CDATA[1,1,1,,,,,,,,,1,3[65],,
+1,2[64],1,,,,,,,,,1,1,,
+1,1,1,1,1,1,1,1,6,,,1,1,,
+1,1,1,,,,6,1,1,1,1,1,3[66],,
+1,1,1,,,,,,,,,,,,
+1,1,1,6,-2,-2,-2,-2,-2,-2,,,,,
+1,1,1,,,,,,,,,3[67],3[68],1,
+1,1,1,,,,6,1,1,1,1,1,8,1,
+1,1,1,1,1,1,1,1,6,,,1,1,1,
+1,1,1,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,-3,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,8" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,2)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,8) m(8,2)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,7)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,5)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,3)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[LURDRULDRDRDRDRRRUUULDRDDDLLLRRRUUULURDRULDRDDRDULUUULULLULRULUULLULRLDURRLDRRDDRDDRRDDRDLDLLLUUL]]></solution>
+	<name><![CDATA[Welcome in the castle]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="13,15,2">
+		<typeArray><![CDATA[,1,1,1,,,,,,,,,,
+,1,2[67],1,1,,,,,,,,,
+,1,1,1,1,1,,,,,,,,
+,,,,1,5,5,,,,,,,
+,,,,,6,6,,,,,,,
+,,,,,1,1,1,,,,,,
+,,,,,3[68],1,1,,,,,,
+5,1,1,1,,,1,1,7,1,1,,,
+5,1,1,1,,,,,,1,1,1,5,
+,1,1,1,1,1,,,,1,2[65],1,5,
+,,,1,8,1,6,,,,1,1,,
+,,,1,1,1,1,1,,,1,1,,
+,,,,,1,3[64],1,7,7,1,1,6,
+,,,,,1,1,1,,,1,1,1,
+,,,,,,,,,,,,3[66],
+,-3,,-3,,,,,,,,,,
+,,,,,,,,,,,,,
+,-3,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="2,8" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,12)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,12) m(9,12)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,10)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,7)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,4) m(6,4)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[URDLURLRRRRDDRLRRRRULDRRULDLLLULDRRLLURDRRRDRUUDLLDRULLLLUUUUULLULUDRUDDRRDRRRULDRUULDRURDL]]></solution>
+	<name><![CDATA[Magic garden]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="14,10,2">
+		<typeArray><![CDATA[,,1,1,,,,,,,,,,,
+,,1,1,1,,,,,,,,,,
+,,1,1,2[67],,,,,,1,1,1,6,
+,,,1,1,1,1,6,,,1,8,1,6,
+,,,,,,1,1,6,6,1,1,1,,
+,1,1,,,,1,1,,,,,,,
+1,1,3[66],1,7,7,1,1,,,,,,6,
+1,1,1,,,,1,1,,,,1,1,1,
+1,1,1,,,,1,1,2[65],3[64],1,1,1,1,
+,,,,,,,,,,,1,1,1,
+,,-3,,,,,,,,,,,,
+,,,,-3,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,-3,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,-3,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,7" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(13,6)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,3) m(4,6) m(5,6)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,4) m(9,4)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(13,2) m(13,3) m(8,4) m(9,4)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRLRUULLRLRRUUDDUDDDDURRRRLLDUDDUUUURLUURRRDRDLUULDRDLURDRR]]></solution>
+	<name><![CDATA[The Garden of the sun]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,11,2">
+		<typeArray><![CDATA[,,,,,,,,,,-1,-1,,,,
+,,,-1,,,1,6,6,-1,1,1,,,,
+,,,2[68],,,1,,,,1,3[73],1,,,
+,,,5,,,6,,,,1,1,1,6,8,
+-1,2[69],7,3[67],7,7,3[65],7,5,,,1,1,,,
+,,,7,,,7,,,,,,,,,
+,,,7,,,7,,,,,,,,,
+1,2[72],5,3[66],7,7,3[64],5,2[70],-1,,,,,,
+,,,6,,,5,,,,,,,,,
+,,,5,,,2[71],,,,,,,,,
+,,,,,,-1,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,-3,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+-3,,,,,,,,-3,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,-3,,,,,,
+,,,,,,,,,,,,,,,
+,,,-3,,,,,,,,,,,,
+,,,,,,-3,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="0,7" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,5) m(6,6)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,4) m(5,4)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,7) m(5,7)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,5) m(3,6)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,8)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,1) m(8,1)"/></onEvent>
+		</property>
+		<property index="70">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(2,4)"/></onEvent>
+		</property>
+		<property index="71">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,3)"/></onEvent>
+		</property>
+		<property index="72">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,4)"/></onEvent>
+		</property>
+		<property index="73">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(13,3)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRRRURURDLURDLDDLLLLLLLRRRRRUUUUUURURURURURURDDLURDLURLDLDLDLDLLULULUURURULDRDLURULDURDLDRULURDLDLDDRDRDRDLURDLDRDDDLLLLUUURDLUURLDDRULDDDRRUUULULDLURDRRLLULDRURDRDDDLLUUUDLRULDRUULDRU]]></solution>
+	<name><![CDATA[The Shiny chamber]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="17,16,2">
+		<typeArray><![CDATA[,,,,,1,1,1,,1,8,3[68],,,,,,
+,,,,,1,1,1,,1,1,1,,,,,,
+,,,,1,3[66],1,,,1,4[2],1,,,1,1,1,
+,,,,1,1,1,,,,,,,1,1,3[67],1,
+,,,,1,,,,,,,,1,1,1,1,1,
+,,,,1,1,,,,,,1,1,1,,,,
+,,,,1,1,1,,,,1,1,1,,,,,
+,,,,,1,1,1,,1,1,1,,,,,,
+,1,1,,,,1,1,1,1,1,,,,,,,
+,6,1,1,1,,,1,1,1,,,,,,,,
+,6,1,1,1,3[69],,1,1,,,,,,,,,
+,,,,1,1,,1,1,,,1,1,,,,,
+5,6,4[1],,,1,,1,1,,,1,1,1,,,,
+,,6,,,1,,6,6,,1,2[65],1,1,,,,
+,,6,,,1,,6,6,,1,1,,,,,,
+3[64],1,1,1,1,1,1,1,1,1,1,1,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,-3,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+-3,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="4,15" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,13) m(8,14)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,13) m(7,14)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(2,13)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(2,14)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,9) m(1,10)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,12)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RUUULURDDRDLLRDDLLLULULULULLDDDLURDLLURDDRRDRDRULDDLLLLDRLURRRRUURDLULULLUULDRRULDRUUURRDRDRDRRDRRURDLLLULULULULDD]]></solution>
+	<name><![CDATA[Chamber of honor]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,14,2">
+		<typeArray><![CDATA[,,,1,1,1,5,5,1,1,1,,,4[2],,,
+,,,1,1,1,,,,1,1,,,1,,,
+,1,1,1,,1,,,,1,1,1,1,1,1,,
+,1,1,1,1,1,,,,,,,1,8,1,,
+,,,5,4[1],1,1,,,,,,1,1,1,5,
+,,,6,,1,1,1,,,,,,,5,5,
+,,,6,,,1,1,1,,,,,,5,5,
+,3[64],1,1,,,,1,1,1,1,,3[65],1,5,-2,
+,1,1,1,,,,,1,1,1,,,1,1,,
+,1,1,5,6,5,5,,,1,1,1,-2,1,1,,
+,,,,,5,5,1,1,,,,,,,,
+,1,1,1,,,1,1,1,,,,,,,,
+5,1,1,1,5,1,-2,1,1,,,,,,,,
+5,2[66],1,1,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,-3,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,-3,,,,,,,,,,
+,-3,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="13,7" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,9) m(3,5) m(3,6)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,5) m(3,6)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,5)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[DDLLLDDRDLLURDLUUDRDDDLLDDRULDDUURDLDRURRDDDLDRULDRRULLLUDRRRDDURUULURDDLDRDUUURDLURUULRDDLURUUDDLDDRUUURD]]></solution>
+	<name><![CDATA[Behid the wall of castle]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="18,21,2">
+		<typeArray><![CDATA[,,,,,,,,1,,,,,,,,,,
+,,,,,,,,1,,,,,,,,,,
+,,,,,,,,1,,,,,,,,,,
+,,,3[64],1,1,1,1,1,,,,,,,,,,
+,,,1,1,,,,,,,,,,,,,,
+,,,1,1,1,,,,,,,,,,,,,
+,,,1,1,1,,,,,,,,,,3[68],1,,
+,,,1,1,1,,,,,,,,1,1,1,6,,
+1,1,1,,6,,,,,,,,,,,6,8,,
+3[65],1,1,1,1,,,,,,,,,1,1,1,,,
+1,1,,,,,,,,,,,,1,1,1,,,
+,1,1,1,,,,,,,,,,1,1,1,,,
+,1,1,1,1,1,,,,,,,,5,1,,,,
+,5,5,1,,1,,,,,,,,1,1,,,,
+,3[66],1,6,,1,,,,,,,,1,3[67],,,,
+,,,,1,1,,,,,,,,4[2],,,,,
+,1,1,,1,1,,,,,,,,,,,,,
+,1,1,1,1,1,6,,,,,,,,,,,,
+,,,,1,1,1,,,,,,,,,,,,
+,,,,1,1,1,,,,,,,,,,,,
+,,,,,,4[1],,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,-3,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,-3,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,-3,,,,,,,,,,,,,,,,,
+,,,,-3,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="8,0" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,8)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,14)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,17)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(15,8)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(16,7)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[DLURDDLURRDLURUULULULULULLULDLDLDLDDDDDLURDDLURUUUURURURURRRRUUULRDDDDRDRDRDULULULULLLLDLDLDLDDDDDRRDRDRRDRLLURRRRURU]]></solution>
+	<name><![CDATA[Do not fall into the water]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,22,2">
+		<typeArray><![CDATA[,,,,,,,1,3[68],1,,,,,,,
+,,,,,,,1,1,1,2[70],,,,,,
+,,,,,,,,3[69],7,1,,,,,,
+,,,,,,,,,6,,,,,,,
+,,,,,1,1,1,1,1,,,,,,,
+,,,,1,1,1,1,1,2[67],1,,,,,,
+,,,1,1,1,,,,1,1,1,,,,,
+,,1,1,1,,,,,,1,2[66],1,,,,
+,1,1,1,,,,,,,,1,1,1,,,
+,2[71],1,,,,,,,,,,1,1,1,1,
+,1,,,,,,,,,,,,3[65],1,3[64],
+,1,1,,,,,,,,,,,,,5,
+,1,1,,,,,,,,,,,1,1,5,
+1,1,,,,,,,,,,,,1,1,1,
+1,1,1,,,,,,,,,,,1,1,1,
+1,2[72],1,1,,,,,,,,,,,,,
+1,1,1,1,1,,,,,,,,,,8,,
+,,,1,1,1,,,,,,,,1,1,,
+,,,,1,1,6,,,,,,1,1,1,,
+,,,,,1,6,1,1,1,7,6,6,7,,,
+,,,,,,6,1,1,1,7,6,6,,,,
+,,,,,,,1,1,1,,,,,,,
+,,,,,,,-3,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,-3,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,-3,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,-3,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,-3,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,-3,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="14,12" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,3)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,2) m(6,19)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,19) m(10,20) m(12,20)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,19) m(12,20) m(12,19)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,20)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,18)"/></onEvent>
+		</property>
+		<property index="70">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,20) m(11,19) m(12,20) m(10,19) m(11,20) m(12,19) m(13,19)"/></onEvent>
+		</property>
+		<property index="71">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,20) m(12,19)"/></onEvent>
+		</property>
+		<property index="72">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,19) m(13,19) m(11,19)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[DLDRDLUUDDRULURDRRUURULDRURRRRLLLLLDLRRLURDLURRRRRRRRRDLRURRR]]></solution>
+	<name><![CDATA[The summer courtyard]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="17,8,2">
+		<typeArray><![CDATA[,,,,,,,,,,1,1,1,1,,,,
+,,,6,1,1,1,1,1,1,1,3[65],1,-2,5,5,4[1],
+,1,6,6,1,3[66],1,,,,1,1,1,1,,,,
+3[64],1,,,1,1,,,,,,,1,,,,,
+1,1,,,1,,,,,,,,1,,,,,
+1,1,1,1,1,,,,,,1,1,1,,,,,
+1,1,1,,,4[2],1,1,6,6,1,8,1,,,,,
+,,,,,3[67],1,6,,,1,1,1,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,-3,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,-3,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,2" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,1)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(2,2) m(3,2)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,7)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,6) m(9,6)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RURRRRDRDDDLDURUUULLULDRULDDUURRDRULDRDDDLDURUUULULLULDDDDUUUURDLLDLDDDRDULUUURURRURDRRRRRU]]></solution>
+	<name><![CDATA[Golden hall]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,15,2">
+		<typeArray><![CDATA[,,,,,,,,4[4],,,,,,,,
+,,,,,,,,5,,,,,,,,
+,,,,,,,,5,,,,,,,,
+,,,,,,,,6,,,,,,,,
+,,,,,,,1,1,,,,,1,1,1,
+,,,,,1,1,1,1,1,1,,,1,8,1,
+,,1,1,1,1,1,1,-1,1,1,1,1,1,1,1,
+4[2],6,1,1,1,1,-1,,6,1,1,1,1,1,6,,
+,,1,1,1,,7,,5,,,1,1,1,,,
+,,,1,,,6,,3[65],,,,1,,,,
+,,,1,,,5,,1,,,,1,,,,
+,,,1,6,,3[66],,1,,,1,1,,,,
+,,,1,1,,5,,4[1],,,1,1,,,,
+,,,,3[67],,5,,,,,3[64],,,,,
+,,,,,,4[3],,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="3,7" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="3" tag="tele_2">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="4" tag="tele_3">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,7) m(6,8)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,7) m(6,9)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,3) m(4,11)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(14,7)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRRRRRRURDLLURDLLLLLLLLDRULLDRURRRRRRRUUDDLLLLLLLULLRRDDLURRRRRRUUUURURULDRDLURULDURDLDRULURRRRLLLDLDLDLLLLUURDLDRUDLURULDRDLRRRRRULULULURRULLRRRRRDRULDLURLDDURURDLULRRRRRRULLULLULDLLLUULRDLURDULDRDLURRDRDRDD]]></solution>
+	<name><![CDATA[Chamber of fight]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="20,20,2">
+		<typeArray><![CDATA[,,,,,,,6,6,,,,,,,,,,,,
+,,,,,,,3[72],1,1,,,,5,5,,,,,,
+,,,,,,,1,3[71],1,,,6,5,5,,,,,,
+,,,,,,,1,1,1,3[70],5,5,-2,-2,5,5,-2,,,
+,,,,,,,,,,6,6,6,,,,,5,5,5,
+,,,,,,,,,,,,5,,,,,5,5,5,
+,,,,1,5,5,-1,5,5,4[1],6,5,-2,5,5,-2,5,5,-2,
+,,,,,1,5,5,,,,,8,,,,,,,,
+,,,,,5,5,5,,,,,,,,,,,,,
+,,,,,1,5,1,,1,1,1,6,5,5,2[67],,,,,
+,,1,1,1,,5,5,6,1,1,1,,,,,,,,,
+,,1,3[68],1,,,,1,3[66],1,,,,1,1,,,,,
+,,1,1,,,,,1,1,1,,4[2],1,3[69],1,,,,,
+,1,1,1,-2,-2,-2,6,1,6,,,1,1,1,1,,,,,
+,,,,,,,,5,,,,1,1,,,,,,,
+,,,,,,,,5,,,,,,3[64],,,,,,
+,,,,,,,,6,,,,,,5,,,,,,
+2[65],6,1,5,5,6,-2,-2,-2,6,-2,-2,6,1,1,1,,,,,
+,,1,1,1,-2,-2,-2,-2,-2,-2,-2,-2,1,1,1,,,,,
+,,1,1,1,,,,,,,,,1,1,1,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,-3,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,-3,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,-3,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="3,18" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,17) m(5,17) m(9,17) m(12,17)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,16)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,9)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,13)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,10) m(9,13)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,6)"/></onEvent>
+		</property>
+		<property index="70">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,2) m(12,4)"/></onEvent>
+		</property>
+		<property index="71">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,4) m(11,4)"/></onEvent>
+		</property>
+		<property index="72">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,0) m(8,0)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRRRRRURDLLLLLLLURDLLURDRRRRRRUUUUUUULULULULRDRDRDRDDDDDDDLLLLLLULDRRULDRRRRRRRULULDRUUUULULULUDRDRDRDDRULULULULULLLLLDDRLDDRDRDLURULDRDLURDDLURRDULLDRUULDRULURDLDRULULUUUURRRRRDRDRDRDRDLDRDRDLUUUULULULULUL]]></solution>
+	<name><![CDATA[Red chamber]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="18,15,2">
+		<typeArray><![CDATA[,,,,,,,,6,6,6,,,,,4[2],1,5,
+,,,,5,5,5,8,1,3[65],6,,,,,1,1,1,
+,,,,5,5,5,1,3[66],1,1,6,,,,3[67],1,3[68],
+,,,,6,,,,,1,3[64],1,,,,,,,
+,,,,1,1,,,,,1,1,1,,,,,,
+,,,,1,1,,,,,,1,1,1,,,,,
+,,,,6,,,,,,,,1,1,1,,,,
+,,,,1,1,1,,,,,,,1,1,1,,,
+,,,,1,4[1],1,,,,,,,1,1,1,,,
+,,,,,1,1,1,,,,,,1,1,,,,
+,,,,,1,1,1,,,,1,1,1,1,,,,
+,,,,,,,,,,,1,1,1,1,6,5,,
+,,,1,1,1,,,,,,,,1,1,6,5,,
+,,,1,1,1,1,1,1,1,1,1,1,1,1,,,,
+3[69],5,6,1,1,1,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,-3,,
+,,,,,,,,,,,,,,,,,,
+,,,,-3,,,,,,,,,,,,,-3,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,-3,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,-3,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,-3,,,,,,,
+,,,,,,,,,,,,,,,,-3,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="4,13" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,0)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,6)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,3)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,0) m(2,14)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(15,11) m(15,12)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,0) m(10,1) m(11,2)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[LURDLLURDDLURUUUUURULDRRURRRUULRDDLLLLDDRULDLLRRULDRUULDDDDDDLRUUUUURRURRURUUUURRULDDRULDRRRRDLUDRRULDDRULDDDDDLUURDLLDDLLDRUULLLLDRLDRULDDDDLDLDLRRRDRUURLDDLULLLRLDRRURRRR]]></solution>
+	<name><![CDATA[Royal treasury]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="17,22,2">
+		<typeArray><![CDATA[,,,,,,,,5,1,1,,,,,,,
+,,,,,,,,1,1,1,,,,,,,
+,,,,,,,,1,1,1,5,1,5,3[67],1,1,
+,,,,,,,,1,,,,,,1,1,1,
+,,,,,,,,5,,,,,,5,1,1,
+,,,,,,,,5,,,,,,,5,,
+,,,,,,,,6,,,,,,,5,,
+,,,4[4],5,2[71],6,3[65],1,-2,,,,,,6,,
+,,,,,,,1,1,1,,,,1,1,1,,
+,,1,1,1,5,1,-2,1,1,,,,1,1,1,,
+,,1,1,1,,,,,,,,,5,1,1,,
+3[66],6,1,1,3[64],,,,,,,,,3[68],,,,
+,,1,,,,5,5,1,5,5,1,1,5,,,,
+,,1,,,,1,1,3[69],,,1,1,6,,,,
+,,1,,,,5,6,1,,,1,1,1,,,,
+,,1,,,,,5,,,,,,,,,,
+,,1,,,,,5,,,,4[3],,,,,,
+,1,5,-2,,,,1,,,,-1,,,,,,
+6,1,1,1,,4[2],1,1,1,1,1,5,5,8,,,,
+,1,5,5,,6,1,1,,5,1,3[70],,,,,,
+,,,,-1,5,1,6,,,,,,,,,,
+,,,4[1],-1,-1,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+-3,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="3,18" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="3" tag="tele_2">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="4" tag="tele_3">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(0,18)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,11)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,6)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(15,7)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(13,13)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,14)"/></onEvent>
+		</property>
+		<property index="70">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,7)"/></onEvent>
+		</property>
+		<property index="71">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,19) m(7,20)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RULDRRULDRRRUUDDLLLURDLLURDRRRDDUULLLULDRULLDDDDRRLLUUUURRDLURDDLURDRURRRUURURURDLULDRURDLRULDLURDRULDLDLDDLLLLLULUURRURURULDRDLURULDURDLDRULURRLDLDLDLLDDRDRRRRRRRDDDLURDDLURDLUR]]></solution>
+	<name><![CDATA[Between trees again]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,14,2">
+		<typeArray><![CDATA[,,,,1,1,1,6,,,,,,,,
+,,,,1,1,1,,,,,,,,,
+,,,1,3[67],1,,,,,,,1,1,,
+,,,1,1,1,,,,,1,1,1,1,,
+1,5,5,1,,,,,,,1,3[66],1,1,,
+6,,,,,,,3[64],,1,1,1,,,,
+1,1,,1,,,,1,,5,,,,,,
+1,1,1,1,1,,,1,,6,,,,,,
+1,6,1,1,1,1,1,1,6,6,1,1,6,6,1,
+1,1,1,1,1,6,,,1,,,,1,,,
+1,1,,1,,,,,1,,,,1,,,
+1,,,,,,,,3[65],,,1,1,1,,
+1,,,,,,,,,,1,1,8,1,,
+1,6,6,3[68],,,,,,,1,1,1,1,,
+,,,,,,,-3,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,-3,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,-3,,
+]]></typeArray>
+		<polyhedron id="p1" p="2,8" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,8) m(9,8)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,7) m(1,13) m(2,13)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(0,5) m(1,8)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,0)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,8) m(13,8) m(5,9)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RRRURDLLURDRRRURURULDRDLURULDURDLDRULURRLDLDDLLLLLLLLRRRURDRULDLLLDDRRLLUUUURRRRRRRRULDLLLLLLLLRRDDUURRDDUURRDDUURRULDLLLLLLUUDDRRUUDDRRUURURRRURLLURR]]></solution>
+	<name><![CDATA[Near the beautifull terace]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,24,2">
+		<typeArray><![CDATA[,,,,,,4[6],4[8],1,3[68],8,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,5,5,4[4],,,
+,,,,1,,,1,,,1,5,5,,,,
+,,,,5,,,5,,,5,,,6,1,1,
+,,,,5,,,5,,,-1,,,6,1,1,
+,,3[67],4[2],1,1,1,1,1,1,1,1,1,1,1,1,
+,,,,,5,,,5,,,5,,,,,
+,,,,,5,,,5,,,5,,,,,
+,,,,,1,,,1,,,1,,,,,
+,,,,,,,,,,,,1,1,1,6,
+,4[1],,,4[7],,,,,,,,1,1,1,,
+,5,,,6,6,6,,,,,1,3[66],1,,,
+,6,,,6,1,1,1,,,,1,1,1,,,
+3[65],1,4[3],1,1,1,3[64],1,1,1,1,1,6,,,,
+,6,,,,1,1,1,,,,,,,,,
+,5,,,,,,,,,,,,,,,
+,4[5],,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,-3,,,-3,,,,,-3,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,-3,,,-3,,,-3,,,,,
+,,,,,,,,,,,,,,,-3,
+,,,,,,,,,,,,,,,,
+,,,,,-3,-3,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+-3,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,20" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="3" tag="tele_2">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="4" tag="tele_3">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+		<property index="5" tag="tele_4">
+			<onEvent type="pressed"><teleport dest="m.tele_5"/></onEvent>
+		</property>
+		<property index="6" tag="tele_5">
+			<onEvent type="pressed"><teleport dest="m.tele_4"/></onEvent>
+		</property>
+		<property index="7" tag="tele_6">
+			<onEvent type="pressed"><teleport dest="m.tele_7"/></onEvent>
+		</property>
+		<property index="8" tag="tele_7">
+			<onEvent type="pressed"><teleport dest="m.tele_6"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,19) m(1,21)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,18) m(4,19)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(15,16) m(12,20)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(13,10) m(13,11)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,18) m(6,18)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[UULULULUURURULDRDLURULDURDLDRULURDLDLDDRDRDRDRRRURURURURDDLURDLURLDLDLDLLLDLLRRDDLDLDLDRULURDLDRUDLURULDDLLURURULDRDLURULDURDLDRULURDLDRURRLLDLLDRRURDLURURURUUUULULULDL]]></solution>
+	<name><![CDATA[In the hall]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="17,18,2">
+		<typeArray><![CDATA[,,,,,,,,,,1,1,1,,,,,
+,,,,1,1,1,,,,1,1,1,6,1,,,
+,,,,1,1,1,,,1,3[67],1,,,,,,
+,,,1,3[65],1,,,,1,1,1,,,,,,
+,,,1,1,1,,,,4[2],,,,,,,,
+,,,1,,,,,,,,,,,1,1,1,
+,,6,1,1,,,,,,,,,1,1,3[64],1,
+,8,6,1,1,1,,,,,,,1,1,1,1,1,
+,,,,1,1,1,,,,,1,1,1,,,,
+,,,,,1,1,1,,,1,1,1,,,,,
+,,,,,,1,1,1,1,1,1,,,,,,
+,,,5,5,6,1,1,1,1,1,1,,,,,,
+,,,,,,1,1,,,,,,,,,,
+,,,,,1,1,1,,,,,,,,,,
+,,,1,1,1,,,,,,,,,,,,
+,,,1,3[66],1,,,,,,,,,,,,
+,,1,1,1,,,,,,,,,,,,,
+4[1],6,1,1,1,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,-3,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,-3,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="7,12" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,11)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(2,7)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(2,6) m(1,17)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(13,1)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[DLDRDLUUDDRULURDRRUURULDRURRRRLLLLLDLRRLURDLURRRRRRRRRDLRURRRRRURURURRRDRDRRLLULULLLDLDLDLUURRURURRRDRDRRDLRULDRURUR]]></solution>
+	<name><![CDATA[Upstairs]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="21,24,2">
+		<typeArray><![CDATA[,,,,,,,,,,1,1,1,1,,,,,,,,
+,,,,,,,,,1,1,1,1,1,1,,,,,,,
+,,,,,,,,1,1,1,,,1,1,1,,,6,6,8,
+,,,,,1,1,1,1,1,,,,,1,1,1,1,1,1,,
+,,,,,1,1,1,1,,,,,,,1,3[68],1,3[69],,,
+,,,,4[4],1,1,1,,,,,,,,,1,1,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,1,1,1,1,,,,,,,,
+,,,6,1,1,1,1,1,1,1,3[65],1,-2,5,5,4[1],,,,,
+,1,6,6,1,3[66],1,,,,1,1,1,1,,,,,,,,
+3[64],1,,,1,1,,,,,,,1,,,,,,,,,
+1,1,,,1,,,,,,,,1,,,,,,,,,
+1,1,1,1,1,,,,,,1,1,1,,,,,,,,,
+1,1,1,,,4[2],1,1,6,6,1,4[3],1,,,,,,,,,
+,,,,,3[67],1,6,,,1,1,1,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,-3,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,-3,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,18" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="3" tag="tele_2">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="4" tag="tele_3">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,17)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(2,18) m(3,18)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,23)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,22) m(9,22)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(19,2)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(18,2)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[LLLUULDDURUUUUUURRLLDDDDRDLDDLLLLDRLURRRRRRRRULDRUUUUURDL]]></solution>
+	<name><![CDATA[Royal bedroom]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,19,2">
+		<typeArray><![CDATA[,,,,,,1,5,5,6,5,5,4[1],,,
+,,,,,,5,5,,,,,,,,
+,,,,,,5,5,,,,,,,,
+,,,,,,,-1,,,,,,,,
+,,,,,,,5,1,1,,,,,,
+,,,,,,,1,1,1,,,,,,
+,,,,,,,5,1,1,5,3[68],,,,
+,,,,,,,-1,,,,,,,,
+,,,,,,,-1,,,,1,1,1,6,
+,1,1,1,,,,-1,3[64],,,1,8,1,6,
+,1,1,1,7,7,1,1,1,6,6,1,1,1,6,
+,1,1,1,,,1,1,1,,,,-1,,,
+,5,5,5,,,,1,1,,,,5,,,
+,,5,,,,1,1,1,,,5,5,5,,
+,,1,,,,1,1,1,,,1,1,1,,
+5,1,1,1,6,6,5,2[66],1,7,7,1,1,1,,
+5,1,3[67],1,,,3[65],,,,,1,1,1,,
+5,1,1,1,,,,,,,,,-1,,,
+,,,,,,,,,,,,4[2],,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,-3,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="12,15" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,10) m(10,10)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,15) m(5,15)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,15) m(10,15)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(14,8) m(14,9) m(4,10) m(5,10) m(14,10)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,0)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[LRULLDRULLLLDLDLURDRULDLURRULDLDDDDLDLDRULURDLDRUDLURULDRDLURULDLLRRURRUUUURURDLLRLDRURDLLLRDRURUURRRRULRLDRUUULULULLULLDDDLDLLDRURURLDLDLURRURUUURRDRRLULLURDRDRDRDRRLLULULULULDRRDRDRDRDDDDDDDLLDLURDLURURUUUUUUUUUUUU]]></solution>
+	<name><![CDATA[The Ceremonial hall]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="14,23,2">
+		<typeArray><![CDATA[,,,,,,,,,,,,8,,
+,,,,,,,,,,,,6,,
+,,,,,5,5,,,,,,6,,
+,,,,,5,5,,,,,,6,,
+,,,,1,1,1,1,1,,,,6,,
+,,,,1,,,1,1,1,,,6,,
+,,,,1,,,1,1,2[70],1,,6,,
+,,,,1,,,,,1,1,1,5,,
+,,,1,1,,,,,,1,1,1,3[69],
+,,1,1,3[72],,,,,,,1,1,1,
+6,1,1,1,,,,,,,,,5,,
+6,1,,,,,,,,,,2[64],1,2[67],
+6,1,,,,,1,1,1,5,5,1,3[66],1,
+,,,,1,1,3[75],1,6,,,2[65],1,1,
+,,1,6,1,2[68],1,1,,,,,1,,
+,,,,1,1,,,,,,,1,,
+,,,,6,1,,,,,,,1,,
+,,,,,5,,,,,,,1,,
+,,,,,1,,,,,1,1,1,,
+,,,1,1,1,,,1,1,2[73],1,1,,
+,,,1,3[74],1,,,1,1,1,,,,
+1,6,1,2[71],1,,,,,1,1,,,,
+,,1,1,1,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,-3,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,-3,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,-3,,,,,,
+-3,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="13,13" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(0,10)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(0,12)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,1)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(0,11)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,5) m(12,4) m(0,11)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,2)"/></onEvent>
+		</property>
+		<property index="70">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,4) m(12,6)"/></onEvent>
+		</property>
+		<property index="71">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,14) m(8,13) m(4,16) m(0,12)"/></onEvent>
+		</property>
+		<property index="72">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,3)"/></onEvent>
+		</property>
+		<property index="73">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,5)"/></onEvent>
+		</property>
+		<property index="74">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,21)"/></onEvent>
+		</property>
+		<property index="75">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,13) m(3,14) m(4,16)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RULDRURRDRDRDLLLDDRRDDRURRDRULLDURURDRRRRR]]></solution>
+	<name><![CDATA[The Peristyl]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,22,2">
+		<typeArray><![CDATA[,,,,,4[5],1,4[7],1,4[14],4[13],,,,,,
+,,,,,1,4[6],1,4[9],1,4[12],1,1,1,1,8,
+,,,,,1,1,4[8],1,4[10],4[11],,,,,,
+,,,,,4[2],,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+1,1,1,5,5,-2,,,,,,,,,,,
+1,1,1,5,5,5,1,,,,,,,,,,
+1,1,1,,,1,1,1,,,,,,,,,
+,1,,,,,1,1,1,,,,,,,,
+,4[4],,1,1,1,1,1,1,,,,,,,,
+,,,1,1,,,,2[64],,,,,,,,
+,,,1,1,,,,,,,,,,,,
+,,,1,1,1,1,6,,,,1,1,,,,
+,,,,,,1,1,6,,1,1,4[3],,,,
+,,,,,,1,1,1,1,1,1,1,,,,
+,,,,,,-1,-1,2[65],,4[1],1,1,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,12" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="3" tag="tele_2">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="4" tag="tele_3">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="5" tag="tele_4">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="6" tag="tele_5">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="7" tag="tele_6">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="8" tag="tele_7">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="9" tag="tele_8">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="10" tag="tele_9">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="11" tag="tele_10">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="12" tag="tele_11">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="13" tag="tele_12">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="14" tag="tele_13">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,18)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,19)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[URDLLRRLUURDLUUDDLURDLDDUURDLLLRRURUUUDDDLDRUULDDDDUUUURDDLLLLRRRRUULDRUUUUUDDDDDLURDLDDDDDUDDUUUUUURDLURRDLLLLLLRRRRRRULUUUUUUUDDDDDDDRDLUURRRRRUU]]></solution>
+	<name><![CDATA[In front of the main gate]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,24,2">
+		<typeArray><![CDATA[,,,,,,,,3[66],,,,,,,,
+,,,,,,,,2[64],,,,,,,,
+,,,,,,,,3[79],,,,,,,,
+,,,,,,,,6,,,,,,,,
+,,,,,,,,2[67],,,,,,,,
+,,,,,,,,6,,,,,,,,
+,,,,,,,,3[77],,,,,,,,
+,,,,,,,,6,,,,,,,,
+,,,,,,,,3[76],,,,,,,,
+,,,,,,,,6,,,,,,,8,
+,,,,,,,,2[75],,,,,,,6,
+,,,,,,,,6,,,,,,,6,
+,,,,,,,3[64],1,2[66],6,6,6,6,6,6,
+,,,,,,,1,1,1,,,,,,,
+3[74],6,2[72],6,3[70],6,3[68],2[65],1,2[67],,,,,,,
+,,,,,,,6,,,,,,,,,
+,,,,,,,3[69],,,,,,,,,
+,,,,,,,6,,,,,,,,,
+,,,,,,,3[71],,,,,,,,,
+,,,,,,,6,,,,,,,,,
+,,,,,,,2[73],,,,,,,,,
+,,,,,,,6,,,,,,,,,
+,,,,,,,3[78],,,,,,,,,
+,,,,,,,3[65],,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="8,14" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,12) m(14,12)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(15,11) m(11,12)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(13,12) m(15,12)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(15,10) m(7,21)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,11)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,14)"/></onEvent>
+		</property>
+		<property index="70">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,9)"/></onEvent>
+		</property>
+		<property index="71">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,14)"/></onEvent>
+		</property>
+		<property index="72">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,7)"/></onEvent>
+		</property>
+		<property index="73">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,14)"/></onEvent>
+		</property>
+		<property index="74">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,5)"/></onEvent>
+		</property>
+		<property index="75">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,15)"/></onEvent>
+		</property>
+		<property index="76">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,17)"/></onEvent>
+		</property>
+		<property index="77">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,19)"/></onEvent>
+		</property>
+		<property index="78">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,3)"/></onEvent>
+		</property>
+		<property index="79">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,12)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[DRURRURRDULUUURRRDLURDRDDRDLDDRRUDLLUURULUULULDRRDDDDRULDRRURRLLDLLURDLUUULULULLDDLDRUURDLLLL]]></solution>
+	<name><![CDATA[On the courtyard of green]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,15,2">
+		<typeArray><![CDATA[,,,,1,1,1,5,5,1,,,,,,
+,,,,4[2],1,1,,,,,,,,,
+,,,,1,1,1,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,1,1,,1,1,1,,,,,
+,,,,,1,1,1,1,1,1,7,,,,
+,,,,,,1,1,,1,1,1,1,1,,
+,8,1,6,6,1,1,1,1,,,1,1,,,
+,,,,,1,1,,1,1,,1,1,1,,
+,,,,,1,1,1,1,1,1,,1,1,,
+1,1,1,,,1,1,1,1,1,1,,1,1,1,
+1,1,1,-1,-1,1,,1,,,1,1,1,,3[64],
+1,1,1,,,1,1,1,,,,1,4[1],1,1,
+1,1,1,,,,,,,,,,1,1,1,
+,,,,,,,,,-3,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,-3,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,-3,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,-3,,,
+]]></typeArray>
+		<polyhedron id="p1" p="1,12" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,6) m(3,8) m(4,8)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[LURDLURDRDDRRLLUULULDLURDLUUUULLRRDDLLRRDDDDLLRRUURRRRRRLLLLURDLLLLLLRRRRRDRUUUURRRULDRULDR]]></solution>
+	<name><![CDATA[Switch, switch, switch and switch.]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="15,10,2">
+		<typeArray><![CDATA[,,3[65],7,7,1,,,,,,6,1,1,1,
+,,,,,1,,,,1,6,6,1,8,1,
+,,,,,1,,,1,1,,,1,1,1,
+,,3[69],7,7,1,,,1,6,,,,,,
+,,,,,1,,,1,6,,,,,,
+,,,,,1,1,1,1,1,,,,,,
+3[67],6,6,1,1,1,1,1,1,1,1,1,6,6,3[64],
+,,,,,1,1,1,1,1,,,,,,
+,,,,,1,,,,1,,,,,,
+,,3[68],6,6,1,,,,1,7,7,3[66],,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="7,6" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,0) m(4,0) m(10,1) m(11,1)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,6) m(2,6) m(10,9) m(11,9) m(3,3) m(4,3)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,3) m(4,3) m(3,9) m(4,9)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,0)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,3) m(9,4)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,6) m(13,6)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[DRULULLLDLDRDUULDDLDURUURUURRRRRRRLURUUUURURURDLULDRURDLRULDLURDRULDLDLDDDDLDDRUUUURDDLURD]]></solution>
+	<name><![CDATA[Secret chamber]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="19,19,2">
+		<typeArray><![CDATA[,,,,,,,,,,,,,,,,,1,1,
+,,,,,,,,,,,,,,,1,1,1,1,
+,,,,1,1,,,,1,1,,,,,1,3[65],1,1,
+,,,1,1,,,,1,1,1,,,,1,1,1,,,
+,,,1,1,,,,1,,,,,,5,,,,,
+,,,1,1,,,,1,,,,,,4[6],,,,,
+,,,1,,,,,1,,,,,,6,,,,,
+,,,,,,,,1,,,,,,6,,,,,
+,,,,,,,,1,,,,,,6,,,,,
+,,,,,,,,1,,,,1,1,1,,,,,
+,,1,1,1,1,1,1,1,1,6,-2,1,4[2],3[66],,,,,
+,,1,1,1,,,4[4],1,1,,,1,1,1,,,,,
+,,1,1,1,,,1,1,1,,,,,,,,,,
+,,1,4[5],1,,,4[3],1,4[1],,,,,,,,,,
+,,1,1,1,,,1,1,1,,,,,,,,,,
+1,1,1,1,,,,1,1,1,,,4[7],1,1,,,,,
+1,2[64],,,,,,,,,,,1,6,1,,,,,
+,,,,,,,,,,,,1,8,1,,,,,
+,,,,,,,,,,,,1,1,1,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+,,,,-3,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+-3,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,-3,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="8,11" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="3" tag="tele_2">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="4" tag="tele_3">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="5" tag="tele_4">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="6" tag="tele_5">
+			<onEvent type="pressed"><teleport dest="m.tele_6"/></onEvent>
+		</property>
+		<property index="7" tag="tele_6">
+			<onEvent type="pressed"><teleport dest="m.tele_5"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,10)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(13,16)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(14,6) m(14,7) m(14,8)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[URDRDRDRDRULRDLULULULURDLLDLDLDLDDUURURURURURURURURURUDLDLDLDLDLURDLURURURURURLDLDLDLDLDLDLDLDLDLDDLRUURURURURUURRURURURURRULLLRRRDUDDLLLLDLU]]></solution>
+	<name><![CDATA[Enterance hall to the thirteenth chamber]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="17,17,2">
+		<typeArray><![CDATA[,,,,6,6,-1,-1,-1,,,,,,,,4[1],
+,,,,2[72],-1,-1,1,1,4[2],,,,,3[68],1,1,
+,,,,,,,,,1,,,,1,1,3[69],1,
+,,,,,,,,,6,,,1,1,1,,,
+,,8,6,6,6,6,6,6,6,,1,1,1,,,,
+,,1,1,,,,,,,1,1,1,,,,,
+,,1,1,,,,,,1,1,1,,,,,,
+,,,,,,,1,1,1,1,,,,,,,
+,,,,,,,1,1,1,,,,,,,,
+,,,,,,1,1,1,1,1,,,,,,,
+,,,,,1,1,1,,1,1,1,,,,,,
+,,,,1,1,1,,,,1,1,1,,,,,
+,,,1,1,1,,,,,,1,3[65],1,3[66],,,
+,,1,1,1,,,,,,,,1,1,1,,,
+,1,1,1,,,,,,,,,,,3[67],,,
+,1,3[64],,,,,,,,,,,,,,,
+3[70],1,3[71],,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,-3,,-3,,,,,,,,,,
+,,,,,,,,,,,,,,,,-3,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,-3,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,-3,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,-3,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="7,9" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_0"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,4)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(5,4)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,3)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,4)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,4)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(8,4)"/></onEvent>
+		</property>
+		<property index="70">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(6,4)"/></onEvent>
+		</property>
+		<property index="71">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(9,4)"/></onEvent>
+		</property>
+		<property index="72">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(4,0) m(5,0) m(4,4) m(7,4) m(9,3)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+<level>
+	<solution><![CDATA[RULDRDLDLRLDLLULLRRDRDLLRRURURLRURULURDDLDLDLDLDDUUUUUULURUUURDLRUDULDDLUUUUUUUURURDLLLRRRULDLURDDLDDLRDDLRDDRDDLDLDLRLDLUUUULURUUDLURUUDDLDUDRURLLRRUDLDLURDLURRUUUURUDLDRULDDDDRRRR]]></solution>
+	<name><![CDATA[The the thirteenth chamber]]></name>
+	<mapData id="m" shape="rect" c="0.5,0.5,0" size="16,21,2">
+		<typeArray><![CDATA[,,,,,,,-2,1,5,5,,,1,1,1,
+,,,,,3[65],1,1,1,5,5,,,4[5],2[70],4[4],
+,,,,,,,1,1,-2,,,,1,1,1,
+,,,,,,,7,,,,,,,,,
+,,,,,,,7,,,3[64],,,,,,
+,,,,,-1,-1,1,,-2,1,-2,,,,,
+,,,,,,,6,,1,5,1,,,,,
+,,,4[1],,,,6,,1,1,-2,,,,,
+,,,7,,-1,-1,1,,6,,,,,,,
+,,,1,,,,7,,7,,,,,,,
+,6,1,1,,,,7,,6,,,,,,,
+,6,1,1,,,,1,1,1,,,,,,,
+,,,5,,,,1,4[3],1,6,6,6,6,6,8,
+,,,5,,,,1,1,1,,,,,,,
+,,,6,,,5,5,1,,,,,,,,
+3[75],5,5,7,,2[69],5,5,,,,,,,,,
+,,,1,5,5,2[68],,,,2[74],2[73],,,,,
+,,,1,5,5,,,,,1,1,,,,,
+,3[71],5,1,1,,,,,3[67],4[2],3[66],,,,,
+,,,5,,,,,,1,1,,,,,,
+,,,3[76],,,,,,2[72],1,,,,,,
+,,,,,,,,,,,,,,-3,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,-3,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,-3,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,-3,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+]]></typeArray>
+		<polyhedron id="p1" p="7,12" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+		</polyhedron>
+		<property index="1" tag="tele_0">
+			<onEvent type="pressed"><teleport dest="m.tele_1"/></onEvent>
+		</property>
+		<property index="2" tag="tele_1">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+		<property index="3" tag="tele_2">
+			<onEvent type="pressed"><teleport dest="m.tele_3"/></onEvent>
+		</property>
+		<property index="4" tag="tele_3">
+			<onEvent type="pressed"><teleport dest="m.tele_4"/></onEvent>
+		</property>
+		<property index="5" tag="tele_4">
+			<onEvent type="pressed"><teleport dest="m.tele_2"/></onEvent>
+		</property>
+		<property index="64">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(13,12)"/></onEvent>
+		</property>
+		<property index="65">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(12,12)"/></onEvent>
+		</property>
+		<property index="66">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(11,12)"/></onEvent>
+		</property>
+		<property index="67">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(10,12)"/></onEvent>
+		</property>
+		<property index="68">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,14)"/></onEvent>
+		</property>
+		<property index="69">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,15)"/></onEvent>
+		</property>
+		<property index="70">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(3,8)"/></onEvent>
+		</property>
+		<property index="71">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,10)"/></onEvent>
+		</property>
+		<property index="72">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,9) m(7,10) m(9,10)"/></onEvent>
+		</property>
+		<property index="73">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,6) m(7,7) m(9,9)"/></onEvent>
+		</property>
+		<property index="74">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(7,3) m(7,4) m(9,8)"/></onEvent>
+		</property>
+		<property index="75">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(14,12)"/></onEvent>
+		</property>
+		<property index="76">
+			<onEvent type="pressed"><raiseEvent type="toggle" target="m(1,11)"/></onEvent>
+		</property>
+	</mapData>
+</level>
+</levelCollection>
+

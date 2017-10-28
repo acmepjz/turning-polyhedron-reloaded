@@ -7,6 +7,8 @@
 #include "util_err.h"
 
 #include <assert.h>
+#include <stdlib.h>
+#include <math.h>
 #include <string.h>
 
 #include <osgDB/XmlParser>
@@ -22,6 +24,7 @@ static const char* actionNames[game::EventAction::TYPE_MAX] =
 	"convertTo",
 	"checkpoint",
 	"move",
+	"teleport",
 };
 
 // NOTE: the items in each array should be sorted
@@ -31,6 +34,7 @@ static const char* actionArgRemoveObject[] = { "target", "type", NULL };
 static const char* actionArgConvertTo[] = { "target", "value", NULL };
 static const char* actionArgCheckpoint[] = { NULL };
 static const char* actionArgMovePolyhedron[] = { NULL }; // TODO:
+static const char* actionArgTeleport[] = { "dest", "flags", "hide", "size", "src", NULL };
 
 static const char** actionArguments[game::EventAction::TYPE_MAX] =
 {
@@ -39,6 +43,7 @@ static const char** actionArguments[game::EventAction::TYPE_MAX] =
 	actionArgConvertTo,
 	actionArgCheckpoint,
 	actionArgMovePolyhedron,
+	actionArgTeleport,
 };
 
 namespace game {
@@ -103,7 +108,9 @@ namespace game {
 		return NULL;
 	}
 
-	static void findTargets(Level* parent, EventDescription* evt, const std::string& _targets, std::vector<Polyhedron::HitTestResult::Position>& ret, std::vector<Polyhedron*>* retPolyhedron) {
+	static void findTargets(Level* parent, EventDescription* evt, const std::string& _targets,
+		std::vector<Polyhedron::HitTestResult::Position>* retTile,
+		std::vector<Polyhedron*>* retPolyhedron) {
 		osgDB::StringList targets;
 		osgDB::split(osgDB::trimEnclosingSpaces(_targets), targets);
 
@@ -112,74 +119,98 @@ namespace game {
 
 			if (target.empty()) continue;
 			if (target == "all") {
-				// all
-				for (Level::MapDataMap::iterator it = parent->maps.begin(); it != parent->maps.end(); ++it) {
-					MapData *map = it->second;
+				if (retTile) {
+					for (Level::MapDataMap::iterator it = parent->maps.begin(); it != parent->maps.end(); ++it) {
+						MapData *map = it->second;
 
-					const int SX(x), EX(x), SX(y), EX(y), SX(z), EX(z);
+						const int SX(x), EX(x), SX(y), EX(y), SX(z), EX(z);
 
-					for (int z = sz; z < ez; z++) {
-						for (int y = sy; y < ey; y++) {
-							for (int x = sx; x < ex; x++) {
-								Polyhedron::HitTestResult::Position p;
-								p._map = map;
-								p.position.set(x, y, z);
-								ret.push_back(p);
+						for (int z = sz; z < ez; z++) {
+							for (int y = sy; y < ey; y++) {
+								for (int x = sx; x < ex; x++) {
+									Polyhedron::HitTestResult::Position p;
+									p._map = map;
+									p.position.set(x, y, z);
+									retTile->push_back(p);
+								}
 							}
 						}
 					}
+				} else {
+					UTIL_WARN "Invalid use of '" << target << "'" << std::endl;
 				}
 			} else if (target == "this") {
-				// this
-				Polyhedron::HitTestResult::Position p;
-				p._map = evt->_map;
-				p.position = evt->position;
-				ret.push_back(p);
-			} else if (retPolyhedron && target == "polyhedron") {
-				if (evt->polyhedron) {
-					retPolyhedron->push_back(evt->polyhedron);
+				if (retTile) {
+					Polyhedron::HitTestResult::Position p;
+					p._map = evt->_map;
+					p.position = evt->position;
+					retTile->push_back(p);
 				} else {
-					UTIL_ERR "Polyhedron is NULL when requiring it" << std::endl;
+					UTIL_WARN "Invalid use of '" << target << "'" << std::endl;
 				}
-			} else if (retPolyhedron && target == "allPolyhedron") {
-				for (Level::Polyhedra::iterator it = parent->polyhedra.begin(); it != parent->polyhedra.end(); ++it) {
-					retPolyhedron->push_back(*it);
+			} else if (target == "polyhedron") {
+				if (retPolyhedron) {
+					if (evt->polyhedron) {
+						retPolyhedron->push_back(evt->polyhedron);
+					} else {
+						UTIL_ERR "Polyhedron is NULL when requiring it" << std::endl;
+					}
+				} else {
+					UTIL_WARN "Invalid use of '" << target << "'" << std::endl;
+				}
+			} else if (target == "allPolyhedron") {
+				if (retPolyhedron) {
+					for (Level::Polyhedra::iterator it = parent->polyhedra.begin(); it != parent->polyhedra.end(); ++it) {
+						retPolyhedron->push_back(*it);
+					}
+				} else {
+					UTIL_WARN "Invalid use of '" << target << "'" << std::endl;
 				}
 			} else {
 				size_t lps = target.find_first_of('.');
 				if (lps != std::string::npos) {
 					// id.tag
-					Level::MapDataMap::iterator it = parent->maps.find(osgDB::trimEnclosingSpaces(target.substr(0, lps)));
-					if (it != parent->maps.end()) {
-						std::vector<osg::Vec3i> ppp;
-						it->second->findAllTags(osgDB::trimEnclosingSpaces(target.substr(lps + 1)), ppp);
-						for (size_t j = 0; j < ppp.size(); j++) {
-							Polyhedron::HitTestResult::Position p;
-							p._map = it->second;
-							p.position = ppp[j];
-							ret.push_back(p);
+					if (retTile) {
+						Level::MapDataMap::iterator it = parent->maps.find(osgDB::trimEnclosingSpaces(target.substr(0, lps)));
+						if (it != parent->maps.end()) {
+							std::vector<osg::Vec3i> ppp;
+							it->second->findAllTags(osgDB::trimEnclosingSpaces(target.substr(lps + 1)), ppp);
+							for (size_t j = 0; j < ppp.size(); j++) {
+								Polyhedron::HitTestResult::Position p;
+								p._map = it->second;
+								p.position = ppp[j];
+								retTile->push_back(p);
+							}
 						}
+					} else {
+						UTIL_WARN "Invalid use of '" << target << "'" << std::endl;
 					}
 				} else if ((lps = target.find_first_of('(')) != std::string::npos) {
 					// id(coordinate)
-					Level::MapDataMap::iterator it = parent->maps.find(osgDB::trimEnclosingSpaces(target.substr(0, lps)));
-					if (it != parent->maps.end()) {
-						size_t lpe = target.find_first_of(')', lps);
-						Polyhedron::HitTestResult::Position p;
-						p._map = it->second;
-						p.position = util::getAttrFromStringOsgVec(target.substr(lps + 1, lpe == std::string::npos ? lpe : lpe - lps - 1), osg::Vec3i());
-						ret.push_back(p);
+					if (retTile) {
+						Level::MapDataMap::iterator it = parent->maps.find(osgDB::trimEnclosingSpaces(target.substr(0, lps)));
+						if (it != parent->maps.end()) {
+							size_t lpe = target.find_first_of(')', lps);
+							Polyhedron::HitTestResult::Position p;
+							p._map = it->second;
+							p.position = util::getAttrFromStringOsgVec(target.substr(lps + 1, lpe == std::string::npos ? lpe : lpe - lps - 1), osg::Vec3i());
+							retTile->push_back(p);
+						}
+					} else {
+						UTIL_WARN "Invalid use of '" << target << "'" << std::endl;
 					}
 				} else {
 					// tag
-					for (Level::MapDataMap::iterator it = parent->maps.begin(); it != parent->maps.end(); ++it) {
-						std::vector<osg::Vec3i> ppp;
-						it->second->findAllTags(target, ppp);
-						for (size_t j = 0; j < ppp.size(); j++) {
-							Polyhedron::HitTestResult::Position p;
-							p._map = it->second;
-							p.position = ppp[j];
-							ret.push_back(p);
+					if (retTile) {
+						for (Level::MapDataMap::iterator it = parent->maps.begin(); it != parent->maps.end(); ++it) {
+							std::vector<osg::Vec3i> ppp;
+							it->second->findAllTags(target, ppp);
+							for (size_t j = 0; j < ppp.size(); j++) {
+								Polyhedron::HitTestResult::Position p;
+								p._map = it->second;
+								p.position = ppp[j];
+								retTile->push_back(p);
+							}
 						}
 					}
 					if (retPolyhedron) {
@@ -199,7 +230,7 @@ namespace game {
 			std::string eventType = osgDB::trimEnclosingSpaces(arguments["type"]);
 
 			std::vector<Polyhedron::HitTestResult::Position> ps;
-			findTargets(parent, evt, arguments["target"], ps, NULL); // TODO: can send event to polyhedron?
+			findTargets(parent, evt, arguments["target"], &ps, NULL); // TODO: can send event to polyhedron?
 
 			for (size_t i = 0; i < ps.size(); i++) {
 				osg::ref_ptr<EventDescription> evt2 = new EventDescription(*evt);
@@ -214,11 +245,10 @@ namespace game {
 		case REMOVE_OBJECT:
 		{
 			std::string type = osgDB::trimEnclosingSpaces(arguments["type"]);
-			std::string target = osgDB::trimEnclosingSpaces(arguments["target"]);
 
 			std::vector<Polyhedron::HitTestResult::Position> ps;
 			std::vector<Polyhedron*> polys;
-			findTargets(parent, evt, target, ps, &polys);
+			findTargets(parent, evt, arguments["target"], &ps, &polys);
 
 			for (size_t i = 0; i < ps.size(); i++) {
 				// TODO: animation (now it is simply convertTo 0)
@@ -235,7 +265,7 @@ namespace game {
 			osg::ref_ptr<TileType> newTileType = parent->getOrCreateTileTypeMap()->lookup(osgDB::trimEnclosingSpaces(arguments["value"]));
 
 			std::vector<Polyhedron::HitTestResult::Position> ps;
-			findTargets(parent, evt, arguments["target"], ps, NULL);
+			findTargets(parent, evt, arguments["target"], &ps, NULL);
 
 			for (size_t i = 0; i < ps.size(); i++) {
 				ps[i]._map->substituteTile(parent, ps[i].position[0], ps[i].position[1], ps[i].position[2], newTileType.get());
@@ -254,6 +284,77 @@ namespace game {
 			break;
 		case MOVE_POLYHEDRON:
 			// TODO:
+			UTIL_NOTICE "TODO: " << convertToActionName(type) << std::endl;
+			break;
+		case TELEPORT_POLYHEDRON:
+		{
+			// hide some polyhedra
+			std::vector<Polyhedron*> polys;
+			findTargets(parent, evt, arguments["hide"], NULL, &polys);
+
+			for (size_t i = 0; i < polys.size(); i++) {
+				polys[i]->onRemove(parent, "teleport");
+			}
+
+			// get src polyhedron
+			std::string src = osgDB::trimEnclosingSpaces(arguments["src"]);
+			Polyhedron *srcPoly = NULL;
+			if (src.empty() || src == "this" || src == "polyhedron") {
+				srcPoly = evt->polyhedron;
+			} else {
+				Level::PolyhedronMap::iterator it = parent->_polyhedra.find(src);
+				if (it != parent->_polyhedra.end()) srcPoly = it->second;
+			}
+
+			if (!srcPoly) {
+				UTIL_ERR "Can't find polyhedron '" << src << "'" << std::endl;
+				break;
+			}
+
+			// get dest position
+			std::string dest = osgDB::trimEnclosingSpaces(arguments["dest"]);
+			PolyhedronPosition pp;
+			if (!pp.load(dest, parent, NULL) || (pp.init(parent), !pp._map)) {
+				UTIL_ERR "Can't find destination '" << dest << "'" << std::endl;
+				break;
+			}
+
+			// get dest rotation
+			int flags = atoi(arguments["flags"].c_str());
+			if (flags == 0) {
+				osg::Vec2i size = util::getAttrFromStringOsgVec(arguments["size"], osg::Vec2i(srcPoly->size[0], srcPoly->size[1]));
+				int candidateFlags[6] =
+				{
+					PolyhedronPosition::ROT_XYZ,
+					PolyhedronPosition::ROT_YZX,
+					PolyhedronPosition::ROT_ZXY,
+					PolyhedronPosition::ROT_XZY | PolyhedronPosition::UPPER_X,
+					PolyhedronPosition::ROT_YXZ | PolyhedronPosition::UPPER_X,
+					PolyhedronPosition::ROT_ZYX | PolyhedronPosition::UPPER_X,
+				};
+				PolyhedronPosition::Idx idx;
+				for (int i = 0; i < 6; i++) {
+					PolyhedronPosition::getCurrentPos(candidateFlags[i], srcPoly, idx);
+					if (idx.size[0] == size[0] && idx.size[1] == size[1]) {
+						flags = candidateFlags[i];
+						break;
+					}
+				}
+			}
+			if (flags == 0) {
+				UTIL_WARN "Can't determine polyhedron rotation to fit the specified size" << std::endl;
+			} else {
+				pp.flags = flags;
+			}
+
+			// TODO: animation & check stability reason (currently the graphics is buggy because the animation is not updated)
+			srcPoly->pos = pp;
+			srcPoly->flags |= Polyhedron::VISIBLE;
+			srcPoly->updateVisible();
+			if (!srcPoly->valid(parent)) {
+				srcPoly->onRemove(parent, "fall");
+			}
+		}
 			break;
 		}
 	}

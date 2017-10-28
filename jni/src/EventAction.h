@@ -18,6 +18,7 @@ namespace game {
 			CONVERT_TO,
 			CHECKPOINT,
 			MOVE_POLYHEDRON,
+			TELEPORT_POLYHEDRON,
 			TYPE_MAX,
 		};
 	protected:
