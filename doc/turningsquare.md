@@ -1,10 +1,12 @@
 TurningSquare file format
 =========================
 
+[TOC]
+
 The block is 1x1x2.
 
-File format
------------
+File format {#ff}
+===========
 
 The file extension is `box`.
 All numbers are little-endian. The compress algorithm is a version of LZSS written by Haruhiko Okumura.
@@ -65,8 +67,8 @@ Level Data:
 	</table>
 </table>
 
-Tiles
------
+Tiles {#tiles}
+=====
 
 Found in clsBloxorz.cls:38.
 

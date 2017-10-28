@@ -11,8 +11,6 @@
 namespace MyGUI
 {
 
-	class Widget;
-	class IItemContainer;
 	class DropdownListButton;
 
 	typedef delegates::CMultiDelegate2<DropdownListButton*, size_t> EventHandle_DropdownListButtonPtrSizeT;
@@ -21,8 +19,8 @@ namespace MyGUI
 		DropdownListButton widget description should be here.
 	*/
 	class DropdownListButton :
-		public Widget,
-		public IItemContainer
+		public MyGUI::Widget,
+		public MyGUI::IItemContainer
 	{
 		MYGUI_RTTI_DERIVED(DropdownListButton);
 
