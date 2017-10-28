@@ -25,12 +25,7 @@ namespace MyGUI {
 		/** must call this function before show */
 		void initialize();
 
-		/** Set smooth message showing*/
-		FileDialog* setSmoothShow(bool _value);
-
 		void endMessage();
-
-		FileDialog* setMessageModal(bool _value);
 
 		/** Event : button on message window pressed.\n
 		signature : void method(FileDialog* _sender)\n
@@ -91,8 +86,6 @@ namespace MyGUI {
 		void updateButtonState();
 
 	private:
-		bool mSmoothShow;
-
 		Button *cmdPrev, *cmdNext, *cmdUp;
 		ScrollView *picFolder;
 		MultiListBox *lstFile;

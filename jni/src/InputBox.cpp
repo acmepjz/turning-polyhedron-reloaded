@@ -5,8 +5,7 @@
 namespace MyGUI {
 
 	InputBox::InputBox() :
-		wraps::BaseLayout("InputBox.layout"),
-		mSmoothShow(false)
+		wraps::BaseLayout("InputBox.layout")
 	{
 		assignWidget(lblMessage, "lblMessage", false);
 		assignWidget(txtText, "txtText", false);
@@ -19,27 +18,6 @@ namespace MyGUI {
 	}
 
 	InputBox::~InputBox() {
-	}
-
-	InputBox* InputBox::setSmoothShow(bool _value)
-	{
-		mSmoothShow = _value;
-		if (mSmoothShow)
-		{
-			mMainWidget->setAlpha(ALPHA_MIN);
-			mMainWidget->setVisible(true);
-			mMainWidget->castType<Window>()->setVisibleSmooth(true);
-		}
-		return this;
-	}
-
-	InputBox* InputBox::setMessageModal(bool _value)
-	{
-		if (_value)
-			InputManager::getInstance().addWidgetModal(mMainWidget);
-		else
-			InputManager::getInstance().removeWidgetModal(mMainWidget);
-		return this;
 	}
 
 	void InputBox::endMessage() {
@@ -78,7 +56,11 @@ namespace MyGUI {
 	{
 		InputBox *ib = new InputBox();
 
-		return ib->setSmoothShow(true)->setCaption(_caption)->setMessage(_message)->setText(_text)->setMessageModal(_modal);
+		ib->smoothShow();
+		ib->setCaption(_caption)->setMessage(_message)->setText(_text);
+		ib->setModal(_modal);
+
+		return ib;
 	}
 
 }

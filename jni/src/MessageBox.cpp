@@ -97,7 +97,6 @@ namespace MyGUI {
 		mWidgetText(nullptr),
 		mInfoOk(MessageBoxStyle::None),
 		mInfoCancel(MessageBoxStyle::None),
-		mSmoothShow(false),
 		mIcon(nullptr),
 		mLeftOffset1(0),
 		mLeftOffset2(0)
@@ -110,7 +109,6 @@ namespace MyGUI {
 		mWidgetText(nullptr),
 		mInfoOk(MessageBoxStyle::None),
 		mInfoCancel(MessageBoxStyle::None),
-		mSmoothShow(false),
 		mIcon(nullptr),
 		mLeftOffset1(0),
 		mLeftOffset2(0)
@@ -169,19 +167,6 @@ namespace MyGUI {
 
 	Message* Message::setCancelButton(MessageBoxStyle _value) {
 		mInfoCancel = _value;
-		return this;
-	}
-
-	/** Set smooth message showing*/
-	Message* Message::setSmoothShow(bool _value)
-	{
-		mSmoothShow = _value;
-		if (mSmoothShow)
-		{
-			mMainWidget->setAlpha(ALPHA_MIN);
-			mMainWidget->setVisible(true);
-			mMainWidget->castType<Window>()->setVisibleSmooth(true);
-		}
 		return this;
 	}
 
@@ -253,15 +238,6 @@ namespace MyGUI {
 		return this;
 	}
 
-	Message* Message::setMessageModal(bool _value)
-	{
-		if (_value)
-			InputManager::getInstance().addWidgetModal(mMainWidget);
-		else
-			InputManager::getInstance().removeWidgetModal(mMainWidget);
-		return this;
-	}
-
 	Message* Message::createMessageBox(
 		const UString& _caption,
 		const UString& _message,
@@ -277,7 +253,7 @@ namespace MyGUI {
 		mess->setCaption(_caption);
 		mess->setMessageText(_message);
 
-		mess->setSmoothShow(true);
+		mess->smoothShow();
 
 		mess->setMessageStyle(_style);
 

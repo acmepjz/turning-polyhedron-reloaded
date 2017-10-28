@@ -13,7 +13,6 @@ using namespace MyGUI;
 
 LevelListScreen::LevelListScreen() :
 	wraps::BaseLayout("LevelListScreen.layout"),
-	mSmoothShow(false),
 	levelOrLevelCollection(0),
 	selectedLevel(-1)
 {
@@ -106,27 +105,6 @@ void LevelListScreen::compareList(MyGUI::MultiListBox* _sender, size_t _column, 
 }
 
 LevelListScreen::~LevelListScreen() {
-}
-
-LevelListScreen* LevelListScreen::setSmoothShow(bool _value)
-{
-	mSmoothShow = _value;
-	if (mSmoothShow)
-	{
-		mMainWidget->setAlpha(ALPHA_MIN);
-		mMainWidget->setVisible(true);
-		mMainWidget->castType<Window>()->setVisibleSmooth(true);
-	}
-	return this;
-}
-
-LevelListScreen* LevelListScreen::setMessageModal(bool _value)
-{
-	if (_value)
-		InputManager::getInstance().addWidgetModal(mMainWidget);
-	else
-		InputManager::getInstance().removeWidgetModal(mMainWidget);
-	return this;
 }
 
 void LevelListScreen::endMessage() {

@@ -8,6 +8,8 @@
 
 #include <MyGUI/MyGUI.h>
 
+#if 0
+
 namespace attribute
 {
 	// =========
@@ -157,6 +159,8 @@ namespace attribute
 
 }
 
+#endif
+
 namespace wraps
 {
 
@@ -227,6 +231,7 @@ namespace wraps
 
 		void shutdown();
 
+#if 0
 		template <typename Type>
 		void initialiseByAttributes(Type* _owner, MyGUI::Widget* _parent = nullptr, bool _throw = true, bool _createFakeWidgets = true)
 		{
@@ -247,11 +252,27 @@ namespace wraps
 				}
 			}
 		}
+#endif
 
+		/** if enabled, this is an event triggered on every frame */
+		virtual void frameEntered(float _frame);
+		
+		/** enable or disable frameEntered event */
+		void frameAdvise(bool _advise);
+
+	public:
 		const std::string& getPrefix() const { return mPrefix; }
 		std::string removePrefix(const std::string& s) const;
 
+		/** Show window smoothly (do nothing if it is not a window) */
+		void smoothShow();
+
+		/** Set window modal */
+		void setModal(bool _value);
+
 	private:
+		void _frameEntered(float _frame);
+
 		std::string FindParentPrefix(MyGUI::Widget* _parent);
 
 		void snapToParent(MyGUI::Widget* _child);
@@ -274,6 +295,7 @@ namespace wraps
 		MyGUI::Widget* mMainWidget;
 
 	private:
+		bool mFrameAdvise;
 		std::string mPrefix;
 		std::string mLayoutName;
 		MyGUI::VectorWidgetPtr mListWindowRoot;

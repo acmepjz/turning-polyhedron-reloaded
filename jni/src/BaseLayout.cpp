@@ -5,12 +5,14 @@
 namespace wraps {
 
 	BaseLayout::BaseLayout() :
-		mMainWidget(nullptr)
+		mMainWidget(nullptr),
+		mFrameAdvise(false)
 	{
 	}
 
 	BaseLayout::BaseLayout(const std::string& _layout, MyGUI::Widget* _parent) :
-		mMainWidget(nullptr)
+		mMainWidget(nullptr),
+		mFrameAdvise(false)
 	{
 		initialise(_layout, _parent);
 	}
@@ -80,6 +82,45 @@ namespace wraps {
 			}
 		}
 		mListWindowRoot.clear();
+	}
+
+	void BaseLayout::smoothShow() {
+		MyGUI::Window *window = mMainWidget->castType<MyGUI::Window>(false);
+		if (window) {
+			window->setAlpha(MyGUI::ALPHA_MIN);
+			window->setVisible(true);
+			window->setVisibleSmooth(true);
+		}
+	}
+
+	void BaseLayout::setModal(bool _value) {
+		if (_value)
+			MyGUI::InputManager::getInstance().addWidgetModal(mMainWidget);
+		else
+			MyGUI::InputManager::getInstance().removeWidgetModal(mMainWidget);
+	}
+
+	void BaseLayout::frameEntered(float _frame) {
+		// default implementation
+		frameAdvise(false);
+	}
+
+	void BaseLayout::_frameEntered(float _frame) {
+		frameEntered(_frame);
+	}
+
+	void BaseLayout::frameAdvise(bool _advise) {
+		if (_advise) {
+			if (!mFrameAdvise) {
+				MyGUI::Gui::getInstance().eventFrameStart += MyGUI::newDelegate(this, &BaseLayout::_frameEntered);
+				mFrameAdvise = true;
+			}
+		} else {
+			if (mFrameAdvise) {
+				MyGUI::Gui::getInstance().eventFrameStart -= MyGUI::newDelegate(this, &BaseLayout::_frameEntered);
+				mFrameAdvise = false;
+			}
+		}
 	}
 
 	std::string BaseLayout::FindParentPrefix(MyGUI::Widget* _parent)

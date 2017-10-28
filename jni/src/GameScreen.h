@@ -25,9 +25,6 @@ public:
 
 	virtual ~GameScreen();
 
-	/** Set smooth message showing*/
-	GameScreen* setSmoothShow(bool _value);
-
 	void endMessage();
 
 	void setLevelOrCollection(osg::Object* level_);
@@ -45,12 +42,7 @@ private:
 	void newFile();
 	bool loadFile(const std::string& fullName, const std::string& directory);
 
-	void frameEntered(float _frame);
-	void frameAdvise(bool _advise);
-
-private:
-	bool mSmoothShow;
-	bool mFrameAdvise;
+	virtual void frameEntered(float _frame) override;
 
 private:
 	osg::ref_ptr<osg::Object> levelTemplate; // level or level collection (template)

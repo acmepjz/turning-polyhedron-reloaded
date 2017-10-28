@@ -21,12 +21,7 @@ public:
 	/** must call this function before show */
 	void initialize();
 
-	/** Set smooth message showing*/
-	LevelListScreen* setSmoothShow(bool _value);
-
 	void endMessage();
-
-	LevelListScreen* setMessageModal(bool _value);
 
 	/** Event : button on message window pressed.\n
 	signature : void method(LevelListScreen* _sender)\n
@@ -57,7 +52,5 @@ private:
 	void compareList(MyGUI::MultiListBox* _sender, size_t _column, size_t _index1, size_t _index2, bool& _less);
 
 private:
-	bool mSmoothShow;
-
 	MyGUI::MultiListBox *lstLevel;
 };

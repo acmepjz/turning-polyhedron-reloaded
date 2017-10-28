@@ -172,9 +172,6 @@ namespace MyGUI
 		/** Create button with specific name*/
 		MessageBoxStyle addButtonName(const UString& _name);
 
-		/** Set smooth message showing*/
-		Message* setSmoothShow(bool _value);
-
 		/** Set message icon*/
 		Message* setMessageIcon(MessageBoxStyle _value);
 
@@ -193,8 +190,6 @@ namespace MyGUI
 
 		/** Set message style (button and icon)*/
 		Message* setMessageStyle(MessageBoxStyle _value);
-
-		Message* setMessageModal(bool _value);
 
 		/** Static method for creating message with one command
 			@param
@@ -259,7 +254,6 @@ namespace MyGUI
 		std::vector<Button*> mVectorButton;
 		MessageBoxStyle mInfoOk;
 		MessageBoxStyle mInfoCancel;
-		bool mSmoothShow;
 
 		std::string mDefaultCaption;
 		ImageBox* mIcon;

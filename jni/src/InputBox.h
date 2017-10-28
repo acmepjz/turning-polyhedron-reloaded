@@ -18,12 +18,7 @@ namespace MyGUI {
 
 		virtual ~InputBox();
 
-		/** Set smooth message showing*/
-		InputBox* setSmoothShow(bool _value);
-
 		void endMessage();
-
-		InputBox* setMessageModal(bool _value);
 
 		/** Event : button on message window pressed.\n
 		signature : void method(InputBox* _sender)\n
@@ -63,8 +58,6 @@ namespace MyGUI {
 		void notifyWindowButtonPressed(MyGUI::Window* _sender, const std::string& _name);
 
 	private:
-		bool mSmoothShow;
-
 		TextBox *lblMessage;
 		EditBox *txtText;
 	};

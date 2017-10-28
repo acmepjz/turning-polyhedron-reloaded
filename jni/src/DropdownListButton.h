@@ -11,6 +11,8 @@
 namespace MyGUI
 {
 
+	class Widget;
+	class IItemContainer;
 	class DropdownListButton;
 
 	typedef delegates::CMultiDelegate2<DropdownListButton*, size_t> EventHandle_DropdownListButtonPtrSizeT;
@@ -36,7 +38,7 @@ namespace MyGUI
 		//! Set button selected state
 		void setStateSelected(bool _value);
 
-		//! Get buton selected
+		//! Get button selected
 		bool getStateSelected() const;
 
 		void setAutoCaption(bool _value) { mAutoCaption = _value; }

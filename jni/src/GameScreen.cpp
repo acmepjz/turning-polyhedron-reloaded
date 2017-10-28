@@ -14,8 +14,6 @@
 
 GameScreen::GameScreen() :
 	wraps::BaseLayout("GameScreen.layout"),
-	mSmoothShow(false),
-	mFrameAdvise(false),
 	selectedLevel(0),
 	_demoView(NULL),
 	_menuBar(NULL),
@@ -151,20 +149,6 @@ void GameScreen::frameEntered(float _frame) {
 	frameAdvise(false);
 }
 
-void GameScreen::frameAdvise(bool _advise) {
-	if (_advise) {
-		if (!mFrameAdvise) {
-			MyGUI::Gui::getInstance().eventFrameStart += MyGUI::newDelegate(this, &GameScreen::frameEntered);
-			mFrameAdvise = true;
-		}
-	} else {
-		if (mFrameAdvise) {
-			MyGUI::Gui::getInstance().eventFrameStart -= MyGUI::newDelegate(this, &GameScreen::frameEntered);
-			mFrameAdvise = false;
-		}
-	}
-}
-
 void GameScreen::showFileDialog(const std::string& name, const std::string& currentDirectory, const std::string& fileName) {
 	MyGUI::FileDialog *window = new MyGUI::FileDialog();
 	window->isSaveDialog = name == "mnuSaveAs";
@@ -172,8 +156,8 @@ void GameScreen::showFileDialog(const std::string& name, const std::string& curr
 	window->fileName = fileName;
 	window->addFileType("XML level file", "xml xml.lzma box");
 	window->addFileType("All files", "");
-	window->setSmoothShow(true);
-	window->setMessageModal(true);
+	window->smoothShow();
+	window->setModal(true);
 	window->mTag = name;
 	window->eventFileDialogAccept += MyGUI::newDelegate(this, &GameScreen::notifyFileDialogAccept);
 	window->initialize();
@@ -201,8 +185,8 @@ void GameScreen::notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem
 		LevelListScreen *window = new LevelListScreen();
 		window->levelOrLevelCollection = levelTemplate;
 		window->selectedLevel = selectedLevel;
-		window->setSmoothShow(true);
-		window->setMessageModal(true);
+		window->smoothShow();
+		window->setModal(true);
 		window->eventLevelListScreenAccept += MyGUI::newDelegate(this, &GameScreen::notifyLevelListAccept);
 		window->initialize();
 	} else if (name == "mnuUIScale") {
@@ -246,18 +230,6 @@ void GameScreen::toggleRadio(MyGUI::MenuItem* current) {
 }
 
 GameScreen::~GameScreen() {
-}
-
-GameScreen* GameScreen::setSmoothShow(bool _value)
-{
-	mSmoothShow = _value;
-	if (mSmoothShow)
-	{
-		mMainWidget->setAlpha(MyGUI::ALPHA_MIN);
-		mMainWidget->setVisible(true);
-		mMainWidget->castType<MyGUI::Window>()->setVisibleSmooth(true);
-	}
-	return this;
 }
 
 void GameScreen::endMessage() {
