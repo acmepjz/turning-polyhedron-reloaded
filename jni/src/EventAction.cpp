@@ -347,10 +347,11 @@ namespace game {
 				pp.flags = flags;
 			}
 
-			// TODO: animation & check stability reason (currently the graphics is buggy because the animation is not updated)
+			// TODO: animation & check stability reason
 			srcPoly->pos = pp;
 			srcPoly->flags |= Polyhedron::VISIBLE;
 			srcPoly->updateVisible();
+			srcPoly->updateTransform();
 			if (!srcPoly->valid(parent)) {
 				srcPoly->onRemove(parent, "fall");
 			}
