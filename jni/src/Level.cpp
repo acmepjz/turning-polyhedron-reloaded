@@ -10,6 +10,10 @@ namespace game {
 	Level::Level()
 		: _currentPolyhedron(-1)
 		, _isAnimating(true)
+		, checkpointRequired(0)
+		, _checkpointCount(0)
+		, _checkpointObtained(0)
+		, _mainPolyhedronCount(0)
 	{
 	}
 
@@ -21,6 +25,10 @@ namespace game {
 		, objectTypeMap(util::copyObj(other.objectTypeMap.get(), copyop)) //always deep copy
 		, _currentPolyhedron(other._currentPolyhedron)
 		, _isAnimating(true)
+		, checkpointRequired(other.checkpointRequired)
+		, _checkpointCount(other._checkpointCount)
+		, _checkpointObtained(other._checkpointObtained)
+		, _mainPolyhedronCount(other._mainPolyhedronCount)
 	{
 		//following objects are always deep copy
 		util::copyMap(maps, other.maps, copyop, true);
@@ -80,6 +88,7 @@ namespace game {
 
 	void Level::initMaps(){
 		_checkpointCount = 0;
+		_checkpointObtained = 0;
 		_mainPolyhedronCount = 0;
 		_isGameOver = false;
 		_isTileDirty = false;
@@ -133,6 +142,9 @@ namespace game {
 	}
 
 	bool Level::load(const XMLNode* node) {
+		//load attributes
+		checkpointRequired = node->getAttr("checkpointRequired", 0);
+
 		//load subnodes
 		for (size_t i = 0; i < node->subNodes.size(); i++) {
 			const XMLNode* subnode = node->subNodes[i].get();
@@ -188,7 +200,7 @@ namespace game {
 		if (_isGameOver) {
 			if (_test != 1) UTIL_NOTICE "*** GAME OVER ***" << std::endl;
 			_test = 1;
-		} else if (_checkpointCount <= 0 && _mainPolyhedronCount <= 0) {
+		} else if (isCheckpointEnough() && _mainPolyhedronCount <= 0) {
 			if (_test != 2) UTIL_NOTICE "*** GAME FINISHED ***" << std::endl;
 			_test = 2;
 		} else {
@@ -214,6 +226,7 @@ namespace game {
 	{
 		ADD_STRING_SERIALIZER(name, "");
 		ADD_STRING_SERIALIZER(solution, "");
+		ADD_INT_SERIALIZER(checkpointRequired, 0);
 		ADD_OBJECT_SERIALIZER(objectTypeMap, ObjectTypeMap, NULL);
 		ADD_OBJECT_SERIALIZER(tileTypeMap, TileTypeMap, NULL);
 		ADD_MAP_SERIALIZER(maps, Level::MapDataMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);

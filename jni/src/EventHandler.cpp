@@ -1,4 +1,5 @@
 #include "EventHandler.h"
+#include "Level.h"
 #include "Polyhedron.h"
 #include "XMLReaderWriter.h"
 #include "util_err.h"
@@ -277,6 +278,12 @@ namespace game {
 				CHECK_CONDITION("tileTypeCount", RationalOrFloat(evt->tileTypeCount));
 				CHECK_CONDITION("objectTypeCount", RationalOrFloat(evt->objectTypeCount));
 				CHECK_CONDITION("type", evt->eventType);
+				CHECK_CONDITION("checkpointObtained", RationalOrFloat(parent->_checkpointObtained));
+				CHECK_CONDITION("checkpointRemaining", RationalOrFloat(parent->getCheckpointRemaining()));
+				CHECK_CONDITION("checkpointEnough", parent->isCheckpointEnough());
+				CHECK_CONDITION("mainCount", RationalOrFloat(parent->_mainPolyhedronCount));
+				CHECK_CONDITION("polyhedron", evt->polyhedron ? evt->polyhedron->id : std::string());
+				CHECK_CONDITION("objectType", (evt->polyhedron && evt->polyhedron->_objType) ? evt->polyhedron->_objType->name : std::string());
 			} else {
 				int flags = 0;
 				for (int i = 0; Polyhedron::polyhedronFlagsAndNames[i].name; i++) {

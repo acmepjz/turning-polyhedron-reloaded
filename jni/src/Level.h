@@ -90,6 +90,8 @@ namespace game {
 		std::string name; //!< level name
 		std::string solution; //!< solution include in level file, for reference only
 
+		int checkpointRequired; //!< the number of checkpoints required to win (saved to level file), if <=0 it means all but excluding such number of checkpoints
+
 		typedef std::map<std::string, osg::ref_ptr<MapData> > MapDataMap;
 		MapDataMap maps; //!< map blocks
 
@@ -101,6 +103,7 @@ namespace game {
 
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, name);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, solution);
+		UTIL_ADD_BYVAL_GETTER_SETTER(int, checkpointRequired);
 		UTIL_ADD_BYREF_GETTER_SETTER(MapDataMap, maps);
 		UTIL_ADD_BYREF_GETTER_SETTER(Polyhedra, polyhedra);
 		UTIL_ADD_OBJ_GETTER_SETTER(TileTypeMap, tileTypeMap);
@@ -121,8 +124,20 @@ namespace game {
 
 		std::vector<osg::ref_ptr<EventDescription> > _eventQueue;
 
-		int _checkpointCount;
-		int _mainPolyhedronCount;
+		int _checkpointCount; //!< the number of checkpoints (a constant which doesn't change during playing)
+		int _checkpointObtained; //!< the number of checkpoints obtained
+
+		/** get the checkpoint remaining to win */
+		int getCheckpointRemaining() const {
+			return ((checkpointRequired <= 0 ? _checkpointCount : 0) + checkpointRequired) - _checkpointObtained;
+		}
+
+		/** check if checkpoint is enough */
+		bool isCheckpointEnough() const {
+			return getCheckpointRemaining() <= 0;
+		}
+
+		int _mainPolyhedronCount; //!< the number of main polyhedron which are still in the map
 	};
 
 }

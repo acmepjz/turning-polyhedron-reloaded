@@ -134,7 +134,7 @@
         <mesh type="cube" s="1,1,1" wireframe="true"/>
       </shader>
     </appearance>
-    <onEnter onGroundCount="1" main="true">
+    <onEnter onGroundCount="1" main="true" checkpointEnough="true">
 		<remove type="gameFinished" target="polyhedron"/>
 	</onEnter>
   </tileType>
@@ -144,7 +144,7 @@
         <mesh type="cube" s="1,1,1" wireframe="true"/>
       </shader>
     </appearance>
-    <onEnter onGroundCount="1" main="true">
+    <onEnter onGroundCount="1" main="true" checkpointEnough="true">
 		<remove type="gameFinished" target="polyhedron"/>
 	</onEnter>
   </tileType>

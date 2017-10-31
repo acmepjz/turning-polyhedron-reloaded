@@ -276,7 +276,7 @@ namespace game {
 		{
 			TileType *tt = evt->_map->get(evt->position);
 			if (tt && (tt->flags & TileType::TileFlags::CHECKPOINT) != 0) {
-				parent->_checkpointCount--;
+				parent->_checkpointObtained++;
 			} else {
 				UTIL_WARN "Invalid use of checkpoint event" << std::endl;
 			}
