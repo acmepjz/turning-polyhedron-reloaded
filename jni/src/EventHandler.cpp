@@ -179,10 +179,12 @@ static bool checkCondition(const std::string& s, const std::string& cond) {
 }
 
 static bool checkCondition(bool b, const std::string& cond) {
-	if (b) {
-		return cond == "true" || atoi(cond.c_str()) != 0;
+	if (cond == "true") {
+		return b;
+	} else if (cond == "false") {
+		return !b;
 	} else {
-		return cond == "false" || atoi(cond.c_str()) == 0;
+		return atoi(cond.c_str()) ? b : !b;
 	}
 }
 
