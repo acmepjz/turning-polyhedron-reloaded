@@ -190,22 +190,6 @@ static bool checkCondition(bool b, const std::string& cond) {
 
 namespace game {
 
-	EventDescription::EventDescription()
-		: type(EventHandler::INVALID)
-		, _map(NULL)
-		, onGroundCount(0)
-		, weight(0)
-		, tileTypeCount(0)
-		, objectTypeCount(0)
-		, polyhedron(NULL)
-	{
-
-	}
-
-	EventDescription::~EventDescription() {
-
-	}
-
 	EventHandler::EventHandler()
 		: type(INVALID)
 	{

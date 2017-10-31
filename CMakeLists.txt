@@ -67,26 +67,34 @@ SOURCE_GROUP("Source Files\\gfx" FILES
 
 SOURCE_GROUP("Header Files\\game" FILES
 	${PROJECT_SOURCE_DIR}/jni/src/EventAction.h
+	${PROJECT_SOURCE_DIR}/jni/src/EventDescription.h
 	${PROJECT_SOURCE_DIR}/jni/src/EventHandler.h
 	${PROJECT_SOURCE_DIR}/jni/src/Interaction.h
 	${PROJECT_SOURCE_DIR}/jni/src/Level.h
 	${PROJECT_SOURCE_DIR}/jni/src/LevelCollection.h
 	${PROJECT_SOURCE_DIR}/jni/src/MapData.h
+	${PROJECT_SOURCE_DIR}/jni/src/MapPosition.h
 	${PROJECT_SOURCE_DIR}/jni/src/ObjectType.h
 	${PROJECT_SOURCE_DIR}/jni/src/Polyhedron.h
+	${PROJECT_SOURCE_DIR}/jni/src/PolyhedronAnimation.h
+	${PROJECT_SOURCE_DIR}/jni/src/PolyhedronPosition.h
 	${PROJECT_SOURCE_DIR}/jni/src/TileProperty.h
 	${PROJECT_SOURCE_DIR}/jni/src/TileType.h
 )
 
 SOURCE_GROUP("Source Files\\game" FILES
 	${PROJECT_SOURCE_DIR}/jni/src/EventAction.cpp
+	${PROJECT_SOURCE_DIR}/jni/src/EventDescription.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/EventHandler.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/Interaction.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/Level.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/LevelCollection.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/MapData.cpp
+	${PROJECT_SOURCE_DIR}/jni/src/MapPosition.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/ObjectType.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/Polyhedron.cpp
+	${PROJECT_SOURCE_DIR}/jni/src/PolyhedronAnimation.cpp
+	${PROJECT_SOURCE_DIR}/jni/src/PolyhedronPosition.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/TileProperty.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/TileType.cpp
 )

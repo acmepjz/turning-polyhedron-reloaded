@@ -8,7 +8,7 @@
 #include "Polyhedron.h"
 #include "TileType.h"
 #include "ObjectType.h"
-#include "EventHandler.h"
+#include "EventDescription.h"
 
 class XMLNode;
 
