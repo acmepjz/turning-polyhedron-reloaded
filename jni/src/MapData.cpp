@@ -279,8 +279,11 @@ namespace game {
 	void MapData::processEvent(Level* parent, EventDescription* evt) {
 		TileType *tt = get(evt->position);
 		if (tt) tt->processEvent(parent, evt);
+
 		TileProperty *prop = getProp(evt->position);
 		if (prop) prop->processEvent(parent, evt);
+
+		if (evt->polyhedron) evt->polyhedron->processEvent(parent, evt);
 	}
 
 	struct MapDataItem {

@@ -98,6 +98,7 @@ namespace game {
 		, _currentAnimation(0)
 	{
 		util::copyMap(appearanceMap, other.appearanceMap, copyop);
+		util::copyVector(events, other.events, copyop, true);
 	}
 
 	Polyhedron::~Polyhedron()
@@ -1051,7 +1052,16 @@ namespace game {
 				osg::ref_ptr<gfx::Appearance> a = new gfx::Appearance;
 				a->load(subnode, &appearanceMap, NULL, _defaultSize);
 			} else {
-				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
+				int _eventType = EventHandler::convertToEventType(subnode->name);
+
+				if (_eventType >= 0) {
+					osg::ref_ptr<EventHandler> handler = new EventHandler;
+					if (handler->load(subnode, _eventType)) {
+						events.push_back(handler);
+					}
+				} else {
+					UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
+				}
 			}
 		}
 
@@ -1072,6 +1082,7 @@ namespace game {
 		ADD_BOOL_SERIALIZER(customShapeEnabled, false);
 		ADD_VECTOR_SERIALIZER(customShape, std::vector<unsigned char>, osgDB::BaseSerializer::RW_UCHAR, -1);
 		ADD_MAP_SERIALIZER(appearanceMap, gfx::AppearanceMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);
+		ADD_VECTOR_SERIALIZER(events, std::vector<osg::ref_ptr<EventHandler> >, osgDB::BaseSerializer::RW_OBJECT, -1);
 	}
 
 }

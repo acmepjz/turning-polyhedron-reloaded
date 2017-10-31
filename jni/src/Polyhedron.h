@@ -9,6 +9,7 @@
 #include <set>
 #include "Appearance.h"
 #include "PolyhedronPosition.h"
+#include "EventHandler.h"
 #include "util_object.h"
 
 namespace osgDB {
@@ -270,6 +271,12 @@ namespace game {
 
 		void updateVisible(); //!< call this when the VISIBLE flags changed
 
+		void processEvent(Level* parent, EventDescription* evt) {
+			for (size_t i = 0; i < events.size(); i++) {
+				events[i]->processEvent(parent, evt);
+			}
+		}
+
 	private:
 		//void raiseOnEnterOrOnLeave(int wt, HitTestResult& hitTestResult);
 
@@ -297,6 +304,8 @@ namespace game {
 		*/
 		gfx::AppearanceMap appearanceMap;
 
+		std::vector<osg::ref_ptr<EventHandler> > events; //!< the events
+
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, id);
 		UTIL_ADD_BYVAL_GETTER_SETTER(int, shape);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, objType);
@@ -309,6 +318,7 @@ namespace game {
 		UTIL_ADD_BYVAL_GETTER_SETTER(bool, customShapeEnabled);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<unsigned char>, customShape);
 		UTIL_ADD_BYREF_GETTER_SETTER(gfx::AppearanceMap, appearanceMap);
+		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<EventHandler> >, events);
 
 	public:
 		//the following properties don't save to file and is generated at runtime
