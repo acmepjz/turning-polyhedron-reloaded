@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<levelCollection>
+	<name>Color Zone Mazes</name>
+	<tileType id="BLUE" index="-1">
+		<appearance>
+			<shader templateName="simple1_fixed" ambient="0.1,0.1,0.4" diffuse="0.1,0.1,0.4" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" s="1,1,0.25" c="0,0,1" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader>
+		</appearance>
+	</tileType>
+	<tileType id="RED" index="-2">
+		<appearance>
+			<shader templateName="simple1_fixed" ambient="0.4,0.1,0.1" diffuse="0.4,0.1,0.1" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" s="1,1,0.25" c="0,0,1" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader>
+		</appearance>
+	</tileType>
+	<tileType id="GREEN" index="-3">
+		<appearance>
+			<shader templateName="simple1_fixed" ambient="0.1,0.4,0.1" diffuse="0.1,0.4,0.1" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" s="1,1,0.25" c="0,0,1" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader>
+		</appearance>
+	</tileType>
+	<tileType id="YELLOW" index="-4">
+		<appearance>
+			<shader templateName="simple1_fixed" ambient="0.4,0.4,0.1" diffuse="0.4,0.4,0.1" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" s="1,1,0.25" c="0,0,1" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader>
+		</appearance>
+	</tileType>
+	<tileMapping id="floating-goal" index="-5"/>
+	<level>
+		<mapData id="m" shape="rect" size="5,5,1">
+			<typeArray><![CDATA[
+-1,-1,-2,-2,-2,
+-1,-2,-2,-2,-2,
+-1,-2,-2,-1,-2,
+-1,-1,-1,-1,-2,
+-1,-1,-1,-2,-2,
+]]></typeArray></mapData>
+		<mapData id="overlay" shape="rect" p="2,2,0" size="1,1,1"><typeArray>-5</typeArray></mapData>
+		<polyhedron id="p1" p="m(2,4)" tiltable="false" supportable="false" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+			<preMoveEnter tileTypeCount="2~"><cancel/></preMoveEnter>
+		</polyhedron>
+		<winningCondition><moveCondition src="p1" target="m(2,2)"/></winningCondition>
+	</level>
+	<level>
+		<mapData id="m" shape="rect" size="5,5,1">
+			<typeArray><![CDATA[
+-3,-3,-3,-1,-1,
+-2,-3,-3,-3,-1,
+-2,-3,-1,-1,-1,
+-2,-2,-1,-1,-2,
+-2,-2,-2,-2,-2,
+]]></typeArray></mapData>
+		<mapData id="overlay" shape="rect" p="2,2,0" size="1,1,1"><typeArray>-5</typeArray></mapData>
+		<polyhedron id="p1" p="m(2,4)" tiltable="false" supportable="false" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+			<preMoveEnter tileTypeCount="2~"><cancel/></preMoveEnter>
+		</polyhedron>
+		<winningCondition><moveCondition src="p1" target="m(2,2)"/></winningCondition>
+	</level>
+	<level>
+		<mapData id="m" shape="rect" size="5,5,1">
+			<typeArray><![CDATA[
+-1,-1,-3,-3,-3,
+-4,-1,-1,-3,-3,
+-4,-1,-1,-2,-3,
+-4,-4,-2,-2,-3,
+-4,-4,-2,-2,-2,
+]]></typeArray></mapData>
+		<mapData id="overlay" shape="rect" p="2,2,0" size="1,1,1"><typeArray>-5</typeArray></mapData>
+		<polyhedron id="p1" p="m(2,4)" tiltable="false" supportable="false" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+			<preMoveEnter tileTypeCount="2~"><cancel/></preMoveEnter>
+		</polyhedron>
+		<winningCondition><moveCondition src="p1" target="m(2,2)"/></winningCondition>
+	</level>
+	<level>
+		<mapData id="m" shape="rect" size="6,6,1">
+			<typeArray><![CDATA[
+-1,-1,-1,-1,-2,-2,
+-2,-1,-1,-2,-2,-2,
+-2,-2,-4,-4,-4,-2,
+-2,-2,-3,-4,-4,-1,
+-2,-3,-3,-4,-1,-1,
+-3,-3,-3,-1,-1,-1,
+]]></typeArray></mapData>
+		<mapData id="overlay" shape="rect" p="5,0,0" size="1,1,1"><typeArray>-5</typeArray></mapData>
+		<polyhedron id="p1" p="m(0,0)" tiltable="false" supportable="false" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+			<preMoveEnter tileTypeCount="2~"><cancel/></preMoveEnter>
+		</polyhedron>
+		<winningCondition><moveCondition src="p1" target="m(5,0)"/></winningCondition>
+	</level>
+	<level>
+		<mapData id="m" shape="rect" size="6,6,1">
+			<typeArray><![CDATA[
+-4,-4,-3,-3,-3,-3,
+-4,-4,-4,-1,-3,-3,
+-4,-1,-1,-1,-4,-4,
+-3,-1,-1,-4,-4,-4,
+-3,-3,-2,-2,-2,-4,
+-3,-3,-3,-2,-2,-2,
+]]></typeArray></mapData>
+		<mapData id="overlay" shape="rect" p="5,0,0" size="1,1,1"><typeArray>-5</typeArray></mapData>
+		<polyhedron id="p1" p="m(0,0)" tiltable="false" supportable="false" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+			<preMoveEnter tileTypeCount="2~"><cancel/></preMoveEnter>
+		</polyhedron>
+		<winningCondition><moveCondition src="p1" target="m(5,0)"/></winningCondition>
+	</level>
+	<level>
+		<mapData id="m" shape="rect" size="6,6,1">
+			<typeArray><![CDATA[
+-1,-1,-1,-2,-1,-1,
+-2,-1,-1,-1,-1,-1,
+-1,-2,-1,-1,-2,-1,
+-1,-1,-1,-1,-1,-2,
+-2,-1,-1,-2,-1,-1,
+-1,-1,-2,-1,-1,-1,
+]]></typeArray></mapData>
+		<mapData id="overlay" shape="rect" p="5,5,0" size="1,1,1"><typeArray>-5</typeArray></mapData>
+		<polyhedron id="p1" p="m(0,0)" tiltable="false" supportable="false" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+			<preMoveEnter tileTypeCount="2~"><cancel/></preMoveEnter>
+		</polyhedron>
+		<winningCondition><moveCondition src="p1" target="m(5,5)"/></winningCondition>
+	</level>
+	<level>
+		<mapData id="m" shape="rect" size="7,7,1">
+			<typeArray><![CDATA[
+-1,-1,-3,-2,-2,-2,-2,
+-1,-1,-3,-3,-2,-2,-4,
+-1,-3,-3,-3,-2,-4,-4,
+-1,-4,-2,-3,-4,-4,-1,
+-1,-4,-2,-2,-4,-4,-1,
+-4,-4,-2,-2,-2,-1,-1,
+-4,-4,-4,-2,-1,-1,-1,
+]]></typeArray></mapData>
+		<mapData id="overlay" shape="rect" p="5,1,0" size="1,1,1"><typeArray>-5</typeArray></mapData>
+		<polyhedron id="p1" p="m(1,1)" tiltable="false" supportable="false" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+			<preMoveEnter tileTypeCount="2~"><cancel/></preMoveEnter>
+		</polyhedron>
+		<winningCondition><moveCondition src="p1" target="m(5,1)"/></winningCondition>
+	</level>
+	<level>
+		<mapData id="m" shape="rect" size="7,7,1">
+			<typeArray><![CDATA[
+-2,-4,-1,-1,-1,-3,-2,
+-2,-4,-4,-4,-1,-3,-2,
+-2,-2,-2,-4,-1,-3,-3,
+-3,-3,-2,-4,-1,-1,-1,
+-1,-3,-2,-4,-4,-4,-1,
+-1,-3,-2,-2,-2,-4,-4,
+-1,-3,-3,-3,-2,-2,-2,
+]]></typeArray></mapData>
+		<mapData id="overlay" shape="rect" p="5,2,0" size="1,1,1"><typeArray>-5</typeArray></mapData>
+		<polyhedron id="p1" p="m(1,2)" tiltable="false" supportable="false" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+			<preMoveEnter tileTypeCount="2~"><cancel/></preMoveEnter>
+		</polyhedron>
+		<winningCondition><moveCondition src="p1" target="m(5,2)"/></winningCondition>
+	</level>
+	<level>
+		<mapData id="m" shape="rect" size="7,7,1">
+			<typeArray><![CDATA[
+-1,-1,-1,-2,-1,-1,-1,
+-1,-1,-2,-1,-2,-1,-1,
+-1,-2,-1,-1,-1,-1,-2,
+-1,-1,-1,-1,-1,-2,-1,
+-2,-1,-1,-2,-1,-1,-1,
+-1,-2,-1,-1,-2,-1,-1,
+-1,-1,-1,-1,-1,-2,-1,
+]]></typeArray></mapData>
+		<mapData id="overlay" shape="rect" p="6,6,0" size="1,1,1"><typeArray>-5</typeArray></mapData>
+		<polyhedron id="p1" p="m(0,0)" tiltable="false" supportable="false" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+			<preMoveEnter tileTypeCount="2~"><cancel/></preMoveEnter>
+		</polyhedron>
+		<winningCondition><moveCondition src="p1" target="m(6,6)"/></winningCondition>
+	</level>
+	<level>
+		<mapData id="m" shape="rect" size="10,10,1">
+			<typeArray><![CDATA[
+-2,-1,-1,-1,-1,-2,-1,-1,-1,-1,
+-1,-1,-1,-1,-1,-1,-1,-2,-1,-1,
+-1,-2,-1,-1,-2,-1,-1,-1,-2,-1,
+-1,-1,-2,-1,-1,-1,-2,-1,-1,-1,
+-1,-1,-1,-1,-2,-1,-1,-2,-1,-1,
+-1,-1,-2,-1,-1,-1,-1,-1,-1,-1,
+-2,-1,-1,-2,-1,-2,-1,-2,-1,-1,
+-1,-2,-1,-1,-1,-1,-1,-1,-2,-1,
+-1,-1,-1,-1,-2,-1,-1,-2,-1,-1,
+-1,-1,-1,-1,-1,-2,-1,-1,-1,-1,
+]]></typeArray></mapData>
+		<mapData id="overlay" shape="rect" p="9,4,0" size="1,1,1"><typeArray>-5</typeArray></mapData>
+		<polyhedron id="p1" p="m(0,4)" tiltable="false" supportable="false" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+			<preMoveEnter tileTypeCount="2~"><cancel/></preMoveEnter>
+		</polyhedron>
+		<winningCondition><moveCondition src="p1" target="m(9,4)"/></winningCondition>
+	</level>
+	<level>
+		<mapData id="m" shape="rect" size="8,8,1">
+			<typeArray><![CDATA[
+-2,-2,-2,-2,-2,-1,-1,-1,
+-2,-2,-2,-2,-2,-1,-1,-1,
+-2,-2,-1,-1,-1,-1,-1,-1,
+-2,-2,-1,-1,-1,-1,-1,-1,
+-2,-2,-1,-1,-1,-1,-1,-1,
+-2,-2,-2,-2,-2,-2,-1,-1,
+-2,-2,-2,-2,-2,-2,-1,-1,
+-2,-2,-2,-1,-1,-1,-1,-1,
+]]></typeArray></mapData>
+		<mapData id="overlay" shape="rect" p="6,0,0" size="2,3,1"><typeArray>-5*6</typeArray></mapData>
+		<polyhedron id="p1" shape="2x3x1" p="m(0,5)" tiltable="false" supportable="false" autoSize="true">
+			<appearance><shader templateName="simple1_fixed" ambient="0.2,0.2,0.2" diffuse="0.2,0.2,0.2" specular="0.4,0.4,0.3" specularHardness="50">
+				<mesh type="cube" bevel="1;0.05" bevelNormalSmoothness="1"/>
+			</shader></appearance>
+			<preMoveEnter tileTypeCount="2~"><cancel/></preMoveEnter>
+		</polyhedron>
+		<winningCondition><moveCondition src="p1" target="m(6,0)" targetSize="2,3"/></winningCondition>
+	</level>
+</levelCollection>

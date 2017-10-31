@@ -17,6 +17,8 @@ static const char* eventNames[game::EventHandler::TYPE_MAX] = {
 	"onMoveLeave",
 	"onEvent",
 	"onHitTest",
+	"preMoveEnter",
+	"preMoveLeave",
 };
 
 class RationalOrFloat {

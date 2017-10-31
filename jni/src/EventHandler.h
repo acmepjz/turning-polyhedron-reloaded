@@ -27,6 +27,8 @@ namespace game {
 			ON_MOVE_LEAVE,
 			ON_EVENT,
 			ON_HIT_TEST,
+			PRE_MOVE_ENTER,
+			PRE_MOVE_LEAVE,
 			TYPE_MAX,
 		};
 	protected:

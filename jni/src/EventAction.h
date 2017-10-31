@@ -19,6 +19,7 @@ namespace game {
 			CHECKPOINT,
 			MOVE_POLYHEDRON,
 			TELEPORT_POLYHEDRON,
+			CANCEL,
 			TYPE_MAX,
 		};
 	protected:

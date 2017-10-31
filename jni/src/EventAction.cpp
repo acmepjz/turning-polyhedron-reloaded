@@ -25,6 +25,7 @@ static const char* actionNames[game::EventAction::TYPE_MAX] =
 	"checkpoint",
 	"move",
 	"teleport",
+	"cancel"
 };
 
 // NOTE: the items in each array should be sorted
@@ -35,6 +36,7 @@ static const char* actionArgConvertTo[] = { "target", "value", NULL };
 static const char* actionArgCheckpoint[] = { NULL };
 static const char* actionArgMovePolyhedron[] = { NULL }; // TODO:
 static const char* actionArgTeleport[] = { "dest", "flags", "hide", "size", "src", NULL };
+static const char* actionArgCancel[] = { NULL };
 
 static const char** actionArguments[game::EventAction::TYPE_MAX] =
 {
@@ -44,6 +46,7 @@ static const char** actionArguments[game::EventAction::TYPE_MAX] =
 	actionArgCheckpoint,
 	actionArgMovePolyhedron,
 	actionArgTeleport,
+	actionArgCancel,
 };
 
 namespace game {
@@ -356,6 +359,9 @@ namespace game {
 				srcPoly->onRemove(parent, "fall");
 			}
 		}
+			break;
+		case CANCEL:
+			parent->_cancel = true;
 			break;
 		}
 	}
