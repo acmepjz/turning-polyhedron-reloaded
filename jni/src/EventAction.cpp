@@ -70,7 +70,7 @@ namespace game {
 		type = _type;
 		arguments = node->attributes;
 
-		// report unused arguments
+		// report unknown arguments
 		util::StringStringMap::const_iterator first1 = arguments.begin(), last1 = arguments.end();
 		const char **first2 = actionArguments[type];
 
@@ -79,7 +79,7 @@ namespace game {
 			assert(first2[1] == NULL || strcmp(first2[0], first2[1]) < 0);
 
 			if (first1->first < *first2) {
-				UTIL_WARN "argument '" << first1->first << "' of action '" << convertToActionName(type) << "' is unused" << std::endl;
+				UTIL_WARN "unknown argument '" << first1->first << "' of action '" << convertToActionName(type) << "'" << std::endl;
 				++first1;
 			} else if (*first2 < first1->first) {
 				++first2;
@@ -89,7 +89,7 @@ namespace game {
 		}
 
 		while (first1 != last1) {
-			UTIL_WARN "argument '" << first1->first << "' of action '" << convertToActionName(type) << "' is unused" << std::endl;
+			UTIL_WARN "unknown argument '" << first1->first << "' of action '" << convertToActionName(type) << "'" << std::endl;
 			++first1;
 		}
 
