@@ -2,6 +2,7 @@
 // Warning: this version of osgMyGUI only works under single-threaded mode.
 
 #include "MYGUIManager.h"
+#include "MYGUIAccelerator.h"
 #include "DropdownListButton.h"
 #include <osgDB/ReadFile>
 #include <osgDB/WriteFile>
@@ -317,8 +318,17 @@ bool MYGUIManager::handleEvent(const osgGA::GUIEventAdapter& ea, bool async) con
 		break;
 	case osgGA::GUIEventAdapter::KEYDOWN:
 		x = ea.getKey();
+		y = ea.getUnmodifiedKey();
+		z = ea.getModKeyMask();
 		if (x < 0 || x >= 127) x = 0; // ??? TODO: IME
-		return MyGUI::InputManager::getInstance().injectKeyPress(convertKeyCode(ea.getUnmodifiedKey()), x);
+
+		// process accelerator key first
+		for (Accelerators::iterator it = accelerators.begin(); it != accelerators.end(); ++it) {
+			if ((*it)->process(y, z)) break;
+		}
+
+		// then send to MyGUI
+		return MyGUI::InputManager::getInstance().injectKeyPress(convertKeyCode(y), x);
 		break;
 	case osgGA::GUIEventAdapter::KEYUP:
 		return MyGUI::InputManager::getInstance().injectKeyRelease(convertKeyCode(ea.getUnmodifiedKey()));

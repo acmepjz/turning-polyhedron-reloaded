@@ -5,6 +5,12 @@
 
 #include <MyGUI/MyGUI.h>
 #include "BaseLayout.h"
+#include "MYGUIAccelerator.h"
+
+#include <osg/Group>
+#include <osgGA/OrbitManipulator>
+#include "Level.h"
+#include "LevelController.h"
 
 namespace MyGUI {
 	class Message;
@@ -13,11 +19,6 @@ namespace MyGUI {
 }
 
 class LevelListScreen;
-
-#include <osg/Group>
-#include <osgGA/OrbitManipulator>
-#include "Level.h"
-#include "LevelController.h"
 
 class GameScreen : public wraps::BaseLayout {
 public:
@@ -35,6 +36,8 @@ private:
 	void notifyFileDialogAccept(MyGUI::FileDialog* sender);
 	void notifyLevelListAccept(LevelListScreen* sender);
 	void notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem* item);
+	void notifyAcceleratorKeyPressed(MYGUIAccelerator* sender, MyGUI::Widget* widget);
+
 	static void toggleCheck(MyGUI::MenuItem* current);
 	void toggleRadio(MyGUI::MenuItem* current);
 
@@ -55,4 +58,5 @@ private:
 	MyGUI::Window* _demoView;
 	MyGUI::MenuBar* _menuBar;
 	MyGUI::MenuControl *_recentFiles, *_recentFolders;
+	MYGUIAccelerator _accel;
 };

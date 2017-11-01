@@ -105,6 +105,7 @@ SOURCE_GROUP("Header Files\\mygui" FILES
 	${PROJECT_SOURCE_DIR}/jni/src/FileDialog.h
 	${PROJECT_SOURCE_DIR}/jni/src/InputBox.h
 	${PROJECT_SOURCE_DIR}/jni/src/MessageBox.h
+	${PROJECT_SOURCE_DIR}/jni/src/MYGUIAccelerator.h
 	${PROJECT_SOURCE_DIR}/jni/src/MYGUIManager.h
 )
 
@@ -114,6 +115,7 @@ SOURCE_GROUP("Source Files\\mygui" FILES
 	${PROJECT_SOURCE_DIR}/jni/src/FileDialog.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/InputBox.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/MessageBox.cpp
+	${PROJECT_SOURCE_DIR}/jni/src/MYGUIAccelerator.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/MYGUIManager.cpp
 )
 

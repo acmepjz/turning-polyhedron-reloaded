@@ -12,6 +12,8 @@
 
 #include <osgViewer/Viewer>
 
+#define ADDACCEL1(NAME,MODIFIER,KEY) { MyGUI::Widget* _temp; assignWidget(_temp, NAME); _accel.addAccelerator(_temp, true, osgGA::GUIEventAdapter::KEY_##KEY, osgGA::GUIEventAdapter::MODKEY_##MODIFIER); }
+
 GameScreen::GameScreen() :
 	wraps::BaseLayout("GameScreen.layout"),
 	selectedLevel(0),
@@ -28,6 +30,15 @@ GameScreen::GameScreen() :
 
 	assignWidget(_recentFiles, "RecentFiles");
 	assignWidget(_recentFolders, "RecentFolders");
+
+	ADDACCEL1("mnuNew", CTRL, N);
+	ADDACCEL1("mnuOpen", CTRL, O);
+	ADDACCEL1("mnuSave", CTRL, S);
+	ADDACCEL1("mnuExit", CTRL, Q);
+	ADDACCEL1("mnuRestart", CTRL, R);
+	ADDACCEL1("mnuLevelList", CTRL, L);
+
+	_accel.eventAcceleratorKeyPressed += MyGUI::newDelegate(this, &GameScreen::notifyAcceleratorKeyPressed);
 
 	frameAdvise(true);
 
@@ -161,6 +172,11 @@ void GameScreen::showFileDialog(const std::string& name, const std::string& curr
 	window->mTag = name;
 	window->eventFileDialogAccept += MyGUI::newDelegate(this, &GameScreen::notifyFileDialogAccept);
 	window->initialize();
+}
+
+void GameScreen::notifyAcceleratorKeyPressed(MYGUIAccelerator* sender, MyGUI::Widget* widget) {
+	MyGUI::MenuItem* item = widget->castType<MyGUI::MenuItem>(false);
+	if (item) notifyMenuItemClick(NULL, item);
 }
 
 void GameScreen::notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem* item) {

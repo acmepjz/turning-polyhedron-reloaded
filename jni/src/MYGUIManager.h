@@ -11,6 +11,7 @@
 #include <osgViewer/GraphicsWindow>
 #include <queue>
 
+class MYGUIAccelerator;
 class MYGUIManager;
 
 class MYGUIHandler : public osgGA::GUIEventHandler
@@ -57,6 +58,9 @@ public:
     virtual void releaseGLObjects( osg::State* state=0 ) const;
 
 	void setGraphicsWindow(osgViewer::GraphicsWindow* gw) { _gw = gw; }
+
+	typedef std::set<MYGUIAccelerator*> Accelerators;
+	Accelerators accelerators;
 
 	static MYGUIManager* instance; //!< the global reference of the node which renders MyGUI
     
