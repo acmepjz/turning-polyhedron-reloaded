@@ -63,6 +63,7 @@ void LevelListScreen::refreshList() {
 		}
 		if (selectedLevel >= 0 && selectedLevel < (int)lc->levels.size()) {
 			lstLevel->setIndexSelected(selectedLevel);
+			lstLevel->beginToItemSelected();
 		}
 		return;
 	}
