@@ -37,7 +37,7 @@ GameScreen::GameScreen() :
 		sscanf(g_argv[2], "%d", &levelIndex);
 		levelIndex--;
 	}
-	setLevelOrCollection(gameMgr->loadOrCreateLevel(g_argc >= 2 ? g_argv[1] : NULL, levelIndex));
+	setLevelOrCollection(GameManager::instance->loadOrCreateLevel(g_argc >= 2 ? g_argv[1] : NULL, levelIndex));
 }
 
 void GameScreen::restartLevel() {
@@ -64,7 +64,7 @@ void GameScreen::restartLevel() {
 		} else {
 			UTIL_ERR "Invalid level template" << std::endl;
 			// create a placeholder level
-			level = gameMgr->loadOrCreateLevel(NULL, 0);
+			level = GameManager::instance->loadOrCreateLevel(NULL, 0);
 		}
 	}
 
@@ -118,16 +118,16 @@ void GameScreen::notifyLevelListAccept(LevelListScreen* sender) {
 }
 
 bool GameScreen::loadFile(const std::string& fullName, const std::string& directory) {
-	osg::Object *newLevel = gameMgr->loadLevelOrCollection(fullName.c_str());
+	osg::Object *newLevel = GameManager::instance->loadLevelOrCollection(fullName.c_str());
 	if (newLevel) {
-		if (cfgMgr->recentFiles.add(fullName)) frameAdvise(true);
-		if (!directory.empty() && cfgMgr->recentFolders.add(directory)) frameAdvise(true);
+		if (ConfigManager::instance->recentFiles.add(fullName)) frameAdvise(true);
+		if (!directory.empty() && ConfigManager::instance->recentFolders.add(directory)) frameAdvise(true);
 
 		setLevelOrCollection(newLevel);
 
 		return true;
 	} else {
-		if (cfgMgr->recentFiles.remove(fullName)) frameAdvise(true);
+		if (ConfigManager::instance->recentFiles.remove(fullName)) frameAdvise(true);
 
 		MyGUI::Message::createMessageBox("Error",
 			"Failed to load level file '" + fullName + "'.",
@@ -138,13 +138,13 @@ bool GameScreen::loadFile(const std::string& fullName, const std::string& direct
 }
 
 void GameScreen::newFile() {
-	game::Level *newLevel = gameMgr->loadLevel(NULL, 0);
+	game::Level *newLevel = GameManager::instance->loadLevel(NULL, 0);
 	setLevelOrCollection(newLevel);
 }
 
 void GameScreen::frameEntered(float _frame) {
-	cfgMgr->recentFiles.updateMenu(_recentFiles, "mnuRecentFile");
-	cfgMgr->recentFolders.updateMenu(_recentFolders, "mnuRecentFolder");
+	ConfigManager::instance->recentFiles.updateMenu(_recentFiles, "mnuRecentFile");
+	ConfigManager::instance->recentFolders.updateMenu(_recentFolders, "mnuRecentFolder");
 
 	frameAdvise(false);
 }
@@ -191,7 +191,7 @@ void GameScreen::notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem
 		window->initialize();
 	} else if (name == "mnuUIScale") {
 		toggleRadio(item);
-		myguiMgr->setUIScale(atof(item->getUserString("Tag").c_str()));
+		MYGUIManager::instance->setUIScale(atof(item->getUserString("Tag").c_str()));
 	} else if (name == "mnuLogLevel") {
 		toggleRadio(item);
 		const std::string& tag = item->getUserString("Tag");

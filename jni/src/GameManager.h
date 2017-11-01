@@ -12,9 +12,9 @@ namespace game {
 */
 class GameManager : public osg::Referenced {
 protected:
-	virtual ~GameManager() {}
+	virtual ~GameManager();
 public:
-	GameManager() {}
+	GameManager();
 
 	/** load default object and tile type map, etc. */
 	void loadDefaults();
@@ -28,9 +28,9 @@ public:
 	/** this is test only */
 	game::Level* loadOrCreateLevel(const char* filename, int levelIndex);
 
+	static GameManager* instance; //!< the global instance of the game manager
+
 public:
 	osg::ref_ptr<game::ObjectTypeMap> defaultObjectTypeMap;
 	osg::ref_ptr<game::TileTypeMap> defaultTileTypeMap;
 };
-
-extern GameManager* gameMgr;

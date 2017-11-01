@@ -9,7 +9,7 @@
 #include <osgDB/FileNameUtils>
 #include <osgDB/FileUtils>
 
-CompressionManager *compMgr = NULL;
+CompressionManager *CompressionManager::instance = NULL;
 
 namespace util {
 
@@ -37,11 +37,13 @@ namespace util {
 }
 
 CompressionManager::CompressionManager() {
+	instance = this;
+
 	registerLZMACompression(this);
 }
 
 CompressionManager::~CompressionManager() {
-
+	instance = NULL;
 }
 
 void CompressionManager::registerCompressedStreamRoutine(const std::string& _extension, CompressedStreamRoutine _compressRoutine,

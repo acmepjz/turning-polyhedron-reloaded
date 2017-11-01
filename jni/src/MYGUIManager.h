@@ -26,6 +26,8 @@ protected:
 
 class MYGUIManager : public osg::Drawable, public MyGUI::OpenGLImageLoader
 {
+protected:
+	~MYGUIManager();
 public:
     MYGUIManager();
     MYGUIManager( const MYGUIManager& copy, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY );
@@ -55,14 +57,14 @@ public:
     virtual void releaseGLObjects( osg::State* state=0 ) const;
 
 	void setGraphicsWindow(osgViewer::GraphicsWindow* gw) { _gw = gw; }
+
+	static MYGUIManager* instance; //!< the global reference of the node which renders MyGUI
     
 protected:
-    virtual ~MYGUIManager() {}
-    
     virtual void updateEvents() const;
 	virtual bool handleEvent(const osgGA::GUIEventAdapter& ea, bool async = false) const;
 	virtual void setupResources();
-    virtual void initializeControls() {}
+	virtual void initializeControls();
     
     static MyGUI::MouseButton convertMouseButton( int button );
     static MyGUI::KeyCode convertKeyCode( int key );

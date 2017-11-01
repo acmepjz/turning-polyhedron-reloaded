@@ -60,9 +60,9 @@ public:
 	can be uncompressed file, or compressed stream. */
 	util::ostream* openFileForWrite(const std::string& _fileName) const;
 
+	static CompressionManager *instance; //!< the global compression (and file) manager
+
 private:
 	std::map<std::string, CompressedStreamRoutine> compressRoutine;
 	std::map<std::string, CompressedStreamRoutine> decompressRoutine;
 };
-
-extern CompressionManager *compMgr;

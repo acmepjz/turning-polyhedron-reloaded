@@ -44,8 +44,6 @@ wraps::BaseLayout *currentScreen = NULL;
 #include "MYGUIManager.h"
 #include "GameScreen.h"
 
-MYGUIManager *myguiMgr = NULL;
-
 using namespace game;
 
 class CustomMYGUIManager : public MYGUIManager
@@ -74,12 +72,10 @@ int main(int argc, char** argv){
 	//osg::setNotifyLevel(osg::NotifySeverity::WARN);
 
 	//init compression manager
-	osg::ref_ptr<CompressionManager> compressionManager = new CompressionManager();
-	compMgr = compressionManager.get();
+	osg::ref_ptr<CompressionManager> compMgr = new CompressionManager();
 
 	//load config
 	osg::ref_ptr<ConfigManager> cfg = new ConfigManager("config.xml");
-	cfgMgr = cfg.get();
 
 	//create viewer
 	osgViewer::Viewer viewer;
@@ -105,8 +101,7 @@ int main(int argc, char** argv){
 	camera->getOrCreateStateSet()->setAttributeAndModes(new osg::Depth());
 
 	//load defaults
-	osg::ref_ptr<GameManager> gameManager = new GameManager();
-	gameMgr = gameManager.get();
+	osg::ref_ptr<GameManager> gameMgr = new GameManager();
 	gameMgr->loadDefaults();
 
 	//osg::ref_ptr<osg::Material> mat = new osg::Material;
@@ -128,7 +123,6 @@ int main(int argc, char** argv){
 
 	//test: GUI
 	osg::ref_ptr<CustomMYGUIManager> mygui = new CustomMYGUIManager;
-	myguiMgr = mygui.get();
 
 	osg::ref_ptr<osg::Geode> ui_geode = new osg::Geode;
 	ui_geode->setCullingActive(false);

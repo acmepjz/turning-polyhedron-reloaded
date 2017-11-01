@@ -9,7 +9,15 @@
 
 using namespace game;
 
-GameManager* gameMgr = NULL;
+GameManager* GameManager::instance = NULL;
+
+GameManager::GameManager() {
+	instance = this;
+}
+
+GameManager::~GameManager() {
+	instance = NULL;
+}
 
 void GameManager::loadDefaults() {
 	defaultObjectTypeMap = new ObjectTypeMap;
@@ -30,7 +38,7 @@ game::Level* GameManager::loadLevel(const char* filename, int levelIndex) {
 
 	UTIL_NOTICE "Loading level '" << filename << "'" << std::endl;
 
-	std::istream *fin = compMgr->openFileForRead(filename);
+	std::istream *fin = CompressionManager::instance->openFileForRead(filename);
 	if (fin) {
 		osg::ref_ptr<XMLNode> x = XMLReaderWriter::readFile(*fin);
 		delete fin;
@@ -67,7 +75,7 @@ osg::Object* GameManager::loadLevelOrCollection(const char* filename) {
 
 	UTIL_NOTICE "Loading file '" << filename << "'" << std::endl;
 
-	std::istream *fin = compMgr->openFileForRead(filename);
+	std::istream *fin = CompressionManager::instance->openFileForRead(filename);
 	if (fin) {
 		osg::ref_ptr<XMLNode> x = XMLReaderWriter::readFile(*fin);
 		delete fin;

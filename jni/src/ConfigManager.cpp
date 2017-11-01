@@ -6,7 +6,7 @@
 #include <iostream>
 #include <fstream>
 
-ConfigManager *cfgMgr = NULL;
+ConfigManager *ConfigManager::instance = NULL;
 
 const size_t maxRecentFiles = 10;
 
@@ -98,6 +98,8 @@ void RecentFiles::updateMenu(MyGUI::MenuControl* menu, const std::string& _name)
 ConfigManager::ConfigManager(const std::string& _fileName)
 	: dirty(false)
 {
+	instance = this;
+
 	fileName = _fileName;
 
 	recentFiles.owner = this;
@@ -139,5 +141,7 @@ void ConfigManager::save() {
 }
 
 ConfigManager::~ConfigManager() {
+	instance = NULL;
+
 	save();
 }

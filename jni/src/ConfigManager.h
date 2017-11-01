@@ -41,6 +41,8 @@ public:
 
 	void save();
 
+	static ConfigManager *instance; //!< the global config manager
+
 public:
 	RecentFiles recentFiles;
 	RecentFiles recentFolders;
@@ -48,5 +50,3 @@ public:
 	std::string fileName;
 	bool dirty;
 };
-
-extern ConfigManager *cfgMgr;

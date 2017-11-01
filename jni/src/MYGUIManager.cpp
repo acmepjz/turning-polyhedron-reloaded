@@ -6,6 +6,8 @@
 #include <osgDB/ReadFile>
 #include <osgDB/WriteFile>
 
+MYGUIManager* MYGUIManager::instance = NULL;
+
 bool MYGUIHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa )
 {
 	// This only works under single-threaded mode
@@ -38,9 +40,15 @@ MYGUIManager::MYGUIManager()
     _resourcePathFile("resources.xml"), _resourceCoreFile("MyGUI_Core.xml"),
 	_activeContextID(0), _initialized(false), _gw(0), _uiScale(1.0f), _useHWCursor(true)
 {
-    setSupportsDisplayList( false );
+	instance = this;
+
+	setSupportsDisplayList( false );
     getOrCreateStateSet()->setMode( GL_LIGHTING, osg::StateAttribute::OFF );
     getOrCreateStateSet()->setMode( GL_DEPTH_TEST, osg::StateAttribute::OFF );
+}
+
+MYGUIManager::~MYGUIManager() {
+	instance = NULL;
 }
 
 MYGUIManager::MYGUIManager( const MYGUIManager& copy,const osg::CopyOp& copyop )
@@ -54,7 +62,13 @@ MYGUIManager::MYGUIManager( const MYGUIManager& copy,const osg::CopyOp& copyop )
 	_gw(copy._gw),
 	_uiScale(copy._uiScale),
 	_useHWCursor(copy._useHWCursor)
-{}
+{
+	MYGUI_EXCEPT("Fatal error: try to copy construct MYGUIManager which is singleton");
+}
+
+void MYGUIManager::initializeControls() {
+
+}
 
 void MYGUIManager::setUIScale(float uiScale) {
 	_uiScale = uiScale;
