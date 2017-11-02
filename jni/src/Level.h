@@ -57,6 +57,8 @@ namespace game {
 
 		bool load(const XMLNode* node); //!< load from XML node, assume the node is called `level`
 
+		void switchToPolyhedron(int index);
+
 		void switchToFirstPolyhedron(){
 			switchToNextPolyhedron(-1);
 		}

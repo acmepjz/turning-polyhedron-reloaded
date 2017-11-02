@@ -1,6 +1,7 @@
 #include "Level.h"
 #include "util_err.h"
 #include "XMLReaderWriter.h"
+#include "MousePickingData.h"
 #include <osg/Group>
 #include <osg/MatrixTransform>
 #include <osgDB/ObjectWrapper>
@@ -78,9 +79,16 @@ namespace game {
 		}
 		for (int i = 0, m = polyhedra.size(); i < m; i++) {
 			Polyhedron *poly = polyhedra[i].get();
+
 			poly->createInstance(isEditMode);
 			if (i == _currentPolyhedron) poly->setSelected(true);
 			poly->updateTransform();
+
+			osg::ref_ptr<MousePickingData> mpd = new MousePickingData;
+			mpd->polyhedron = poly;
+			mpd->polyhedronIndex = i;
+			poly->_trans->setUserData(mpd);
+
 			gp->addChild(poly->_trans);
 		}
 		_appearance = gp;
@@ -118,27 +126,43 @@ namespace game {
 		switchToFirstPolyhedron();
 	}
 
-	void Level::switchToNextPolyhedron(int prev){
-		Polyhedron *current = getSelectedPolyhedron();
-		if (current) current->setSelected(false);
+	void Level::switchToPolyhedron(int index) {
+		if (index == _currentPolyhedron) return;
 
-		int i = 0, m = polyhedra.size();
+		Polyhedron *poly = getSelectedPolyhedron();
+		if (poly) poly->setSelected(false);
+
+		poly = NULL;
+		if (index >= 0 && index < (int)polyhedra.size()) poly = polyhedra[index];
+
+		if (poly && poly->controller == Polyhedron::PLAYER && (poly->flags & Polyhedron::VISIBLE)) {
+			poly->setSelected(true);
+			_currentPolyhedron = index;
+		} else {
+			if (poly) {
+				UTIL_WARN "Can't select polyhedron " << index << std::endl;
+			}
+			_currentPolyhedron = -1;
+		}
+	}
+
+	void Level::switchToNextPolyhedron(int prev){
+		const int m = polyhedra.size();
 		if (prev < 0 || prev >= m) prev = -1;
 
-		for (; i < m; i++) {
+		for (int i = 0; i < m; i++) {
 			prev++;
 			if (prev >= m) prev = 0;
 
 			Polyhedron *poly = polyhedra[prev].get();
 			if (poly->controller == Polyhedron::PLAYER && (poly->flags & Polyhedron::VISIBLE)) {
-				poly->setSelected(true);
-				_currentPolyhedron = prev;
+				switchToPolyhedron(prev);
 				return;
 			}
 		}
 
 		//can't find available polyhedron
-		_currentPolyhedron = -1;
+		switchToPolyhedron(-1);
 	}
 
 	bool Level::load(const XMLNode* node) {
