@@ -317,18 +317,20 @@ bool MYGUIManager::handleEvent(const osgGA::GUIEventAdapter& ea, bool async) con
 		return MyGUI::InputManager::getInstance().injectMouseMove(x, y, z);
 		break;
 	case osgGA::GUIEventAdapter::KEYDOWN:
-		x = ea.getKey();
-		y = ea.getUnmodifiedKey();
-		z = ea.getModKeyMask();
-		if (x < 0 || x >= 127) x = 0; // ??? TODO: IME
+	{
+		int key = ea.getKey();
+		int unmodKey = ea.getUnmodifiedKey();
+		int mod = ea.getModKeyMask();
+		if (key < 0 || key >= 127) key = 0; // ??? TODO: IME
 
 		// process accelerator key first
 		for (Accelerators::iterator it = accelerators.begin(); it != accelerators.end(); ++it) {
-			if ((*it)->process(y, z)) break;
+			if ((*it)->process(unmodKey, mod)) break;
 		}
 
 		// then send to MyGUI
-		return MyGUI::InputManager::getInstance().injectKeyPress(convertKeyCode(y), x);
+		return MyGUI::InputManager::getInstance().injectKeyPress(convertKeyCode(unmodKey), key);
+	}
 		break;
 	case osgGA::GUIEventAdapter::KEYUP:
 		return MyGUI::InputManager::getInstance().injectKeyRelease(convertKeyCode(ea.getUnmodifiedKey()));
