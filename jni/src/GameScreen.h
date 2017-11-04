@@ -54,6 +54,8 @@ private:
 	osg::ref_ptr<osgGA::OrbitManipulator> cameraController;
 	osg::ref_ptr<LevelController> levelController;
 
+	std::string _levelFileName; // level file name with full path
+
 private:
 	MyGUI::Window* _demoView;
 	MyGUI::MenuBar* _menuBar;

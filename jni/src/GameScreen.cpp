@@ -134,6 +134,7 @@ bool GameScreen::loadFile(const std::string& fullName, const std::string& direct
 		if (ConfigManager::instance->recentFiles.add(fullName)) frameAdvise(true);
 		if (!directory.empty() && ConfigManager::instance->recentFolders.add(directory)) frameAdvise(true);
 
+		_levelFileName = fullName;
 		setLevelOrCollection(newLevel);
 
 		return true;
@@ -150,6 +151,7 @@ bool GameScreen::loadFile(const std::string& fullName, const std::string& direct
 
 void GameScreen::newFile() {
 	game::Level *newLevel = GameManager::instance->loadLevel(NULL, 0);
+	_levelFileName.clear();
 	setLevelOrCollection(newLevel);
 }
 
@@ -189,8 +191,17 @@ void GameScreen::notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem
 		msgbox->eventMessageBoxResult += MyGUI::newDelegate(this, &GameScreen::notifyMessageBoxResult);
 	} else if (name == "mnuNew") {
 		newFile();
-	} else if (name == "mnuOpen" || name == "mnuSaveAs") {
+	} else if (name == "mnuOpen") {
 		showFileDialog(name, "", "");
+	} else if (name == "mnuSaveAs") {
+		if (_levelFileName.empty()) {
+			showFileDialog(name, "", "");
+		} else {
+			size_t lp = _levelFileName.find_last_of("\\/");
+			showFileDialog(name,
+				lp == std::string::npos ? std::string() : _levelFileName.substr(0, lp + 1),
+				lp == std::string::npos ? _levelFileName : _levelFileName.substr(lp + 1));
+		}
 	} else if (name == "mnuRecentFile") {
 		loadFile(item->getUserString("Tag"), "");
 	} else if (name == "mnuRecentFolder") {

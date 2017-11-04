@@ -84,7 +84,7 @@ namespace MyGUI {
 			assignWidget(temp, "cmdNewFolder", false);
 			temp->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
 			assignWidget(temp, "cmdOK", false);
-			if (isSaveDialog) temp->setCaption("Save"); else temp->setCaption("Open");
+			temp->setCaption(isSaveDialog ? "Save" : "Open");
 			temp->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
 			assignWidget(temp, "cmdCancel", false);
 			temp->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
@@ -92,6 +92,16 @@ namespace MyGUI {
 
 		if (currentDirectory.empty()) currentDirectory = osgDB::getCurrentWorkingDirectory();
 		recreatePathInfo();
+
+		if (!fileName.empty()) {
+			for (int i = 0, m = fileList.size(); i < m; i++) {
+				if (fileList[i].name == fileName) {
+					lstFile->setIndexSelected(i);
+					lstFile->beginToItemSelected();
+					break;
+				}
+			}
+		}
 	}
 
 	void FileDialog::notifyFolderButtonClick(Widget* _sender) {
