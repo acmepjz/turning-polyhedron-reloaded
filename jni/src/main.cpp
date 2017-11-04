@@ -114,8 +114,12 @@ int main(int argc, char** argv){
 	osg::ref_ptr<osg::MatrixTransform> mirror = new osg::MatrixTransform(osg::Matrix::scale(1.0f, -1.0f, 1.0f));
 	levelRoot = mirror.get();
 
+#if 0
 	osg::ref_ptr<osgShadow::ShadowedScene> shadowedScene = new osgShadow::ShadowedScene(/*new osgShadow::ShadowMap*/);
 	shadowedScene->addChild(mirror);
+#else
+	osg::ref_ptr<osg::Node> shadowedScene = mirror;
+#endif
 	shadowedScene->getOrCreateStateSet()->setAttributeAndModes(new osg::CullFace());
 
 	osg::ref_ptr<osg::Group> root = new osg::Group();

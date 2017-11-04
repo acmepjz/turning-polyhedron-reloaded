@@ -167,7 +167,9 @@ void GameScreen::showFileDialog(const std::string& name, const std::string& curr
 	window->isSaveDialog = name == "mnuSaveAs";
 	window->currentDirectory = currentDirectory;
 	window->fileName = fileName;
-	window->addFileType("XML level file", "xml xml.lzma box");
+	window->addFileType("XML level file", "xml xml.lzma xml.xz");
+	window->addFileType("TurningSquare level file", "box box.lzma box.xz");
+	window->addFileType("PuzzleBoy level file", "lev lev.lzma lev.xz");
 	window->addFileType("All files", "");
 	window->smoothShow();
 	window->setModal(true);
