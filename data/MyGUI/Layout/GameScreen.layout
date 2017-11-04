@@ -76,6 +76,21 @@
 					<Widget type="MenuItem">
 						<Property key="MenuItemType" value="Separator"/>
 					</Widget>
+					<Widget type="MenuItem" name="mnuFirstLevel">
+						<Property key="Caption" value="First level&#9;Ctrl+Home"/>
+					</Widget>
+					<Widget type="MenuItem" name="mnuPrevLevel">
+						<Property key="Caption" value="Previous level&#9;Ctrl+PgUp"/>
+					</Widget>
+					<Widget type="MenuItem" name="mnuNextLevel">
+						<Property key="Caption" value="Next level&#9;Ctrl+PgDn"/>
+					</Widget>
+					<Widget type="MenuItem" name="mnuLastLevel">
+						<Property key="Caption" value="Last level&#9;Ctrl+End"/>
+					</Widget>
+					<Widget type="MenuItem">
+						<Property key="MenuItemType" value="Separator"/>
+					</Widget>
 					<Widget type="MenuItem" name="mnuLevelList">
 						<Property key="Caption" value="Level list&#9;Ctrl+L"/>
 					</Widget>

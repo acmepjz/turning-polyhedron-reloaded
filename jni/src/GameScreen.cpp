@@ -36,6 +36,10 @@ GameScreen::GameScreen() :
 	ADDACCEL1("mnuSave", CTRL, S);
 	ADDACCEL1("mnuExit", CTRL, Q);
 	ADDACCEL1("mnuRestart", CTRL, R);
+	ADDACCEL1("mnuFirstLevel", CTRL, Home);
+	ADDACCEL1("mnuPrevLevel", CTRL, Page_Up);
+	ADDACCEL1("mnuNextLevel", CTRL, Page_Down);
+	ADDACCEL1("mnuLastLevel", CTRL, End);
 	ADDACCEL1("mnuLevelList", CTRL, L);
 
 	_accel.eventAcceleratorKeyPressed += MyGUI::newDelegate(this, &GameScreen::notifyAcceleratorKeyPressed);
@@ -210,6 +214,30 @@ void GameScreen::notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem
 		showFileDialog("mnuOpen", item->getUserString("Tag"), "");
 	} else if (name == "mnuRestart") {
 		restartLevel();
+	} else if (name == "mnuFirstLevel") {
+		game::LevelCollection *lc = dynamic_cast<game::LevelCollection*>(levelTemplate.get());
+		if (lc && selectedLevel > 0) {
+			selectedLevel = 0;
+			restartLevel();
+		}
+	} else if (name == "mnuPrevLevel") {
+		game::LevelCollection *lc = dynamic_cast<game::LevelCollection*>(levelTemplate.get());
+		if (lc && selectedLevel > 0) {
+			selectedLevel--;
+			restartLevel();
+		}
+	} else if (name == "mnuNextLevel") {
+		game::LevelCollection *lc = dynamic_cast<game::LevelCollection*>(levelTemplate.get());
+		if (lc && selectedLevel < (int)lc->levels.size() - 1) {
+			selectedLevel++;
+			restartLevel();
+		}
+	} else if (name == "mnuLastLevel") {
+		game::LevelCollection *lc = dynamic_cast<game::LevelCollection*>(levelTemplate.get());
+		if (lc && selectedLevel < (int)lc->levels.size() - 1) {
+			selectedLevel = lc->levels.size() - 1;
+			restartLevel();
+		}
 	} else if (name == "mnuLevelList") {
 		LevelListScreen *window = new LevelListScreen();
 		window->levelOrLevelCollection = levelTemplate;
