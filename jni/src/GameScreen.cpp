@@ -12,8 +12,6 @@
 
 #include <osgViewer/Viewer>
 
-#define ADDACCEL1(NAME,MODIFIER,KEY) { MyGUI::Widget* _temp; assignWidget(_temp, NAME); _accel.addAccelerator(_temp, true, osgGA::GUIEventAdapter::KEY_##KEY, osgGA::GUIEventAdapter::MODKEY_##MODIFIER); }
-
 GameScreen::GameScreen() :
 	wraps::BaseLayout("GameScreen.layout"),
 	selectedLevel(0),

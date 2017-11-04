@@ -3,6 +3,16 @@
 #include <MYGUI/MyGUI.h>
 #include <map>
 
+#define ADDACCEL0(NAME,KEY) { MyGUI::Widget* _temp; assignWidget(_temp, NAME); \
+	_accel.addAccelerator(_temp, true, osgGA::GUIEventAdapter::KEY_##KEY, \
+	0); }
+#define ADDACCEL1(NAME,MODIFIER,KEY) { MyGUI::Widget* _temp; assignWidget(_temp, NAME); \
+	_accel.addAccelerator(_temp, true, osgGA::GUIEventAdapter::KEY_##KEY, \
+	osgGA::GUIEventAdapter::MODKEY_##MODIFIER); }
+#define ADDACCEL2(NAME,MODIFIER1,MODIFIER2,KEY) { MyGUI::Widget* _temp; assignWidget(_temp, NAME); \
+	_accel.addAccelerator(_temp, true, osgGA::GUIEventAdapter::KEY_##KEY, \
+	osgGA::GUIEventAdapter::MODKEY_##MODIFIER1 | osgGA::GUIEventAdapter::MODKEY_##MODIFIER2); }
+
 class MYGUIAccelerator;
 
 typedef MyGUI::delegates::CMultiDelegate2<MYGUIAccelerator*, MyGUI::Widget*> EventHandle_MYGUIAcceleratorPtrWidgetPtr;
