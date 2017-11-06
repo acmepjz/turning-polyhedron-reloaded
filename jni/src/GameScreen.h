@@ -37,6 +37,7 @@ private:
 	void notifyLevelListAccept(LevelListScreen* sender);
 	void notifyMenuItemClick(MyGUI::MenuControl* sender, MyGUI::MenuItem* item);
 	void notifyAcceleratorKeyPressed(MYGUIAccelerator* sender, MyGUI::Widget* widget);
+	void notifyButtonClick(MyGUI::Widget* _sender);
 
 	static void toggleCheck(MyGUI::MenuItem* current);
 	void toggleRadio(MyGUI::MenuItem* current);
@@ -60,6 +61,7 @@ private:
 	MyGUI::MenuBar* _menuBar;
 	MyGUI::MenuControl *_recentFiles, *_recentFolders;
 	MyGUI::TextBox *lblLevelName, *lblMoves, *lblCheckpoints;
+	MyGUI::Window *frmGameOver, *frmGameFinished;
 	int _tempMoves, _tempCheck0, _tempCheck1; // some temp variables
-	MYGUIAccelerator _accel;
+	MYGUIAccelerator _accel, _accelGameFinished;
 };

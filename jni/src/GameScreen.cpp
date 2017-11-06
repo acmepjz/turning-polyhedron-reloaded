@@ -44,6 +44,18 @@ GameScreen::GameScreen() :
 	ASSIGN_WIDGET0(lblMoves);
 	ASSIGN_WIDGET0(lblCheckpoints);
 
+	ASSIGN_WIDGET0(frmGameOver);
+	for (int i = 0, m = frmGameOver->getChildCount(); i < m; i++) {
+		MyGUI::Button *btn = frmGameOver->getChildAt(i)->castType<MyGUI::Button>(false);
+		if (btn) btn->eventMouseButtonClick += MyGUI::newDelegate(this, &GameScreen::notifyButtonClick);
+	}
+
+	ASSIGN_WIDGET0(frmGameFinished);
+	for (int i = 0, m = frmGameFinished->getChildCount(); i < m; i++) {
+		MyGUI::Button *btn = frmGameFinished->getChildAt(i)->castType<MyGUI::Button>(false);
+		if (btn) btn->eventMouseButtonClick += MyGUI::newDelegate(this, &GameScreen::notifyButtonClick);
+	}
+
 	ADDACCEL1("mnuNew", CTRL, N);
 	ADDACCEL1("mnuOpen", CTRL, O);
 	ADDACCEL1("mnuSave", CTRL, S);
@@ -56,6 +68,15 @@ GameScreen::GameScreen() :
 	ADDACCEL1("mnuLevelList", CTRL, L);
 
 	_accel.eventAcceleratorKeyPressed += MyGUI::newDelegate(this, &GameScreen::notifyAcceleratorKeyPressed);
+
+	{
+		MYGUIAccelerator &_accel = _accelGameFinished;
+
+		ADDACCEL0("mnuNextLevel", Return);
+
+		_accel.enabled = false;
+		_accel.eventAcceleratorKeyPressed += MyGUI::newDelegate(this, &GameScreen::notifyAcceleratorKeyPressed);
+	}
 
 	setFrameAdvise(-1);
 
@@ -209,7 +230,6 @@ void GameScreen::frameEntered(float _frame) {
 		// update checkpoints
 		const int r0 = level->getCheckpointRequired();
 		const int r1 = r0 > 0 ? level->_checkpointObtained : 0;
-
 		if ((fa & UPDATE_LEVEL_NAME) || r0 != _tempCheck0 || r1 != _tempCheck1) {
 			_tempCheck0 = r0;
 			_tempCheck1 = r1;
@@ -224,6 +244,37 @@ void GameScreen::frameEntered(float _frame) {
 				lblCheckpoints->setCaption(s);
 			} else {
 				lblCheckpoints->setCaption("");
+			}
+		}
+
+		// update game status
+		const int gs = level->_gameStatus;
+		if (gs == game::Level::GAME_OVER) {
+			if (!frmGameOver->getVisible()) {
+				frmGameOver->setAlpha(MyGUI::ALPHA_MIN);
+				frmGameOver->setVisible(true);
+				frmGameOver->setVisibleSmooth(true);
+			}
+		} else {
+			if (frmGameOver->getVisible()) {
+				frmGameOver->setAlpha(MyGUI::ALPHA_MAX);
+				frmGameOver->setVisible(false);
+				frmGameOver->setVisibleSmooth(false);
+			}
+		}
+		if (gs == game::Level::GAME_FINISHED) {
+			_accelGameFinished.enabled = true;
+			if (!frmGameFinished->getVisible()) {
+				frmGameFinished->setAlpha(MyGUI::ALPHA_MIN);
+				frmGameFinished->setVisible(true);
+				frmGameFinished->setVisibleSmooth(true);
+			}
+		} else {
+			_accelGameFinished.enabled = false;
+			if (frmGameFinished->getVisible()) {
+				frmGameFinished->setAlpha(MyGUI::ALPHA_MAX);
+				frmGameFinished->setVisible(false);
+				frmGameFinished->setVisibleSmooth(false);
 			}
 		}
 	}
@@ -249,6 +300,12 @@ void GameScreen::showFileDialog(const std::string& name, const std::string& curr
 
 void GameScreen::notifyAcceleratorKeyPressed(MYGUIAccelerator* sender, MyGUI::Widget* widget) {
 	MyGUI::MenuItem* item = widget->castType<MyGUI::MenuItem>(false);
+	if (item) notifyMenuItemClick(NULL, item);
+}
+
+void GameScreen::notifyButtonClick(MyGUI::Widget* _sender) {
+	MyGUI::MenuItem *item = NULL;
+	assignWidget(item, _sender->getUserString("Tag"), false, false);
 	if (item) notifyMenuItemClick(NULL, item);
 }
 

@@ -27,6 +27,49 @@
 				<Property key="TextShadowColour" value="0 0 0"/>
 				<Property key="TextAlign" value="Left VCenter"/>
 			</Widget>
+			<Widget type="Window" skin="Window" position="8 -152 200 144" align="Left Bottom" name="frmGameOver">
+				<Property key="Visible" value="false"/>
+				<Widget type="TextBox" skin="TextBox" position="0 8 184 28">
+					<Property key="Caption" value="Game over"/>
+					<Property key="TextAlign" value="Center"/>
+					<Property key="FontName" value="Font_18pt"/>
+				</Widget>
+				<Widget type="TextBox" skin="TextBox" position="0 36 184 20">
+					<Property key="Caption" value="Watch your step next time!"/>
+					<Property key="TextAlign" value="Center"/>
+				</Widget>
+				<Widget type="Button" skin="Button" position="8 64 168 24">
+					<UserString key="Tag" value="mnuRestart"/>
+					<Property key="Caption" value="Restart (Ctrl+R)"/>
+				</Widget>
+				<Widget type="Button" skin="Button" position="8 96 168 24">
+					<UserString key="Tag" value="mnuLevelList"/>
+					<Property key="Caption" value="Level list (Ctrl+L)"/>
+				</Widget>
+			</Widget>
+			<Widget type="Window" skin="Window" position="8 -184 200 176" align="Left Bottom" name="frmGameFinished">
+				<Widget type="TextBox" skin="TextBox" position="0 8 184 28">
+					<Property key="Caption" value="Game finished"/>
+					<Property key="TextAlign" value="Center"/>
+					<Property key="FontName" value="Font_18pt"/>
+				</Widget>
+				<Widget type="TextBox" skin="TextBox" position="0 36 184 20">
+					<Property key="Caption" value="Congratulations!"/>
+					<Property key="TextAlign" value="Center"/>
+				</Widget>
+				<Widget type="Button" skin="ButtonDefault" position="8 64 168 24">
+					<UserString key="Tag" value="mnuNextLevel"/>
+					<Property key="Caption" value="Next level (Enter)"/>
+				</Widget>
+				<Widget type="Button" skin="Button" position="8 96 168 24">
+					<UserString key="Tag" value="mnuRestart"/>
+					<Property key="Caption" value="Restart (Ctrl+R)"/>
+				</Widget>
+				<Widget type="Button" skin="Button" position="8 128 168 24">
+					<UserString key="Tag" value="mnuLevelList"/>
+					<Property key="Caption" value="Level list (Ctrl+L)"/>
+				</Widget>
+			</Widget>
 			<Widget type="MenuBar" skin="MenuBar" position="0 0 0 24" align="HStretch Top" name="MenuBar">
 				<Widget type="MenuItem">
 					<Property key="Caption" value="File"/>

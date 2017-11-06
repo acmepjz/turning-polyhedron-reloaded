@@ -19,6 +19,12 @@ namespace game {
 	class Level :
 		public osg::Object
 	{
+	public:
+		enum GameStatus {
+			GAME_RUNNING,
+			GAME_OVER,
+			GAME_FINISHED,
+		};
 	protected:
 		virtual ~Level();
 	public:
@@ -127,7 +133,8 @@ namespace game {
 		std::vector<osg::ref_ptr<EventDescription> > _eventQueue;
 		bool _cancel; //!< used when processing preMoveEnter event, etc.
 
-		int _moves;
+		int _moves; //!< the moves
+		int _gameStatus; //!< the \ref GameStatus
 
 		int _checkpointCount; //!< the number of checkpoints (a constant which doesn't change during playing)
 		int _checkpointObtained; //!< the number of checkpoints obtained

@@ -96,6 +96,7 @@ namespace game {
 
 	void Level::initMaps(){
 		_moves = 0;
+		_gameStatus = GAME_RUNNING;
 		_checkpointCount = 0;
 		_checkpointObtained = 0;
 		_mainPolyhedronCount = 0;
@@ -220,16 +221,15 @@ namespace game {
 			}
 		}
 
-		// debug
-		static int _test = 0;
+		// update game status
 		if (_isGameOver) {
-			if (_test != 1) UTIL_NOTICE "*** GAME OVER ***" << std::endl;
-			_test = 1;
+			if (_gameStatus != GAME_OVER) UTIL_NOTICE "*** GAME OVER ***" << std::endl;
+			_gameStatus = GAME_OVER;
 		} else if (isCheckpointEnough() && _mainPolyhedronCount <= 0) {
-			if (_test != 2) UTIL_NOTICE "*** GAME FINISHED ***" << std::endl;
-			_test = 2;
+			if (_gameStatus != GAME_FINISHED) UTIL_NOTICE "*** GAME FINISHED ***" << std::endl;
+			_gameStatus = GAME_FINISHED;
 		} else {
-			_test = 0;
+			_gameStatus = GAME_RUNNING;
 		}
 
 		return _isAnimating;
