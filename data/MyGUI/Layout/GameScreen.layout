@@ -2,6 +2,31 @@
 <MyGUI type="Layout" version="3.2.0">
     <Widget type="Window" skin="WindowEmpty" position="0 0 0 0" align="Stretch" layer="Overlapped" name="_Main">
 		<Widget type="Widget" skin="PanelEmpty" position="0 0 0 0" align="Stretch" name="Client">
+			<Widget type="TextBox" skin="TextBox" position="8 32 -16 32" align="HStretch Top" name="lblLevelName">
+				<Property key="NeedMouse" value="false"/>
+				<Property key="Caption" value="Level name"/>
+				<Property key="TextColour" value="1 1 1"/>
+				<Property key="TextShadow" value="true"/>
+				<Property key="TextShadowColour" value="0 0 0"/>
+				<Property key="TextAlign" value="Left VCenter"/>
+				<Property key="FontName" value="Font_18pt"/>
+			</Widget>
+			<Widget type="TextBox" skin="TextBox" position="8 64 -16 20" align="HStretch Top" name="lblMoves">
+				<Property key="NeedMouse" value="false"/>
+				<Property key="Caption" value="Moves: -1"/>
+				<Property key="TextColour" value="1 1 1"/>
+				<Property key="TextShadow" value="true"/>
+				<Property key="TextShadowColour" value="0 0 0"/>
+				<Property key="TextAlign" value="Left VCenter"/>
+			</Widget>
+			<Widget type="TextBox" skin="TextBox" position="8 84 -16 20" align="HStretch Top" name="lblCheckpoints">
+				<Property key="NeedMouse" value="false"/>
+				<Property key="Caption" value="Checkpoints: -1/-1"/>
+				<Property key="TextColour" value="1 1 1"/>
+				<Property key="TextShadow" value="true"/>
+				<Property key="TextShadowColour" value="0 0 0"/>
+				<Property key="TextAlign" value="Left VCenter"/>
+			</Widget>
 			<Widget type="MenuBar" skin="MenuBar" position="0 0 0 24" align="HStretch Top" name="MenuBar">
 				<Widget type="MenuItem">
 					<Property key="Caption" value="File"/>

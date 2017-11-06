@@ -59,5 +59,7 @@ private:
 private:
 	MyGUI::MenuBar* _menuBar;
 	MyGUI::MenuControl *_recentFiles, *_recentFolders;
+	MyGUI::TextBox *lblLevelName, *lblMoves, *lblCheckpoints;
+	int _tempMoves, _tempCheck0, _tempCheck1; // some temp variables
 	MYGUIAccelerator _accel;
 };

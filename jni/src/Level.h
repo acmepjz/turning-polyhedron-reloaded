@@ -130,9 +130,14 @@ namespace game {
 		int _checkpointCount; //!< the number of checkpoints (a constant which doesn't change during playing)
 		int _checkpointObtained; //!< the number of checkpoints obtained
 
+		/** get the checkpoint required (normalized) */
+		int getCheckpointRequired() const {
+			return (checkpointRequired <= 0 ? _checkpointCount : 0) + checkpointRequired;
+		}
+
 		/** get the checkpoint remaining to win */
 		int getCheckpointRemaining() const {
-			return ((checkpointRequired <= 0 ? _checkpointCount : 0) + checkpointRequired) - _checkpointObtained;
+			return getCheckpointRequired() - _checkpointObtained;
 		}
 
 		/** check if checkpoint is enough */

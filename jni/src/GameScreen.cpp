@@ -10,14 +10,22 @@
 #include "MYGUIManager.h"
 #include "util_err.h"
 
+#include <stdlib.h>
+#include <math.h>
+
 #include <osgViewer/Viewer>
+
+enum {
+	UPDATE_RECENT_FILES = 0x1,
+	UPDATE_RECENT_FOLDERS = 0x2,
+	UPDATE_LEVEL_NAME = 0x4,
+	UPDATE_LEVEL_STATISTICS = 0x8, // internal
+	UPDATE_LEVEL_ALL = UPDATE_LEVEL_NAME | UPDATE_LEVEL_STATISTICS,
+};
 
 GameScreen::GameScreen() :
 	wraps::BaseLayout("GameScreen.layout"),
-	selectedLevel(0),
-	_menuBar(NULL),
-	_recentFiles(NULL),
-	_recentFolders(NULL)
+	selectedLevel(0)
 {
 	assignWidget(_menuBar, "MenuBar");
 
@@ -32,6 +40,10 @@ GameScreen::GameScreen() :
 		MYGUIManager::instance->setMousePassthrough(temp);
 	}
 
+	ASSIGN_WIDGET0(lblLevelName);
+	ASSIGN_WIDGET0(lblMoves);
+	ASSIGN_WIDGET0(lblCheckpoints);
+
 	ADDACCEL1("mnuNew", CTRL, N);
 	ADDACCEL1("mnuOpen", CTRL, O);
 	ADDACCEL1("mnuSave", CTRL, S);
@@ -45,7 +57,7 @@ GameScreen::GameScreen() :
 
 	_accel.eventAcceleratorKeyPressed += MyGUI::newDelegate(this, &GameScreen::notifyAcceleratorKeyPressed);
 
-	frameAdvise(true);
+	setFrameAdvise(-1);
 
 	// test: try to load a level
 	int levelIndex = 0;
@@ -58,6 +70,8 @@ GameScreen::GameScreen() :
 
 void GameScreen::restartLevel() {
 	if (!levelTemplate.valid()) return;
+
+	addFrameAdvise(UPDATE_LEVEL_ALL);
 
 	// reset controller
 	if (!levelController.valid()) {
@@ -136,15 +150,15 @@ void GameScreen::notifyLevelListAccept(LevelListScreen* sender) {
 bool GameScreen::loadFile(const std::string& fullName, const std::string& directory) {
 	osg::Object *newLevel = GameManager::instance->loadLevelOrCollection(fullName.c_str());
 	if (newLevel) {
-		if (ConfigManager::instance->recentFiles.add(fullName)) frameAdvise(true);
-		if (!directory.empty() && ConfigManager::instance->recentFolders.add(directory)) frameAdvise(true);
+		if (ConfigManager::instance->recentFiles.add(fullName)) addFrameAdvise(UPDATE_RECENT_FILES);
+		if (!directory.empty() && ConfigManager::instance->recentFolders.add(directory)) addFrameAdvise(UPDATE_RECENT_FOLDERS);
 
 		_levelFileName = fullName;
 		setLevelOrCollection(newLevel);
 
 		return true;
 	} else {
-		if (ConfigManager::instance->recentFiles.remove(fullName)) frameAdvise(true);
+		if (ConfigManager::instance->recentFiles.remove(fullName)) addFrameAdvise(UPDATE_RECENT_FILES);
 
 		MyGUI::Message::createMessageBox("Error",
 			"Failed to load level file '" + fullName + "'.",
@@ -161,10 +175,50 @@ void GameScreen::newFile() {
 }
 
 void GameScreen::frameEntered(float _frame) {
-	ConfigManager::instance->recentFiles.updateMenu(_recentFiles, "mnuRecentFile");
-	ConfigManager::instance->recentFolders.updateMenu(_recentFolders, "mnuRecentFolder");
+	int fa = getFrameAdvise();
 
-	frameAdvise(false);
+	if (fa & UPDATE_RECENT_FILES) ConfigManager::instance->recentFiles.updateMenu(_recentFiles, "mnuRecentFile");
+	if (fa & UPDATE_RECENT_FOLDERS) ConfigManager::instance->recentFolders.updateMenu(_recentFolders, "mnuRecentFolder");
+
+	if (fa & UPDATE_LEVEL_NAME) {
+		std::string s;
+		game::LevelCollection *lc = dynamic_cast<game::LevelCollection*>(levelTemplate.get());
+		if (lc) {
+			char c[32];
+			itoa(selectedLevel + 1, c, 10);
+			s = "Level " + std::string(c) + ": " + level->name;
+		} else {
+			s = level->name;
+		}
+		lblLevelName->setCaption(s);
+	}
+
+	if (fa & UPDATE_LEVEL_ALL) {
+		// TODO: update moves
+
+		// update checkpoints
+		int r0 = level->getCheckpointRequired();
+		int r1 = r0 > 0 ? level->_checkpointObtained : 0;
+
+		if ((fa & UPDATE_LEVEL_NAME) || r0 != _tempCheck0 || r1 != _tempCheck1) {
+			_tempCheck0 = r0;
+			_tempCheck1 = r1;
+
+			if (r0 > 0) {
+				std::string s;
+				char c[32];
+				itoa(r1, c, 10);
+				s = "Checkpoints: " + std::string(c) + "/";
+				itoa(r0, c, 10);
+				s += c;
+				lblCheckpoints->setCaption(s);
+			} else {
+				lblCheckpoints->setCaption("");
+			}
+		}
+	}
+
+	setFrameAdvise(UPDATE_LEVEL_STATISTICS);
 }
 
 void GameScreen::showFileDialog(const std::string& name, const std::string& currentDirectory, const std::string& fileName) {

@@ -6,13 +6,13 @@ namespace wraps {
 
 	BaseLayout::BaseLayout() :
 		mMainWidget(nullptr),
-		mFrameAdvise(false)
+		mFrameAdvise(0)
 	{
 	}
 
 	BaseLayout::BaseLayout(const std::string& _layout, MyGUI::Widget* _parent) :
 		mMainWidget(nullptr),
-		mFrameAdvise(false)
+		mFrameAdvise(0)
 	{
 		initialise(_layout, _parent);
 	}
@@ -67,6 +67,9 @@ namespace wraps {
 
 	void BaseLayout::shutdown()
 	{
+		// disable frame enter event
+		setFrameAdvise(0);
+
 		// удаляем все классы
 		for (VectorBasePtr::reverse_iterator iter = mListBase.rbegin(); iter != mListBase.rend(); ++iter)
 			delete (*iter);
@@ -102,25 +105,20 @@ namespace wraps {
 
 	void BaseLayout::frameEntered(float _frame) {
 		// default implementation
-		frameAdvise(false);
+		setFrameAdvise(0);
 	}
 
 	void BaseLayout::_frameEntered(float _frame) {
 		frameEntered(_frame);
 	}
 
-	void BaseLayout::frameAdvise(bool _advise) {
+	void BaseLayout::setFrameAdvise(int _advise) {
 		if (_advise) {
-			if (!mFrameAdvise) {
-				MyGUI::Gui::getInstance().eventFrameStart += MyGUI::newDelegate(this, &BaseLayout::_frameEntered);
-				mFrameAdvise = true;
-			}
+			if (!mFrameAdvise) MyGUI::Gui::getInstance().eventFrameStart += MyGUI::newDelegate(this, &BaseLayout::_frameEntered);
 		} else {
-			if (mFrameAdvise) {
-				MyGUI::Gui::getInstance().eventFrameStart -= MyGUI::newDelegate(this, &BaseLayout::_frameEntered);
-				mFrameAdvise = false;
-			}
+			if (mFrameAdvise) MyGUI::Gui::getInstance().eventFrameStart -= MyGUI::newDelegate(this, &BaseLayout::_frameEntered);
 		}
+		mFrameAdvise = _advise;
 	}
 
 	std::string BaseLayout::FindParentPrefix(MyGUI::Widget* _parent)

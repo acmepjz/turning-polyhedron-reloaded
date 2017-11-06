@@ -256,9 +256,15 @@ namespace wraps
 
 		/** if enabled, this is an event triggered on every frame */
 		virtual void frameEntered(float _frame);
-		
-		/** enable or disable frameEntered event */
-		void frameAdvise(bool _advise);
+
+		/** get the frameEntered event mask */
+		int getFrameAdvise() const { return mFrameAdvise; }
+
+		/** set the frameEntered event mask */
+		void setFrameAdvise(int _advise);
+
+		/** add the frameEntered event mask to existing */
+		void addFrameAdvise(int _advise) { setFrameAdvise(mFrameAdvise | _advise); }
 
 	public:
 		const std::string& getPrefix() const { return mPrefix; }
@@ -295,7 +301,7 @@ namespace wraps
 		MyGUI::Widget* mMainWidget;
 
 	private:
-		bool mFrameAdvise;
+		int mFrameAdvise; // frameEntered event mask
 		std::string mPrefix;
 		std::string mLayoutName;
 		MyGUI::VectorWidgetPtr mListWindowRoot;
