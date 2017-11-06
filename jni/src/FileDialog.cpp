@@ -30,16 +30,16 @@ namespace MyGUI {
 
 		window->eventWindowButtonPressed += newDelegate(this, &FileDialog::notifyWindowButtonPressed);
 
-		assignWidget(cmdPrev, "cmdPrev", false);
+		ASSIGN_WIDGET0(cmdPrev);
 		cmdPrev->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
-		assignWidget(cmdNext, "cmdNext", false);
+		ASSIGN_WIDGET0(cmdNext);
 		cmdNext->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
-		assignWidget(cmdUp, "cmdUp", false);
+		ASSIGN_WIDGET0(cmdUp);
 		cmdUp->eventMouseButtonClick += newDelegate(this, &FileDialog::notifyButtonClick);
 
-		assignWidget(picFolder, "picFolder", false);
+		ASSIGN_WIDGET0(picFolder);
 
-		assignWidget(lstFile, "lstFile", false);
+		ASSIGN_WIDGET0(lstFile);
 		lstFile->addColumn("File name");
 		lstFile->addColumn("Modify time", 128);
 		lstFile->addColumn("Extension", 80);
@@ -60,10 +60,10 @@ namespace MyGUI {
 		lstFile->eventListMouseItemActivate += newDelegate(this, &FileDialog::notifyListMouseItemActivate);
 		lstFile->eventListSelectAccept += newDelegate(this, &FileDialog::notifyListSelectAccept);
 
-		assignWidget(txtFileName, "txtFileName", false);
+		ASSIGN_WIDGET0(txtFileName);
 		txtFileName->setOnlyText(fileName);
 
-		assignWidget(cmbFileType, "cmbFileType", false);
+		ASSIGN_WIDGET0(cmbFileType);
 		{
 			const int m = fileTypes.size();
 			for (int i = 0; i < m; i++) {

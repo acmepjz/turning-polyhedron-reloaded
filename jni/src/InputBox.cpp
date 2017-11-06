@@ -7,8 +7,8 @@ namespace MyGUI {
 	InputBox::InputBox() :
 		wraps::BaseLayout("InputBox.layout")
 	{
-		assignWidget(lblMessage, "lblMessage", false);
-		assignWidget(txtText, "txtText", false);
+		ASSIGN_WIDGET0(lblMessage);
+		ASSIGN_WIDGET0(txtText);
 
 		Button *temp;
 		assignWidget(temp, "cmdOK", false);

@@ -23,7 +23,7 @@ void LevelListScreen::initialize() {
 
 	window->eventWindowButtonPressed += newDelegate(this, &LevelListScreen::notifyWindowButtonPressed);
 
-	assignWidget(lstLevel, "lstLevel", false);
+	ASSIGN_WIDGET0(lstLevel);
 	lstLevel->addColumn("Level number", 128);
 	lstLevel->addColumn("Level name");
 	lstLevel->setColumnResizingPolicyAt(0, ResizingPolicy::Fixed);

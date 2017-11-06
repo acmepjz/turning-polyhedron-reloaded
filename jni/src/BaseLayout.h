@@ -304,3 +304,5 @@ namespace wraps
 	};
 
 } // namespace wraps
+
+#define ASSIGN_WIDGET0(WIDGET) assignWidget(WIDGET, #WIDGET)
