@@ -15,19 +15,22 @@
 GameScreen::GameScreen() :
 	wraps::BaseLayout("GameScreen.layout"),
 	selectedLevel(0),
-	_demoView(NULL),
 	_menuBar(NULL),
 	_recentFiles(NULL),
 	_recentFolders(NULL)
 {
-	_demoView = dynamic_cast<MyGUI::Window*>(mMainWidget);
-
 	assignWidget(_menuBar, "MenuBar");
 
 	_menuBar->eventMenuCtrlAccept += MyGUI::newDelegate(this, &GameScreen::notifyMenuItemClick);
 
 	assignWidget(_recentFiles, "RecentFiles");
 	assignWidget(_recentFolders, "RecentFolders");
+
+	{
+		MyGUI::Widget *temp;
+		assignWidget(temp, "Client");
+		MYGUIManager::instance->setMousePassthrough(temp);
+	}
 
 	ADDACCEL1("mnuNew", CTRL, N);
 	ADDACCEL1("mnuOpen", CTRL, O);

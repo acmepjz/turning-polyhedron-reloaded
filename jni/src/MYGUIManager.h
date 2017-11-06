@@ -60,8 +60,13 @@ public:
 	void setGraphicsWindow(osgViewer::GraphicsWindow* gw) { _gw = gw; }
 
 	typedef std::set<MYGUIAccelerator*> Accelerators;
-	Accelerators accelerators;
+	Accelerators accelerators; //!< the collection of accelerator keys
 
+	/** enable/disable mouse passthrough for given widget.\n
+	if enabled, the mouse event for this widget will be processed in MyGUI and then send back to OSG. */
+	void setMousePassthrough(MyGUI::Widget *_widget, bool _value = true);
+
+public:
 	static MYGUIManager* instance; //!< the global reference of the node which renders MyGUI
     
 protected:
@@ -87,6 +92,12 @@ protected:
 
 private:
 	void notifyChangeMousePointer(const std::string& _name);
+	void notifyMouseDragPassthrough(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
+	void notifyMouseMovePassthrough(MyGUI::Widget* _sender, int _left, int _top);
+	void notifyMouseWheelPassthrough(MyGUI::Widget* _sender, int _rel);
+	void notifyMouseClickPassthrough(MyGUI::Widget* _sender);
+
+	mutable bool _mousePassthrough;
 
 	friend class MYGUIHandler;
 };

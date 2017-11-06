@@ -299,10 +299,12 @@ bool MYGUIManager::handleEvent(const osgGA::GUIEventAdapter& ea, bool async) con
 	switch (ea.getEventType())
 	{
 	case osgGA::GUIEventAdapter::PUSH:
-		return MyGUI::InputManager::getInstance().injectMousePress(x, y, convertMouseButton(ea.getButton()));
+		_mousePassthrough = false;
+		return MyGUI::InputManager::getInstance().injectMousePress(x, y, convertMouseButton(ea.getButton())) && !_mousePassthrough;
 		break;
 	case osgGA::GUIEventAdapter::RELEASE:
-		return MyGUI::InputManager::getInstance().injectMouseRelease(x, y, convertMouseButton(ea.getButton()));
+		_mousePassthrough = false;
+		return MyGUI::InputManager::getInstance().injectMouseRelease(x, y, convertMouseButton(ea.getButton())) && !_mousePassthrough;
 		break;
 	case osgGA::GUIEventAdapter::SCROLL:
 		switch (ea.getScrollingMotion()) {
@@ -314,7 +316,8 @@ bool MYGUIManager::handleEvent(const osgGA::GUIEventAdapter& ea, bool async) con
 		// fall through
 	case osgGA::GUIEventAdapter::DRAG:
 	case osgGA::GUIEventAdapter::MOVE:
-		return MyGUI::InputManager::getInstance().injectMouseMove(x, y, z);
+		_mousePassthrough = false;
+		return MyGUI::InputManager::getInstance().injectMouseMove(x, y, z) && !_mousePassthrough;
 		break;
 	case osgGA::GUIEventAdapter::KEYDOWN:
 	{
@@ -345,6 +348,48 @@ bool MYGUIManager::handleEvent(const osgGA::GUIEventAdapter& ea, bool async) con
 	}
 
 	return false;
+}
+
+void MYGUIManager::notifyMouseDragPassthrough(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id) {
+	_mousePassthrough = true;
+}
+
+void MYGUIManager::notifyMouseMovePassthrough(MyGUI::Widget* _sender, int _left, int _top) {
+	_mousePassthrough = true;
+}
+
+void MYGUIManager::notifyMouseWheelPassthrough(MyGUI::Widget* _sender, int _rel) {
+	_mousePassthrough = true;
+}
+
+void MYGUIManager::notifyMouseClickPassthrough(MyGUI::Widget* _sender) {
+	_mousePassthrough = true;
+}
+
+void MYGUIManager::setMousePassthrough(MyGUI::Widget *_widget, bool _value) {
+	if (!_widget) return;
+	bool _oldValue = _widget->isUserString("MousePassthrough") && MyGUI::utility::parseBool(_widget->getUserString("MousePassthrough"));
+	if (_value) {
+		if (_oldValue) return;
+		_widget->setUserString("MousePassthrough", "true");
+		_widget->eventMouseDrag += MyGUI::newDelegate(this, &MYGUIManager::notifyMouseDragPassthrough);
+		_widget->eventMouseMove += MyGUI::newDelegate(this, &MYGUIManager::notifyMouseMovePassthrough);
+		_widget->eventMouseWheel += MyGUI::newDelegate(this, &MYGUIManager::notifyMouseWheelPassthrough);
+		_widget->eventMouseButtonPressed += MyGUI::newDelegate(this, &MYGUIManager::notifyMouseDragPassthrough);
+		_widget->eventMouseButtonReleased += MyGUI::newDelegate(this, &MYGUIManager::notifyMouseDragPassthrough);
+		_widget->eventMouseButtonClick += MyGUI::newDelegate(this, &MYGUIManager::notifyMouseClickPassthrough);
+		_widget->eventMouseButtonDoubleClick += MyGUI::newDelegate(this, &MYGUIManager::notifyMouseClickPassthrough);
+	} else {
+		if (!_oldValue) return;
+		_widget->setUserString("MousePassthrough", "false");
+		_widget->eventMouseDrag -= MyGUI::newDelegate(this, &MYGUIManager::notifyMouseDragPassthrough);
+		_widget->eventMouseMove -= MyGUI::newDelegate(this, &MYGUIManager::notifyMouseMovePassthrough);
+		_widget->eventMouseWheel -= MyGUI::newDelegate(this, &MYGUIManager::notifyMouseWheelPassthrough);
+		_widget->eventMouseButtonPressed -= MyGUI::newDelegate(this, &MYGUIManager::notifyMouseDragPassthrough);
+		_widget->eventMouseButtonReleased -= MyGUI::newDelegate(this, &MYGUIManager::notifyMouseDragPassthrough);
+		_widget->eventMouseButtonClick -= MyGUI::newDelegate(this, &MYGUIManager::notifyMouseClickPassthrough);
+		_widget->eventMouseButtonDoubleClick -= MyGUI::newDelegate(this, &MYGUIManager::notifyMouseClickPassthrough);
+	}
 }
 
 void MYGUIManager::updateEvents() const

@@ -57,7 +57,6 @@ private:
 	std::string _levelFileName; // level file name with full path
 
 private:
-	MyGUI::Window* _demoView;
 	MyGUI::MenuBar* _menuBar;
 	MyGUI::MenuControl *_recentFiles, *_recentFolders;
 	MYGUIAccelerator _accel;

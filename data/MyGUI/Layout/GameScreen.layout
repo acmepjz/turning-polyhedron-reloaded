@@ -1,173 +1,175 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <MyGUI type="Layout" version="3.2.0">
-    <Widget type="Window" skin="WindowEmpty" position="0 0 0 24" align="HStretch Top" layer="Overlapped" name="_Main">
-		<Widget type="MenuBar" skin="MenuBar" position="0 0 0 24" align="HStretch Top" name="MenuBar">
-			<Widget type="MenuItem">
-				<Property key="Caption" value="File"/>
-				<Property key="MenuItemType" value="Popup"/>
-				<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
-					<Widget type="MenuItem" name="mnuNew">
-						<Property key="Caption" value="New&#9;Ctrl+N"/>
-					</Widget>
-					<Widget type="MenuItem" name="mnuOpen">
-						<Property key="Caption" value="Open&#9;Ctrl+O"/>
-					</Widget>
-					<Widget type="MenuItem">
-						<Property key="MenuItemType" value="Separator"/>
-					</Widget>
-					<Widget type="MenuItem" name="mnuSave">
-						<Property key="Caption" value="Save&#9;Ctrl+S"/>
-					</Widget>
-					<Widget type="MenuItem" name="mnuSaveAs">
-						<Property key="Caption" value="Save as"/>
-					</Widget>
-					<Widget type="MenuItem">
-						<Property key="MenuItemType" value="Separator"/>
-					</Widget>
-					<Widget type="MenuItem">
-						<Property key="Caption" value="Recent Files"/>
-						<Property key="MenuItemType" value="Popup"/>
-						<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup" name="RecentFiles"/>
-					</Widget>
-					<Widget type="MenuItem">
-						<Property key="Caption" value="Recent Folders"/>
-						<Property key="MenuItemType" value="Popup"/>
-						<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup" name="RecentFolders"/>
-					</Widget>
-					<Widget type="MenuItem">
-						<Property key="MenuItemType" value="Separator"/>
-					</Widget>
-					<Widget type="MenuItem" name="mnuExit">
-						<Property key="Caption" value="Exit&#9;Ctrl+Q"/>
-					</Widget>
-				</Widget>
-			</Widget>
-			<Widget type="MenuItem">
-				<Property key="Caption" value="Edit"/>
-				<Property key="MenuItemType" value="Popup"/>
-				<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
-					<Widget type="MenuItem">
-						<Property key="Caption" value="Undo&#9;Ctrl+Z"/>
-					</Widget>
-					<Widget type="MenuItem">
-						<Property key="Caption" value="Redo&#9;Ctrl+Y"/>
-					</Widget>
-					<Widget type="MenuItem">
-						<Property key="MenuItemType" value="Separator"/>
-					</Widget>
-					<Widget type="MenuItem">
-						<Property key="Caption" value="Cut&#9;Ctrl+X"/>
-					</Widget>
-					<Widget type="MenuItem">
-						<Property key="Caption" value="Copy&#9;Ctrl+C"/>
-					</Widget>
-					<Widget type="MenuItem">
-						<Property key="Caption" value="Paste&#9;Ctrl+V"/>
-					</Widget>
-				</Widget>
-			</Widget>
-			<Widget type="MenuItem">
-				<Property key="Caption" value="Game"/>
-				<Property key="MenuItemType" value="Popup"/>
-				<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
-					<Widget type="MenuItem" name="mnuRestart">
-						<Property key="Caption" value="Restart&#9;Ctrl+R"/>
-					</Widget>
-					<Widget type="MenuItem">
-						<Property key="MenuItemType" value="Separator"/>
-					</Widget>
-					<Widget type="MenuItem" name="mnuFirstLevel">
-						<Property key="Caption" value="First level&#9;Ctrl+Home"/>
-					</Widget>
-					<Widget type="MenuItem" name="mnuPrevLevel">
-						<Property key="Caption" value="Previous level&#9;Ctrl+PgUp"/>
-					</Widget>
-					<Widget type="MenuItem" name="mnuNextLevel">
-						<Property key="Caption" value="Next level&#9;Ctrl+PgDn"/>
-					</Widget>
-					<Widget type="MenuItem" name="mnuLastLevel">
-						<Property key="Caption" value="Last level&#9;Ctrl+End"/>
-					</Widget>
-					<Widget type="MenuItem">
-						<Property key="MenuItemType" value="Separator"/>
-					</Widget>
-					<Widget type="MenuItem" name="mnuLevelList">
-						<Property key="Caption" value="Level list&#9;Ctrl+L"/>
-					</Widget>
-				</Widget>
-			</Widget>
-			<Widget type="MenuItem">
-				<Property key="MenuItemType" value="Separator"/>
-			</Widget>
-			<Widget type="MenuItem">
-				<Property key="Caption" value="Options"/>
-				<Property key="MenuItemType" value="Popup"/>
-				<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
-					<Widget type="MenuItem">
-						<Property key="Caption" value="UI scale"/>
-						<Property key="MenuItemType" value="Popup"/>
-						<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
-							<Property key="ManualSkin" value="true"/>
-							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuUIScale">
-								<UserString key="Tag" value="1.0"/>
-								<Property key="Caption" value="1.0"/>
-                                <Property key="MenuItemChecked" value="true"/>
-							</Widget>
-							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuUIScale">
-								<UserString key="Tag" value="1.25"/>
-								<Property key="Caption" value="1.25"/>
-							</Widget>
-							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuUIScale">
-								<UserString key="Tag" value="1.5"/>
-								<Property key="Caption" value="1.5"/>
-							</Widget>
-							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuUIScale">
-								<UserString key="Tag" value="1.75"/>
-								<Property key="Caption" value="1.75"/>
-							</Widget>
-							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuUIScale">
-								<UserString key="Tag" value="2.0"/>
-								<Property key="Caption" value="2.0"/>
-							</Widget>
+    <Widget type="Window" skin="WindowEmpty" position="0 0 0 0" align="Stretch" layer="Overlapped" name="_Main">
+		<Widget type="Widget" skin="PanelEmpty" position="0 0 0 0" align="Stretch" name="Client">
+			<Widget type="MenuBar" skin="MenuBar" position="0 0 0 24" align="HStretch Top" name="MenuBar">
+				<Widget type="MenuItem">
+					<Property key="Caption" value="File"/>
+					<Property key="MenuItemType" value="Popup"/>
+					<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
+						<Widget type="MenuItem" name="mnuNew">
+							<Property key="Caption" value="New&#9;Ctrl+N"/>
+						</Widget>
+						<Widget type="MenuItem" name="mnuOpen">
+							<Property key="Caption" value="Open&#9;Ctrl+O"/>
+						</Widget>
+						<Widget type="MenuItem">
+							<Property key="MenuItemType" value="Separator"/>
+						</Widget>
+						<Widget type="MenuItem" name="mnuSave">
+							<Property key="Caption" value="Save&#9;Ctrl+S"/>
+						</Widget>
+						<Widget type="MenuItem" name="mnuSaveAs">
+							<Property key="Caption" value="Save as"/>
+						</Widget>
+						<Widget type="MenuItem">
+							<Property key="MenuItemType" value="Separator"/>
+						</Widget>
+						<Widget type="MenuItem">
+							<Property key="Caption" value="Recent Files"/>
+							<Property key="MenuItemType" value="Popup"/>
+							<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup" name="RecentFiles"/>
+						</Widget>
+						<Widget type="MenuItem">
+							<Property key="Caption" value="Recent Folders"/>
+							<Property key="MenuItemType" value="Popup"/>
+							<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup" name="RecentFolders"/>
+						</Widget>
+						<Widget type="MenuItem">
+							<Property key="MenuItemType" value="Separator"/>
+						</Widget>
+						<Widget type="MenuItem" name="mnuExit">
+							<Property key="Caption" value="Exit&#9;Ctrl+Q"/>
 						</Widget>
 					</Widget>
-					<Widget type="MenuItem">
-						<Property key="Caption" value="Log level"/>
-						<Property key="MenuItemType" value="Popup"/>
-						<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
-							<Property key="ManualSkin" value="true"/>
-							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuLogLevel">
-								<UserString key="Tag" value="Debug"/>
-								<Property key="Caption" value="Debug"/>
-							</Widget>
-							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuLogLevel">
-								<UserString key="Tag" value="Info"/>
-								<Property key="Caption" value="Info"/>
-							</Widget>
-							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuLogLevel">
-								<UserString key="Tag" value="Notice"/>
-								<Property key="Caption" value="Notice"/>
-                                <Property key="MenuItemChecked" value="true"/>
-							</Widget>
-							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuLogLevel">
-								<UserString key="Tag" value="Warning"/>
-								<Property key="Caption" value="Warning"/>
-							</Widget>
-							<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuLogLevel">
-								<UserString key="Tag" value="Error"/>
-								<Property key="Caption" value="Error"/>
-							</Widget>
+				</Widget>
+				<Widget type="MenuItem">
+					<Property key="Caption" value="Edit"/>
+					<Property key="MenuItemType" value="Popup"/>
+					<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
+						<Widget type="MenuItem">
+							<Property key="Caption" value="Undo&#9;Ctrl+Z"/>
+						</Widget>
+						<Widget type="MenuItem">
+							<Property key="Caption" value="Redo&#9;Ctrl+Y"/>
+						</Widget>
+						<Widget type="MenuItem">
+							<Property key="MenuItemType" value="Separator"/>
+						</Widget>
+						<Widget type="MenuItem">
+							<Property key="Caption" value="Cut&#9;Ctrl+X"/>
+						</Widget>
+						<Widget type="MenuItem">
+							<Property key="Caption" value="Copy&#9;Ctrl+C"/>
+						</Widget>
+						<Widget type="MenuItem">
+							<Property key="Caption" value="Paste&#9;Ctrl+V"/>
 						</Widget>
 					</Widget>
-					<Widget type="MenuItem">
-						<Property key="MenuItemType" value="Separator"/>
+				</Widget>
+				<Widget type="MenuItem">
+					<Property key="Caption" value="Game"/>
+					<Property key="MenuItemType" value="Popup"/>
+					<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
+						<Widget type="MenuItem" name="mnuRestart">
+							<Property key="Caption" value="Restart&#9;Ctrl+R"/>
+						</Widget>
+						<Widget type="MenuItem">
+							<Property key="MenuItemType" value="Separator"/>
+						</Widget>
+						<Widget type="MenuItem" name="mnuFirstLevel">
+							<Property key="Caption" value="First level&#9;Ctrl+Home"/>
+						</Widget>
+						<Widget type="MenuItem" name="mnuPrevLevel">
+							<Property key="Caption" value="Previous level&#9;Ctrl+PgUp"/>
+						</Widget>
+						<Widget type="MenuItem" name="mnuNextLevel">
+							<Property key="Caption" value="Next level&#9;Ctrl+PgDn"/>
+						</Widget>
+						<Widget type="MenuItem" name="mnuLastLevel">
+							<Property key="Caption" value="Last level&#9;Ctrl+End"/>
+						</Widget>
+						<Widget type="MenuItem">
+							<Property key="MenuItemType" value="Separator"/>
+						</Widget>
+						<Widget type="MenuItem" name="mnuLevelList">
+							<Property key="Caption" value="Level list&#9;Ctrl+L"/>
+						</Widget>
 					</Widget>
-					<Widget type="MenuItem" name="mnuMsgBox">
-						<Property key="Caption" value="MsgBox"/>
+				</Widget>
+				<Widget type="MenuItem">
+					<Property key="MenuItemType" value="Separator"/>
+				</Widget>
+				<Widget type="MenuItem">
+					<Property key="Caption" value="Options"/>
+					<Property key="MenuItemType" value="Popup"/>
+					<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
+						<Widget type="MenuItem">
+							<Property key="Caption" value="UI scale"/>
+							<Property key="MenuItemType" value="Popup"/>
+							<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
+								<Property key="ManualSkin" value="true"/>
+								<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuUIScale">
+									<UserString key="Tag" value="1.0"/>
+									<Property key="Caption" value="1.0"/>
+									<Property key="MenuItemChecked" value="true"/>
+								</Widget>
+								<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuUIScale">
+									<UserString key="Tag" value="1.25"/>
+									<Property key="Caption" value="1.25"/>
+								</Widget>
+								<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuUIScale">
+									<UserString key="Tag" value="1.5"/>
+									<Property key="Caption" value="1.5"/>
+								</Widget>
+								<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuUIScale">
+									<UserString key="Tag" value="1.75"/>
+									<Property key="Caption" value="1.75"/>
+								</Widget>
+								<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuUIScale">
+									<UserString key="Tag" value="2.0"/>
+									<Property key="Caption" value="2.0"/>
+								</Widget>
+							</Widget>
+						</Widget>
+						<Widget type="MenuItem">
+							<Property key="Caption" value="Log level"/>
+							<Property key="MenuItemType" value="Popup"/>
+							<Widget type="PopupMenu" skin="PopupMenu" style="Popup" layer="Popup">
+								<Property key="ManualSkin" value="true"/>
+								<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuLogLevel">
+									<UserString key="Tag" value="Debug"/>
+									<Property key="Caption" value="Debug"/>
+								</Widget>
+								<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuLogLevel">
+									<UserString key="Tag" value="Info"/>
+									<Property key="Caption" value="Info"/>
+								</Widget>
+								<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuLogLevel">
+									<UserString key="Tag" value="Notice"/>
+									<Property key="Caption" value="Notice"/>
+									<Property key="MenuItemChecked" value="true"/>
+								</Widget>
+								<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuLogLevel">
+									<UserString key="Tag" value="Warning"/>
+									<Property key="Caption" value="Warning"/>
+								</Widget>
+								<Widget type="MenuItem" skin="PopupMenuRadio" name="mnuLogLevel">
+									<UserString key="Tag" value="Error"/>
+									<Property key="Caption" value="Error"/>
+								</Widget>
+							</Widget>
+						</Widget>
+						<Widget type="MenuItem">
+							<Property key="MenuItemType" value="Separator"/>
+						</Widget>
+						<Widget type="MenuItem" name="mnuMsgBox">
+							<Property key="Caption" value="MsgBox"/>
+						</Widget>
 					</Widget>
 				</Widget>
 			</Widget>
 		</Widget>
-    </Widget>
+	</Widget>
     <CodeGeneratorSettings/>
 </MyGUI>
