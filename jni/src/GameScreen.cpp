@@ -92,6 +92,16 @@ GameScreen::GameScreen() :
 void GameScreen::restartLevel() {
 	if (!levelTemplate.valid()) return;
 
+	// hide in-game dialogs
+	if (frmGameOver->getVisible()) {
+		frmGameOver->setVisibleSmooth(false);
+	}
+	_accelGameFinished.enabled = false;
+	if (frmGameFinished->getVisible()) {
+		frmGameFinished->setVisibleSmooth(false);
+	}
+
+	// update level info next frame
 	addFrameAdvise(UPDATE_LEVEL_ALL);
 
 	// reset controller
@@ -251,29 +261,21 @@ void GameScreen::frameEntered(float _frame) {
 		const int gs = level->_gameStatus;
 		if (gs == game::Level::GAME_OVER) {
 			if (!frmGameOver->getVisible()) {
-				frmGameOver->setAlpha(MyGUI::ALPHA_MIN);
-				frmGameOver->setVisible(true);
 				frmGameOver->setVisibleSmooth(true);
 			}
 		} else {
 			if (frmGameOver->getVisible()) {
-				frmGameOver->setAlpha(MyGUI::ALPHA_MAX);
-				frmGameOver->setVisible(false);
 				frmGameOver->setVisibleSmooth(false);
 			}
 		}
 		if (gs == game::Level::GAME_FINISHED) {
 			_accelGameFinished.enabled = true;
 			if (!frmGameFinished->getVisible()) {
-				frmGameFinished->setAlpha(MyGUI::ALPHA_MIN);
-				frmGameFinished->setVisible(true);
 				frmGameFinished->setVisibleSmooth(true);
 			}
 		} else {
 			_accelGameFinished.enabled = false;
 			if (frmGameFinished->getVisible()) {
-				frmGameFinished->setAlpha(MyGUI::ALPHA_MAX);
-				frmGameFinished->setVisible(false);
 				frmGameFinished->setVisibleSmooth(false);
 			}
 		}

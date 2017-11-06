@@ -48,6 +48,7 @@
 				</Widget>
 			</Widget>
 			<Widget type="Window" skin="Window" position="8 -184 200 176" align="Left Bottom" name="frmGameFinished">
+				<Property key="Visible" value="false"/>
 				<Widget type="TextBox" skin="TextBox" position="0 8 184 28">
 					<Property key="Caption" value="Game finished"/>
 					<Property key="TextAlign" value="Center"/>
