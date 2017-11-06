@@ -190,7 +190,7 @@ bool GameScreen::loadFile(const std::string& fullName, const std::string& direct
 }
 
 void GameScreen::newFile() {
-	game::Level *newLevel = GameManager::instance->loadLevel(NULL, 0);
+	game::Level *newLevel = GameManager::instance->loadOrCreateLevel(NULL, 0);
 	_levelFileName.clear();
 	setLevelOrCollection(newLevel);
 }
