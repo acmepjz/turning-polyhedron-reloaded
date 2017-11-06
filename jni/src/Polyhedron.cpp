@@ -488,6 +488,9 @@ namespace game {
 		std::swap(anim->_eventWhenAninationFinished, _enterEvents);
 		_animations.push_back(anim);
 
+		// increase move count
+		parent->_moves++;
+
 		// over
 		return true;
 	}

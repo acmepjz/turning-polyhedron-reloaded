@@ -127,6 +127,8 @@ namespace game {
 		std::vector<osg::ref_ptr<EventDescription> > _eventQueue;
 		bool _cancel; //!< used when processing preMoveEnter event, etc.
 
+		int _moves;
+
 		int _checkpointCount; //!< the number of checkpoints (a constant which doesn't change during playing)
 		int _checkpointObtained; //!< the number of checkpoints obtained
 

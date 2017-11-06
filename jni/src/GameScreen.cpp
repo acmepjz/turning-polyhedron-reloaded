@@ -194,11 +194,21 @@ void GameScreen::frameEntered(float _frame) {
 	}
 
 	if (fa & UPDATE_LEVEL_ALL) {
-		// TODO: update moves
+		// update moves
+		const int m = level->_moves;
+		if ((fa & UPDATE_LEVEL_NAME) || m != _tempMoves) {
+			_tempMoves = m;
+
+			std::string s;
+			char c[32];
+			itoa(m, c, 10);
+			s = "Moves: " + std::string(c);
+			lblMoves->setCaption(s);
+		}
 
 		// update checkpoints
-		int r0 = level->getCheckpointRequired();
-		int r1 = r0 > 0 ? level->_checkpointObtained : 0;
+		const int r0 = level->getCheckpointRequired();
+		const int r1 = r0 > 0 ? level->_checkpointObtained : 0;
 
 		if ((fa & UPDATE_LEVEL_NAME) || r0 != _tempCheck0 || r1 != _tempCheck1) {
 			_tempCheck0 = r0;

@@ -95,6 +95,7 @@ namespace game {
 	}
 
 	void Level::initMaps(){
+		_moves = 0;
 		_checkpointCount = 0;
 		_checkpointObtained = 0;
 		_mainPolyhedronCount = 0;
