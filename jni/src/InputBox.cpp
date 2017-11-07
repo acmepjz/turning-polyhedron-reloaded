@@ -10,11 +10,17 @@ namespace MyGUI {
 		ASSIGN_WIDGET0(lblMessage);
 		ASSIGN_WIDGET0(txtText);
 
+		txtText->eventKeyButtonPressed += newDelegate(this, &InputBox::onKeyButtonPressed);
+
 		Button *temp;
 		assignWidget(temp, "cmdOK", false);
 		temp->eventMouseButtonClick += newDelegate(this, &InputBox::notifyButtonClick);
 		assignWidget(temp, "cmdCancel", false);
 		temp->eventMouseButtonClick += newDelegate(this, &InputBox::notifyButtonClick);
+
+		Window* window = mMainWidget->castType<Window>();
+		window->eventWindowButtonPressed += newDelegate(this, &InputBox::notifyWindowButtonPressed);
+		window->eventKeyButtonPressed += newDelegate(this, &InputBox::onKeyButtonPressed);
 	}
 
 	InputBox::~InputBox() {
@@ -40,6 +46,17 @@ namespace MyGUI {
 		}
 	}
 
+	void InputBox::onKeyButtonPressed(Widget* _sender, KeyCode _key, Char _char) {
+		if ((_key == KeyCode::Return) || (_key == KeyCode::NumpadEnter)) {
+			if (_sender == static_cast<Widget*>(txtText)) {
+				if (txtText->getEditMultiLine() && !InputManager::getInstance().isControlPressed()) return;
+			}
+			_destroy(true);
+		} else if (_key == KeyCode::Escape) {
+			endMessage();
+		}
+	}
+
 	void InputBox::_destroy(bool _result) {
 		if (_result) {
 			eventInputBoxAccept(this);
@@ -59,6 +76,8 @@ namespace MyGUI {
 		ib->smoothShow();
 		ib->setCaption(_caption)->setMessage(_message)->setText(_text);
 		ib->setModal(_modal);
+
+		InputManager::getInstance().setKeyFocusWidget(ib->txtText);
 
 		return ib;
 	}
