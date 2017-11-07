@@ -1,5 +1,28 @@
 #include "MessageBox.h"
 
+using namespace MyGUI;
+
+static KeyCode getButtonKeyCode(size_t _index)
+{
+	static const size_t Count = 9;
+	static const KeyCode KeyCodes[Count + 1] =
+	{
+		KeyCode::O, // OK
+		KeyCode::Y, // Yes
+		KeyCode::N, // No
+		KeyCode::A, // Abort
+		KeyCode::R, // Retry
+		KeyCode::I, // Ignore
+		KeyCode::C, // Cancel
+		KeyCode::T, // Try
+		KeyCode::C, // FIXME: Continue and Cancel have the same hot key
+		KeyCode::None,
+	};
+	if (_index >= Count)
+		return KeyCodes[Count];
+	return KeyCodes[_index];
+}
+
 namespace MyGUI {
 
 	std::istream& operator >> (std::istream& _stream, MessageBoxStyle&  _value)
@@ -341,6 +364,7 @@ namespace MyGUI {
 
 	void Message::onKeyButtonPressed(Widget* _sender, KeyCode _key, Char _char)
 	{
+		if (_key == KeyCode::None) return;
 		if ((_key == KeyCode::Return) || (_key == KeyCode::NumpadEnter)) {
 			if (mVectorButton.size() == 1) {
 				_destroyMessage(*mVectorButton[0]->_getInternalData<MessageBoxStyle>());
@@ -350,6 +374,15 @@ namespace MyGUI {
 		} else if (_key == KeyCode::Escape) {
 			if (mVectorButton.size() == 1 || mInfoCancel != MessageBoxStyle::None) {
 				endMessage();
+			}
+		} else {
+			for (std::vector<Button*>::iterator iter = mVectorButton.begin(); iter != mVectorButton.end(); ++iter) {
+				MessageBoxStyle mbs = *((*iter)->_getInternalData<MessageBoxStyle>());
+				size_t index = mbs.getButtonIndex();
+				if (getButtonKeyCode(index) == _key) {
+					_destroyMessage(mbs);
+					break;
+				}
 			}
 		}
 	}

@@ -157,6 +157,8 @@ int main(int argc, char** argv){
 	viewer.addEventHandler(new osgViewer::StatsHandler);
 	//viewer.addEventHandler(new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()));
 
+	viewer.setKeyEventSetsDone(0);
+
 	viewer.realize();
 
 	osgViewer::GraphicsWindow* gw = dynamic_cast<osgViewer::GraphicsWindow*>(camera->getGraphicsContext());
