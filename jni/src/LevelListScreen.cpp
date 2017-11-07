@@ -2,6 +2,8 @@
 #include "Level.h"
 #include "LevelCollection.h"
 
+#include <osgGA/GUIEventAdapter>
+
 #include <osgDB/FileUtils>
 #include <osgDB/FileNameUtils>
 #include <osgDB/XmlParser>
@@ -18,8 +20,32 @@ LevelListScreen::LevelListScreen() :
 {
 }
 
+void LevelListScreen::notifyAcceleratorKeyPressed(MYGUIAccelerator* sender, MyGUI::Widget* widget) {
+	// the operation must be delayed otherwise it crashes
+	setFrameAdvise((int)(intptr_t)widget);
+}
+
+void LevelListScreen::frameEntered(float _frame) {
+	int fa = getFrameAdvise();
+	setFrameAdvise(0);
+
+	if (fa & 0x10) {
+		// enter
+		cmdOK_Click();
+	} else {
+		// escape
+		endMessage();
+	}
+}
+
 void LevelListScreen::initialize() {
 	Window *window = dynamic_cast<Window*>(mMainWidget);
+
+	_accel.rootWidget = mMainWidget;
+	_accel.addAccelerator((MyGUI::Widget*)0x100, true, osgGA::GUIEventAdapter::KEY_Escape, 0);
+	_accel.addAccelerator((MyGUI::Widget*)0x110, true, osgGA::GUIEventAdapter::KEY_Return, 0);
+	_accel.addAccelerator((MyGUI::Widget*)0x111, true, osgGA::GUIEventAdapter::KEY_KP_Enter, 0);
+	_accel.eventAcceleratorKeyPressed += MyGUI::newDelegate(this, &LevelListScreen::notifyAcceleratorKeyPressed);
 
 	window->eventWindowButtonPressed += newDelegate(this, &LevelListScreen::notifyWindowButtonPressed);
 
@@ -149,6 +175,7 @@ void LevelListScreen::notifyWindowButtonPressed(MyGUI::Window* _sender, const st
 }
 
 void LevelListScreen::notifyListSelectAccept(MultiListBox* _sender, size_t _position) {
+	setFrameAdvise(0); // ???
 	cmdOK_Click();
 }
 

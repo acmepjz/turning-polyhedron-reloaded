@@ -5,6 +5,7 @@
 
 #include <MyGUI/MyGUI.h>
 #include "BaseLayout.h"
+#include "MYGUIAccelerator.h"
 
 #include <osg/Referenced>
 
@@ -36,14 +37,15 @@ public:
 protected:
 	void notifyButtonClick(MyGUI::Widget* _sender);
 
-	void onKeyButtonPressed(MyGUI::Widget* _sender, MyGUI::KeyCode _key, MyGUI::Char _char);
-
 	void _destroy(bool _result);
 
 private:
+	void notifyAcceleratorKeyPressed(MYGUIAccelerator* sender, MyGUI::Widget* widget);
 	void notifyWindowButtonPressed(MyGUI::Window* _sender, const std::string& _name);
 	void notifyListSelectAccept(MyGUI::MultiListBox* _sender, size_t _position);
 	void notifyListMouseItemActivate(MyGUI::MultiListBox* _sender, size_t _position);
+
+	virtual void frameEntered(float _frame) override;
 
 	void cmdOK_Click();
 
@@ -53,4 +55,6 @@ private:
 
 private:
 	MyGUI::MultiListBox *lstLevel;
+
+	MYGUIAccelerator _accel;
 };
