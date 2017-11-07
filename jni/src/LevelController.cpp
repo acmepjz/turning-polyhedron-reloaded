@@ -69,7 +69,8 @@ bool LevelController::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionA
 		_lastY = -1;
 		return false;
 	case osgGA::GUIEventAdapter::KEYDOWN:
-		switch (ea.getKey()) {
+		if (ea.getModKeyMask()) return false;
+		switch (ea.getUnmodifiedKey()) {
 		case osgGA::GUIEventAdapter::KEY_Up:
 			dir = 0; break;
 		case osgGA::GUIEventAdapter::KEY_Left:
