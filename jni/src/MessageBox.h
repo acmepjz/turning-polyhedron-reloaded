@@ -65,6 +65,10 @@ namespace MyGUI
 		{
 		}
 
+		explicit operator int() const {
+			return (int)mValue;
+		}
+
 		MessageBoxStyle& operator |= (MessageBoxStyle const& _other)
 		{
 			mValue = Enum(int(mValue) | int(_other.mValue));
@@ -170,7 +174,7 @@ namespace MyGUI
 		Message* setMessageText(const UString& _value);
 
 		/** Create button with specific name*/
-		MessageBoxStyle addButtonName(const UString& _name);
+		MessageBoxStyle addButtonName(const UString& _name, MessageBoxStyle _info = MessageBoxStyle::None);
 
 		/** Set message icon*/
 		Message* setMessageIcon(MessageBoxStyle _value);
@@ -246,7 +250,7 @@ namespace MyGUI
 		IntSize mOffsetText;
 		TextBox* mWidgetText;
 
-		std::string mButtonSkin;
+		std::string mButtonSkin, mButtonDefaultSkin;
 		std::string mButtonType;
 		IntSize mButtonSize;
 		IntSize mButtonOffset;

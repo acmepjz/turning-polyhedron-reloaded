@@ -162,7 +162,7 @@ namespace MyGUI {
 	}
 
 	/** Create button with specific name*/
-	MessageBoxStyle Message::addButtonName(const UString& _name)
+	MessageBoxStyle Message::addButtonName(const UString& _name, MessageBoxStyle _info)
 	{
 		if (mVectorButton.size() >= MessageBoxStyle::_CountUserButtons)
 		{
@@ -170,20 +170,23 @@ namespace MyGUI {
 			return MessageBoxStyle::None;
 		}
 		// бит, номер кнопки + смещение до Button1
-		MessageBoxStyle info = MessageBoxStyle(MessageBoxStyle::Enum(MYGUI_FLAG(mVectorButton.size() + MessageBoxStyle::_IndexUserButton1)));
+		if (_info == MessageBoxStyle::None) {
+			_info = MessageBoxStyle(MessageBoxStyle::Enum(MYGUI_FLAG(mVectorButton.size() + MessageBoxStyle::_IndexUserButton1)));
+		}
 
-		Widget* widget = mMainWidget->createWidgetT(mButtonType, mButtonSkin, IntCoord(), Align::Left | Align::Bottom);
+		Widget* widget = mMainWidget->createWidgetT(mButtonType, _info == mInfoOk ? mButtonDefaultSkin : mButtonSkin, IntCoord(), Align::Left | Align::Bottom);
 		Button* button = widget->castType<Button>();
 		button->eventMouseButtonClick += newDelegate(this, &Message::notifyButtonClick);
 		button->setCaption(_name);
-		button->_setInternalData(info);
+		button->_setInternalData(_info);
 		mVectorButton.push_back(button);
 
 		updateSize();
-		return info;
+		return _info;
 	}
 
 	Message* Message::setDefaultButton(MessageBoxStyle _value) {
+		// TODO: change the skin of this button
 		mInfoOk = _value;
 		return this;
 	}
@@ -230,6 +233,20 @@ namespace MyGUI {
 	{
 		clearButton();
 
+		// parse default button
+		if ((int)_value & (int)MessageBoxStyle::Ok) {
+			mInfoOk = MessageBoxStyle::Ok;
+		} else if ((int)_value & (int)MessageBoxStyle::Yes) {
+			//mInfoOk = MessageBoxStyle::Yes; // ???
+		}
+
+		// parse cancel button
+		if ((int)_value & (int)MessageBoxStyle::Cancel) {
+			mInfoCancel = MessageBoxStyle::Cancel;
+		} else if ((int)_value & (int)MessageBoxStyle::No) {
+			//mInfoCancel = MessageBoxStyle::No; // ???
+		}
+
 		std::vector<MessageBoxStyle> buttons = _value.getButtons();
 
 		for (size_t index = 0; index < buttons.size(); ++index)
@@ -238,15 +255,7 @@ namespace MyGUI {
 			MessageBoxStyle info = buttons[index];
 
 			// если бит есть то ставим кнопку
-			addButtonName(getButtonName(info));
-
-			// внутри адд сбрасывается
-			mVectorButton.back()->_setInternalData(info);
-
-			if (info == MessageBoxStyle::Ok)
-				mInfoOk = info;
-			else if (info == MessageBoxStyle::Cancel)
-				mInfoCancel = info;
+			addButtonName(getButtonName(info), info);
 		}
 
 		updateSize();
@@ -450,6 +459,13 @@ namespace MyGUI {
 
 		if (mMainWidget->isUserString("ButtonSkin"))
 			mButtonSkin = mMainWidget->getUserString("ButtonSkin");
+		else
+			mButtonSkin = "Button";
+
+		if (mMainWidget->isUserString("ButtonDefaultSkin"))
+			mButtonDefaultSkin = mMainWidget->getUserString("ButtonDefaultSkin");
+		else
+			mButtonDefaultSkin = mButtonSkin; // NOTE: maybe "ButtonDefault" is undefined
 
 		Widget* widget = nullptr;
 		assignWidget(widget, "ButtonPlace", false);

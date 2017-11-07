@@ -3,6 +3,7 @@
     <Widget type="Window" skin="WindowCX" position="0 0 104 136" layer="Info" name="Root">
         <Property key="Snap" value="true"/>
         <UserString key="ButtonSkin" value="Button"/>
+        <UserString key="ButtonDefaultSkin" value="ButtonDefault"/>
         <Widget type="ImageBox" skin="ImageBox" position="8 8 48 48" name="Icon">
             <Property key="ImageResource" value="MessageBoxIcon"/>
             <Property key="ImageGroup" value="Icons"/>
