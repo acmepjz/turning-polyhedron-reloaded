@@ -4,6 +4,8 @@
 #include "MessageBox.h"
 #include "InputBox.h"
 
+#include <osgGA/GUIEventAdapter>
+
 #include <osgDB/FileUtils>
 #include <osgDB/FileNameUtils>
 #include <osgDB/XmlParser>
@@ -22,8 +24,32 @@ namespace MyGUI {
 	{
 	}
 
+	void FileDialog::notifyAcceleratorKeyPressed(MYGUIAccelerator* sender, MyGUI::Widget* widget) {
+		// the operation must be delayed otherwise it crashes
+		setFrameAdvise((int)(intptr_t)widget);
+	}
+
+	void FileDialog::frameEntered(float _frame) {
+		int fa = getFrameAdvise();
+		setFrameAdvise(0);
+
+		if (fa & 0x10) {
+			// enter
+			cmdOK_Click();
+		} else {
+			// escape
+			endMessage();
+		}
+	}
+
 	void FileDialog::initialize() {
 		Window *window = dynamic_cast<Window*>(mMainWidget);
+
+		_accel.rootWidget = mMainWidget;
+		_accel.addAccelerator((MyGUI::Widget*)0x100, true, osgGA::GUIEventAdapter::KEY_Escape, 0);
+		_accel.addAccelerator((MyGUI::Widget*)0x110, true, osgGA::GUIEventAdapter::KEY_Return, 0);
+		_accel.addAccelerator((MyGUI::Widget*)0x111, true, osgGA::GUIEventAdapter::KEY_KP_Enter, 0);
+		_accel.eventAcceleratorKeyPressed += MyGUI::newDelegate(this, &FileDialog::notifyAcceleratorKeyPressed);
 
 		if (isSaveDialog) window->setCaption("Save as");
 		else window->setCaption("Open");
@@ -500,6 +526,7 @@ namespace MyGUI {
 	}
 
 	void FileDialog::notifyListSelectAccept(MultiListBox* _sender, size_t _position) {
+		setFrameAdvise(0); // ???
 		if (_position < fileList.size()) {
 			txtFileName->setOnlyText(fileList[_position].name);
 			cmdOK_Click();

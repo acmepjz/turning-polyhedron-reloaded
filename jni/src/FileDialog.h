@@ -6,6 +6,7 @@
 #include <MyGUI/MyGUI.h>
 #include "BaseLayout.h"
 #include "MessageBox.h"
+#include "MYGUIAccelerator.h"
 #include "util_filesystem.h"
 
 namespace MyGUI {
@@ -54,11 +55,10 @@ namespace MyGUI {
 	protected:
 		void notifyButtonClick(Widget* _sender);
 
-		void onKeyButtonPressed(Widget* _sender, KeyCode _key, Char _char);
-
 		void _destroy(bool _result);
 
 	private:
+		void notifyAcceleratorKeyPressed(MYGUIAccelerator* sender, MyGUI::Widget* widget);
 		void notifyWindowButtonPressed(MyGUI::Window* _sender, const std::string& _name);
 		void notifyFolderButtonClick(Widget* _sender);
 		void notifyFolderComboAccept(DropdownListButton* _sender, size_t _index);
@@ -68,6 +68,8 @@ namespace MyGUI {
 		void notifyOverwritePrompt(Message* sender, MessageBoxStyle result);
 		void notifyInputFolder(InputBox* _sender);
 		void notifyNewFolder(InputBox* _sender);
+
+		virtual void frameEntered(float _frame) override;
 
 		void cmdOK_Click();
 
@@ -106,6 +108,8 @@ namespace MyGUI {
 		std::vector<std::string> history;
 		int currentHistory;
 		bool lockHistory;
+
+		MYGUIAccelerator _accel;
 	};
 
 }
