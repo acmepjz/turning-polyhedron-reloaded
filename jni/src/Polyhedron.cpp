@@ -299,6 +299,7 @@ namespace game {
 	}
 
 	bool Polyhedron::move(Level* parent, MoveDirection dir){
+		if ((flags & VISIBLE) == 0 || (flags & EXIT) != 0) return false;
 		if (!_trans.valid() || pos._map == NULL) return false;
 
 		PolyhedronPosition newPos = pos;
@@ -534,6 +535,8 @@ namespace game {
 	}
 
 	bool Polyhedron::onTileDirty(Level* parent) {
+		if ((flags & VISIBLE) == 0 || (flags & EXIT) != 0) return false;
+
 		//check if the current position is valid
 		// TODO: if it is not FRAGILE then falling is allowed
 		if (!valid(parent)) {
@@ -734,6 +737,8 @@ namespace game {
 
 	bool Polyhedron::valid(const Level* parent, const PolyhedronPosition& pos, HitTestResult* hitTestResult, HitTestReason* reason) const {
 		if (reason) *reason = HITTEST_VALID;
+
+		if ((flags & VISIBLE) == 0 || (flags & EXIT) != 0) return true;
 
 		//get current position
 		PolyhedronPosition::Idx iii;

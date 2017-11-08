@@ -9,6 +9,7 @@
 #include "TileType.h"
 #include "ObjectType.h"
 #include "EventDescription.h"
+#include "PolyhedronMerge.h"
 
 class XMLNode;
 
@@ -81,7 +82,11 @@ namespace game {
 			return NULL;
 		}
 
-		bool update(); //!< update animation
+		/** process polyhedron if tile is dirty */
+		void processTileDirty();
+
+		/** update animation */
+		bool update();
 		bool isAnimating() const {
 			return _isAnimating;
 		}
@@ -109,6 +114,8 @@ namespace game {
 		osg::ref_ptr<TileTypeMap> tileTypeMap; //!< tile type map used in this level
 		osg::ref_ptr<ObjectTypeMap> objectTypeMap; //!< object type map used in this level
 
+		std::vector<osg::ref_ptr<PolyhedronMerge> > polyhedronMerge; //!< an array of polyhedron merge data
+
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, name);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, solution);
 		UTIL_ADD_BYVAL_GETTER_SETTER(int, checkpointRequired);
@@ -116,6 +123,7 @@ namespace game {
 		UTIL_ADD_BYREF_GETTER_SETTER(Polyhedra, polyhedra);
 		UTIL_ADD_OBJ_GETTER_SETTER(TileTypeMap, tileTypeMap);
 		UTIL_ADD_OBJ_GETTER_SETTER(ObjectTypeMap, objectTypeMap);
+		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<PolyhedronMerge> >, polyhedronMerge);
 
 	public:
 		//the following properties don't save to file and is generated at runtime

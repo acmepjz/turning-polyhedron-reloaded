@@ -34,6 +34,7 @@ namespace game {
 		//following objects are always deep copy
 		util::copyMap(maps, other.maps, copyop, true);
 		util::copyVector(polyhedra, other.polyhedra, copyop, true);
+		util::copyVector(polyhedronMerge, other.polyhedronMerge, copyop, true);
 	}
 
 	Level::~Level()
@@ -122,6 +123,10 @@ namespace game {
 			}
 		}
 
+		for (std::vector<osg::ref_ptr<PolyhedronMerge> >::iterator it = polyhedronMerge.begin(); it != polyhedronMerge.end(); ++it) {
+			(*it)->init(this);
+		}
+
 		// debug
 		UTIL_INFO "checkpoint count: " << _checkpointCount << ", main polyhedron count: " << _mainPolyhedronCount << std::endl;
 
@@ -199,12 +204,28 @@ namespace game {
 				} else {
 					UTIL_WARN "failed to load polyhedron" << std::endl;
 				}
+			} else if (subnode->name == "polyhedronMerge") {
+				osg::ref_ptr<PolyhedronMerge> pm = new PolyhedronMerge;
+				if (pm->load(subnode)) {
+					polyhedronMerge.push_back(pm);
+				} else {
+					UTIL_WARN "failed to load polyhedron merge" << std::endl;
+				}
 			} else {
 				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
 			}
 		}
 
 		return true;
+	}
+
+	void Level::processTileDirty() {
+		while (_isTileDirty) {
+			_isTileDirty = false;
+			for (int i = 0, m = polyhedra.size(); i < m; i++) {
+				if (polyhedra[i]->onTileDirty(this)) _isAnimating = true;
+			}
+		}
 	}
 
 	bool Level::update() {
@@ -214,12 +235,13 @@ namespace game {
 			if (polyhedra[i]->update(this)) _isAnimating = true;
 		}
 
-		while (_isTileDirty) {
-			_isTileDirty = false;
-			for (int i = 0, m = polyhedra.size(); i < m; i++) {
-				if (polyhedra[i]->onTileDirty(this)) _isAnimating = true;
-			}
+		processTileDirty();
+
+		for (std::vector<osg::ref_ptr<PolyhedronMerge> >::iterator it = polyhedronMerge.begin(); it != polyhedronMerge.end(); ++it) {
+			(*it)->process(this);
 		}
+
+		processTileDirty();
 
 		// update game status
 		if (_isGameOver) {
@@ -256,5 +278,6 @@ namespace game {
 		ADD_OBJECT_SERIALIZER(tileTypeMap, TileTypeMap, NULL);
 		ADD_MAP_SERIALIZER(maps, Level::MapDataMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);
 		ADD_VECTOR_SERIALIZER(polyhedra, Level::Polyhedra, osgDB::BaseSerializer::RW_OBJECT, -1);
+		ADD_VECTOR_SERIALIZER(polyhedronMerge, std::vector<osg::ref_ptr<PolyhedronMerge> >, osgDB::BaseSerializer::RW_OBJECT, -1);
 	}
 }
