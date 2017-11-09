@@ -64,8 +64,8 @@ namespace game {
 	public:
 		//the following properties don't save to file and is generated at runtime
 		mutable std::string _srcString; //!< only a temporary variable
-		std::vector<Polyhedron*> _src;
-		Polyhedron* _dest;
+		std::vector<Polyhedron*> _src; //!< the source polyhedra
+		Polyhedron* _dest; //!< the destination polyhedron
 	};
 
 }

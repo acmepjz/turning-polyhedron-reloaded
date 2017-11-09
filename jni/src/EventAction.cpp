@@ -341,7 +341,7 @@ namespace game {
 				pp.flags = flags;
 			}
 
-			// TODO: animation & check stability reason
+			// TODO: raise event & animation & check stability reason
 			srcPoly->pos = pp;
 			srcPoly->flags |= Polyhedron::VISIBLE;
 			srcPoly->updateVisible();

@@ -5,7 +5,9 @@
 
 namespace util {
 
-	/// A rectangle.
+	/** A rectangle.\n
+	\note The lower and upper are all INCLUSIVE.
+	*/
 
 	template <class T>
 	class Rect {
