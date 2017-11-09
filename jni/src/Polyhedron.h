@@ -246,7 +246,7 @@ namespace game {
 
 		void init(Level* parent);
 
-		bool load(const XMLNode* node, Level* parent, MapData* mapData); //!< load from XML node, assume the node is called `polyhedron`
+		bool load(const XMLNode* node, Level* parent, MapData* mapData, gfx::AppearanceMap* _template); //!< load from XML node, assume the node is called `polyhedron`
 
 		void setSelected(bool selected);
 

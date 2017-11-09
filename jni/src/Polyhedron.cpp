@@ -936,7 +936,7 @@ namespace game {
 		}
 	}
 
-	bool Polyhedron::load(const XMLNode* node, Level* parent, MapData* mapData){
+	bool Polyhedron::load(const XMLNode* node, Level* parent, MapData* mapData, gfx::AppearanceMap* _template){
 		id = node->getAttr("id", std::string());
 
 		//get shape
@@ -1080,7 +1080,7 @@ namespace game {
 				}
 			} else if (subnode->name == "appearance") {
 				osg::ref_ptr<gfx::Appearance> a = new gfx::Appearance;
-				a->load(subnode, &appearanceMap, NULL, _defaultSize);
+				a->load(subnode, _template, &appearanceMap, NULL, _defaultSize);
 			} else {
 				int _eventType = EventHandler::convertToEventType(subnode->name);
 

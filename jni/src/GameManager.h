@@ -33,4 +33,5 @@ public:
 public:
 	osg::ref_ptr<game::ObjectTypeMap> defaultObjectTypeMap;
 	osg::ref_ptr<game::TileTypeMap> defaultTileTypeMap;
+	gfx::AppearanceMap defaultAppearanceMap;
 };

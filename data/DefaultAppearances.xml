@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<appearances>
+	<shader id="shader_ground" ambient="0.3,0.3,0.3" diffuse="0.3,0.3,0.3" specular="0.2,0.2,0.15" specularHardness="50"/>
+	<shader id="shader_ground_light" ambient="0.4,0.4,0.4" diffuse="0.3,0.3,0.3" specular="0.2,0.2,0.15" specularHardness="50"/>
+	<shader id="shader_thin_ground" ambient="0.4,0.2,0.1" diffuse="0.4,0.3,0.2" specular="0.2,0.2,0.15" specularHardness="50"/>
+	<shader id="shader_ice" ambient="0.1,0.3,0.4" diffuse="0.2,0.4,0.4" specular="0.4,0.4,0.3" specularHardness="50"/>
+	<shader id="shader_one_time" ambient="0.1,0.3,0.1" diffuse="0.1,0.3,0.1" specular="0.2,0.2,0.15" specularHardness="50"/>
+	<mesh id="mesh_ground" type="cube" s="1,1,0.25" c="0,0,1" bevel="0.05" bevelNormalSmoothness="1"/>
+	<mesh id="mesh_block_ground" type="cube" s="1,1,1" c="0,0,1" bevel="0.05" bevelNormalSmoothness="1"/>
+	<mesh id="mesh_wall" type="cube" s="1,1,1" c="0,0,0" bevel="0.05" bevelNormalSmoothness="1"/>
+    <appearance id="a_ground">
+      <shader templateName="shader_ground">
+        <mesh templateName="mesh_ground"/>
+      </shader>
+    </appearance>
+    <appearance id="a_bridge">
+      <shader templateName="shader_ground_light">
+        <mesh templateName="mesh_ground"/>
+      </shader>
+    </appearance>
+    <appearance id="a_goal"><!-- TODO: particle system -->
+      <shader ambient="1,1,0">
+        <mesh type="cube" s="1,1,1" wireframe="true"/>
+      </shader>
+    </appearance>
+    <appearance id="a_checkpoint">
+      <!-- TODO: -->
+      <shader ambient="0,1,1">
+        <mesh type="cube" s="1,1,1" wireframe="true"/>
+      </shader>
+    </appearance>
+</appearances>

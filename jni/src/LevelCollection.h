@@ -39,8 +39,9 @@ namespace game {
 		\param node the XML node
 		\param otm the default object types
 		\param ttm the default tile types
+		\param am the default appearances
 		*/
-		static osg::Object* loadLevelOrCollection(const XMLNode* node, ObjectTypeMap* otm, TileTypeMap* ttm);
+		static osg::Object* loadLevelOrCollection(const XMLNode* node, ObjectTypeMap* otm, TileTypeMap* ttm, gfx::AppearanceMap* am);
 
 	public:
 		std::string name; //!< level pack name
@@ -49,11 +50,13 @@ namespace game {
 
 		osg::ref_ptr<TileTypeMap> tileTypeMap; //!< tile type map used in this level
 		osg::ref_ptr<ObjectTypeMap> objectTypeMap; //!< object type map used in this level
+		gfx::AppearanceMap appearanceMap; //!< appearance map used in this level
 
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, name);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<Level> >, levels);
 		UTIL_ADD_OBJ_GETTER_SETTER(TileTypeMap, tileTypeMap);
 		UTIL_ADD_OBJ_GETTER_SETTER(ObjectTypeMap, objectTypeMap);
+		UTIL_ADD_BYREF_GETTER_SETTER(gfx::AppearanceMap, appearanceMap);
 	};
 
 }

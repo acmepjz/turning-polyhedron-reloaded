@@ -129,7 +129,7 @@ namespace game {
 
 		void init(Level* parent);
 
-		bool load(const XMLNode* node, Level* parent); //!< load from XML node, assume the node is called `mapData`
+		bool load(const XMLNode* node, Level* parent, gfx::AppearanceMap* _template); //!< load from XML node, assume the node is called `mapData`
 
 		///check if the position is valid
 		bool isValidPosition(int x, int y, int z) const {

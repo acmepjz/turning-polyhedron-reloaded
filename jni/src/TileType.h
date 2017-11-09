@@ -38,7 +38,7 @@ namespace game {
 
 		void init(ObjectTypeMap* otm, TileTypeMap* ttm);
 
-		bool load(const XMLNode* node); //!< load from XML node, assume the node is called `tileType`
+		bool load(const XMLNode* node, gfx::AppearanceMap* _template); //!< load from XML node, assume the node is called `tileType`
 
 		/** (test only) */
 		osg::Node* getOrCreateInstance(int shape, bool isEditMode);
@@ -112,8 +112,8 @@ namespace game {
 
 		void init(ObjectTypeMap* otm);
 
-		bool load(const XMLNode* node); //!< load from XML node, assume the node is called `tileTypes`
-		bool loadTileType(const XMLNode* node); //!< load from XML node, assume the node is called `tileType`
+		bool load(const XMLNode* node, gfx::AppearanceMap* _template); //!< load from XML node, assume the node is called `tileTypes`
+		bool loadTileType(const XMLNode* node, gfx::AppearanceMap* _template); //!< load from XML node, assume the node is called `tileType`
 		bool loadTileMapping(const XMLNode* node); //!< load from XML node, assume the node is called `tileMapping`
 
 	public:

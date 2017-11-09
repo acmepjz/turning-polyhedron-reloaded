@@ -14,6 +14,27 @@
 
 namespace gfx {
 
+	static void addToAppearanceMap(AppearanceMap* _map, const std::string& _id, Appearance* _a) {
+		if (_map) {
+			AppearanceMap::const_iterator it = _map->find(_id);
+			if (it != _map->end()) {
+				UTIL_WARN "object id '" << _id << "' already defined, will be redefined to a new object" << std::endl;
+			}
+			(*_map)[_id] = _a;
+		}
+	}
+
+	bool loadAppearanceMap(const XMLNode* node, AppearanceMap* _map) {
+		bool ret = true;
+		for (size_t i = 0; i < node->subNodes.size(); i++) {
+			osg::ref_ptr<Appearance> a = new Appearance;
+			if (a->load(node->subNodes[i].get(), _map, _map)) {
+				ret = false;
+			}
+		}
+		return ret;
+	}
+
 	Appearance::Appearance()
 		: type(0)
 		, ambient(0, 0, 0, 1)
@@ -226,6 +247,11 @@ namespace gfx {
 
 	osg::Node* Appearance::getOrCreateInstance(int shape)
 	{
+		// load from template directly if it is not shader
+		if (_templateAppearance.valid() && type != SHADER) {
+			return _templateAppearance->getOrCreateInstance(shape);
+		}
+
 		//check if the instance is already created
 		{
 			std::map<int, osg::ref_ptr<osg::Node> >::iterator it = _instances.find(shape);
@@ -241,7 +267,7 @@ namespace gfx {
 		case SHADER:
 		case TRANSFORM:
 		{
-			if (subNodes.empty()) break;
+			//if (subNodes.empty()) break;
 			
 			osg::ref_ptr<osg::Group> gp;
 			if (type == TRANSFORM) {
@@ -261,18 +287,29 @@ namespace gfx {
 
 			if (type == SHADER) {
 				if (!_stateSet.valid()) {
-					//create new state set
-					_stateSet = new osg::StateSet;
+					if (_templateAppearance.valid()) {
+						// load from template directly
+						if (!_templateAppearance->_stateSet.valid()) {
+							osg::ref_ptr<osg::Node> temp = _templateAppearance->getOrCreateInstance(shape);
+						}
+						_stateSet = _templateAppearance->_stateSet;
+						if (!_stateSet.valid()) {
+							UTIL_ERR "failed to create state set from shader template" << std::endl;
+						}
+					} else {
+						//create new state set
+						_stateSet = new osg::StateSet;
 
-					//create material
-					osg::ref_ptr<osg::Material> mat = new osg::Material;
-					mat->setAmbient(osg::Material::FRONT_AND_BACK, ambient);
-					mat->setDiffuse(osg::Material::FRONT_AND_BACK, diffuse);
-					mat->setSpecular(osg::Material::FRONT_AND_BACK, specular);
-					mat->setEmission(osg::Material::FRONT_AND_BACK, emissive);
-					mat->setShininess(osg::Material::FRONT_AND_BACK, specularHardness);
+						//create material
+						osg::ref_ptr<osg::Material> mat = new osg::Material;
+						mat->setAmbient(osg::Material::FRONT_AND_BACK, ambient);
+						mat->setDiffuse(osg::Material::FRONT_AND_BACK, diffuse);
+						mat->setSpecular(osg::Material::FRONT_AND_BACK, specular);
+						mat->setEmission(osg::Material::FRONT_AND_BACK, emissive);
+						mat->setShininess(osg::Material::FRONT_AND_BACK, specularHardness);
 
-					_stateSet->setAttributeAndModes(mat.get());
+						_stateSet->setAttributeAndModes(mat.get());
+					}
 				}
 				node->setStateSet(_stateSet.get());
 			}
@@ -316,7 +353,7 @@ namespace gfx {
 		return node.release();
 	}
 
-	bool Appearance::load(const XMLNode* node, AppearanceMap* _map, const char* _defaultId, const osg::Vec3& _defaultSize){
+	bool Appearance::load(const XMLNode* node, AppearanceMap* _template, AppearanceMap* _map, const char* _defaultId, const osg::Vec3& _defaultSize){
 		// get node id first
 		std::string _id = node->getAttr("id", std::string(_defaultId ? _defaultId : ""));
 
@@ -329,6 +366,25 @@ namespace gfx {
 			else {
 				UTIL_WARN "unrecognized node name: " << node->name << std::endl;
 				return false;
+			}
+
+			if (_template) {
+				std::string templateName = node->getAttr("templateName", std::string());
+				if (!templateName.empty()) {
+					AppearanceMap::iterator it = _template->find(templateName);
+					if (it == _template->end()) {
+						UTIL_WARN "template '" << templateName << "' not found, ignored" << std::endl;
+					} else {
+						// point to template appearance
+						_templateAppearance = it->second;
+
+						// if it is not shader then we are done
+						if (type != SHADER) {
+							addToAppearanceMap(_map, _id, this);
+							return true;
+						}
+					}
+				}
 			}
 
 			//if it is appearance node and only have one child then load recursively
@@ -438,7 +494,7 @@ namespace gfx {
 			//load subnodes, although sometimes these nodes are ignored
 			for (size_t i = 0; i < node->subNodes.size(); i++) {
 				osg::ref_ptr<Appearance> a = new Appearance;
-				if (a->load(node->subNodes[i].get(), NULL, NULL, _defaultSize)) {
+				if (a->load(node->subNodes[i].get(), _template, NULL, NULL, _defaultSize)) {
 					subNodes.push_back(a);
 				}
 			}
@@ -460,13 +516,7 @@ namespace gfx {
 		}
 
 		// add to appearance map
-		if (_map) {
-			AppearanceMap::const_iterator it = _map->find(_id);
-			if (it != _map->end()) {
-				UTIL_WARN "object id '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
-			}
-			(*_map)[_id] = this;
-		}
+		addToAppearanceMap(_map, _id, this);
 
 		return true;
 	}
@@ -524,6 +574,7 @@ namespace gfx {
 		ADD_VEC3_SERIALIZER(solidColor, osg::Vec3(1.0f, 1.0f, 1.0f));
 		ADD_VEC3_SERIALIZER(wireframeColor, osg::Vec3(1.0f, 1.0f, 1.0f));
 		ADD_VECTOR_SERIALIZER(subNodes, std::vector<osg::ref_ptr<Appearance> >, osgDB::BaseSerializer::RW_OBJECT, -1);
+		ADD_OBJECT_SERIALIZER(_templateAppearance, Appearance, 0);
 	}
 
 }

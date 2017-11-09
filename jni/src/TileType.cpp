@@ -69,7 +69,7 @@ namespace game {
 		return _appearance.get();
 	}
 
-	bool TileType::load(const XMLNode* node){
+	bool TileType::load(const XMLNode* node, gfx::AppearanceMap* _template){
 		id = node->getAttr("id", std::string());
 		if (id.empty()) {
 			UTIL_WARN "object doesn't have id" << std::endl;
@@ -110,7 +110,7 @@ namespace game {
 				desc = subnode->contents;
 			} else if (subnode->name == "appearance") {
 				osg::ref_ptr<gfx::Appearance> a = new gfx::Appearance;
-				a->load(subnode, &appearanceMap, _defaultId.c_str());
+				a->load(subnode, _template, &appearanceMap, _defaultId.c_str());
 			} else {
 				int _eventType = EventHandler::convertToEventType(subnode->name);
 
@@ -223,12 +223,12 @@ namespace game {
 		}
 	}
 
-	bool TileTypeMap::load(const XMLNode* node){
+	bool TileTypeMap::load(const XMLNode* node, gfx::AppearanceMap* _template){
 		for (size_t i = 0; i < node->subNodes.size(); i++) {
 			const XMLNode* subnode = node->subNodes[i].get();
 
 			if (subnode->name == "tileType") {
-				loadTileType(subnode);
+				loadTileType(subnode, _template);
 			} else {
 				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
 			}
@@ -237,9 +237,9 @@ namespace game {
 		return true;
 	}
 
-	bool TileTypeMap::loadTileType(const XMLNode* node){
+	bool TileTypeMap::loadTileType(const XMLNode* node, gfx::AppearanceMap* _template){
 		osg::ref_ptr<TileType> tt = new TileType;
-		if (tt->load(node)) {
+		if (tt->load(node, _template)) {
 			add(tt.get());
 			return true;
 		} else {

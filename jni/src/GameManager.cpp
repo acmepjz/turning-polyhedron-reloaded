@@ -23,14 +23,20 @@ void GameManager::loadDefaults() {
 	defaultObjectTypeMap = new ObjectTypeMap;
 	osg::ref_ptr<XMLNode> x = XMLReaderWriter::readFile(
 		std::ifstream("../data/DefaultObjectTypes.xml", std::ios::in | std::ios::binary));
-	if (x.valid()) defaultObjectTypeMap->load(x.get());
-	else UTIL_WARN "Failed to load default object types" << std::endl;
+	if (!x.valid() || !defaultObjectTypeMap->load(x.get()))
+		UTIL_WARN "Failed to load default object types" << std::endl;
+
+	defaultAppearanceMap.clear();
+	x = XMLReaderWriter::readFile(
+		std::ifstream("../data/DefaultAppearances.xml", std::ios::in | std::ios::binary));
+	if (!x.valid() || !gfx::loadAppearanceMap(x.get(), &defaultAppearanceMap))
+		UTIL_WARN "Failed to load default appearances" << std::endl;
 
 	defaultTileTypeMap = new TileTypeMap;
 	x = XMLReaderWriter::readFile(
 		std::ifstream("../data/DefaultTileTypes.xml", std::ios::in | std::ios::binary));
-	if (x.valid()) defaultTileTypeMap->load(x.get());
-	else UTIL_WARN "Failed to load default tile types" << std::endl;
+	if (!x.valid() || !defaultTileTypeMap->load(x.get(), &defaultAppearanceMap))
+		UTIL_WARN "Failed to load default tile types" << std::endl;
 }
 
 game::Level* GameManager::loadLevel(const char* filename, int levelIndex) {
@@ -45,7 +51,7 @@ game::Level* GameManager::loadLevel(const char* filename, int levelIndex) {
 
 		if (x.valid()) {
 			osg::ref_ptr<osg::Object> obj = LevelCollection::loadLevelOrCollection(x.get(),
-				defaultObjectTypeMap, defaultTileTypeMap);
+				defaultObjectTypeMap, defaultTileTypeMap, &defaultAppearanceMap);
 
 			// check if it is level collection
 			LevelCollection *lc = dynamic_cast<LevelCollection*>(obj.get());
@@ -82,7 +88,7 @@ osg::Object* GameManager::loadLevelOrCollection(const char* filename) {
 
 		if (x.valid()) {
 			osg::ref_ptr<osg::Object> obj = LevelCollection::loadLevelOrCollection(x.get(),
-				defaultObjectTypeMap, defaultTileTypeMap);
+				defaultObjectTypeMap, defaultTileTypeMap, &defaultAppearanceMap);
 			if (obj.valid()) return obj.release();
 		}
 	}

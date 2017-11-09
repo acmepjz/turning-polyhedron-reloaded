@@ -18,6 +18,12 @@ namespace gfx {
 	*/
 	typedef std::map<std::string, osg::ref_ptr<Appearance> > AppearanceMap;
 
+	/** append to an appearance map from XML node, assume the node has name `appearances`.
+	\param[in] node the XML node
+	\param[in,out] _map the appearance map, also works as the template
+	*/
+	bool loadAppearanceMap(const XMLNode* node, AppearanceMap* _map);
+
 	/// The appearance node (experimental)
 
 	class Appearance :
@@ -70,11 +76,12 @@ namespace gfx {
 
 		/** load from XML node.
 		\param node The node to be loaded, whose name should be `appearance`, `shader`, `transform` or `mesh`.
+		\param _template The appearance template
 		\param _map Add this node to the appearance map.
 		\param _defaultId The default id.
 		\param _defaultSize The default size, which is used in Polyhedron autoSize=true.
 		*/
-		bool load(const XMLNode* node, AppearanceMap* _map = NULL, const char* _defaultId = NULL, const osg::Vec3& _defaultSize = osg::Vec3(1, 1, 1));
+		bool load(const XMLNode* node, AppearanceMap* _template = NULL, AppearanceMap* _map = NULL, const char* _defaultId = NULL, const osg::Vec3& _defaultSize = osg::Vec3(1, 1, 1));
 
 		void loadVertices(const XMLNode* node); //!< (internal function) load vertices, assume the node name is `vertices`.
 		void loadFaces(const XMLNode* node); //!< (internal function) load faces, assume the node name is `faces`.
@@ -113,6 +120,8 @@ namespace gfx {
 
 		std::vector<osg::ref_ptr<Appearance> > subNodes; //!< subnodes
 
+		osg::ref_ptr<Appearance> _templateAppearance; //!< the template appearance
+
 	public:
 		UTIL_ADD_BYVAL_GETTER_SETTER(int, type);
 
@@ -138,6 +147,7 @@ namespace gfx {
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3, wireframeColor);
 
 		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<Appearance> >, subNodes);
+		UTIL_ADD_OBJ_GETTER_SETTER(Appearance, _templateAppearance);
 
 	public:
 		//the following properties don't save to file and is generated at runtime

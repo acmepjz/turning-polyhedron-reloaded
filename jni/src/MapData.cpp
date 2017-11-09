@@ -293,7 +293,7 @@ namespace game {
 		osg::ref_ptr<TileProperty> prop;
 	};
 
-	bool MapData::load(const XMLNode* node, Level* parent) {
+	bool MapData::load(const XMLNode* node, Level* parent, gfx::AppearanceMap* _template) {
 		id = node->getAttr("id", std::string());
 		if (id.empty()) {
 			UTIL_WARN "object doesn't have id" << std::endl;
@@ -474,7 +474,7 @@ namespace game {
 				}
 			} else if (subnode->name == "polyhedron") {
 				osg::ref_ptr<Polyhedron> poly = new Polyhedron;
-				if (poly->load(subnode, parent, this)) {
+				if (poly->load(subnode, parent, this, _template)) {
 					parent->addPolyhedron(poly.get());
 				} else {
 					UTIL_WARN "failed to load polyhedron" << std::endl;

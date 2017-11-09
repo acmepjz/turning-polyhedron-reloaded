@@ -113,6 +113,7 @@ namespace game {
 
 		osg::ref_ptr<TileTypeMap> tileTypeMap; //!< tile type map used in this level
 		osg::ref_ptr<ObjectTypeMap> objectTypeMap; //!< object type map used in this level
+		gfx::AppearanceMap appearanceMap; //!< appearance map used in this level
 
 		std::vector<osg::ref_ptr<PolyhedronMerge> > polyhedronMerge; //!< an array of polyhedron merge data
 
@@ -123,6 +124,7 @@ namespace game {
 		UTIL_ADD_BYREF_GETTER_SETTER(Polyhedra, polyhedra);
 		UTIL_ADD_OBJ_GETTER_SETTER(TileTypeMap, tileTypeMap);
 		UTIL_ADD_OBJ_GETTER_SETTER(ObjectTypeMap, objectTypeMap);
+		UTIL_ADD_BYREF_GETTER_SETTER(gfx::AppearanceMap, appearanceMap);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<PolyhedronMerge> >, polyhedronMerge);
 
 	public:
