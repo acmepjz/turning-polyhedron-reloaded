@@ -31,6 +31,7 @@ namespace game {
 			UPPER_XY = 1 | 2,
 			UPPER_XZ = 1 | 4,
 			UPPER_YZ = 2 | 4,
+			UPPER_XYZ = 1 | 2 | 4, //!< mirrored
 			UPPER_MASK = 1 | 2 | 4,
 			ROT_XYZ = (0 << 3) | (1 << 5) | (2 << 7),
 			ROT_YZX = (1 << 3) | (2 << 5) | (0 << 7),
@@ -39,6 +40,8 @@ namespace game {
 			ROT_YXZ = (1 << 3) | (0 << 5) | (2 << 7), //!< mirrored
 			ROT_ZYX = (2 << 3) | (1 << 5) | (0 << 7), //!< mirrored
 			ROT_MASK = (3 << 3) | (3 << 5) | (3 << 7),
+			numberOfAllPossibleFlagsForCuboidSize = 6, //!< the number of all possible flags for cuboid which produces different size. \sa allPossibleFlagsForCuboidSize
+			numberOfAllPossibleFlagsForCuboid = 24, //!< the number of all possible flags for cuboid. \sa allPossibleFlagsForCuboid
 		};
 		/// used in \ref getCurrentPos.
 		struct Pos {
@@ -52,6 +55,8 @@ namespace game {
 			osg::Vec3i size; //!< current size
 			osg::Vec3i delta; //!< current delta x,y,z
 		};
+		static const int allPossibleFlagsForCuboidSize[numberOfAllPossibleFlagsForCuboidSize]; //!< the list of all possible flags for cuboid which produces different size.
+		static const int allPossibleFlagsForCuboid[numberOfAllPossibleFlagsForCuboid]; //!< the list of all possible flags for cuboid.
 	public:
 		PolyhedronPosition() :
 			flags(ROT_XYZ)

@@ -326,20 +326,11 @@ namespace game {
 			int flags = atoi(arguments["flags"].c_str());
 			if (flags == 0) {
 				osg::Vec2i size = util::getAttrFromStringOsgVec(arguments["size"], osg::Vec2i(srcPoly->size[0], srcPoly->size[1]));
-				int candidateFlags[6] =
-				{
-					PolyhedronPosition::ROT_XYZ,
-					PolyhedronPosition::ROT_YZX,
-					PolyhedronPosition::ROT_ZXY,
-					PolyhedronPosition::ROT_XZY | PolyhedronPosition::UPPER_X,
-					PolyhedronPosition::ROT_YXZ | PolyhedronPosition::UPPER_X,
-					PolyhedronPosition::ROT_ZYX | PolyhedronPosition::UPPER_X,
-				};
 				PolyhedronPosition::Idx idx;
-				for (int i = 0; i < 6; i++) {
-					PolyhedronPosition::getCurrentPos(candidateFlags[i], srcPoly, idx);
+				for (int i = 0; i < PolyhedronPosition::numberOfAllPossibleFlagsForCuboidSize; i++) {
+					PolyhedronPosition::getCurrentPos(PolyhedronPosition::allPossibleFlagsForCuboidSize[i], srcPoly, idx);
 					if (idx.size[0] == size[0] && idx.size[1] == size[1]) {
-						flags = candidateFlags[i];
+						flags = PolyhedronPosition::allPossibleFlagsForCuboidSize[i];
 						break;
 					}
 				}

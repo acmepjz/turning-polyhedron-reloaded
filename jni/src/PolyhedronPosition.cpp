@@ -8,6 +8,43 @@
 
 namespace game {
 
+	const int PolyhedronPosition::allPossibleFlagsForCuboidSize[numberOfAllPossibleFlagsForCuboidSize] =
+	{
+		ROT_XYZ,
+		ROT_YZX,
+		ROT_ZXY,
+		ROT_XZY | UPPER_X,
+		ROT_YXZ | UPPER_X,
+		ROT_ZYX | UPPER_X,
+	};
+	const int PolyhedronPosition::allPossibleFlagsForCuboid[numberOfAllPossibleFlagsForCuboid] =
+	{
+		ROT_XYZ,
+		ROT_XYZ | UPPER_XY,
+		ROT_XYZ | UPPER_XZ,
+		ROT_XYZ | UPPER_YZ,
+		ROT_YZX,
+		ROT_YZX | UPPER_XY,
+		ROT_YZX | UPPER_XZ,
+		ROT_YZX | UPPER_YZ,
+		ROT_ZXY,
+		ROT_ZXY | UPPER_XY,
+		ROT_ZXY | UPPER_XZ,
+		ROT_ZXY | UPPER_YZ,
+		ROT_XZY | UPPER_X,
+		ROT_XZY | UPPER_Y,
+		ROT_XZY | UPPER_Z,
+		ROT_XZY | UPPER_XYZ,
+		ROT_YXZ | UPPER_X,
+		ROT_YXZ | UPPER_Y,
+		ROT_YXZ | UPPER_Z,
+		ROT_YXZ | UPPER_XYZ,
+		ROT_ZYX | UPPER_X,
+		ROT_ZYX | UPPER_Y,
+		ROT_ZYX | UPPER_Z,
+		ROT_ZYX | UPPER_XYZ,
+	};
+
 	void PolyhedronPosition::init(Level* parent){
 		MapPosition::init(parent);
 	}
