@@ -1,5 +1,8 @@
 #pragma once
 
+#include <osg/Vec2i>
+#include <osg/Vec3i>
+
 namespace util {
 
 	/// A rectangle.
@@ -7,40 +10,67 @@ namespace util {
 	template <class T>
 	class Rect {
 	public:
-		Rect() : left(0), top(0), right(0), bottom(0)
+		typedef typename T::value_type value_type;
+		Rect()
 		{
 		}
-		Rect(T left, T top, T right, T bottom)
-			: left(left), top(top), right(right), bottom(bottom)
+		Rect(const T& lower, const T& upper)
+			: lower(lower), upper(upper)
 		{
 		}
 		Rect(const Rect& other)
-			: left(other.left), top(other.top), right(other.right), bottom(other.bottom)
+			: lower(other.lower), uppert(other.upper)
 		{
 		}
-		void set(T left_, T top_, T right_, T bottom_){
-			left = left_; top = top_; right = right_; bottom = bottom_;
+		Rect(value_type left, value_type top, value_type right, value_type bottom)
+			: lower(left, top), upper(right, bottom)
+		{
 		}
-		void expandBy(T x, T y){
-			if (left > x) left = x;
-			if (top > y) top = y;
-			if (right < x) right = x;
-			if (bottom < y) bottom = y;
+		Rect(value_type x0, value_type y0, value_type z0, value_type x1, value_type y1, value_type z1)
+			: lower(x0, y0, z0), upper(x1, y1, z1)
+		{
+		}
+		void set(const T& lower_, const T& upper_) {
+			loewr = lower_; upper = upper_;
+		}
+		void set(value_type left, value_type top, value_type right, value_type bottom) {
+			lower[0] = T(left, top); upper[0] = T(right, bottom);
+		}
+		void set(value_type x0, value_type y0, value_type z0, value_type x1, value_type y1, value_type z1) {
+			lower[0] = T(x0, y0, z0); upper[0] = T(x1, y1, z1);
+		}
+		void expandBy(const T& p){
+			for (int i = 0; i < T::num_components; i++) {
+				if (lower[i] > p[i]) lower[i] = p[i];
+				if (upper[i] < p[i]) upper[i] = p[i];
+			}
+		}
+		void expandBy(value_type x, value_type y) {
+			expandBy(T(x, y));
+		}
+		void expandBy(value_type x, value_type y, value_type z) {
+			expandBy(T(x, y, z));
 		}
 		void expandBy(const Rect& other){
-			if (left > other.left) left = other.left;
-			if (top > other.top) top = other.top;
-			if (right < other.right) right = other.right;
-			if (bottom < other.bottom) bottom = other.bottom;
+			for (int i = 0; i < T::num_components; i++) {
+				if (lower[i] > other.lower[i]) lower[i] = other.lower[i];
+				if (upper[i] < other.upper[i]) upper[i] = other.upper[i];
+			}
 		}
-		T width() const{
-			return right - left;
+		value_type width() const {
+			return upper[0] - lower[0];
 		}
-		T height() const{
-			return bottom - top;
+		value_type height() const {
+			return upper[1] - lower[1];
+		}
+		T size() const{
+			return upper - lower;
 		}
 	public:
-		T left, top, right, bottom;
+		T lower, upper;
 	};
+
+	typedef Rect<osg::Vec2i> Rect2i;
+	typedef Rect<osg::Vec3i> Rect3i;
 
 }

@@ -745,7 +745,7 @@ namespace game {
 		pos.getCurrentPos(this, iii);
 
 		//used if stable mode is SPANNABLE
-		util::Rect<int> r(iii.size.x() + 1, iii.size.y() + 1, -1, -1);
+		util::Rect2i r(iii.size.x() + 1, iii.size.y() + 1, -1, -1);
 
 		//used if stable mode is 0 or PARTIAL_FLOATING
 		int suppCount = 0, blockCount = 0;
@@ -907,7 +907,7 @@ namespace game {
 		if (flags & FLOATING) {
 			return true;
 		} else if (flags & SPANNABLE) {
-			if (r.left <= 0 && r.top <= 0 && r.right >= iii.size.x() - 1 && r.bottom >= iii.size.y() - 1) {
+			if (r.lower[0] <= 0 && r.lower[1] <= 0 && r.upper[0] >= iii.size.x() - 1 && r.upper[1] >= iii.size.y() - 1) {
 				return true;
 			}
 		} else if (flags & PARTIAL_FLOATING) {
