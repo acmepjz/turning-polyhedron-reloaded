@@ -109,6 +109,7 @@ Level* GameManager::loadOrCreateLevel(const char* filename, int levelIndex) {
 	level->name = "Unnamed level";
 	level->objectTypeMap = new ObjectTypeMap(*defaultObjectTypeMap);
 	level->tileTypeMap = new TileTypeMap(*defaultTileTypeMap);
+	util::copyMap(level->appearanceMap, defaultAppearanceMap, osg::CopyOp::SHALLOW_COPY);
 
 	//some tile types
 	osg::ref_ptr<TileType> ground, ground2, wall, ex;
@@ -149,11 +150,17 @@ Level* GameManager::loadOrCreateLevel(const char* filename, int levelIndex) {
 	//create a polyhedron (test only)
 	osg::ref_ptr<game::Polyhedron> poly = new game::Polyhedron;
 	poly->id = "p1";
-	poly->flags = poly->MAIN | poly->FRAGILE | poly->SUPPORTER | poly->VISIBLE | poly->FLOATING | poly->CONTINUOUS_HITTEST;
+	poly->flags = poly->MAIN | poly->FRAGILE | poly->SUPPORTER | poly->VISIBLE | poly->PARTIAL_FLOATING | poly->CONTINUOUS_HITTEST;
 	poly->movement = poly->ROLLING_X | poly->MOVING_Y; //test
 	poly->controller = poly->PLAYER;
 	poly->pos.map = "m1";
 	poly->pos.pos.set(1, 1, 0);
+	{
+		gfx::AppearanceMap::iterator it = level->appearanceMap.find("a_cuboid_1x1x1");
+		if (it != level->appearanceMap.end()) {
+			poly->appearanceMap["solid"] = it->second;
+		}
+	}
 #if 1
 	poly->pos.flags = poly->pos.ROT_YXZ | poly->pos.UPPER_Y;
 	poly->resize(osg::Vec3i(-1, -1, -1), osg::Vec3i(1, 2, 4), true, false); //test

@@ -9,7 +9,7 @@
   <tileType id="block-ground">
     <appearance>
       <shader templateName="shader_ground">
-        <mesh templateName="block-ground"/>
+        <mesh templateName="mesh_block_ground"/>
       </shader>
     </appearance>
   </tileType>

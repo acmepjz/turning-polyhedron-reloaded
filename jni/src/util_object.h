@@ -57,6 +57,7 @@ namespace util {
 		bool force = false)
 	{
 		if (force || (copyop.getCopyFlags() & osg::CopyOp::DEEP_COPY_OBJECTS)) {
+			dest.clear();
 			std::map<K, osg::ref_ptr<T> >::const_iterator
 				it = src.begin();
 			for (; it != src.end(); ++it) {
@@ -76,6 +77,7 @@ namespace util {
 		if (force || (copyop.getCopyFlags() & osg::CopyOp::DEEP_COPY_OBJECTS)) {
 			size_t m = src.size();
 			if (m > 0) {
+				dest.clear();
 				dest.reserve(m);
 				for (size_t i = 0; i < m; i++) {
 					dest.push_back(copyObj(src[i].get(), copyop));
