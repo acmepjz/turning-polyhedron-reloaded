@@ -217,7 +217,8 @@ void GameScreen::frameEntered(float _frame) {
 		if (lc) {
 			char c[32];
 			itoa(selectedLevel + 1, c, 10);
-			s = "Level " + std::string(c) + ": " + level->name;
+			s = "Level " + std::string(c);
+			if (!level->name.empty()) s += ": " + level->name;
 		} else {
 			s = level->name;
 		}

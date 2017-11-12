@@ -141,7 +141,9 @@ namespace game {
 		if (!preserved) {
 			lbound = lbound_;
 			size = size_;
+			tiles.clear();
 			tiles.resize(size_.x()*size_.y()*size_.z());
+			tileProperties.clear();
 			tileProperties.resize(size_.x()*size_.y()*size_.z());
 			return;
 		}

@@ -136,12 +136,14 @@ namespace game {
 
 			unsigned char c = preserved ? customShape[0] : SOLID;
 			if (c == 0) c = 1;
+			customShape.clear();
 			customShape.resize(customShape_ ? size_.x()*size_.y()*size_.z() : 1, c);
 
 			return;
 		}
 
-		std::vector<unsigned char> tmp = customShape;
+		std::vector<unsigned char> tmp;
+		std::swap(tmp, customShape);
 		customShape.resize(size_.x()*size_.y()*size_.z(), 0);
 
 #define SX(X) s##X = lbound.X() > lbound_.X() ? lbound.X() : lbound_.X()
