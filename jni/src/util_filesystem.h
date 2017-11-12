@@ -74,4 +74,10 @@ namespace util {
 	\note On non-Windows system it returns '/'.
 	*/
 	void enumAllDrivers(std::vector<DriverInfo>& ret);
+
+	/** Check if a file has specified extension.
+	\param name The file name
+	\param extension The extension the files must have, separated by " " and omit the first dot, e.g. "zip tar.gz".
+	*/
+	bool hasExtension(const std::string& name, const std::string& extension);
 }

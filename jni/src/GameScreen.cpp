@@ -81,12 +81,13 @@ GameScreen::GameScreen() :
 	setFrameAdvise(-1);
 
 	// test: try to load a level
-	int levelIndex = 0;
+	/*int levelIndex = 0;
 	if (g_argc >= 3) {
 		sscanf(g_argv[2], "%d", &levelIndex);
 		levelIndex--;
 	}
-	setLevelOrCollection(GameManager::instance->loadOrCreateLevel(g_argc >= 2 ? g_argv[1] : NULL, levelIndex));
+	setLevelOrCollection(GameManager::instance->loadOrCreateLevel(g_argc >= 2 ? g_argv[1] : NULL, levelIndex));*/
+	setLevelOrCollection(GameManager::instance->createLevel());
 }
 
 void GameScreen::restartLevel() {
@@ -125,7 +126,7 @@ void GameScreen::restartLevel() {
 		} else {
 			UTIL_ERR "Invalid level template" << std::endl;
 			// create a placeholder level
-			level = GameManager::instance->loadOrCreateLevel(NULL, 0);
+			level = GameManager::instance->createLevel();
 		}
 	}
 
@@ -200,7 +201,7 @@ bool GameScreen::loadFile(const std::string& fullName, const std::string& direct
 }
 
 void GameScreen::newFile() {
-	game::Level *newLevel = GameManager::instance->loadOrCreateLevel(NULL, 0);
+	game::Level *newLevel = GameManager::instance->createLevel();
 	_levelFileName.clear();
 	setLevelOrCollection(newLevel);
 }

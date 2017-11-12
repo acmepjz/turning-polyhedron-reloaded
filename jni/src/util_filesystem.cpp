@@ -319,4 +319,19 @@ namespace util {
 #endif
 	}
 
+	bool hasExtension(const std::string& name, const std::string& extension) {
+		// check file extension
+		osgDB::StringList extList;
+		osgDB::split(osgDB::convertToLowerCase(extension), extList);
+		for (int i = 0, m = extList.size(); i < m; i++) {
+			if (name.size() > extList[i].size() &&
+				name[name.size() - extList[i].size() - 1] == '.' &&
+				osgDB::convertToLowerCase(name.substr(name.size() - extList[i].size())) == extList[i]) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }

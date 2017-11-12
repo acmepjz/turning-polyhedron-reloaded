@@ -1,8 +1,10 @@
 #include "GameManager.h"
 #include "CompressionManager.h"
 #include "LevelCollection.h"
+#include "BoxFileLoader.h"
 #include "XMLReaderWriter.h"
 #include "util_err.h"
+#include "util_filesystem.h"
 
 #include <iostream>
 #include <fstream>
@@ -39,43 +41,6 @@ void GameManager::loadDefaults() {
 		UTIL_WARN "Failed to load default tile types" << std::endl;
 }
 
-game::Level* GameManager::loadLevel(const char* filename, int levelIndex) {
-	if (!filename) return NULL;
-
-	UTIL_NOTICE "Loading level '" << filename << "'" << std::endl;
-
-	std::istream *fin = CompressionManager::instance->openFileForRead(filename);
-	if (fin) {
-		osg::ref_ptr<XMLNode> x = XMLReaderWriter::readFile(*fin);
-		delete fin;
-
-		if (x.valid()) {
-			osg::ref_ptr<osg::Object> obj = LevelCollection::loadLevelOrCollection(x.get(),
-				defaultObjectTypeMap, defaultTileTypeMap, &defaultAppearanceMap);
-
-			// check if it is level collection
-			LevelCollection *lc = dynamic_cast<LevelCollection*>(obj.get());
-			if (lc) {
-				if (levelIndex < 0 || levelIndex >= (int)lc->levels.size()) levelIndex = 0;
-				osg::ref_ptr<game::Level> level = lc->levels[levelIndex];
-				obj = NULL;
-				return level.release();
-			}
-
-			// check if it is level
-			Level *lv = dynamic_cast<Level*>(obj.get());
-			if (lv) {
-				osg::ref_ptr<game::Level> level = lv;
-				obj = NULL;
-				return level.release();
-			}
-		}
-	}
-
-	UTIL_ERR "Failed to load level '" << filename << "'" << std::endl;
-	return NULL;
-}
-
 osg::Object* GameManager::loadLevelOrCollection(const char* filename) {
 	if (!filename) return NULL;
 
@@ -83,13 +48,24 @@ osg::Object* GameManager::loadLevelOrCollection(const char* filename) {
 
 	std::istream *fin = CompressionManager::instance->openFileForRead(filename);
 	if (fin) {
-		osg::ref_ptr<XMLNode> x = XMLReaderWriter::readFile(*fin);
-		delete fin;
+		if (util::hasExtension(filename, "box box.lzma box.xz")) {
+			BoxFile box;
+			bool ret = box.loadFile(fin, BOX_SIGNATURE);
+			delete fin;
 
-		if (x.valid()) {
-			osg::ref_ptr<osg::Object> obj = LevelCollection::loadLevelOrCollection(x.get(),
-				defaultObjectTypeMap, defaultTileTypeMap, &defaultAppearanceMap);
-			if (obj.valid()) return obj.release();
+			if (ret) {
+				osg::ref_ptr<LevelCollection> lc = BoxFileLoader::loadLevelCollection(box);
+				if (lc.valid()) return lc.release();
+			}
+		} else {
+			osg::ref_ptr<XMLNode> x = XMLReaderWriter::readFile(*fin);
+			delete fin;
+
+			if (x.valid()) {
+				osg::ref_ptr<osg::Object> obj = LevelCollection::loadLevelOrCollection(x.get(),
+					defaultObjectTypeMap, defaultTileTypeMap, &defaultAppearanceMap);
+				if (obj.valid()) return obj.release();
+			}
 		}
 	}
 
@@ -97,11 +73,7 @@ osg::Object* GameManager::loadLevelOrCollection(const char* filename) {
 	return NULL;
 }
 
-Level* GameManager::loadOrCreateLevel(const char* filename, int levelIndex) {
-	// try to load a level
-	Level *ptr = loadLevel(filename, levelIndex);
-	if (ptr) return ptr;
-
+Level* GameManager::createLevel() {
 	UTIL_NOTICE "Creating a default level" << std::endl;
 
 	// create a default level

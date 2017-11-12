@@ -68,6 +68,90 @@ inline std::streamsize u8fwrite(const void* ptr, std::streamsize size, std::ostr
 	return size; //???
 }
 
+template <class T,bool BE>
+inline T u8freadInteger(std::istream* file) {
+	const int SIZE = sizeof(T);
+	if (file == NULL) return 0;
+	unsigned char d[SIZE] = {};
+	file->read((char*)d, SIZE);
+	T result = 0;
+	for (int i = 0; i < SIZE; i++) {
+		result |= ((T)d[i]) << ((BE ? (SIZE - 1 - i) : i) * 8);
+	}
+	return result;
+}
+
+/** read 16-bit little endian number */
+inline unsigned short u8freadLE16(std::istream* file) {
+	return u8freadInteger<unsigned short, false>(file);
+}
+
+/** read 16-bit big endian number */
+inline unsigned short u8freadBE16(std::istream* file) {
+	return u8freadInteger<unsigned short, true>(file);
+}
+
+/** read 32-bit little endian number */
+inline unsigned int u8freadLE32(std::istream* file) {
+	return u8freadInteger<unsigned int, false>(file);
+}
+
+/** read 32-bit big endian number */
+inline unsigned int u8freadBE32(std::istream* file) {
+	return u8freadInteger<unsigned int, true>(file);
+}
+
+/** read 64-bit little endian number */
+inline unsigned long long u8freadLE64(std::istream* file) {
+	return u8freadInteger<unsigned long long, false>(file);
+}
+
+/** read 64-bit big endian number */
+inline unsigned long long u8freadBE64(std::istream* file) {
+	return u8freadInteger<unsigned long long, true>(file);
+}
+
+template <class T, bool BE>
+inline void u8fwriteInteger(std::ostream* file, T number) {
+	const int SIZE = sizeof(T);
+	if (file == NULL) return;
+	unsigned char d[SIZE];
+	for (int i = 0; i < SIZE; i++) {
+		d[i] = (unsigned char)(number >> ((BE ? (SIZE - 1 - i) : i) * 8));
+	}
+	file->write((char*)d, SIZE);
+}
+
+/** write 16-bit little endian number */
+inline void u8fwriteLE16(std::ostream* file, unsigned short number) {
+	u8fwriteInteger<unsigned short, false>(file, number);
+}
+
+/** write 16-bit big endian number */
+inline void u8fwriteBE16(std::ostream* file, unsigned short number) {
+	u8fwriteInteger<unsigned short, true>(file, number);
+}
+
+/** write 32-bit little endian number */
+inline void u8fwriteLE32(std::ostream* file, unsigned int number) {
+	u8fwriteInteger<unsigned int, false>(file, number);
+}
+
+/** write 32-bit big endian number */
+inline void u8fwriteBE32(std::ostream* file, unsigned int number) {
+	u8fwriteInteger<unsigned int, true>(file, number);
+}
+
+/** write 64-bit little endian number */
+inline void u8fwriteLE64(std::ostream* file, unsigned long long number) {
+	u8fwriteInteger<unsigned long long, false>(file, number);
+}
+
+/** write 64-bit big endian number */
+inline void u8fwriteBE64(std::ostream* file, unsigned long long number) {
+	u8fwriteInteger<unsigned long long, true>(file, number);
+}
+
 /** Read a line of string from file, assuming the file is UTF-8 encoded.
 \param buf String buffer.
 \param count Size of buffer, including trailing zero.
