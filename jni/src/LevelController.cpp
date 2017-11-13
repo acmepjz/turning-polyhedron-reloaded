@@ -80,12 +80,12 @@ bool LevelController::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionA
 		case osgGA::GUIEventAdapter::KEY_Right:
 			dir = 3; break;
 		case osgGA::GUIEventAdapter::KEY_Space:
-			if (!level->isAnimating()) level->switchToNextPolyhedron();
+			if (level->_gameStatus == game::Level::GAME_RUNNING && !level->isAnimating()) level->switchToNextPolyhedron();
 			break;
 		default:
 			return false;
 		}
-		if (dir >= 0) {
+		if (level->_gameStatus == game::Level::GAME_RUNNING && dir >= 0 && !level->isAnimating() && poly) {
 			osgViewer::Viewer* viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
 			osg::Camera* camera = viewer ? viewer->getCamera() : NULL;
 			if (camera) {
@@ -98,7 +98,7 @@ bool LevelController::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionA
 				else dir += 1;
 			}
 			const game::MoveDirection dirs[4] = { MOVE_UP, MOVE_LEFT, MOVE_DOWN, MOVE_RIGHT };
-			if (!level->isAnimating() && poly) poly->move(level, dirs[dir & 3]);
+			poly->move(level, dirs[dir & 3]);
 		}
 		break;
 	default:
