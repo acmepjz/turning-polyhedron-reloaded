@@ -481,14 +481,17 @@ namespace game {
 			return false;
 		}
 
-		// process leaveEvents;
+		// process leaveEvents
 		std::swap(parent->_eventQueue, _leaveEvents);
 		parent->processEvent();
+
+		// process enterEvents (delayed)
+		parent->_eventWhenAnimationFinished.insert(parent->_eventWhenAnimationFinished.end(),
+			_enterEvents.begin(), _enterEvents.end());
 
 		// the actual move
 		pos = newPos;
 		osg::ref_ptr<PolyhedronAnimation> anim = new PolyhedronAnimation(this, dir, moveType);
-		std::swap(anim->_eventWhenAninationFinished, _enterEvents);
 		_animations.push_back(anim);
 
 		// increase move count
@@ -513,21 +516,16 @@ namespace game {
 	}
 
 	bool Polyhedron::update(Level* parent) {
-		const int m = _animations.size();
-		if (m == 0) {
+		if (_animations.empty()) {
 			_currentAnimation = 0;
 			return false;
 		}
 
-		if (_currentAnimation < m && !_animations[_currentAnimation]->update()) {
-			parent->addEvent(_animations[_currentAnimation]->_eventWhenAninationFinished);
-			_animations[_currentAnimation]->_eventWhenAninationFinished.clear();
-			parent->processEvent();
-
+		if (_currentAnimation < (int)_animations.size() && !_animations[_currentAnimation]->update()) {
 			_currentAnimation++;
 		}
 
-		if (_currentAnimation >= m) {
+		if (_currentAnimation >= (int)_animations.size()) {
 			_animations.clear();
 			_currentAnimation = 0;
 			return false;

@@ -237,17 +237,33 @@ namespace game {
 	bool Level::update() {
 		_isAnimating = false;
 
+		// update animations
 		for (int i = 0, m = polyhedra.size(); i < m; i++) {
 			if (polyhedra[i]->update(this)) _isAnimating = true;
 		}
 
-		processTileDirty();
-
-		for (std::vector<osg::ref_ptr<PolyhedronMerge> >::iterator it = polyhedronMerge.begin(); it != polyhedronMerge.end(); ++it) {
-			(*it)->process(this);
+		// process onEnter events
+		if (!_isAnimating && !_eventWhenAnimationFinished.empty()) {
+			std::swap(_eventQueue, _eventWhenAnimationFinished);
+			processEvent();
+			processTileDirty();
 		}
 
-		processTileDirty();
+		// check if we got new animations
+		for (int i = 0, m = polyhedra.size(); i < m; i++) {
+			if (!polyhedra[i]->_animations.empty()) {
+				_isAnimating = true;
+				break;
+			}
+		}
+
+		// check polyhedron merge
+		if (!_isAnimating) {
+			for (std::vector<osg::ref_ptr<PolyhedronMerge> >::iterator it = polyhedronMerge.begin(); it != polyhedronMerge.end(); ++it) {
+				if ((*it)->process(this)) _isAnimating = true;
+			}
+			if (_isAnimating) processTileDirty();
+		}
 
 		// update game status
 		if (_isGameOver) {

@@ -4,7 +4,6 @@
 #include <osg/Quat>
 #include <vector>
 #include <string>
-#include "EventDescription.h"
 
 namespace osgDB {
 	class InputStream;
@@ -43,8 +42,6 @@ namespace game {
 		int _t; //!< the animation time
 		int _maxt; //!< the max animation time
 		AnimationType _type; //!< the \ref AnimationType
-
-		std::vector<osg::ref_ptr<EventDescription> > _eventWhenAninationFinished;
 	};
 
 }

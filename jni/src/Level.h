@@ -140,8 +140,10 @@ namespace game {
 		bool _isGameOver;
 		bool _isTileDirty;
 
-		std::vector<osg::ref_ptr<EventDescription> > _eventQueue;
+		std::vector<osg::ref_ptr<EventDescription> > _eventQueue; //!< the event queue
 		bool _cancel; //!< used when processing preMoveEnter event, etc.
+
+		std::vector<osg::ref_ptr<EventDescription> > _eventWhenAnimationFinished; //!< the event queue processed when animation is finished
 
 		int _moves; //!< the moves
 		int _gameStatus; //!< the \ref GameStatus
