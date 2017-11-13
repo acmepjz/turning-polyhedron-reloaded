@@ -276,6 +276,13 @@ namespace game {
 			_gameStatus = GAME_RUNNING;
 		}
 
+		// select a valid polyhedron
+		if (_gameStatus == GAME_RUNNING &&
+			(_currentPolyhedron < 0 || _currentPolyhedron >= (int)polyhedra.size() ||
+			(polyhedra[_currentPolyhedron]->flags & Polyhedron::VISIBLE) == 0)) {
+			switchToNextPolyhedron();
+		}
+
 		return _isAnimating;
 	}
 
