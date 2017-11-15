@@ -8,6 +8,7 @@
 #include "Polyhedron.h"
 #include "TileType.h"
 #include "ObjectType.h"
+#include "AppearanceMap.h"
 #include "EventDescription.h"
 #include "PolyhedronMerge.h"
 
@@ -47,6 +48,10 @@ namespace game {
 		ObjectTypeMap* getOrCreateObjectTypeMap(){
 			if (!objectTypeMap.valid()) objectTypeMap = new ObjectTypeMap;
 			return objectTypeMap.get();
+		}
+		gfx::AppearanceMap* getOrCreateAppearanceMap(){
+			if (!appearanceMap.valid()) appearanceMap = new gfx::AppearanceMap;
+			return appearanceMap.get();
 		}
 
 		void initObjectTypes(){
@@ -113,7 +118,7 @@ namespace game {
 
 		osg::ref_ptr<TileTypeMap> tileTypeMap; //!< tile type map used in this level
 		osg::ref_ptr<ObjectTypeMap> objectTypeMap; //!< object type map used in this level
-		gfx::AppearanceMap appearanceMap; //!< appearance map used in this level
+		osg::ref_ptr<gfx::AppearanceMap> appearanceMap; //!< appearance map used in this level
 
 		std::vector<osg::ref_ptr<PolyhedronMerge> > polyhedronMerge; //!< an array of polyhedron merge data
 
@@ -124,7 +129,7 @@ namespace game {
 		UTIL_ADD_BYREF_GETTER_SETTER(Polyhedra, polyhedra);
 		UTIL_ADD_OBJ_GETTER_SETTER(TileTypeMap, tileTypeMap);
 		UTIL_ADD_OBJ_GETTER_SETTER(ObjectTypeMap, objectTypeMap);
-		UTIL_ADD_BYREF_GETTER_SETTER(gfx::AppearanceMap, appearanceMap);
+		UTIL_ADD_OBJ_GETTER_SETTER(gfx::AppearanceMap, appearanceMap);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<PolyhedronMerge> >, polyhedronMerge);
 
 	public:

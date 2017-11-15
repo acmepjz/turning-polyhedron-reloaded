@@ -57,11 +57,13 @@ SOURCE_GROUP("Source Files\\util" FILES
 
 SOURCE_GROUP("Header Files\\gfx" FILES
 	${PROJECT_SOURCE_DIR}/jni/src/Appearance.h
+	${PROJECT_SOURCE_DIR}/jni/src/AppearanceMap.h
 	${PROJECT_SOURCE_DIR}/jni/src/SimpleGeometry.h
 )
 
 SOURCE_GROUP("Source Files\\gfx" FILES
 	${PROJECT_SOURCE_DIR}/jni/src/Appearance.cpp
+	${PROJECT_SOURCE_DIR}/jni/src/AppearanceMap.cpp
 	${PROJECT_SOURCE_DIR}/jni/src/SimpleGeometry.cpp
 )
 

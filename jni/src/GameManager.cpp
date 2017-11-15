@@ -28,16 +28,16 @@ void GameManager::loadDefaults() {
 	if (!x.valid() || !defaultObjectTypeMap->load(x.get()))
 		UTIL_WARN "Failed to load default object types" << std::endl;
 
-	defaultAppearanceMap.clear();
+	defaultAppearanceMap = new gfx::AppearanceMap;
 	x = XMLReaderWriter::readFile(
 		std::ifstream("../data/DefaultAppearances.xml", std::ios::in | std::ios::binary));
-	if (!x.valid() || !gfx::loadAppearanceMap(x.get(), &defaultAppearanceMap))
+	if (!x.valid() || !defaultAppearanceMap->load(x.get(), defaultAppearanceMap, std::string(), osg::Vec3(1, 1, 1)))
 		UTIL_WARN "Failed to load default appearances" << std::endl;
 
 	defaultTileTypeMap = new TileTypeMap;
 	x = XMLReaderWriter::readFile(
 		std::ifstream("../data/DefaultTileTypes.xml", std::ios::in | std::ios::binary));
-	if (!x.valid() || !defaultTileTypeMap->load(x.get(), &defaultAppearanceMap))
+	if (!x.valid() || !defaultTileTypeMap->load(x.get(), defaultAppearanceMap))
 		UTIL_WARN "Failed to load default tile types" << std::endl;
 }
 
@@ -63,7 +63,7 @@ osg::Object* GameManager::loadLevelOrCollection(const char* filename) {
 
 			if (x.valid()) {
 				osg::ref_ptr<osg::Object> obj = LevelCollection::loadLevelOrCollection(x.get(),
-					defaultObjectTypeMap, defaultTileTypeMap, &defaultAppearanceMap);
+					defaultObjectTypeMap, defaultTileTypeMap, defaultAppearanceMap);
 				if (obj.valid()) return obj.release();
 			}
 		}
@@ -79,9 +79,9 @@ Level* GameManager::createLevel() {
 	// create a default level
 	osg::ref_ptr<game::Level> level = new game::Level;
 	level->name = "Unnamed level";
-	level->objectTypeMap = new ObjectTypeMap(*defaultObjectTypeMap);
-	level->tileTypeMap = new TileTypeMap(*defaultTileTypeMap);
-	util::copyMap(level->appearanceMap, defaultAppearanceMap, osg::CopyOp::SHALLOW_COPY);
+	level->getOrCreateObjectTypeMap()->parent = defaultObjectTypeMap;
+	level->getOrCreateTileTypeMap()->parent = defaultTileTypeMap;
+	level->getOrCreateAppearanceMap()->parent = defaultAppearanceMap;
 
 	//some tile types
 	osg::ref_ptr<TileType> ground, ground2, wall, ex;
@@ -128,9 +128,9 @@ Level* GameManager::createLevel() {
 	poly->pos.map = "m1";
 	poly->pos.pos.set(1, 1, 0);
 	{
-		gfx::AppearanceMap::iterator it = level->appearanceMap.find("a_cuboid_1x1x1");
-		if (it != level->appearanceMap.end()) {
-			poly->appearanceMap["solid"] = it->second;
+		gfx::Appearance *it = level->appearanceMap->lookup("a_cuboid_1x1x1");
+		if (it) {
+			poly->getOrCreateAppearanceMap()->map["solid"] = it;
 		}
 	}
 #if 1

@@ -2,7 +2,6 @@
 #include "Interaction.h"
 #include "util_err.h"
 #include "XMLReaderWriter.h"
-#include <osg/Notify>
 #include <osgDB/ObjectWrapper>
 
 namespace game {
@@ -67,6 +66,7 @@ namespace game {
 
 	ObjectTypeMap::ObjectTypeMap(const ObjectTypeMap& other, const osg::CopyOp& copyop)
 		: Object(other, copyop)
+		, parent(other.parent) // FIXME: always shallow copy?
 	{
 		util::copyMap(map, other.map, copyop);
 	}
@@ -81,26 +81,30 @@ namespace game {
 			return false;
 		}
 
-		IdMap::iterator it = map.find(obj->name);
-		if (it != map.end()) {
-			UTIL_WARN "object name '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
+		if (lookup(obj->name, true)) {
+			UTIL_WARN "object name '" << obj->name << "' already defined, will be redefined to a new object" << std::endl;
 		}
 
 		map[obj->name] = obj;
 		return true;
 	}
 
-	ObjectType* ObjectTypeMap::lookup(const std::string& name){
+	ObjectType* ObjectTypeMap::lookup(const std::string& name, bool noWarning){
 		if (name.empty() || name == "default") return NULL;
 		IdMap::iterator it = map.find(name);
 		if (it == map.end()) {
-			UTIL_WARN "name '" << name << "' not found" << std::endl;
-			return NULL;
+			if (parent.valid()) {
+				return parent->lookup(name, noWarning);
+			} else {
+				if (!noWarning) UTIL_WARN "name '" << name << "' not found" << std::endl;
+				return NULL;
+			}
 		}
 		return it->second.get();
 	}
 
 	void ObjectTypeMap::init(){
+		if (parent.valid()) parent->init(); // ???
 		for (IdMap::iterator it = map.begin(); it != map.end(); ++it) {
 			it->second->init(this);
 		}
@@ -142,6 +146,7 @@ namespace game {
 #define MyClass MyClass_ObjectTypeMap
 	REG_OBJ_WRAPPER(game, ObjectTypeMap, "")
 	{
+		ADD_OBJECT_SERIALIZER(parent, ObjectTypeMap, 0);
 		ADD_MAP_SERIALIZER(map, ObjectTypeMap::IdMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);
 	}
 #undef MyClass

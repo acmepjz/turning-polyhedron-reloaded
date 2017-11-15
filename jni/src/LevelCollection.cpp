@@ -14,11 +14,17 @@ namespace game {
 		, name(other.name)
 		, tileTypeMap(util::copyObj(other.tileTypeMap.get(), copyop)) //always deep copy
 		, objectTypeMap(util::copyObj(other.objectTypeMap.get(), copyop)) //always deep copy
+		, appearanceMap(util::copyObj(other.appearanceMap.get(), copyop))
 	{
-		util::copyMap(appearanceMap, other.appearanceMap, copyop);
-
 		//following objects are always deep copy
 		util::copyVector(levels, other.levels, copyop, true);
+
+		// set parent
+		for (size_t i = 0; i < levels.size(); i++) {
+			levels[i]->getOrCreateObjectTypeMap()->parent = getOrCreateObjectTypeMap();
+			levels[i]->getOrCreateTileTypeMap()->parent = getOrCreateTileTypeMap();
+			levels[i]->getOrCreateAppearanceMap()->parent = getOrCreateAppearanceMap();
+		}
 	}
 
 	LevelCollection::~LevelCollection()
@@ -26,6 +32,10 @@ namespace game {
 	}
 
 	bool LevelCollection::load(const XMLNode* node) {
+		ObjectTypeMap* otm = getOrCreateObjectTypeMap();
+		TileTypeMap* ttm = getOrCreateTileTypeMap();
+		gfx::AppearanceMap *am = getOrCreateAppearanceMap();
+
 		//load subnodes
 		for (size_t i = 0; i < node->subNodes.size(); i++) {
 			const XMLNode* subnode = node->subNodes[i].get();
@@ -34,9 +44,9 @@ namespace game {
 				name = subnode->contents;
 			} else if (subnode->name == "level") {
 				osg::ref_ptr<Level> level = new Level;
-				level->objectTypeMap = new ObjectTypeMap(*getOrCreateObjectTypeMap(), osg::CopyOp::SHALLOW_COPY);
-				level->tileTypeMap = new TileTypeMap(*getOrCreateTileTypeMap(), osg::CopyOp::SHALLOW_COPY);
-				util::copyMap(level->appearanceMap, appearanceMap, osg::CopyOp::SHALLOW_COPY);
+				level->getOrCreateObjectTypeMap()->parent = otm;
+				level->getOrCreateTileTypeMap()->parent = ttm;
+				level->getOrCreateAppearanceMap()->parent = am;
 
 				if (level->load(subnode)) {
 					levels.push_back(level);
@@ -44,15 +54,13 @@ namespace game {
 					UTIL_WARN "failed to load level" << std::endl;
 				}
 			} else if (subnode->name == "objectType") {
-				getOrCreateObjectTypeMap()->loadObjectType(subnode);
+				otm->loadObjectType(subnode);
 			} else if (subnode->name == "tileType") {
-				getOrCreateTileTypeMap()->loadTileType(subnode, &appearanceMap);
+				ttm->loadTileType(subnode, am);
 			} else if (subnode->name == "appearances") {
-				if (!gfx::loadAppearanceMap(subnode, &appearanceMap)) {
-					UTIL_WARN "Failed to load default appearances" << std::endl;
-				}
+				am->load(subnode, am, std::string(), osg::Vec3(1, 1, 1));
 			} else if (subnode->name == "tileMapping") {
-				getOrCreateTileTypeMap()->loadTileMapping(subnode);
+				ttm->loadTileMapping(subnode);
 			} else {
 				UTIL_WARN "unrecognized node name: " << subnode->name << std::endl;
 			}
@@ -64,30 +72,18 @@ namespace game {
 	osg::Object* LevelCollection::loadLevelOrCollection(const XMLNode* node, ObjectTypeMap* otm, TileTypeMap* ttm, gfx::AppearanceMap* am) {
 		if (node->name == "levelCollection") {
 			osg::ref_ptr<LevelCollection> lc = new LevelCollection;
-			if (otm) {
-				lc->objectTypeMap = new ObjectTypeMap(*otm, osg::CopyOp::SHALLOW_COPY);
-			}
-			if (ttm) {
-				lc->tileTypeMap = new TileTypeMap(*ttm, osg::CopyOp::SHALLOW_COPY);
-			}
-			if (am) {
-				util::copyMap(lc->appearanceMap, *am, osg::CopyOp::SHALLOW_COPY);
-			}
+			lc->getOrCreateObjectTypeMap()->parent = otm;
+			lc->getOrCreateTileTypeMap()->parent = ttm;
+			lc->getOrCreateAppearanceMap()->parent = am;
 			if (lc->load(node)) return lc.release();
 			else {
 				UTIL_WARN "failed to load level collection" << std::endl;
 			}
 		} else if (node->name == "level") {
 			osg::ref_ptr<Level> level = new Level;
-			if (otm) {
-				level->objectTypeMap = new ObjectTypeMap(*otm, osg::CopyOp::SHALLOW_COPY);
-			}
-			if (ttm) {
-				level->tileTypeMap = new TileTypeMap(*ttm, osg::CopyOp::SHALLOW_COPY);
-			}
-			if (am) {
-				util::copyMap(level->appearanceMap, *am, osg::CopyOp::SHALLOW_COPY);
-			}
+			level->getOrCreateObjectTypeMap()->parent = otm;
+			level->getOrCreateTileTypeMap()->parent = ttm;
+			level->getOrCreateAppearanceMap()->parent = am;
 			if (level->load(node)) return level.release();
 			else {
 				UTIL_WARN "failed to load level" << std::endl;
@@ -105,7 +101,7 @@ namespace game {
 		ADD_STRING_SERIALIZER(name, "");
 		ADD_OBJECT_SERIALIZER(tileTypeMap, TileTypeMap, NULL);
 		ADD_OBJECT_SERIALIZER(objectTypeMap, ObjectTypeMap, NULL);
-		ADD_MAP_SERIALIZER(appearanceMap, gfx::AppearanceMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);
+		ADD_OBJECT_SERIALIZER(appearanceMap, gfx::AppearanceMap, NULL);
 		ADD_VECTOR_SERIALIZER(levels, std::vector<osg::ref_ptr<Level> >, osgDB::BaseSerializer::RW_OBJECT, -1);
 	}
 }

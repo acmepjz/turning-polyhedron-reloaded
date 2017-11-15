@@ -31,8 +31,8 @@ namespace game {
 		, desc(other.desc)
 		, _objType(NULL)
 		, _isEditMode(false)
+		, appearanceMap(util::copyObj(other.appearanceMap.get(), copyop))
 	{
-		util::copyMap(appearanceMap, other.appearanceMap, copyop);
 		util::copyVector(events, other.events, copyop, true);
 	}
 
@@ -49,18 +49,18 @@ namespace game {
 			_lastShape = shape;
 			_isEditMode = isEditMode;
 
-			gfx::AppearanceMap::iterator it0 = appearanceMap.find("");			
-			gfx::AppearanceMap::iterator it1 = appearanceMap.find(isEditMode ? "edit" : "game");
+			gfx::Appearance *a0 = getOrCreateAppearanceMap()->lookup("", true);
+			gfx::Appearance *a1 = getOrCreateAppearanceMap()->lookup(isEditMode ? "edit" : "game", true);
 
-			if (it0 == appearanceMap.end()) {
-				if (it1 == appearanceMap.end()) _appearance = new osg::Node;
-				else _appearance = it1->second->getOrCreateInstance(shape);
+			if (a0 == NULL) {
+				if (a1 == NULL) _appearance = new osg::Node;
+				else _appearance = a1->getOrCreateInstance(shape);
 			} else {
-				if (it1 == appearanceMap.end()) _appearance = it0->second->getOrCreateInstance(shape);
+				if (a1 == NULL) _appearance = a0->getOrCreateInstance(shape);
 				else {
 					osg::ref_ptr<osg::Group> group = new osg::Group;
-					group->addChild(it0->second->getOrCreateInstance(shape));
-					group->addChild(it1->second->getOrCreateInstance(shape));
+					group->addChild(a0->getOrCreateInstance(shape));
+					group->addChild(a1->getOrCreateInstance(shape));
 					_appearance = group;
 				}
 			}
@@ -109,8 +109,7 @@ namespace game {
 			} else if (subnode->name == "description") {
 				desc = subnode->contents;
 			} else if (subnode->name == "appearance") {
-				osg::ref_ptr<gfx::Appearance> a = new gfx::Appearance;
-				a->load(subnode, _template, &appearanceMap, _defaultId.c_str());
+				getOrCreateAppearanceMap()->loadAppearance(subnode, _template, _defaultId, osg::Vec3(1, 1, 1));
 			} else {
 				int _eventType = EventHandler::convertToEventType(subnode->name);
 
@@ -134,6 +133,7 @@ namespace game {
 
 	TileTypeMap::TileTypeMap(const TileTypeMap& other, const osg::CopyOp& copyop)
 		: Object(other, copyop)
+		, parent(other.parent) // FIXME: always shallow copy?
 	{
 		util::copyMap(idMap, other.idMap, copyop);
 		util::copyMap(indexMap, other.indexMap, copyop);
@@ -143,22 +143,33 @@ namespace game {
 
 	}
 
-	TileType* TileTypeMap::lookup(const std::string& idOrIndex){
+	TileType* TileTypeMap::lookup(const std::string& idOrIndex, bool noWarning){
 		if (idOrIndex.empty()) return NULL;
 
 		if (util::isNumeric(idOrIndex)) {
-			int index = atoi(idOrIndex.c_str());
-			if (index) {
-				std::map<int, osg::ref_ptr<TileType> >::iterator it = indexMap.find(index);
-				if (it != indexMap.end()) return it->second.get();
-				UTIL_WARN "index " << index << " not found" << std::endl;
-			}
-			return NULL;
+			return lookupByIndex(atoi(idOrIndex.c_str()), noWarning);
 		}
 
-		std::map<std::string, osg::ref_ptr<TileType> >::iterator it = idMap.find(idOrIndex);
-		if (it != idMap.end()) return it->second.get();
-		UTIL_WARN "id '" << idOrIndex << "' not found" << std::endl;
+		return lookupById(idOrIndex, noWarning);
+	}
+
+	TileType* TileTypeMap::lookupById(const std::string& id, bool noWarning) {
+		if (!id.empty()) {
+			std::map<std::string, osg::ref_ptr<TileType> >::iterator it = idMap.find(id);
+			if (it != idMap.end()) return it->second.get();
+			else if (parent.valid()) return parent->lookupById(id, noWarning);
+			if (!noWarning) UTIL_WARN "id '" << id << "' not found" << std::endl;
+		}
+		return NULL;
+	}
+
+	TileType* TileTypeMap::lookupByIndex(int index, bool noWarning) {
+		if (index) {
+			std::map<int, osg::ref_ptr<TileType> >::iterator it = indexMap.find(index);
+			if (it != indexMap.end()) return it->second.get();
+			else if (parent.valid()) return parent->lookupByIndex(index, noWarning);
+			if (!noWarning) UTIL_WARN "index " << index << " not found" << std::endl;
+		}
 		return NULL;
 	}
 
@@ -168,17 +179,16 @@ namespace game {
 			return false;
 		}
 
-		IdMap::const_iterator it = idMap.find(obj->id);
-		if (it != idMap.end()) {
-			UTIL_WARN "object id '" << it->first << "' already defined, will be redefined to a new object" << std::endl;
+		if (lookupById(obj->id, true)) {
+			UTIL_WARN "object id '" << obj->id << "' already defined, will be redefined to a new object" << std::endl;
 		}
 
 		idMap[obj->id] = obj;
 
 		if (obj->index) {
-			IndexMap::iterator it = indexMap.find(obj->index);
-			if (it != indexMap.end()) {
-				UTIL_WARN "object index " << it->first << " already defined: '" << it->second->id
+			TileType *existing = lookupByIndex(obj->index, true);
+			if (existing) {
+				UTIL_WARN "object index " << obj->index << " already defined: '" << existing->id
 					<< "', redefine to '" << obj->id << "'" << std::endl;
 			}
 
@@ -189,13 +199,9 @@ namespace game {
 	}
 
 	bool TileTypeMap::addTileMapping(const std::string& id, int index){
-		std::map<std::string, osg::ref_ptr<TileType> >::iterator it = idMap.find(id);
-		if (it == idMap.end()) {
-			UTIL_WARN "id '" << id << "' not found" << std::endl;
-			return false;
-		}
-
-		return addTileMapping(it->second.get(), index);
+		TileType *tt = lookupById(id);
+		if (!tt) return false;
+		return addTileMapping(tt, index);
 	}
 
 	bool TileTypeMap::addTileMapping(TileType* tile, int index){
@@ -206,9 +212,9 @@ namespace game {
 			return false;
 		}
 
-		std::map<int, osg::ref_ptr<TileType> >::iterator it2 = indexMap.find(index);
-		if (it2 != indexMap.end()) {
-			UTIL_WARN "index " << index << " already defined: '" << it2->second->id
+		TileType *existing = lookupByIndex(index, true);
+		if (existing) {
+			UTIL_WARN "index " << index << " already defined: '" << existing->id
 				<< "', redefine to '" << tile->id << "'" << std::endl;
 		}
 
@@ -218,6 +224,7 @@ namespace game {
 	}
 
 	void TileTypeMap::init(ObjectTypeMap* otm){
+		if (parent.valid()) parent->init(otm); // ???
 		for (IdMap::iterator it = idMap.begin(); it != idMap.end(); ++it) {
 			it->second->init(otm, this);
 		}
@@ -267,13 +274,14 @@ namespace game {
 		ADD_VEC2I_SERIALIZER(blockedArea, osg::Vec2i(-1, 0));
 		ADD_STRING_SERIALIZER(name, "");
 		ADD_STRING_SERIALIZER(desc, "");
-		ADD_MAP_SERIALIZER(appearanceMap, gfx::AppearanceMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);
+		ADD_OBJECT_SERIALIZER(appearanceMap, gfx::AppearanceMap, 0);
 		ADD_VECTOR_SERIALIZER(events, std::vector<osg::ref_ptr<EventHandler> >, osgDB::BaseSerializer::RW_OBJECT, -1);
 	}
 #undef MyClass
 #define MyClass MyClass_TileTypeMap
 	REG_OBJ_WRAPPER(game, TileTypeMap, "")
 	{
+		ADD_OBJECT_SERIALIZER(parent, TileTypeMap, 0);
 		ADD_MAP_SERIALIZER(idMap, TileTypeMap::IdMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);
 		ADD_MAP_SERIALIZER(indexMap, TileTypeMap::IndexMap, osgDB::BaseSerializer::RW_INT, osgDB::BaseSerializer::RW_OBJECT);
 	}

@@ -10,10 +10,8 @@
 #include <iostream>
 #include <sstream>
 
-#define DECLARE_AND_LOOKUP_APPEARANCE(VAR) gfx::Appearance *VAR = NULL; { \
-	gfx::AppearanceMap::iterator _temp = GameManager::instance->defaultAppearanceMap.find(#VAR); \
-	if (_temp != GameManager::instance->defaultAppearanceMap.end()) VAR = _temp->second; \
-}
+#define DECLARE_AND_LOOKUP_APPEARANCE(VAR) gfx::Appearance *VAR = \
+	GameManager::instance->defaultAppearanceMap->lookup(#VAR);
 
 struct typeBridge {
 	enum enumBridgeBehavior {
@@ -193,10 +191,7 @@ game::LevelCollection* BoxFileLoader::loadLevelCollection(const BoxFile& d) {
 	// get predefined types
 	game::TileType *boxTileTypes[TILETYPE_MAX] = {};
 	for (int i = 1; i < TILETYPE_MAX; i++) {
-		game::TileTypeMap::IndexMap::iterator it = GameManager::instance->defaultTileTypeMap->indexMap.find(i);
-		if (it != GameManager::instance->defaultTileTypeMap->indexMap.end()) {
-			boxTileTypes[i] = it->second;
-		}
+		boxTileTypes[i] = GameManager::instance->defaultTileTypeMap->lookupByIndex(i);
 	}
 
 	// get predefined appearances
@@ -204,6 +199,10 @@ game::LevelCollection* BoxFileLoader::loadLevelCollection(const BoxFile& d) {
 	DECLARE_AND_LOOKUP_APPEARANCE(a_cuboid_1x1x2);
 
 	osg::ref_ptr<game::LevelCollection> lc = new game::LevelCollection();
+
+	lc->getOrCreateObjectTypeMap()->parent = GameManager::instance->defaultObjectTypeMap;
+	lc->getOrCreateTileTypeMap()->parent = GameManager::instance->defaultTileTypeMap;
+	lc->getOrCreateAppearanceMap()->parent = GameManager::instance->defaultAppearanceMap;
 
 	for (int lvnumber = 0, lvm = array->nodes.size(); lvnumber < lvm; lvnumber++) {
 		const BoxFileNode &data = array->nodes[lvnumber];
@@ -252,9 +251,9 @@ game::LevelCollection* BoxFileLoader::loadLevelCollection(const BoxFile& d) {
 
 		// generate level from loaded data
 		osg::ref_ptr<game::Level> lv = new game::Level;
-		lv->objectTypeMap = new game::ObjectTypeMap(*GameManager::instance->defaultObjectTypeMap);
-		lv->tileTypeMap = new game::TileTypeMap(*GameManager::instance->defaultTileTypeMap);
-		util::copyMap(lv->appearanceMap, GameManager::instance->defaultAppearanceMap, osg::CopyOp::SHALLOW_COPY);
+		lv->getOrCreateObjectTypeMap()->parent = lc->objectTypeMap;
+		lv->getOrCreateTileTypeMap()->parent = lc->tileTypeMap;
+		lv->getOrCreateAppearanceMap()->parent = lc->appearanceMap;
 		lc->levels.push_back(lv);
 
 		osg::ref_ptr<game::MapData> md = new game::MapData;
@@ -275,7 +274,7 @@ game::LevelCollection* BoxFileLoader::loadLevelCollection(const BoxFile& d) {
 		poly->controller = poly->PLAYER;
 		poly->pos.map = "m";
 		poly->pos.pos.set(StartX - 1, StartY - 1, 0);
-		poly->appearanceMap[""] = a_cuboid_1x1x2;
+		poly->getOrCreateAppearanceMap()->map[""] = a_cuboid_1x1x2;
 		poly->pos.flags = poly->pos.ROT_XYZ;
 		poly->resize(osg::Vec3i(), osg::Vec3i(1, 1, 2), false, false);
 		lv->addPolyhedron(poly);
@@ -286,7 +285,7 @@ game::LevelCollection* BoxFileLoader::loadLevelCollection(const BoxFile& d) {
 		poly->movement = poly->ROLLING_ALL;
 		poly->controller = poly->PLAYER;
 		poly->pos.map = "m";
-		poly->appearanceMap[""] = a_cuboid_1x1x1;
+		poly->getOrCreateAppearanceMap()->map[""] = a_cuboid_1x1x1;
 		poly->pos.flags = poly->pos.ROT_XYZ;
 		poly->resize(osg::Vec3i(), osg::Vec3i(1, 1, 1), false, false);
 		lv->addPolyhedron(poly);
@@ -297,7 +296,7 @@ game::LevelCollection* BoxFileLoader::loadLevelCollection(const BoxFile& d) {
 		poly->movement = poly->ROLLING_ALL;
 		poly->controller = poly->PLAYER;
 		poly->pos.map = "m";
-		poly->appearanceMap[""] = a_cuboid_1x1x1;
+		poly->getOrCreateAppearanceMap()->map[""] = a_cuboid_1x1x1;
 		poly->pos.flags = poly->pos.ROT_XYZ;
 		poly->resize(osg::Vec3i(), osg::Vec3i(1, 1, 1), false, false);
 		lv->addPolyhedron(poly);

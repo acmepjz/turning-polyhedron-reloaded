@@ -5,6 +5,7 @@
 #include <string>
 #include "ObjectType.h"
 #include "Appearance.h"
+#include "AppearanceMap.h"
 #include "EventHandler.h"
 #include "util_object.h"
 
@@ -49,6 +50,11 @@ namespace game {
 			}
 		}
 
+		gfx::AppearanceMap* getOrCreateAppearanceMap(){
+			if (!appearanceMap.valid()) appearanceMap = new gfx::AppearanceMap;
+			return appearanceMap.get();
+		}
+
 	public:
 		std::string id; //!< id, used to find this tile type
 		int index; //!< the (permanent) index (optional), used to find this tile type, 0 = no index
@@ -67,11 +73,11 @@ namespace game {
 
 		/** The appearance map.
 		Some predefined appearance id:
-		- "" showed in both game and edit (but only showed in edit mode if invisibleAtRuntime=true)
+		- "" showed in both game and edit
 		- "game" only showed in game
 		- "edit" only showed in edit
 		*/
-		gfx::AppearanceMap appearanceMap;
+		osg::ref_ptr<gfx::AppearanceMap> appearanceMap;
 
 		std::vector<osg::ref_ptr<EventHandler> > events; //!< the events
 
@@ -82,7 +88,7 @@ namespace game {
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec2i, blockedArea);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, name);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::string, desc);
-		UTIL_ADD_BYREF_GETTER_SETTER(gfx::AppearanceMap, appearanceMap);
+		UTIL_ADD_OBJ_GETTER_SETTER(gfx::AppearanceMap, appearanceMap);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<EventHandler> >, events);
 
 	public:
@@ -105,7 +111,9 @@ namespace game {
 		TileTypeMap(const TileTypeMap& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
 		bool add(TileType* obj); //!< Add an object to map (which must has a valid id, optional index).
-		TileType* lookup(const std::string& idOrIndex); //!< Find an object. If id is empty or "0" then returns NULL.
+		TileType* lookup(const std::string& idOrIndex, bool noWarning = false); //!< Find an object. If id is empty or "0" then returns NULL.
+		TileType* lookupById(const std::string& id, bool noWarning = false); //!< Find an object. If id is empty then returns NULL.
+		TileType* lookupByIndex(int index, bool noWarning = false); //!< Find an object. If index is 0 then returns NULL.
 
 		bool addTileMapping(const std::string& id, int index); //!< Add a (temporary) index to a tile type with specified id
 		bool addTileMapping(TileType* tile, int index); //!< Add a (temporary) index to a tile type
@@ -117,11 +125,14 @@ namespace game {
 		bool loadTileMapping(const XMLNode* node); //!< load from XML node, assume the node is called `tileMapping`
 
 	public:
+		osg::ref_ptr<TileTypeMap> parent;
+
 		typedef std::map<std::string, osg::ref_ptr<TileType> > IdMap;
 		IdMap idMap;
 		typedef std::map<int, osg::ref_ptr<TileType> > IndexMap;
 		IndexMap indexMap;
 
+		UTIL_ADD_OBJ_GETTER_SETTER(TileTypeMap, parent);
 		UTIL_ADD_BYREF_GETTER_SETTER(IdMap, idMap);
 		UTIL_ADD_BYREF_GETTER_SETTER(IndexMap, indexMap);
 	};

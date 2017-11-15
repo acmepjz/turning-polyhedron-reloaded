@@ -24,6 +24,7 @@ namespace game {
 		, solution(other.solution)
 		, tileTypeMap(util::copyObj(other.tileTypeMap.get(), copyop)) //always deep copy
 		, objectTypeMap(util::copyObj(other.objectTypeMap.get(), copyop)) //always deep copy
+		, appearanceMap(util::copyObj(other.appearanceMap.get(), copyop))
 		, _currentPolyhedron(other._currentPolyhedron)
 		, _isAnimating(true)
 		, checkpointRequired(other.checkpointRequired)
@@ -31,8 +32,6 @@ namespace game {
 		, _checkpointObtained(other._checkpointObtained)
 		, _mainPolyhedronCount(other._mainPolyhedronCount)
 	{
-		util::copyMap(appearanceMap, other.appearanceMap, copyop);
-
 		//following objects are always deep copy
 		util::copyMap(maps, other.maps, copyop, true);
 		util::copyVector(polyhedra, other.polyhedra, copyop, true);
@@ -175,6 +174,8 @@ namespace game {
 	}
 
 	bool Level::load(const XMLNode* node) {
+		gfx::AppearanceMap *am = getOrCreateAppearanceMap();
+
 		//load attributes
 		checkpointRequired = node->getAttr("checkpointRequired", 0);
 
@@ -188,7 +189,7 @@ namespace game {
 				solution = subnode->contents;
 			} else if (subnode->name == "mapData") {
 				osg::ref_ptr<MapData> md = new MapData;
-				if (md->load(subnode, this, &appearanceMap)) {
+				if (md->load(subnode, this, am)) {
 					addMapData(md.get());
 				} else {
 					UTIL_WARN "failed to load map data" << std::endl;
@@ -196,16 +197,14 @@ namespace game {
 			} else if (subnode->name == "objectType") {
 				getOrCreateObjectTypeMap()->loadObjectType(subnode);
 			} else if (subnode->name == "tileType") {
-				getOrCreateTileTypeMap()->loadTileType(subnode, &appearanceMap);
+				getOrCreateTileTypeMap()->loadTileType(subnode, am);
 			} else if (subnode->name == "appearances") {
-				if (!gfx::loadAppearanceMap(subnode, &appearanceMap)) {
-					UTIL_WARN "Failed to load default appearances" << std::endl;
-				}
+				am->load(subnode, am, std::string(), osg::Vec3(1, 1, 1));
 			} else if (subnode->name == "tileMapping") {
 				getOrCreateTileTypeMap()->loadTileMapping(subnode);
 			} else if (subnode->name == "polyhedron") {
 				osg::ref_ptr<Polyhedron> poly = new Polyhedron;
-				if (poly->load(subnode, this, NULL, &appearanceMap)) {
+				if (poly->load(subnode, this, NULL, am)) {
 					addPolyhedron(poly.get());
 				} else {
 					UTIL_WARN "failed to load polyhedron" << std::endl;
@@ -305,7 +304,7 @@ namespace game {
 		ADD_INT_SERIALIZER(checkpointRequired, 0);
 		ADD_OBJECT_SERIALIZER(objectTypeMap, ObjectTypeMap, NULL);
 		ADD_OBJECT_SERIALIZER(tileTypeMap, TileTypeMap, NULL);
-		ADD_MAP_SERIALIZER(appearanceMap, gfx::AppearanceMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);
+		ADD_OBJECT_SERIALIZER(appearanceMap, gfx::AppearanceMap, NULL);
 		ADD_MAP_SERIALIZER(maps, Level::MapDataMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);
 		ADD_VECTOR_SERIALIZER(polyhedra, Level::Polyhedra, osgDB::BaseSerializer::RW_OBJECT, -1);
 		ADD_VECTOR_SERIALIZER(polyhedronMerge, std::vector<osg::ref_ptr<PolyhedronMerge> >, osgDB::BaseSerializer::RW_OBJECT, -1);

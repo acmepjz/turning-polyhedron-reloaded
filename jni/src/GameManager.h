@@ -3,6 +3,7 @@
 #include <osg/Referenced>
 #include "ObjectType.h"
 #include "TileType.h"
+#include "AppearanceMap.h"
 
 namespace game {
 	class Level;
@@ -30,5 +31,5 @@ public:
 public:
 	osg::ref_ptr<game::ObjectTypeMap> defaultObjectTypeMap;
 	osg::ref_ptr<game::TileTypeMap> defaultTileTypeMap;
-	gfx::AppearanceMap defaultAppearanceMap;
+	osg::ref_ptr<gfx::AppearanceMap> defaultAppearanceMap;
 };

@@ -1,4 +1,5 @@
 #include "Appearance.h"
+#include "AppearanceMap.h"
 #include "SimpleGeometry.h"
 #include "XMLReaderWriter.h"
 #include "util_err.h"
@@ -13,27 +14,6 @@
 #include <string.h>
 
 namespace gfx {
-
-	static void addToAppearanceMap(AppearanceMap* _map, const std::string& _id, Appearance* _a) {
-		if (_map) {
-			AppearanceMap::const_iterator it = _map->find(_id);
-			if (it != _map->end()) {
-				UTIL_WARN "object id '" << _id << "' already defined, will be redefined to a new object" << std::endl;
-			}
-			(*_map)[_id] = _a;
-		}
-	}
-
-	bool loadAppearanceMap(const XMLNode* node, AppearanceMap* _map) {
-		bool ret = true;
-		for (size_t i = 0; i < node->subNodes.size(); i++) {
-			osg::ref_ptr<Appearance> a = new Appearance;
-			if (a->load(node->subNodes[i].get(), _map, _map)) {
-				ret = false;
-			}
-		}
-		return ret;
-	}
 
 	Appearance::Appearance()
 		: type(0)
@@ -67,6 +47,7 @@ namespace gfx {
 	Appearance::Appearance(const Appearance& other, const osg::CopyOp& copyop)
 		: osg::Object(other, copyop)
 	{
+		UTIL_ERR "Copy constructor unimplemented" << std::endl;
 	}
 
 	bool Appearance::hasLOD() const {
@@ -353,9 +334,9 @@ namespace gfx {
 		return node.release();
 	}
 
-	bool Appearance::load(const XMLNode* node, AppearanceMap* _template, AppearanceMap* _map, const char* _defaultId, const osg::Vec3& _defaultSize){
+	bool Appearance::load(const XMLNode* node, AppearanceMap* _template, const std::string& _defaultId, const osg::Vec3& _defaultSize){
 		// get node id first
-		std::string _id = node->getAttr("id", std::string(_defaultId ? _defaultId : ""));
+		id = node->getAttr("id", _defaultId);
 
 		//check node type
 		for (;;) {
@@ -371,18 +352,15 @@ namespace gfx {
 			if (_template) {
 				std::string templateName = node->getAttr("templateName", std::string());
 				if (!templateName.empty()) {
-					AppearanceMap::iterator it = _template->find(templateName);
-					if (it == _template->end()) {
+					Appearance *_ta = _template->lookup(templateName, true);
+					if (_ta == NULL) {
 						UTIL_WARN "template '" << templateName << "' not found, ignored" << std::endl;
 					} else {
 						// point to template appearance
-						_templateAppearance = it->second;
+						_templateAppearance = _ta;
 
 						// if it is not shader then we are done
-						if (type != SHADER) {
-							addToAppearanceMap(_map, _id, this);
-							return true;
-						}
+						if (type != SHADER) return true;
 					}
 				}
 			}
@@ -494,7 +472,7 @@ namespace gfx {
 			//load subnodes, although sometimes these nodes are ignored
 			for (size_t i = 0; i < node->subNodes.size(); i++) {
 				osg::ref_ptr<Appearance> a = new Appearance;
-				if (a->load(node->subNodes[i].get(), _template, NULL, NULL, _defaultSize)) {
+				if (a->load(node->subNodes[i].get(), _template, std::string(), _defaultSize)) {
 					subNodes.push_back(a);
 				}
 			}
@@ -514,9 +492,6 @@ namespace gfx {
 				_vertices[i + 2] = v.z();
 			}
 		}
-
-		// add to appearance map
-		addToAppearanceMap(_map, _id, this);
 
 		return true;
 	}

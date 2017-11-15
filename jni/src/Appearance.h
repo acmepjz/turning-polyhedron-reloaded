@@ -12,17 +12,7 @@ namespace gfx {
 	class SimpleGeometry;
 	class Triangulation;
 	class Appearance;
-
-	/** The appearance map.\n
-	\sa game::TileType::appearanceMap, game::Polyhedron::appearanceMap
-	*/
-	typedef std::map<std::string, osg::ref_ptr<Appearance> > AppearanceMap;
-
-	/** append to an appearance map from XML node, assume the node has name `appearances`.
-	\param[in] node the XML node
-	\param[in,out] _map the appearance map, also works as the template
-	*/
-	bool loadAppearanceMap(const XMLNode* node, AppearanceMap* _map);
+	class AppearanceMap;
 
 	/// The appearance node (experimental)
 
@@ -76,17 +66,17 @@ namespace gfx {
 
 		/** load from XML node.
 		\param node The node to be loaded, whose name should be `appearance`, `shader`, `transform` or `mesh`.
-		\param _template The appearance template
-		\param _map Add this node to the appearance map.
+		\param _template (optional) The appearance template
 		\param _defaultId The default id.
 		\param _defaultSize The default size, which is used in Polyhedron autoSize=true.
 		*/
-		bool load(const XMLNode* node, AppearanceMap* _template = NULL, AppearanceMap* _map = NULL, const char* _defaultId = NULL, const osg::Vec3& _defaultSize = osg::Vec3(1, 1, 1));
+		bool load(const XMLNode* node, AppearanceMap* _template, const std::string& _defaultId, const osg::Vec3& _defaultSize);
 
 		void loadVertices(const XMLNode* node); //!< (internal function) load vertices, assume the node name is `vertices`.
 		void loadFaces(const XMLNode* node); //!< (internal function) load faces, assume the node name is `faces`.
 
 	public:
+		std::string id; //!< id (optional)
 		int type; //!< the node \ref Type.
 
 		// if node type is SAHDER

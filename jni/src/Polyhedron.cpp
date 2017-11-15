@@ -96,8 +96,8 @@ namespace game {
 		, customShape(other.customShape)
 		, _objType(NULL)
 		, _currentAnimation(0)
+		, appearanceMap(util::copyObj(other.appearanceMap.get(), copyop))
 	{
-		util::copyMap(appearanceMap, other.appearanceMap, copyop);
 		util::copyVector(events, other.events, copyop, true);
 	}
 
@@ -175,17 +175,17 @@ namespace game {
 		osg::Matrix mat;
 		osg::ref_ptr<osg::MatrixTransform> trans;
 
-		gfx::AppearanceMap::iterator it = appearanceMap.find("");
-		if (it != appearanceMap.end()) {
+		gfx::Appearance *it = getOrCreateAppearanceMap()->lookup("", true);
+		if (it) {
 			mat.makeTranslate(lbound.x(), lbound.y(), lbound.z());
 			trans = new osg::MatrixTransform;
 			trans->setMatrix(mat);
-			trans->addChild(it->second->getOrCreateInstance(mapShape));
+			trans->addChild(it->getOrCreateInstance(mapShape));
 			group->addChild(trans);
 		}
 
-		it = appearanceMap.find("solid");
-		if (it != appearanceMap.end()) {
+		it = getOrCreateAppearanceMap()->lookup("solid", true);
+		if (it) {
 			if (shape == CUBOID) {
 				int idx = 0;
 
@@ -200,7 +200,7 @@ namespace game {
 								mat.makeTranslate(x, y, z);
 								trans = new osg::MatrixTransform;
 								trans->setMatrix(mat);
-								trans->addChild(it->second->getOrCreateInstance(mapShape));
+								trans->addChild(it->getOrCreateInstance(mapShape));
 								group->addChild(trans);
 								break;
 							}
@@ -1079,8 +1079,7 @@ namespace game {
 					}
 				}
 			} else if (subnode->name == "appearance") {
-				osg::ref_ptr<gfx::Appearance> a = new gfx::Appearance;
-				a->load(subnode, _template, &appearanceMap, NULL, _defaultSize);
+				getOrCreateAppearanceMap()->loadAppearance(subnode, _template, std::string(), _defaultSize);
 			} else {
 				int _eventType = EventHandler::convertToEventType(subnode->name);
 
@@ -1111,7 +1110,7 @@ namespace game {
 		ADD_VEC3I_SERIALIZER(size, osg::Vec3i(1, 1, 2));
 		ADD_BOOL_SERIALIZER(customShapeEnabled, false);
 		ADD_VECTOR_SERIALIZER(customShape, std::vector<unsigned char>, osgDB::BaseSerializer::RW_UCHAR, -1);
-		ADD_MAP_SERIALIZER(appearanceMap, gfx::AppearanceMap, osgDB::BaseSerializer::RW_STRING, osgDB::BaseSerializer::RW_OBJECT);
+		ADD_OBJECT_SERIALIZER(appearanceMap, gfx::AppearanceMap, 0);
 		ADD_VECTOR_SERIALIZER(events, std::vector<osg::ref_ptr<EventHandler> >, osgDB::BaseSerializer::RW_OBJECT, -1);
 	}
 

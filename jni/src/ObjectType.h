@@ -62,7 +62,7 @@ namespace game {
 		ObjectTypeMap(const ObjectTypeMap& other, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
 		bool add(ObjectType* obj); //!< Add an object to map (which must has a valid id).
-		ObjectType* lookup(const std::string& name); //!< Find an object with given name. If name is empty or "default" then returns NULL.
+		ObjectType* lookup(const std::string& name, bool noWarning = false); //!< Find an object with given name. If name is empty or "default" then returns NULL.
 
 		void init();
 
@@ -70,9 +70,12 @@ namespace game {
 		bool loadObjectType(const XMLNode* node); //!< load from XML node, assume the node is called `objectType`
 
 	public:
+		osg::ref_ptr<ObjectTypeMap> parent;
+
 		typedef std::map<std::string, osg::ref_ptr<ObjectType> > IdMap;
 		IdMap map;
 
+		UTIL_ADD_OBJ_GETTER_SETTER(ObjectTypeMap, parent);
 		UTIL_ADD_BYREF_GETTER_SETTER(IdMap, map);
 	};
 

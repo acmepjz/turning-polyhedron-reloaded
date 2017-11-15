@@ -8,6 +8,7 @@
 #include <map>
 #include <set>
 #include "Appearance.h"
+#include "AppearanceMap.h"
 #include "PolyhedronPosition.h"
 #include "EventHandler.h"
 #include "util_object.h"
@@ -277,6 +278,11 @@ namespace game {
 			}
 		}
 
+		gfx::AppearanceMap* getOrCreateAppearanceMap(){
+			if (!appearanceMap.valid()) appearanceMap = new gfx::AppearanceMap;
+			return appearanceMap.get();
+		}
+
 	private:
 		//void raiseOnEnterOrOnLeave(int wt, HitTestResult& hitTestResult);
 
@@ -302,7 +308,7 @@ namespace game {
 		- "solid" will instantiated at every solid block
 		- "antenna" unimplemented...
 		*/
-		gfx::AppearanceMap appearanceMap;
+		osg::ref_ptr<gfx::AppearanceMap> appearanceMap;
 
 		std::vector<osg::ref_ptr<EventHandler> > events; //!< the events
 
@@ -317,7 +323,7 @@ namespace game {
 		UTIL_ADD_BYREF_GETTER_SETTER(osg::Vec3i, size);
 		UTIL_ADD_BYVAL_GETTER_SETTER(bool, customShapeEnabled);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<unsigned char>, customShape);
-		UTIL_ADD_BYREF_GETTER_SETTER(gfx::AppearanceMap, appearanceMap);
+		UTIL_ADD_OBJ_GETTER_SETTER(gfx::AppearanceMap, appearanceMap);
 		UTIL_ADD_BYREF_GETTER_SETTER(std::vector<osg::ref_ptr<EventHandler> >, events);
 
 	public:
