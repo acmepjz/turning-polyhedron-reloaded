@@ -300,6 +300,148 @@ namespace game {
 		return NULL;
 	}
 
+	static void generateMoveEvents(
+		Level* parent,
+		Polyhedron* poly,
+		Polyhedron::HitTestResult *oldHitTestResult,
+		Polyhedron::HitTestResult *newHitTestResult,
+		std::vector<osg::ref_ptr<EventDescription> > *out_preEvents,
+		std::vector<osg::ref_ptr<EventDescription> > *out_leaveEvents,
+		std::vector<osg::ref_ptr<EventDescription> > *out_enterEvents,
+		bool isMove
+		)
+	{
+		// calculate the places of onLeave, onEnter, onHitTest
+		std::map<Polyhedron::HitTestResult::Position, osg::Object*>
+			*onLeavePosition = NULL, _onLeavePosition,
+			*onEnterPosition = NULL, _onEnterPosition;
+		std::map<Polyhedron::HitTestResult::Position, TileType*>
+			*onHitTestPosition = NULL, _onHitTestPosition;
+
+		if (oldHitTestResult) {
+			if (newHitTestResult) {
+				onLeavePosition = &_onLeavePosition;
+				onEnterPosition = &_onEnterPosition;
+				set_difference2<Polyhedron::HitTestResult::Position, osg::Object*>(
+					oldHitTestResult->supporterPosition, newHitTestResult->supporterPosition,
+					onLeavePosition, onEnterPosition);
+
+				onHitTestPosition = &_onHitTestPosition;
+				set_difference2<Polyhedron::HitTestResult::Position, TileType*>(
+					oldHitTestResult->hitTestPosition, newHitTestResult->hitTestPosition,
+					NULL, onHitTestPosition);
+			} else {
+				onLeavePosition = &oldHitTestResult->supporterPosition;
+			}
+		} else {
+			if (newHitTestResult) {
+				onEnterPosition = &newHitTestResult->supporterPosition;
+				onHitTestPosition = &newHitTestResult->hitTestPosition;
+			} else {
+				return;
+			}
+		}
+
+		// generate event onLeave
+		const int wt = poly->weight();
+
+		std::set<TileType*> _tileTypes;
+		std::set<ObjectType*> _objTypes;
+
+		if (oldHitTestResult && (out_leaveEvents || out_preEvents)) {
+			for (std::map<Polyhedron::HitTestResult::Position, osg::Object*>::iterator it = oldHitTestResult->supporterPosition.begin();
+				it != oldHitTestResult->supporterPosition.end(); ++it) {
+				TileType *tt = dynamic_cast<TileType*>(it->second);
+				if (tt) {
+					_tileTypes.insert(tt);
+					_objTypes.insert(tt->_objType);
+				}
+			}
+
+			for (std::map<Polyhedron::HitTestResult::Position, osg::Object*>::iterator it = onLeavePosition->begin();
+				it != onLeavePosition->end(); ++it) {
+				TileType *tt = dynamic_cast<TileType*>(it->second);
+				if (!tt) continue;
+
+				osg::ref_ptr<EventDescription> evt = new EventDescription();
+				evt->type = EventHandler::ON_LEAVE;
+				evt->_map = it->first._map;
+				evt->position = it->first.position;
+				evt->onGroundCount = oldHitTestResult->supporterPosition.size();
+				evt->weight = wt;
+				evt->tileTypeCount = _tileTypes.size();
+				evt->objectTypeCount = _objTypes.size();
+				evt->polyhedron = poly;
+				if (out_leaveEvents) out_leaveEvents->push_back(evt);
+
+				osg::ref_ptr<EventDescription> evt2 = new EventDescription(*evt);
+				evt2->type = EventHandler::ON_MOVE_LEAVE;
+				if (out_leaveEvents && isMove) out_leaveEvents->push_back(evt2);
+
+				evt2 = new EventDescription(*evt);
+				evt2->type = EventHandler::PRE_MOVE_LEAVE;
+				if (out_preEvents && isMove) out_preEvents->push_back(evt2);
+			}
+		}
+
+		// generate event onEnter
+		_tileTypes.clear();
+		_objTypes.clear();
+
+		if (newHitTestResult && (out_enterEvents || out_preEvents)) {
+			for (std::map<Polyhedron::HitTestResult::Position, osg::Object*>::iterator it = newHitTestResult->supporterPosition.begin();
+				it != newHitTestResult->supporterPosition.end(); ++it) {
+				TileType *tt = dynamic_cast<TileType*>(it->second);
+				if (tt) {
+					_tileTypes.insert(tt);
+					_objTypes.insert(tt->_objType);
+				}
+			}
+
+			for (std::map<Polyhedron::HitTestResult::Position, osg::Object*>::iterator it = onEnterPosition->begin();
+				it != onEnterPosition->end(); ++it) {
+				TileType *tt = dynamic_cast<TileType*>(it->second);
+				if (!tt) continue;
+
+				osg::ref_ptr<EventDescription> evt = new EventDescription();
+				evt->type = EventHandler::ON_ENTER;
+				evt->_map = it->first._map;
+				evt->position = it->first.position;
+				evt->onGroundCount = newHitTestResult->supporterPosition.size();
+				evt->weight = wt;
+				evt->tileTypeCount = _tileTypes.size();
+				evt->objectTypeCount = _objTypes.size();
+				evt->polyhedron = poly;
+				if (out_enterEvents) out_enterEvents->push_back(evt);
+
+				osg::ref_ptr<EventDescription> evt2 = new EventDescription(*evt);
+				evt2->type = EventHandler::ON_MOVE_ENTER;
+				if (out_enterEvents && isMove) out_enterEvents->push_back(evt2);
+
+				evt2 = new EventDescription(*evt);
+				evt2->type = EventHandler::PRE_MOVE_ENTER;
+				if (out_preEvents && isMove) out_preEvents->push_back(evt2);
+			}
+
+			// generate event onHitTest
+			if (out_enterEvents) {
+				for (std::map<Polyhedron::HitTestResult::Position, TileType*>::iterator it = onHitTestPosition->begin();
+					it != onHitTestPosition->end(); ++it) {
+					osg::ref_ptr<EventDescription> evt = new EventDescription();
+					evt->type = EventHandler::ON_HIT_TEST;
+					evt->_map = it->first._map;
+					evt->position = it->first.position;
+					evt->onGroundCount = newHitTestResult->supporterPosition.size();
+					evt->weight = wt;
+					evt->tileTypeCount = _tileTypes.size();
+					evt->objectTypeCount = _objTypes.size();
+					evt->polyhedron = poly;
+					out_enterEvents->push_back(evt);
+				}
+			}
+		}
+	}
+
 	bool Polyhedron::move(Level* parent, MoveDirection dir){
 		if ((flags & VISIBLE) == 0 || (flags & EXIT) != 0) return false;
 		if (!_trans.valid() || pos._map == NULL) return false;
@@ -370,107 +512,8 @@ namespace game {
 
 		//--- yes we are going to move
 
-		// calculate the places of onLeave, onEnter, onHitTest
-		std::map<HitTestResult::Position, osg::Object*> onLeavePosition, onEnterPosition;
-		std::map<HitTestResult::Position, TileType*> onHitTestPosition;
-
-		set_difference2<HitTestResult::Position, osg::Object*>(oldHitTestResult.supporterPosition, newHitTestResult.supporterPosition, &onLeavePosition, &onEnterPosition);
-		set_difference2<HitTestResult::Position, TileType*>(oldHitTestResult.hitTestPosition, newHitTestResult.hitTestPosition, NULL, &onHitTestPosition);
-
 		std::vector<osg::ref_ptr<EventDescription> > _preEvents, _leaveEvents, _enterEvents;
-
-		// generate event onLeave
-		const int wt = weight();
-
-		std::set<TileType*> _tileTypes;
-		std::set<ObjectType*> _objTypes;
-
-		for (std::map<HitTestResult::Position, osg::Object*>::iterator it = oldHitTestResult.supporterPosition.begin();
-			it != oldHitTestResult.supporterPosition.end(); ++it) {
-			TileType *tt = dynamic_cast<TileType*>(it->second);
-			if (tt) {
-				_tileTypes.insert(tt);
-				_objTypes.insert(tt->_objType);
-			}
-		}
-
-		for (std::map<HitTestResult::Position, osg::Object*>::iterator it = onLeavePosition.begin();
-			it != onLeavePosition.end(); ++it) {
-			TileType *tt = dynamic_cast<TileType*>(it->second);
-			if (!tt) continue;
-
-			osg::ref_ptr<EventDescription> evt = new EventDescription();
-			evt->type = EventHandler::ON_LEAVE;
-			evt->_map = it->first._map;
-			evt->position = it->first.position;
-			evt->onGroundCount = oldHitTestResult.supporterPosition.size();
-			evt->weight = wt;
-			evt->tileTypeCount = _tileTypes.size();
-			evt->objectTypeCount = _objTypes.size();
-			evt->polyhedron = this;
-			_leaveEvents.push_back(evt);
-
-			osg::ref_ptr<EventDescription> evt2 = new EventDescription(*evt);
-			evt2->type = EventHandler::ON_MOVE_LEAVE;
-			_leaveEvents.push_back(evt2);
-
-			evt2 = new EventDescription(*evt);
-			evt2->type = EventHandler::PRE_MOVE_LEAVE;
-			_preEvents.push_back(evt2);
-		}
-
-		// generate event onEnter
-		_tileTypes.clear();
-		_objTypes.clear();
-
-		for (std::map<HitTestResult::Position, osg::Object*>::iterator it = newHitTestResult.supporterPosition.begin();
-			it != newHitTestResult.supporterPosition.end(); ++it) {
-			TileType *tt = dynamic_cast<TileType*>(it->second);
-			if (tt) {
-				_tileTypes.insert(tt);
-				_objTypes.insert(tt->_objType);
-			}
-		}
-
-		for (std::map<HitTestResult::Position, osg::Object*>::iterator it = onEnterPosition.begin();
-			it != onEnterPosition.end(); ++it) {
-			TileType *tt = dynamic_cast<TileType*>(it->second);
-			if (!tt) continue;
-
-			osg::ref_ptr<EventDescription> evt = new EventDescription();
-			evt->type = EventHandler::ON_ENTER;
-			evt->_map = it->first._map;
-			evt->position = it->first.position;
-			evt->onGroundCount = newHitTestResult.supporterPosition.size();
-			evt->weight = wt;
-			evt->tileTypeCount = _tileTypes.size();
-			evt->objectTypeCount = _objTypes.size();
-			evt->polyhedron = this;
-			_enterEvents.push_back(evt);
-
-			osg::ref_ptr<EventDescription> evt2 = new EventDescription(*evt);
-			evt2->type = EventHandler::ON_MOVE_ENTER;
-			_enterEvents.push_back(evt2);
-
-			evt2 = new EventDescription(*evt);
-			evt2->type = EventHandler::PRE_MOVE_ENTER;
-			_preEvents.push_back(evt2);
-		}
-
-		// generate event onHitTest
-		for (std::map<HitTestResult::Position, TileType*>::iterator it = onHitTestPosition.begin();
-			it != onHitTestPosition.end(); ++it) {
-			osg::ref_ptr<EventDescription> evt = new EventDescription();
-			evt->type = EventHandler::ON_HIT_TEST;
-			evt->_map = it->first._map;
-			evt->position = it->first.position;
-			evt->onGroundCount = newHitTestResult.supporterPosition.size();
-			evt->weight = wt;
-			evt->tileTypeCount = _tileTypes.size();
-			evt->objectTypeCount = _objTypes.size();
-			evt->polyhedron = this;
-			_enterEvents.push_back(evt);
-		}
+		generateMoveEvents(parent, this, &oldHitTestResult, &newHitTestResult, &_preEvents, &_leaveEvents, &_enterEvents, true);
 
 		// process preEvents
 		std::swap(parent->_eventQueue, _preEvents);
@@ -548,6 +591,8 @@ namespace game {
 
 	// TODO: (different types of) animation
 	bool Polyhedron::onRemove(Level* parent, const std::string& type) {
+		if ((flags & VISIBLE) == 0) return false;
+
 		bool isGameFinished = false;
 		bool isGameOver = true;
 
@@ -572,11 +617,67 @@ namespace game {
 			}
 		}
 
+		// generate event onLeave
+		std::vector<osg::ref_ptr<EventDescription> > _leaveEvents;
+		{
+			HitTestResult oldHitTestResult;
+			if (!valid(parent, pos, &oldHitTestResult)) {
+				UTIL_WARN "The current position is invalid. Some bug happens." << std::endl;
+			}
+			generateMoveEvents(parent, this, &oldHitTestResult, NULL, NULL, &_leaveEvents, NULL, false);
+		}
+
+		// change the visibility
 		flags &= ~VISIBLE;
 		updateVisible();
 		if (parent->getSelectedPolyhedron() == this) parent->switchToNextPolyhedron();
 
+		// process leaveEvents
+		std::swap(parent->_eventQueue, _leaveEvents);
+		parent->processEvent();
+
 		return false;
+	}
+
+	// TODO: animation
+	void Polyhedron::onTeleport(Level* parent, const PolyhedronPosition &pp) {
+		std::vector<osg::ref_ptr<EventDescription> > _leaveEvents, _enterEvents;
+
+		// generate events
+		if (flags & VISIBLE) {
+			HitTestResult oldHitTestResult;
+			if (!valid(parent, pos, &oldHitTestResult)) {
+				UTIL_WARN "The current position is invalid. Some bug happens." << std::endl;
+			}
+			generateMoveEvents(parent, this, &oldHitTestResult, NULL, NULL, &_leaveEvents, NULL, false);
+		}
+		{
+			HitTestResult newHitTestResult;
+			if (!valid(parent, pp, &newHitTestResult)) {
+				UTIL_WARN "The new position is invalid. Some bug happens." << std::endl;
+			}
+			generateMoveEvents(parent, this, NULL, &newHitTestResult, NULL, NULL, &_enterEvents, false);
+		}
+
+		// process leaveEvents
+		std::swap(parent->_eventQueue, _leaveEvents);
+		parent->processEvent();
+
+		// process enterEvents (delayed)
+		parent->_eventWhenAnimationFinished.insert(parent->_eventWhenAnimationFinished.end(),
+			_enterEvents.begin(), _enterEvents.end());
+
+		// update position
+		pos = pp;
+		flags |= VISIBLE;
+		updateVisible();
+		updateTransform();
+
+		// check stability
+		// TODO: check reason
+		if (!valid(parent)) {
+			onRemove(parent, "fall");
+		}
 	}
 
 	bool Polyhedron::isRollable(const Level* parent, const PolyhedronPosition& pos, MoveDirection dir) const {

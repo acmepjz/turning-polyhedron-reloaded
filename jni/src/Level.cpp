@@ -6,6 +6,8 @@
 #include <osg/MatrixTransform>
 #include <osgDB/ObjectWrapper>
 
+#include <assert.h>
+
 namespace game {
 
 	Level::Level()
@@ -241,11 +243,13 @@ namespace game {
 			if (polyhedra[i]->update(this)) _isAnimating = true;
 		}
 
+		// debug
+		assert(_eventQueue.empty());
+
 		// process onEnter events
 		if (!_isAnimating && !_eventWhenAnimationFinished.empty()) {
 			std::swap(_eventQueue, _eventWhenAnimationFinished);
 			processEvent();
-			processTileDirty();
 		}
 
 		// check if we got new animations
@@ -295,6 +299,9 @@ namespace game {
 				evt->_map->processEvent(this, evt);
 			}
 		}
+
+		// ???
+		processTileDirty();
 	}
 
 	REG_OBJ_WRAPPER(game, Level, "")

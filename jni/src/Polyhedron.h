@@ -263,12 +263,18 @@ namespace game {
 		*/
 		bool onTileDirty(Level* parent);
 
-		/** call when the polyhedron is removed
+		/** call when the polyhedron is removed (will hide the polyhedron and raise onLeave event, etc.)
 		\param parent the level
 		\param type the type, e.g. "breakdown", "fall"
 		\return if it is animating
 		*/
 		bool onRemove(Level* parent, const std::string& type);
+
+		/** call when the polyhedron is teleport to a new position (will show the polyhedron and raise onEnter event, etc.)
+		\param parent the level
+		\param pp the new position
+		*/
+		void onTeleport(Level* parent, const PolyhedronPosition &pp);
 
 		void updateVisible(); //!< call this when the VISIBLE flags changed
 

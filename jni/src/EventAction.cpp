@@ -341,14 +341,7 @@ namespace game {
 				pp.flags = flags;
 			}
 
-			// TODO: raise event & animation & check stability reason
-			srcPoly->pos = pp;
-			srcPoly->flags |= Polyhedron::VISIBLE;
-			srcPoly->updateVisible();
-			srcPoly->updateTransform();
-			if (!srcPoly->valid(parent)) {
-				srcPoly->onRemove(parent, "fall");
-			}
+			srcPoly->onTeleport(parent, pp);
 		}
 			break;
 		case CANCEL:
