@@ -841,6 +841,8 @@ namespace game {
 
 		if ((flags & VISIBLE) == 0 || (flags & EXIT) != 0) return true;
 
+		bool isBlocked = false;
+
 		//get current position
 		PolyhedronPosition::Idx iii;
 		pos.getCurrentPos(this, iii);
@@ -931,8 +933,7 @@ namespace game {
 									const int z = zz - pos.pos.z();
 									if (zBlocks[z] && other->customShape[idx2]) {
 										//it is blocked
-										if (reason) *reason = HITTEST_BLOCKED;
-										return false;
+										isBlocked = true;
 									}
 								}
 							}
@@ -968,8 +969,7 @@ namespace game {
 							for (; z < e; z++) {
 								if (zBlocks[z]) {
 									//it is blocked
-									if (reason) *reason = HITTEST_BLOCKED;
-									return false;
+									isBlocked = true;
 								}
 							}
 
@@ -1002,6 +1002,11 @@ namespace game {
 
 			iii.origin += iii.delta.y();
 			yy++;
+		}
+
+		if (isBlocked) {
+			if (reason) *reason = HITTEST_BLOCKED;
+			return false;
 		}
 
 		//check if it is stable
