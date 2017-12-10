@@ -621,9 +621,7 @@ namespace game {
 		std::vector<osg::ref_ptr<EventDescription> > _leaveEvents;
 		{
 			HitTestResult oldHitTestResult;
-			if (!valid(parent, pos, &oldHitTestResult)) {
-				UTIL_WARN "The current position is invalid. Some bug happens." << std::endl;
-			}
+			valid(parent, pos, &oldHitTestResult);
 			generateMoveEvents(parent, this, &oldHitTestResult, NULL, NULL, &_leaveEvents, NULL, false);
 		}
 
@@ -653,9 +651,7 @@ namespace game {
 		}
 		{
 			HitTestResult newHitTestResult;
-			if (!valid(parent, pp, &newHitTestResult)) {
-				UTIL_WARN "The new position is invalid. Some bug happens." << std::endl;
-			}
+			valid(parent, pp, &newHitTestResult);
 			generateMoveEvents(parent, this, NULL, &newHitTestResult, NULL, NULL, &_enterEvents, false);
 		}
 
