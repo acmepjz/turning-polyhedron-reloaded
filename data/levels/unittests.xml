@@ -72,7 +72,7 @@
 		<polyhedron p="m1(1,4)">
 			<appearance templateName="a_cuboid_1x1x2"/>
 		</polyhedron>
-		<polyhedron p="m1(7,4)" type="cube">
+		<polyhedron p="m1(7,4)" shape="cube">
 			<appearance templateName="a_cuboid_1x1x1"/>
 		</polyhedron>
 	</level>
